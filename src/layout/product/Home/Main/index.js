@@ -1,11 +1,18 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Animated, PanResponder, View,Pressable  } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import {
+  Animated,
+  PanResponder,
+  View,
+  Pressable,
+  Image,
+  Text,
+} from "react-native";
 
-import Card from '../Card';
-import Footer from '../Footer';
-import { ACTION_OFFSET, CARD } from '../utils/constants';
-import { pets as petsArray } from './data';
-import { styles } from './styles';
+import Card from "../Card";
+import Footer from "../Footer";
+import { ACTION_OFFSET, CARD } from "../utils/constants";
+import { pets as petsArray } from "./data";
+import { styles } from "./styles";
 
 export default function Main({ route, navigation }) {
   const [pets, setPets] = useState(petsArray);
@@ -15,12 +22,10 @@ export default function Main({ route, navigation }) {
   useEffect(() => {
     if (!pets.length) {
       setPets(petsArray);
-      
     }
   }, [pets.length]);
-  console.log('User pets: ', pets);
+  console.log("User pets: ", pets);
 
-  
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: () => true,
     onPanResponderMove: (_, { dx, dy, y0 }) => {
@@ -71,30 +76,50 @@ export default function Main({ route, navigation }) {
 
   return (
     <View style={styles.container}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "100%",
+          paddingHorizontal: 20,
+          paddingTop: 20,
+        }}
+      >
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View>
+            <Image source={require("../../../../image/star.png")} />
+          </View>
+          <View>
+            <Text style={{ fontSize: 25 }}>GenzLove</Text>
+          </View>
+        </View>
+
+        <View>
+          <Image source={require("../../../../image/lui.png")} />
+        </View>
+      </View>
       {pets
-        .map(({id,name, source,tuoi,diachi }, index) => {
+        .map(({ id, name, source, tuoi, diachi }, index) => {
           const isFirst = index === 0;
           const dragHandlers = isFirst ? panResponder.panHandlers : {};
-          console.log("id"+id)
+          console.log("id" + id);
           return (
-
-            <Pressable onPress={()=>navigation.navigate("ProfileFriend",{id})} style={{width:'90%',height:'100%',position:'absolute'}}>
-              
-            <Card
-              
-              key={id}
-              name={name}
-              source={source}
-              tuoi={tuoi}
-              diachi={diachi}
-              isFirst={isFirst}
-              swipe={swipe}
-              tiltSign={tiltSign}
-              {...dragHandlers}
+            <Pressable
+              onPress={() => navigation.navigate("ProfileFriend", { id })}
+              style={{ width: "90%", height: "100%", position: "absolute" }}
             >
-              
-              
-              </Card>
+              <Card
+                key={id}
+                name={name}
+                source={source}
+                tuoi={tuoi}
+                diachi={diachi}
+                isFirst={isFirst}
+                swipe={swipe}
+                tiltSign={tiltSign}
+                {...dragHandlers}
+              ></Card>
             </Pressable>
           );
         })

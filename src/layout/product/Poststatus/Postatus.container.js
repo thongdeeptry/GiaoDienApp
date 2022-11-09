@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
 import firebase from "firebase/compat";
-import { firebaseConfig } from "../../../config";
+import firebaseConfig from "../../../../config";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
 import * as Permission from "expo-permissions";

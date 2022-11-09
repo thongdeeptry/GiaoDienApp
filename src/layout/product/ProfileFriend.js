@@ -7,20 +7,28 @@ import {
   ScrollView,
   FlatList,
   Pressable,
-  Alert,
-  ToastAndroid
+  ToastAndroid,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
-import firebase from "firebase/compat";
 import { firebaseConfig } from "../../../config";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { getDatabase, ref, onValue, set, push } from "firebase/database";
+import { getAuth } from "firebase/auth";
+import {
+  getDatabase,
+  ref,
+  onValue,
+  set,
+  push,
+  update,
+} from "firebase/database";
 export const ProfileFriend = ({ route, navigation }) => {
   const { id } = route.params;
   console.log("ID : " + id);
+  let check;
   const app = initializeApp(firebaseConfig);
-  const data = [];
+  const [daco, setdaco] = useState();
+  const dataImage = [];
+  const datas = [];
   let noidung1 = "";
   const [name, setname] = useState();
   const [avt, setavt] = useState();
@@ -29,21 +37,19 @@ export const ProfileFriend = ({ route, navigation }) => {
   const [ngaysinh, setngaysinh] = useState();
   const [gioitinh, setgioitinh] = useState();
   const [sothich, setsothich] = useState();
-  const [email, setemail] = useState();
-  const [pass, setpass] = useState();
-  const [daco, setdaco] = useState('false');
+  const [nghenghiep, setnghenghiep] = useState();
   const [isLoading, setisLoading] = useState(false);
   if (!app.length) {
     console.log("Kết nối thành công");
   }
-  const auth = getAuth(app);
-  const user = getAuth().currentUser.uid;
+  const user = id;
+  const idCurrent = getAuth().currentUser.uid;
   const db = getDatabase();
 
   const sothich2 = [];
   useEffect(() => {
     setisLoading(true);
-    const reference = ref(db, "users/" + id);
+    const reference = ref(db, "users/" + user);
     onValue(reference, (childSnapshot) => {
       const namepr = childSnapshot.child("name").val();
       const avtpr = childSnapshot.child("avt").val();
@@ -51,119 +57,118 @@ export const ProfileFriend = ({ route, navigation }) => {
       const diachipr = childSnapshot.child("diachi").val();
       const ngaysinhpr = childSnapshot.child("ngaysinh").val();
       const gioitinhpr = childSnapshot.child("gioitinh").val();
-      const ưmail = childSnapshot.child("email").val();
-      const passs = childSnapshot.child("pass").val();
+      const nghenghiep = childSnapshot.child("nghenghiep").val();
       setname(namepr);
       setavt(avtpr);
       setdiachi(diachipr);
       settuoi(tuoipr);
       setgioitinh(gioitinhpr);
       setngaysinh(ngaysinhpr);
-      setemail(ưmail);
-      setpass(passs);
+      setnghenghiep(nghenghiep);
       setisLoading(false);
     });
   });
-    let check;
-  const reference11 = ref(db, "favourite/" + id);
-  onValue(reference11, (childSnapshot1) => {
-    try {
-    childSnapshot1.forEach((snapshot1) => {
-      const value = snapshot1.child("user").exportVal();
-      try{
-      if (user+""==value+"") {
-        check = 'true';
-        
-        throw 'break-loop';
-        
-      }
-    } catch (error) {
-      console.log(error);
-  }
+  const referencer = ref(db, "post/" + user);
+  onValue(referencer, (snapshot) => {
+    snapshot.forEach((childSnapshot) => {
+      const id = childSnapshot.child("id").exportVal();
+      const name = childSnapshot.child("name").exportVal();
+      const avt = childSnapshot.child("avt").exportVal();
+      const noidung = childSnapshot.child("noidung").exportVal();
+      const trangthai = childSnapshot.child("checkin").exportVal();
+      const thoigian = childSnapshot.child("thoigian").exportVal();
+      const image = childSnapshot.child("image").exportVal();
+      datas.push({
+        id: id,
+        name: name,
+        avt: avt,
+        noidung: noidung,
+        checkin: trangthai,
+        thoigian: thoigian,
+        image: image,
+      });
     });
-  } catch (error) {
-    console.log(error);
-}
-    
-        
+    console.log("User Posst: ", datas);
   });
-  const reference1 = ref(db, "users/" + id + "/sothich");
+
+  const reference1 = ref(db, "users/" + user + "/sothich");
   onValue(reference1, (childSnapshot1) => {
     childSnapshot1.forEach((snapshot1) => {
       const key = snapshot1.val();
       sothich2.push(key);
     });
   });
-  
+  const referenceImage = ref(db, "post/" + user);
+  onValue(referenceImage, (snapshot) => {
+    snapshot.forEach((ImageSnapshot) => {
+      const id = ImageSnapshot.child("id").exportVal();
+      const image = ImageSnapshot.child("image").exportVal();
+
+      dataImage.push({
+        id: id,
+        image: image,
+      });
+    });
+
+    console.log("User data: ", dataImage);
+  });
+
   const Love = () => {
     let fl;
     let co;
-    let dc = 'false'
-    
+    let dc = false;
+
     const reference11 = ref(db, "favourite/" + id);
     onValue(reference11, (childSnapshot1) => {
       try {
-      childSnapshot1.forEach((snapshot1) => {
-        const value = snapshot1.child("user").exportVal();
-        try{
-        if (user+""==value+"") {
-          dc = 'true';
-          
-          throw 'break-loop';
-          
-        }
+        childSnapshot1.forEach((snapshot1) => {
+          const value = snapshot1.child("user").exportVal();
+          try {
+            if (idCurrent == value) {
+              dc = true;
+              setdaco(dc);
+              check = true;
+              throw "break-loop";
+            } else {
+              setdaco(dc);
+              check = false;
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        });
       } catch (error) {
         console.log(error);
-    }
-      });
-    } catch (error) {
-      console.log(error);
-  }
-      setdaco(dc);
-          
+      }
     });
     const reference1 = ref(db, "users/" + id);
     onValue(reference1, (childSnapshot1) => {
       co = childSnapshot1.child("follow").exportVal();
       fl = co + 1;
     });
-    console.log('số fl : '+fl);
+    console.log("số fl : " + fl);
 
-    if (daco=='false') {
+    if (daco == false) {
       const reference = ref(db, "users/" + id);
-      set(reference, {
-        id: id,
-        avt: avt,
-        name: name,
-        ngaysinh: ngaysinh,
-        tuoi: tuoi,
-        diachi: diachi,
-        gioitinh: gioitinh,
-        email: email,
-        password: pass,
-        sothich: sothich2,
-        follow:fl,
+      update(reference, {
+        follow: fl,
       });
       const reference3 = ref(db, "favourite/" + id);
       push(reference3, {
-        user: user,
+        user: idCurrent,
       });
-      ToastAndroid.show('Đã gửi lượt thích', ToastAndroid.BOTTOM);
-    }if(daco=='true'){
-      const reference = ref(db, "users/" + id);
-      set(reference, {
-        
+      const reference5 = ref(db, "notification/" + id);
+      push(reference5, {
+        user: idCurrent,
         id: id,
-        avt: avt,
-        name: name,
-        ngaysinh: ngaysinh,
-        tuoi: tuoi,
-        diachi: diachi,
-        gioitinh: gioitinh,
-        email: email,
-        password: pass,
-        sothich: sothich2,
-        follow:co,
+        noidung: idCurrent + " vừa gửi lượt thích đến bạn",
+      });
+      ToastAndroid.show("Đã gửi lượt thích", ToastAndroid.BOTTOM);
+    }
+    if (daco == true) {
+      const reference = ref(db, "users/" + id);
+      update(reference, {
+        follow: co,
       });
     }
   };
@@ -174,7 +179,7 @@ export const ProfileFriend = ({ route, navigation }) => {
       style={{ width: "100%", height: 2000 }}
     >
       <View style={styles.container}>
-      {isLoading == true ? (
+        {isLoading == true ? (
           <Text
             style={{
               alignItems: "center",
@@ -188,440 +193,435 @@ export const ProfileFriend = ({ route, navigation }) => {
             Loading...
           </Text>
         ) : (
-        <View style={styles.mainanh}>
-          <View style={{ width: "100%", height: 500, position: "absolute" }}>
-            <Image style={styles.anh} source={{ uri: avt }} />
-          </View>
-
-          <View style={styles.mailchitiet}>
-            <View style={styles.mainten}>
-              <View style={styles.phuten}>
-                <Text style={styles.ten}>
-                  {name}, {tuoi}
-                </Text>
-                <Text style={styles.gioitinh}>Full Stack Developer</Text>
-              </View>
-
-              <View style={styles.nhantin}>
-                <TouchableOpacity
-                  style={{
-                    width: "80%",
-                    height: "90%",
-                    borderBottomColor: "#ABABAB",
-                    borderLeftColor: "#ABABAB",
-                    borderLeftWidth: 0.5,
-                    borderBottomWidth: 0.5,
-                    borderRightColor: "#ABABAB",
-                    borderTopColor: "#ABABAB",
-                    borderRightWidth: 0.5,
-                    borderTopWidth: 0.5,
-                    borderRadius: 15,
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Image
-                    style={{ width: "60%", height: "60%", resizeMode: "cover" }}
-                    source={require("../../image/send.png")}
-                  />
-                </TouchableOpacity>
-              </View>
+          <View style={styles.mainanh}>
+            <View style={{ width: "100%", height: 500, position: "absolute" }}>
+              <Image style={styles.anh} source={{ uri: avt }} />
             </View>
-            <View style={[styles.mainten, { top: 15 }]}>
-              <View style={styles.phuten}>
-                <Text style={styles.diachi}>Địa chỉ</Text>
-                <Text style={styles.gioitinh}>{diachi}</Text>
-              </View>
 
-              <View style={styles.vitrii}>
-                <TouchableOpacity
-                  style={{
-                    width: "100%",
-                    height: "90%",
-                    right: 20,
-                    borderBottomColor: "#ABABAB",
-                    borderLeftColor: "#ABABAB",
-                    borderLeftWidth: 0.5,
-                    borderBottomWidth: 0.5,
-                    borderRightColor: "#ABABAB",
-                    borderTopColor: "#ABABAB",
-                    borderRightWidth: 0.5,
-                    borderTopWidth: 0.5,
-                    borderRadius: 8,
-                    justifyContent: "center",
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <Image
+            <View style={styles.mailchitiet}>
+              <View style={styles.mainten}>
+                <View style={styles.phuten}>
+                  <Text style={styles.ten}>
+                    {name}, {tuoi}
+                  </Text>
+                  <Text style={styles.gioitinh}>{nghenghiep}</Text>
+                </View>
+              </View>
+              <View style={[styles.mainten, { top: 15 }]}>
+                <View style={styles.phuten}>
+                  <Text style={styles.diachi}>Địa chỉ</Text>
+                  <Text style={styles.gioitinh}>{diachi}</Text>
+                </View>
+              </View>
+              <View style={[styles.mainten, { top: 25 }]}>
+                <View style={styles.phuten}>
+                  <Text style={styles.diachi}>Tiểu sử</Text>
+                  <Text style={styles.gioitinh}>
+                    Tôi là Ngô Thành Thông tôi năm nay 21 tuổi đã có người yêu
+                    rất xinh đẹp, tôi ao ước có 1 công việc ổn định để kiếm tiền
+                    lo cho gia đình tôi.
+                  </Text>
+                </View>
+              </View>
+              <View style={[styles.mainten, { top: 35 }]}>
+                <View style={styles.phuten}>
+                  <Text style={styles.diachi}>Sở thích</Text>
+                  <FlatList
                     style={{
-                      width: "30%",
-                      height: "60%",
-                      resizeMode: "cover",
-                      left: 0,
+                      left: 20,
+                      top: 30,
                     }}
-                    source={require("../../image/vitri.png")}
-                  />
-                  <Text style={{ fontSize: 13, opacity: 0.7 }}>1000Km</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View style={[styles.mainten, { top: 25 }]}>
-              <View style={styles.phuten}>
-                <Text style={styles.diachi}>Tiểu sử</Text>
-                <Text style={styles.gioitinh}>
-                  Tôi là Ngô Thành Thông tôi năm nay 21 tuổi đã có người yêu rất
-                  xinh đẹp, tôi ao ước có 1 công việc ổn định để kiếm tiền lo
-                  cho gia đình tôi.
-                </Text>
-              </View>
-            </View>
-            <View style={[styles.mainten, { top: 35 }]}>
-              <View style={styles.phuten}>
-                <Text style={styles.diachi}>Sở thích</Text>
-                <FlatList
-                  style={{
-                    left: 20,
-                    top: 30,
-                  }}
-                  contentContainerStyle={{
-                    flexDirection: "row",
-                    flexWrap: "wrap-reverse",
-                    marginRight: 10,
-                    alignItems: "center",
-                  }}
-                  data={sothich2}
-                  renderItem={({ item, index }) => (
-                    <Pressable
-                      style={[
-                        styles.khungmau,
-                        item == ""
-                          ? { width: 0, height: 0, display: "none" }
-                          : null,
-                      ]}
-                    >
-                      <View
-                        style={{
-                          fontSize: 20,
-                          flexDirection: "row",
-                          alignItems: "center",
-                        }}
+                    contentContainerStyle={{
+                      flexDirection: "row",
+                      flexWrap: "wrap-reverse",
+                      marginRight: 10,
+                      alignItems: "center",
+                    }}
+                    data={sothich2}
+                    renderItem={({ item, index }) => (
+                      <Pressable
+                        style={[
+                          styles.khungmau,
+                          item == ""
+                            ? { width: 0, height: 0, display: "none" }
+                            : null,
+                        ]}
                       >
-                        <Text
-                          key={index}
+                        <View
                           style={{
-                            fontSize: 16,
-                            fontStyle: "normal",
-                            fontWeight: "400",
+                            fontSize: 20,
+                            flexDirection: "row",
                             alignItems: "center",
-                            color: "white",
                           }}
                         >
-                          {item}
-                        </Text>
-                      </View>
-                    </Pressable>
-                  )}
-                />
-              </View>
-            </View>
-            <View style={[styles.mainten, { top: 45 }]}>
-              <View style={styles.phuten}>
-                <View
-                  style={{
-                    alignItems: "center",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Text style={styles.diachi}>Ảnh</Text>
-                  <Text
-                    style={{
-                      left: 20,
-                      top: 30,
-                      fontSize: 15,
-                      color: "red",
-                    }}
-                  >
-                    Xem thêm
-                  </Text>
+                          <Text
+                            key={index}
+                            style={{
+                              fontSize: 16,
+                              fontStyle: "normal",
+                              fontWeight: "400",
+                              alignItems: "center",
+                              color: "white",
+                            }}
+                          >
+                            {item}
+                          </Text>
+                        </View>
+                      </Pressable>
+                    )}
+                  />
                 </View>
-
-                <FlatList
-                  style={{
-                    left: 20,
-                    top: 35,
-                    width: "100%",
-                    height: 320,
-                  }}
-                  contentContainerStyle={{
-                    flexDirection: "row",
-                    flexWrap: "wrap-reverse",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    borderRadius: 15,
-                  }}
-                  data={sothich2}
-                  renderItem={() => (
-                    <View
-                      style={{
-                        width: 170,
-
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        borderRadius: 15,
-                        marginBottom: 10,
-                      }}
-                    >
-                      <Image
-                        style={{
-                          width: "100%",
-                          height: 150,
-                          borderRadius: 15,
-                          alignItems: "center",
-                        }}
-                        source={{ uri: avt }}
-                      />
-                    </View>
-                  )}
-                />
               </View>
-            </View>
-            <View style={[styles.mainten, { top: 55 }]}>
-              <View style={styles.phuten}>
-                <View
-                  style={{
-                    alignItems: "center",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Text style={styles.diachi}>Bạn bè</Text>
-                  <Text
-                    style={{
-                      left: 20,
-                      top: 30,
-                      fontSize: 15,
-                      color: "red",
-                    }}
-                  >
-                    Xem thêm
-                  </Text>
-                </View>
-
-                <FlatList
-                  style={{
-                    left: 20,
-                    top: 35,
-                    width: "100%",
-                    height: 220,
-                  }}
-                  contentContainerStyle={{
-                    flexDirection: "row",
-                    flexWrap: "wrap-reverse",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    borderRadius: 15,
-                  }}
-                  data={sothich2}
-                  renderItem={() => (
-                    <View
-                      style={{
-                        width: 110,
-
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        borderRadius: 15,
-                        marginBottom: 10,
-                      }}
-                    >
-                      <Image
-                        style={{
-                          width: "100%",
-                          height: 105,
-                          borderRadius: 15,
-                          alignItems: "center",
-                        }}
-                        source={{ uri: avt }}
-                      />
-                      <Text
-                        style={{
-                          position: "absolute",
-                          width: 100,
-                          margin: 5,
-                          fontSize: 12,
-                          color: "white",
-                          bottom: 3,
-                        }}
-                      >
-                        {name}
-                      </Text>
-                    </View>
-                  )}
-                />
-              </View>
-            </View>
-
-            <View style={[styles.mainten, { top: 75 }]}>
-              <View style={styles.phuten}>
-                <View
-                  style={{
-                    alignItems: "center",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Text style={styles.diachi}>Bài viết</Text>
+              <View style={[styles.mainten, { top: 45 }]}>
+                <View style={styles.phuten}>
                   <View
                     style={{
+                      alignItems: "center",
                       flexDirection: "row",
-                      width: 90,
                       justifyContent: "space-between",
                     }}
                   >
-                    <TouchableOpacity
+                    <Text style={styles.diachi}>Ảnh</Text>
+                    <Text
                       style={{
                         left: 20,
                         top: 30,
                         fontSize: 15,
-                        width: 40,
-                        height: 40,
-                        backgroundColor: "white",
-                        borderBottomColor: "#ABABAB",
-                        borderLeftColor: "#ABABAB",
-                        borderLeftWidth: 1,
-                        borderBottomWidth: 1,
-                        borderRightColor: "#ABABAB",
-                        borderTopColor: "#ABABAB",
-                        borderRightWidth: 1,
-                        borderTopWidth: 1,
-                        borderRadius: 8,
-                        alignItems: "center",
-                        justifyContent: "center",
+                        color: "red",
                       }}
                     >
-                      <Image
-                        style={{ width: 30, height: 30 }}
-                        source={require("../../image/vitri.png")}
-                      />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={{
-                        left: 20,
-                        top: 30,
-                        fontSize: 15,
-                        width: 40,
-                        height: 40,
-                        backgroundColor: "white",
-                        borderBottomColor: "#ABABAB",
-                        borderLeftColor: "#ABABAB",
-                        borderLeftWidth: 1,
-                        borderBottomWidth: 1,
-                        borderRightColor: "#ABABAB",
-                        borderTopColor: "#ABABAB",
-                        borderRightWidth: 1,
-                        borderTopWidth: 1,
-                        borderRadius: 8,
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Image
-                        style={{ width: 30, height: 30 }}
-                        source={require("../../image/voice.png")}
-                      />
-                    </TouchableOpacity>
+                      Xem thêm
+                    </Text>
                   </View>
-                </View>
-                <View
-                  style={{
-                    width: "100%",
-                    left: 20,
-                    top: 40,
-                    height: 50,
-                    backgroundColor: "white",
-                  }}
-                >
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("PostStatus", noidung1)}
+
+                  <FlatList
                     style={{
+                      left: 20,
+                      top: 35,
                       width: "100%",
-                      height: 50,
-                      position: "absolute",
-                      backgroundColor: "white",
-                      borderBottomColor: "#ABABAB",
-                      borderLeftColor: "#ABABAB",
-                      borderLeftWidth: 1,
-                      borderBottomWidth: 1,
-                      borderRightColor: "#ABABAB",
-                      borderTopColor: "#ABABAB",
-                      borderRightWidth: 1,
-                      borderTopWidth: 1,
-                      borderRadius: 8,
-                      paddingLeft: 20,
-                      justifyContent: "center",
+                      height: 320,
+                    }}
+                    contentContainerStyle={{
+                      flexDirection: "row",
+                      flexWrap: "wrap-reverse",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      borderRadius: 15,
+                    }}
+                    data={dataImage}
+                    renderItem={({ item, index }) => (
+                      <View
+                        style={{
+                          width: 150,
+
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          borderRadius: 15,
+                          marginBottom: 10,
+                        }}
+                      >
+                        {item.image != "" ? (
+                          <Image
+                            style={{
+                              width: "100%",
+                              height: 150,
+                              borderRadius: 15,
+                              alignItems: "center",
+                            }}
+                            source={{ uri: item.image }}
+                          />
+                        ) : null}
+                      </View>
+                    )}
+                  />
+                </View>
+              </View>
+              <View style={[styles.mainten, { top: 55 }]}>
+                <View style={styles.phuten}>
+                  <View
+                    style={{
+                      alignItems: "center",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
                     }}
                   >
-                    <Text style={{ fontSize: 18, opacity: 0.7 }}>
-                      Bạn muốn đăng gì?
+                    <Text style={styles.diachi}>Bạn bè</Text>
+                    <Text
+                      style={{
+                        left: 20,
+                        top: 30,
+                        fontSize: 15,
+                        color: "red",
+                      }}
+                    >
+                      Xem thêm
                     </Text>
-                  </TouchableOpacity>
+                  </View>
+
+                  <FlatList
+                    style={{
+                      left: 20,
+                      top: 35,
+                      width: "100%",
+                      height: 220,
+                    }}
+                    contentContainerStyle={{
+                      flexDirection: "row",
+                      flexWrap: "wrap-reverse",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      borderRadius: 15,
+                    }}
+                    data={sothich2}
+                    renderItem={() => (
+                      <View
+                        style={{
+                          width: 105,
+
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          borderRadius: 15,
+                          marginBottom: 10,
+                        }}
+                      >
+                        <Image
+                          style={{
+                            width: "100%",
+                            height: 105,
+                            borderRadius: 15,
+                            alignItems: "center",
+                          }}
+                          source={{ uri: avt }}
+                        />
+                        <Text
+                          style={{
+                            position: "absolute",
+                            width: 100,
+                            margin: 5,
+                            fontSize: 12,
+                            color: "white",
+                            bottom: 3,
+                          }}
+                        >
+                          {name}
+                        </Text>
+                      </View>
+                    )}
+                  />
+                </View>
+              </View>
+
+              <View
+                style={{
+                  width: "100%",
+                  top: 133,
+                  marginHorizontal: 20,
+                }}
+              >
+                <Text style={{ fontSize: 19 }}>Bài viết và hoạt động</Text>
+                <View style={{ width: "90%" }}>
+                  <FlatList
+                    contentContainerStyle={{
+                      flexDirection: "column",
+                    }}
+                    data={datas}
+                    renderItem={({ item, index }) => (
+                      <Pressable
+                        key={index}
+                        style={[
+                          {
+                            borderBottomColor: "#ABABAB",
+                            borderLeftColor: "#ABABAB",
+                            borderLeftWidth: 0.5,
+                            borderBottomWidth: 0.5,
+                            borderRightColor: "#ABABAB",
+                            borderTopColor: "#ABABAB",
+                            borderRightWidth: 0.5,
+                            borderTopWidth: 0.5,
+                            borderRadius: 15,
+                            marginTop: 20,
+                          },
+                          item == ""
+                            ? { width: 0, height: 0, display: "none" }
+                            : null,
+                        ]}
+                      >
+                        <View style={styles.info}>
+                          <Image
+                            style={{ width: 40, height: 40, borderRadius: 20 }}
+                            source={{ uri: avt }}
+                          />
+                          <View style={styles.tenmain}>
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                width: "100%",
+                                paddingRight: 5,
+                              }}
+                            >
+                              <View
+                                style={{
+                                  flexDirection: "column",
+                                  justifyContent: "space-between",
+                                  height: 35,
+                                }}
+                              >
+                                <Text
+                                  style={{ fontSize: 16, fontWeight: "500" }}
+                                >
+                                  {name}
+                                </Text>
+                                <Text style={{ fontSize: 14 }}>
+                                  {item.thoigian}
+                                </Text>
+                              </View>
+                            </View>
+                          </View>
+                        </View>
+                        <Text
+                          style={{
+                            fontSize: 20,
+                            color: "black",
+                            paddingHorizontal: 10,
+                            marginTop: 10,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            paddingBottom: 10,
+                            width: "100%",
+                            alignSelf: "center",
+                            textAlign: "center",
+                            fontWeight: "500",
+                          }}
+                        >
+                          {item.noidung}
+                        </Text>
+
+                        {item.image != "" ? (
+                          <Image
+                            style={{
+                              width: 160,
+                              height: 160,
+                              alignItems: "center",
+                              alignSelf: "center",
+                              alignContent: "center",
+                              justifyContent: "center",
+                              borderRadius: 15,
+                              marginBottom: 10,
+                            }}
+                            source={{ uri: item.image }}
+                          />
+                        ) : null}
+                        <Text
+                          style={{
+                            fontSize: 15,
+                            color: "black",
+                            paddingHorizontal: 10,
+                            fontWeight: "300",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            paddingBottom: 10,
+                            width: "100%",
+                            alignSelf: "center",
+                            textAlign: "center",
+                          }}
+                        >
+                          {item.checkin}
+                        </Text>
+                        <View
+                          style={{
+                            width: "100%",
+                            flexDirection: "row",
+                            justifyContent: "space-around",
+                            borderTopWidth: 0.2,
+                            paddingVertical: 10,
+                          }}
+                        >
+                          <TouchableOpacity>
+                            <Text style={{ fontSize: 17 }}>Thích</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity>
+                            <Text style={{ fontSize: 17 }}>Bình luận</Text>
+                          </TouchableOpacity>
+                        </View>
+                      </Pressable>
+                    )}
+                  />
                 </View>
               </View>
             </View>
-          </View>
 
-          <View style={styles.mainnut2}>
-            <View>
+            <View style={styles.mainnut2}>
+              <View>
+                <TouchableOpacity
+                  onPress={() => navigation.goBack()}
+                  style={styles.containerrr}
+                >
+                  <Image
+                    style={styles.containerrrrr}
+                    source={require("../../image/lui.png")}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View>
+                <TouchableOpacity style={{ width: 100, height: 50 }}>
+                  <Image
+                    style={styles.containerrrrr}
+                    source={require("../../image/dots.png")}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={styles.mainnut}>
               <TouchableOpacity
-                onPress={() => navigation.goBack()}
-                style={styles.containerrr}
+                style={styles.nut1}
+                onPress={() => navigation.navigate("Mes", { id })}
               >
                 <Image
-                  style={styles.containerrrrr}
-                  source={require("../../image/lui.png")}
+                  style={{ width: "60%", height: "60%", left: 10, top: 6 }}
+                  source={require("../../image/close-cro.png")}
                 />
               </TouchableOpacity>
-            </View>
-            <View>
-              <TouchableOpacity style={{ width: 100, height: 50 }}>
+              <TouchableOpacity style={styles.nut2} onPress={Love}>
                 <Image
-                  style={styles.containerrrrr}
-                  source={require("../../image/dots.png")}
+                  style={[
+                    { width: "100%", height: "100%", top: 5 },
+                    check != true
+                      ? { width: "100%", height: "100%", top: 5, opacity: 0.5 }
+                      : null,
+                  ]}
+                  source={require("../../image/tim.png")}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.nut1}>
+                <Image
+                  style={{ width: "60%", height: "60%", left: 10, top: 6 }}
+                  source={require("../../image/star.png")}
                 />
               </TouchableOpacity>
             </View>
           </View>
-          <View style={styles.mainnut}>
-            <TouchableOpacity style={styles.nut1}>
-              <Image
-                style={{ width: "60%", height: "60%", left: 10, top: 6 }}
-                source={require("../../image/close-cro.png")}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.nut2} onPress={Love}>
-              <Image
-                style={[{ width: "100%", height: "100%", top: 5 },check!='true'?{width: "100%", height: "100%", top: 5,opacity:0.5}:null]}
-                source={require("../../image/tim.png")}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.nut1}>
-              <Image
-                style={{ width: "60%", height: "60%", left: 10, top: 6 }}
-                source={require("../../image/star.png")}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
-)}
+        )}
       </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  tenmain: {
+    width: "100%",
+    height: 50,
+    left: 10,
+  },
+  info: {
+    width: "100%",
+    height: 50,
+    left: 10,
+    top: 5,
+    paddingRight: 20,
+    flexDirection: "row",
+  },
   containerr: {
     position: "absolute",
 
@@ -695,7 +695,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 50,
-    opacity:0.5
+    opacity: 0.5,
   },
   nut1: {
     width: 50,

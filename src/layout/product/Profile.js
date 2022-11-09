@@ -10,14 +10,14 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
-import firebase from "firebase/compat";
 import { firebaseConfig } from "../../../config";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
 export const Profile = (props) => {
   const { navigation } = props;
   const app = initializeApp(firebaseConfig);
-  const data = [];
+  const dataImage = [];
+  const datas = [];
   let noidung1 = "";
   const [name, setname] = useState();
   const [avt, setavt] = useState();
@@ -26,11 +26,11 @@ export const Profile = (props) => {
   const [ngaysinh, setngaysinh] = useState();
   const [gioitinh, setgioitinh] = useState();
   const [sothich, setsothich] = useState();
+  const [nghenghiep, setnghenghiep] = useState();
   const [isLoading, setisLoading] = useState(false);
   if (!app.length) {
     console.log("Kết nối thành công");
   }
-  const auth = getAuth(app);
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
 
@@ -45,15 +45,38 @@ export const Profile = (props) => {
       const diachipr = childSnapshot.child("diachi").val();
       const ngaysinhpr = childSnapshot.child("ngaysinh").val();
       const gioitinhpr = childSnapshot.child("gioitinh").val();
-
+      const nghenghiep = childSnapshot.child("nghenghiep").val();
       setname(namepr);
       setavt(avtpr);
       setdiachi(diachipr);
       settuoi(tuoipr);
       setgioitinh(gioitinhpr);
       setngaysinh(ngaysinhpr);
+      setnghenghiep(nghenghiep);
       setisLoading(false);
     });
+  });
+  const referencer = ref(db, "post/" + user);
+  onValue(referencer, (snapshot) => {
+    snapshot.forEach((childSnapshot) => {
+      const id = childSnapshot.child("id").exportVal();
+      const name = childSnapshot.child("name").exportVal();
+      const avt = childSnapshot.child("avt").exportVal();
+      const noidung = childSnapshot.child("noidung").exportVal();
+      const trangthai = childSnapshot.child("checkin").exportVal();
+      const thoigian = childSnapshot.child("thoigian").exportVal();
+      const image = childSnapshot.child("image").exportVal();
+      datas.push({
+        id: id,
+        name: name,
+        avt: avt,
+        noidung: noidung,
+        checkin: trangthai,
+        thoigian: thoigian,
+        image: image,
+      });
+    });
+    console.log("User Posst: ", datas);
   });
 
   const reference1 = ref(db, "users/" + user + "/sothich");
@@ -63,7 +86,20 @@ export const Profile = (props) => {
       sothich2.push(key);
     });
   });
+  const referenceImage = ref(db, "post/" + user);
+  onValue(referenceImage, (snapshot) => {
+    snapshot.forEach((ImageSnapshot) => {
+      const id = ImageSnapshot.child("id").exportVal();
+      const image = ImageSnapshot.child("image").exportVal();
 
+      dataImage.push({
+        id: id,
+        image: image,
+      });
+    });
+
+    console.log("User data: ", dataImage);
+  });
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
@@ -96,7 +132,7 @@ export const Profile = (props) => {
                   <Text style={styles.ten}>
                     {name}, {tuoi}
                   </Text>
-                  <Text style={styles.gioitinh}>Full Stack Developer</Text>
+                  <Text style={styles.gioitinh}>{nghenghiep}</Text>
                 </View>
               </View>
               <View style={[styles.mainten, { top: 15 }]}>
@@ -200,11 +236,11 @@ export const Profile = (props) => {
                       justifyContent: "space-between",
                       borderRadius: 15,
                     }}
-                    data={sothich2}
-                    renderItem={() => (
+                    data={dataImage}
+                    renderItem={({ item, index }) => (
                       <View
                         style={{
-                          width: 160,
+                          width: 150,
 
                           flexDirection: "row",
                           alignItems: "center",
@@ -213,15 +249,17 @@ export const Profile = (props) => {
                           marginBottom: 10,
                         }}
                       >
-                        <Image
-                          style={{
-                            width: "100%",
-                            height: 150,
-                            borderRadius: 15,
-                            alignItems: "center",
-                          }}
-                          source={{ uri: avt }}
-                        />
+                        {item.image != "" ? (
+                          <Image
+                            style={{
+                              width: "100%",
+                              height: 150,
+                              borderRadius: 15,
+                              alignItems: "center",
+                            }}
+                            source={{ uri: item.image }}
+                          />
+                        ) : null}
                       </View>
                     )}
                   />
@@ -412,6 +450,143 @@ export const Profile = (props) => {
                   </View>
                 </View>
               </View>
+              <View
+                style={{
+                  width: "100%",
+                  top: 133,
+                  marginHorizontal: 20,
+                }}
+              >
+                <Text style={{ fontSize: 19 }}>Bài viết và hoạt động</Text>
+                <View style={{ width: "90%" }}>
+                  <FlatList
+                    contentContainerStyle={{
+                      flexDirection: "column",
+                    }}
+                    data={datas}
+                    renderItem={({ item, index }) => (
+                      <Pressable
+                        key={index}
+                        style={[
+                          {
+                            borderBottomColor: "#ABABAB",
+                            borderLeftColor: "#ABABAB",
+                            borderLeftWidth: 0.5,
+                            borderBottomWidth: 0.5,
+                            borderRightColor: "#ABABAB",
+                            borderTopColor: "#ABABAB",
+                            borderRightWidth: 0.5,
+                            borderTopWidth: 0.5,
+                            borderRadius: 15,
+                            marginTop: 20,
+                          },
+                          item == ""
+                            ? { width: 0, height: 0, display: "none" }
+                            : null,
+                        ]}
+                      >
+                        <View style={styles.info}>
+                          <Image
+                            style={{ width: 40, height: 40, borderRadius: 20 }}
+                            source={{ uri: avt }}
+                          />
+                          <View style={styles.tenmain}>
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                width: "100%",
+                                paddingRight: 5,
+                              }}
+                            >
+                              <View
+                                style={{
+                                  flexDirection: "column",
+                                  justifyContent: "space-between",
+                                  height: 35,
+                                }}
+                              >
+                                <Text
+                                  style={{ fontSize: 16, fontWeight: "500" }}
+                                >
+                                  {name}
+                                </Text>
+                                <Text style={{ fontSize: 14 }}>
+                                  {item.thoigian}
+                                </Text>
+                              </View>
+                            </View>
+                          </View>
+                        </View>
+                        <Text
+                          style={{
+                            fontSize: 20,
+                            color: "black",
+                            paddingHorizontal: 10,
+                            marginTop: 10,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            paddingBottom: 10,
+                            width: "100%",
+                            alignSelf: "center",
+                            textAlign: "center",
+                            fontWeight: "500",
+                          }}
+                        >
+                          {item.noidung}
+                        </Text>
+
+                        {item.image != "" ? (
+                          <Image
+                            style={{
+                              width: 160,
+                              height: 160,
+                              alignItems: "center",
+                              alignSelf: "center",
+                              alignContent: "center",
+                              justifyContent: "center",
+                              borderRadius: 15,
+                              marginBottom: 10,
+                            }}
+                            source={{ uri: item.image }}
+                          />
+                        ) : null}
+                        <Text
+                          style={{
+                            fontSize: 15,
+                            color: "black",
+                            paddingHorizontal: 10,
+                            fontWeight: "300",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            paddingBottom: 10,
+                            width: "100%",
+                            alignSelf: "center",
+                            textAlign: "center",
+                          }}
+                        >
+                          {item.checkin}
+                        </Text>
+                        <View
+                          style={{
+                            width: "100%",
+                            flexDirection: "row",
+                            justifyContent: "space-around",
+                            borderTopWidth: 0.2,
+                            paddingVertical: 10,
+                          }}
+                        >
+                          <TouchableOpacity>
+                            <Text style={{ fontSize: 17 }}>Thích</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity>
+                            <Text style={{ fontSize: 17 }}>Bình luận</Text>
+                          </TouchableOpacity>
+                        </View>
+                      </Pressable>
+                    )}
+                  />
+                </View>
+              </View>
             </View>
 
             <View style={styles.mainnut2}>
@@ -443,6 +618,19 @@ export const Profile = (props) => {
 };
 
 const styles = StyleSheet.create({
+  tenmain: {
+    width: "100%",
+    height: 50,
+    left: 10,
+  },
+  info: {
+    width: "100%",
+    height: 50,
+    left: 10,
+    top: 5,
+    paddingRight: 20,
+    flexDirection: "row",
+  },
   containerr: {
     position: "absolute",
 
@@ -542,7 +730,7 @@ const styles = StyleSheet.create({
   },
   mailchitiet: {
     width: "100%",
-    height: 4000,
+
     position: "absolute",
     top: 470,
     backgroundColor: "white",

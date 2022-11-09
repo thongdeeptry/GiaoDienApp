@@ -4,6 +4,7 @@
   <uses-permission android:name="android.permission.VIBRATE"/>
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
   <queries>
     <intent>
       <action android:name="android.intent.action.VIEW"/>
@@ -23,6 +24,14 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
+     <service android:name="io.invertase.firebase.messaging.RNFirebaseMessagingService">
+    <intent-filter>
+      <action android:name="com.google.firebase.MESSAGING_EVENT" />
+    </intent-filter>
+  </service>
+  
+  <service android:name="io.invertase.firebase.messaging.RNFirebaseBackgroundMessagingService" />
+  
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false"/>
   </application>
 </manifest>
