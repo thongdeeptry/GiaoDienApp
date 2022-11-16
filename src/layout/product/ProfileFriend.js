@@ -30,6 +30,8 @@ export const ProfileFriend = ({ route, navigation }) => {
   const dataImage = [];
   const datas = [];
   let noidung1 = "";
+  const [nameCr, setnameCr] = useState();
+  const [avtCr, setavtCr] = useState();
   const [name, setname] = useState();
   const [avt, setavt] = useState();
   const [tuoi, settuoi] = useState();
@@ -67,7 +69,15 @@ export const ProfileFriend = ({ route, navigation }) => {
       setnghenghiep(nghenghiep);
       setisLoading(false);
     });
+    const referencecr = ref(db, "users/" + idCurrent);
+    onValue(referencecr, (childSnapshot) => {
+      const namepr = childSnapshot.child("name").val();
+      const avtpr = childSnapshot.child("avt").val();
+      setnameCr(namepr);
+      setavtCr(avtpr);
+    });
   });
+
   const referencer = ref(db, "post/" + user);
   onValue(referencer, (snapshot) => {
     snapshot.forEach((childSnapshot) => {
@@ -112,7 +122,9 @@ export const ProfileFriend = ({ route, navigation }) => {
 
     console.log("User data: ", dataImage);
   });
-
+  const date = new Date();
+  let thang = date.getMonth() + 1;
+  console.log(thang);
   const Love = () => {
     let fl;
     let co;
@@ -148,7 +160,7 @@ export const ProfileFriend = ({ route, navigation }) => {
     });
     console.log("số fl : " + fl);
 
-    if (daco == false) {
+    if (daco != true) {
       const reference = ref(db, "users/" + id);
       update(reference, {
         follow: fl,
@@ -161,7 +173,19 @@ export const ProfileFriend = ({ route, navigation }) => {
       push(reference5, {
         user: idCurrent,
         id: id,
-        noidung: idCurrent + " vừa gửi lượt thích đến bạn",
+        noidung: " vừa gửi lượt thích đến bạn",
+        thoigian:
+          date.getHours() +
+          ":" +
+          date.getMinutes() +
+          " ngày " +
+          date.getDate() +
+          "/" +
+          thang +
+          "/" +
+          date.getFullYear(),
+        avt: avtCr,
+        name: nameCr,
       });
       ToastAndroid.show("Đã gửi lượt thích", ToastAndroid.BOTTOM);
     }

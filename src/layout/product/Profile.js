@@ -11,11 +11,13 @@ import {
 import React, { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../../../config";
+import { getMessaging, getToken } from "firebase/messaging";
 import { getAuth } from "firebase/auth";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
 export const Profile = (props) => {
   const { navigation } = props;
   const app = initializeApp(firebaseConfig);
+  const messaging = getMessaging(app);
   const dataImage = [];
   const datas = [];
   let noidung1 = "";
@@ -33,9 +35,37 @@ export const Profile = (props) => {
   }
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
-
+  function requestPermission() {
+    console.log("Requesting permission...");
+    Notification.requestPermission().then((permission) => {
+      if (permission === "granted") {
+        console.log("Notification permission granted.");
+      }
+    });
+  }
+  requestPermission;
   const sothich2 = [];
   useEffect(() => {
+    getToken(messaging, {
+      vapidKey:
+        "BJOk3-aJz3mJW1mTd3g-ZJ3XwQk0bYzjLnqta-QU4T19-SIRWbFx4u8y2Y0xMemfjhDetjxXznxXLSctNPmXlQ8",
+    })
+      .then((currentToken) => {
+        if (currentToken) {
+          console.log(currentToken + "TOKEN====================?>");
+        } else {
+          // Show permission request UI
+          console.log(
+            "No registration token available. Request permission to generate one."
+          );
+          // ...
+        }
+      })
+      .catch((err) => {
+        console.log("An error occurred while retrieving token. ", err);
+        // ...
+      });
+
     setisLoading(true);
     const reference = ref(db, "users/" + user);
     onValue(reference, (childSnapshot) => {

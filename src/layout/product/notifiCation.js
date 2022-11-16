@@ -28,35 +28,33 @@ export default notifiCation = () => {
   const [users, setusers] = useState();
   const [isLoading, setisLoading] = useState(false);
   const dataTB = [];
-  useEffect(() => {
-    setisLoading(true);
-    const reference = ref(db, "notification/" + user);
-    onValue(reference, (childSnapshot) => {
-      childSnapshot.forEach((snapshot) => {
-        const id = childSnapshot.child("id").val();
-        const noidung = childSnapshot.child("noidung").val();
-        const thoigian = childSnapshot.child("thoigian").val();
-        const users = childSnapshot.child("user").val();
-        const avt = childSnapshot.child("avt").val();
-        const name = childSnapshot.child("name").val();
-        dataTB.push({
-          id: id,
-          noidung: noidung,
-          thoigian: thoigian,
-          user: users,
-          avt: avt,
-          name: name,
-        });
+
+  const reference = ref(db, "notification/" + user);
+  onValue(reference, (childSnapshot) => {
+    childSnapshot.forEach((snapshot) => {
+      const id = snapshot.child("id").val();
+      const noidung = snapshot.child("noidung").val();
+      const thoigian = snapshot.child("thoigian").val();
+      const users = snapshot.child("user").val();
+      const avt = snapshot.child("avt").val();
+      const name = snapshot.child("name").val();
+      dataTB.push({
+        id: id,
+        noidung: noidung,
+        thoigian: thoigian,
+        user: users,
+        avt: avt,
+        name: name,
       });
     });
-    setisLoading(false);
-    console.log(dataTB);
   });
+  console.log(dataTB);
   return (
     <View
       style={{
         width: "100%",
         flexDirection: "column",
+        backgroundColor: "white",
       }}
     >
       <View
@@ -87,6 +85,8 @@ export default notifiCation = () => {
               borderRightWidth: 0.5,
               borderTopWidth: 0.5,
               borderRadius: 15,
+              paddingVertical: 5,
+              marginTop: 10,
             }}
           >
             <View style={styles.info}>
@@ -107,10 +107,17 @@ export default notifiCation = () => {
                       flexDirection: "column",
                       justifyContent: "space-between",
                       height: 35,
+                      width: "100%",
                     }}
                   >
-                    <Text style={{ fontSize: 16, fontWeight: "500" }}>
-                      {item.name} {item.noidung}ALo1234
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        fontWeight: "500",
+                        width: "90%",
+                      }}
+                    >
+                      {item.name} {item.noidung}
                     </Text>
                     <Text style={{ fontSize: 14 }}>{item.thoigian}</Text>
                   </View>
@@ -128,6 +135,8 @@ const styles = StyleSheet.create({
   dataMap: {
     width: "100%",
     height: "100%",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
   },
   tenmain: {
     width: "100%",
@@ -140,6 +149,5 @@ const styles = StyleSheet.create({
     left: 10,
     top: 5,
     flexDirection: "row",
-    backgroundColor: "red",
   },
 });
