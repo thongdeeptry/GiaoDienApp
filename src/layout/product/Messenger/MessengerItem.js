@@ -72,11 +72,13 @@ function MessengerItem(props) {
           <Text
             style={{
               color: "black",
-              fontSize: fontSizes.h6,
+              fontSize: fontSizes.h5,
               paddingVertical: 5,
               paddingHorizontal: 7,
-              backgroundColor: colors.messenger,
+              backgroundColor: colors.messengertin,
               borderRadius: 10,
+              // borderTopLeftRadius: 10,
+              // borderTopRightRadius: 10,
             }}
           >
             {messenger}
@@ -111,8 +113,8 @@ function MessengerItem(props) {
         <View>
           <Text
             style={{
-              color: "black",
-              fontSize: fontSizes.h6,
+              color: "white",
+              fontSize: fontSizes.h5,
               paddingVertical: 5,
               paddingHorizontal: 7,
               backgroundColor: colors.messenger,

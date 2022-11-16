@@ -8,8 +8,6 @@ import PagerView from 'react-native-pager-view';
 
 export const Index = (props) => {
     const {navigation} = props;
-    
-  
   return (
     <View style={{ flex: 1 }}>
         
