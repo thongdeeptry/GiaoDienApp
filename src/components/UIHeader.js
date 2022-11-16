@@ -17,6 +17,7 @@ function UIHeader(props) {
     } = props
     return <View style={{
         height: 55,
+        marginTop:40,
         backgroundColor: colors.primary,
         flexDirection: 'row',
         justifyContent: 'space-between',

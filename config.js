@@ -1,4 +1,6 @@
 import { initializeApp } from "firebase/app";
+import { getStorage } from "firebase/storage";
+import { getFirestore } from "firebase/firestore";
 import {
   getAuth,
   onAuthStateChanged,
@@ -42,4 +44,7 @@ export {
   get,
   onValue, //reload when online DB changed
   signInWithEmailAndPassword,
+  
 };
+export const storage = getStorage();
+export const db = getFirestore()

@@ -14,63 +14,107 @@ import { UIHeader } from "../../../components";
 import MessengerItem from "./MessengerItem";
 import { TextInput } from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { v4 as uuid } from "uuid";
+import 'react-native-get-random-values';
+import {
+  arrayUnion,
+  doc, 
+  getDoc,
+  serverTimestamp,
+  Timestamp,
+  updateDoc,
+  onSnapshot,
+  addDoc,
+} from "firebase/firestore";
 import {
   auth,
   onAuthStateChanged,
   firebaseDatabaseRef,
   firebaseSet,
   firebaseDatabase,
+  db,
+  storage,
 } from "../../../../config";
-
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { async } from "@firebase/util";
 function Messenger(props) {
+  const user = auth.currentUser.uid;
+  console.log("UID - " + user);
   const [typedText, setTypedText] = useState("");
   const [chatHistory, setChatHistory] = useState([
-    {
-      url: "https://randomuser.me/api/portraits/men/70.jpg",
-      showUrl: true,
-      isSender: true,
-      messenger: "Hello",
-      timestamp: 1641654238000,
-    },
-    {
-      url: "https://randomuser.me/api/portraits/men/70.jpg",
-      showUrl: false,
-      isSender: true,
-      messenger: "How are you ?",
-      timestamp: 1641654298000,
-    },
-    {
-      url: "https://randomuser.me/api/portraits/men/70.jpg",
-      showUrl: false,
-      isSender: true,
-      messenger:
-        "How about your work ?. nujdhsfuhduf dhuhu uhuh uhfudhufduhu hufhfd",
-      timestamp: 1641654538000,
-    },
-    {
-      url: "https://randomuser.me/api/portraits/men/50.jpg",
-      showUrl: true,
-      isSender: false,
-      messenger: "Yes",
-      timestamp: 1641654598000,
-    },
-    {
-      url: "https://randomuser.me/api/portraits/men/50.jpg",
-      showUrl: false,
-      isSender: false,
-      messenger: "I am fine",
-      timestamp: 1641654598000,
-    },
-    {
-      url: "https://randomuser.me/api/portraits/men/70.jpg",
-      showUrl: true,
-      isSender: true,
-      messenger: "Let's go out",
-      timestamp: 1641654778000,
-    },
   ]);
   const { url, name, userId } = props.route.params.user;
   const { navigate, goBack } = props.navigation;
+  const combinedId =
+    user > userId
+        ? user + userId
+        : userId+ user;
+  useEffect(() => {
+    const unSub = onSnapshot(doc(db, "chats", combinedId), (doc) => {
+      doc.exists() && setChatHistory(doc.data().messages);
+    });
+
+    return () => {
+      unSub();
+    };
+  }, [combinedId]);
+  console.log(chatHistory)
+  const sendMess= async()=>{
+    if (typedText.trim().length == 0) {
+      return;
+    }
+    let myFriendUserId = userId;
+    Keyboard.dismiss();
+    const docRef = doc(db, "chats", combinedId);
+    const docSnap = await getDoc(docRef);
+      if(docSnap.exists){
+        updateDoc(doc(db, `chats/${combinedId}`), {
+          messages: arrayUnion({
+            id: uuid(),
+            showUrl: true,
+            messenger:typedText,
+            text:typedText,
+            senderId: user,
+            date: Timestamp.now(),
+            timestamp: new Date().getTime(),
+            url: url,
+            isSender:true
+          }),
+          
+        });
+        
+      }else{
+        updateDoc(doc(db, `chats/${combinedId}`), {
+          messages: arrayUnion({
+            id: uuid(),
+            showUrl: true,
+            messenger:typedText,
+            text:typedText,
+            senderId: user,
+            date: Timestamp.now(),
+            timestamp: new Date().getTime(),
+            url: url,
+            isSender:true
+          }),
+          
+        });
+      }
+    
+    updateDoc(doc(db, "userChats", user), {
+      [`${combinedId}` + ".lastMessage"]: {
+        text:typedText,
+      },
+      [`${combinedId}`+ ".date"]: serverTimestamp(),
+    });
+
+    updateDoc(doc(db, "userChats", myFriendUserId), {
+      [`${combinedId}` + ".lastMessage"]: {
+        text:typedText,
+      },
+      [`${combinedId}` + ".date"]: serverTimestamp(),
+    });
+    setTypedText("")
+  }
   return (
     <View
       style={{
@@ -109,12 +153,22 @@ function Messenger(props) {
         style={{
           height: 50,
           position: "absolute",
-          bottom: 100,
-          left: 0,
-          right: 0,
+          bottom: 70,
+          left: 10,
+          right: 10,
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
+          backgroundColor: "white",
+                          borderBottomColor: "#ABABAB",
+                          borderLeftColor: "#ABABAB",
+                          borderLeftWidth: 1,
+                          borderBottomWidth: 1,
+                          borderRightColor: "#ABABAB",
+                          borderTopColor: "#ABABAB",
+                          borderRightWidth: 1,
+                          borderTopWidth: 1,
+                          borderRadius: 8,
         }}
       >
         <TextInput
@@ -125,40 +179,13 @@ function Messenger(props) {
             color: "black",
             paddingStart: 10,
           }}
-          placeholder="Enter your message here"
+          placeholder="Nhập nội dung tin nhắn"
           value={typedText}
           placeholderTextColor={colors.placeholder}
         />
         <TouchableOpacity
-          onPress={async () => {
-            if (typedText.trim().length == 0) {
-              return;
-            }
-            debugger;
-            let stringUser = await AsyncStorage.getItem("user");
-            let myUserId = "1";
-            let myFriendUserId = "2";
-            //save to Firebase DB
-            let newMessengerObject = {
-              //fake
-              url: "https://randomuser.me/api/portraits/men/50.jpg",
-              showUrl: false,
-              messenger: typedText,
-              timestamp: new Date().getTime(),
-            };
-            Keyboard.dismiss();
-            firebaseSet(
-              firebaseDatabaseRef(
-                firebaseDatabase,
-                `chats/${myUserId}-${myFriendUserId}`
-              ).key,
-              newMessengerObject
-            ).then(() => {
-              setTypedText("");
-            });
-
-            //"id1-id2": {messenger object}
-          }}
+          onPress={sendMess}
+            
         >
           <Icon
             style={{

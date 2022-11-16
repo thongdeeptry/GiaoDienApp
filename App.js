@@ -16,6 +16,7 @@ import { Camxuc } from "./src/layout/product/Camxuc";
 import { initializeApp } from "firebase/app";
 import firebase from "firebase/compat";
 import { firebaseConfig } from "./config";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 export default function App() {
   const app = initializeApp(firebaseConfig);
   if (!app.length) {

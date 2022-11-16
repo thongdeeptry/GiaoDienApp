@@ -11,10 +11,40 @@ import {
 } from "react-native";
 import { images, colors, icons, fontSizes } from "../../../constants";
 import Icon from "react-native-vector-icons/FontAwesome5";
-
+import {
+  onAuthStateChanged,
+  firebaseDatabaseRef,
+  firebaseSet,
+  firebaseDatabase,
+  auth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  child,
+  get,
+  db,
+  onValue,
+} from "../../../../config";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  setDoc,
+  doc,
+  updateDoc,
+  serverTimestamp,
+  getDoc,
+  onSnapshot,
+} from "firebase/firestore";
 function ChatItem(props) {
+  const user = auth.currentUser.uid;
+  console.log("UID - " + user);
   let { name, url, message, numberOfUnreadMessages, userId } = props.user; //destructuring an object
   const { onPress } = props;
+  const combinedId =
+    user > userId
+        ? user + userId
+        : userId + user;
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -94,7 +124,7 @@ function ChatItem(props) {
             marginRight: 10,
           }}
         >
-          4 minutes ago
+          4 phút trước
         </Text>
       </View>
     </TouchableOpacity>

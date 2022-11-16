@@ -13,28 +13,45 @@ import { UIHeader } from "../../../components";
 import ChatItem from "./ChatItem";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
-  onAuthStateChanged,
   firebaseDatabaseRef,
-  firebaseSet,
   firebaseDatabase,
   auth,
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-  child,
-  get,
+  db,
   onValue,
 } from "../../../../config";
+import {
+  setDoc,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 function Chat(props) {
+  const user = auth.currentUser.uid;
+  console.log("UID - " + user);
   const [users, setUsers] = useState([
-    // {
-    //     url: 'https://randomuser.me/api/portraits/men/70.jpg',
-    //     name: 'Amanda Weler',
-    //     message: 'Hello, how are you ?',
-    //     numberOfUnreadMessages: 3
-    // },
   ]);
   const { navigation, route } = props;
   const { navigate, goBack } = navigation;
+  const handleSelect = async (ite) => {
+    //check whether the group(chats in firestore) exists, if not create
+    const combinedId =
+    user > ite.userId
+        ? user + ite.userId
+        : ite.userId+ user;
+        try {
+          const res = await getDoc(doc(db, "chats", combinedId));
+          console.log(res)
+          if (!res.exists()) {
+            console.log(combinedId)
+            //create a chat in chats collection
+            await setDoc(doc(db, "chats", combinedId), { messages: [] });
+            await setDoc(doc(db, "userChats", user), { });
+            await setDoc(doc(db, "userChats", ite.userId), { });
+          }
+        }catch{
+        }
+    
+    navigate("Messenger", { user: ite });
+  }
   useEffect(() => {
     onValue(
       firebaseDatabaseRef(firebaseDatabase, "users"),
@@ -52,12 +69,13 @@ function Chat(props) {
                 let eachObject = snapshotObject[eachKey];
                 return {
                   //default profile url
-                  url: "https://www.w3schools.com/howto/img_avatar.png",
-                  name: eachObject.email,
+                  url: eachObject.avt,
+                  name: eachObject.name,
                   email: eachObject.email,
                   accessToken: eachObject.accessToken,
                   numberOfUnreadMessages: 0,
                   userId: eachKey,
+                  message: eachObject.nghenghiep,
                 };
               })
           );
@@ -75,7 +93,7 @@ function Chat(props) {
       }}
     >
       <UIHeader
-        title={"Notifications"}
+        title={"Tin Nhắn"}
         leftIconName={"arrow-left"}
         rightIconName={"search"}
         onPressLeftIcon={() => {
@@ -100,7 +118,7 @@ function Chat(props) {
             marginStart: 10,
           }}
         >
-          6 unread messages
+          6 tin nhắn mới
         </Text>
         <Icon
           name={"search"}
@@ -118,8 +136,7 @@ function Chat(props) {
         renderItem={({ item }) => (
           <ChatItem
             onPress={() => {
-              //alert(`You press item's name: ${item.name}`)
-              navigate("Messenger", { user: item });
+              handleSelect(item)
             }}
             user={item}
             key={item.url}
