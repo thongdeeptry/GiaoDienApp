@@ -600,7 +600,7 @@ export const ProfileFriend = ({ route, navigation }) => {
             <View style={styles.mainnut}>
               <TouchableOpacity
                 style={styles.nut1}
-                onPress={() => navigation.navigate("Mes", { id })}
+                onPress={() => navigation.navigate("Chat", { id })}
               >
                 <Image
                   style={{ width: "60%", height: "60%", left: 10, top: 6 }}

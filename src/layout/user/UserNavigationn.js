@@ -17,7 +17,7 @@ import { Profile } from '../product/Profile';
 import { PostStatus } from '../product/PostStatus';
 export default UserNavigationn = () => {
     return (
-        <Stack.Navigator screenOptions={({route}) => ({headerShown: false})}>
+        <Stack.Navigator screenOptions={({route}) => ({headerShown: false,})}>
             <Stack.Screen name="Index" component={Index} />
             <Stack.Screen name="Landing4" component={Landing4} />
             <Stack.Screen name="RegisterPhone" component={RegisterPhone} />
