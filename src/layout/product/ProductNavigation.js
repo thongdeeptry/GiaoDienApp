@@ -6,209 +6,179 @@ import {
   TouchableOpacity,
   Animated,
 } from "react-native";
-import {createMaterialTopTabNavigator,createAppContainer} from '@react-navigation/material-top-tabs';  
-import PrNavigation from "./PrNavigation";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
+const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 import Home from "../product/Home/Main";
 import { Profile } from "../product/Profile";
 import { PostStatus } from "./PostStatus";
 import { Camxuc } from "./Camxuc";
 import { ProfileFriend } from "./ProfileFriend";
-import Card from "./Home/Card";
-import { Mes } from "../product/Mes";
 import Messenger from "./Messenger/Messenger";
 import Chat from "./Chat/Chat";
 import notifiCation from "./notifiCation";
-const ProductNavigation = createMaterialTopTabNavigator(  
-  {  
-      Home: Home,  
-      Profile: Profile,  
-      Chat: Chat,  
-  },  
-  {  
-      tabBarOptions: {  
-          activeTintColor: 'white',  
-          showIcon: true,  
-          showLabel:false,  
-          style: {  
-              backgroundColor:'red'  
-          }  
-      },  
-  }  
-)  
-export default createAppContainer(ProductNavigation);  
-// export default ProductNavigation = (props) => {
-//   const hide = props.routeName != "PostStatus";
-//   // const CustomBar = ({ children, onPress }) => (
-//   //   <TouchableOpacity
-//   //     style={{
-//   //       top: -30,
-//   //       justifyContent: "center",
-//   //       alignItems: "center",
-//   //     }}
-//   //     onPress={onPress}
-//   //   >
-//   //     <View
-//   //       style={{
-//   //         width: 60,
-//   //         height: 60,
-//   //         borderRadius: 35,
-//   //         backgroundColor: "#E94057",
-//   //       }}
-//   //     >
-//   //       {children}
-//   //     </View>
-//   //   </TouchableOpacity>
-//   // );
+function HomeStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{ tabBarShowLabel: false, headerShown: false }}
+    >
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="PostStatus" component={PostStatus} />
+      <Stack.Screen name="Camxuc" component={Camxuc} />
+      <Stack.Screen name="Chat" component={Chat} />
+      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="notifiCation" component={notifiCation} />
+      <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
+      <Stack.Screen name="Messenger" component={Messenger} />
+    </Stack.Navigator>
+  );
+}
+function ProfileStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{ tabBarShowLabel: false, headerShown: false }}
+    >
+      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="PostStatus" component={PostStatus} />
+      <Stack.Screen name="Camxuc" component={Camxuc} />
+      <Stack.Screen name="Chat" component={Chat} />
+      <Stack.Screen name="notifiCation" component={notifiCation} />
+      <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
+      <Stack.Screen name="Messenger" component={Messenger} />
+    </Stack.Navigator>
+  );
+}
+function ChatStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{ tabBarShowLabel: false, headerShown: false }}
+    >
+      <Stack.Screen name="Chat" component={Chat} />
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="PostStatus" component={PostStatus} />
+      <Stack.Screen name="Camxuc" component={Camxuc} />
 
-//   return (
-//     <View style={{ width: "100%", height: "100%" }}>
-//       <Tab.Navigator
-//         screenOptions={({ route }) => ({
-//           tabBarStyle: {
-//             position: "absolute",
-//             backgroundColor: "#FFFFFF",
-//             borderTopLeftRadius: 15,
-//             borderTopRightRadius: 15,
-//             height: 60,
-//             alignItems: "center",
-//           },
-//           tabBarIcon: ({ focused }) => {
-//             if (route.name == "Home") {
-//               return (
-//                 <Image
-//                   style={{
-//                     resizeMode: "cover",
-//                     tintColor: focused ? "#E94057" : "#748c94",
-//                   }}
-//                   source={require("../../image/home.png")}
-//                 />
-//               );
-//             }
-//             if (route.name == "Home1") {
-//               return (
-//                 <Image
-//                   style={{
-//                     resizeMode: "cover",
-//                     tintColor: focused ? "#E94057" : "#748c94",
-//                   }}
-//                   source={require("../../image/home.png")}
-//                 />
-//               );
-//             }
-//             if (route.name == "Messenger") {
-//               return (
-//                 <Image
-//                   style={{
-//                     resizeMode: "cover",
-//                     tintColor: focused ? "#E94057" : "#748c94",
-//                   }}
-//                   source={require("../../image/chat.png")}
-//                 />
-//               );
-//             }
-//             if (route.name == "Chat") {
-//               return (
-//                 <Image
-//                   style={{
-//                     resizeMode: "cover",
-//                     tintColor: focused ? "#E94057" : "#748c94",
-//                   }}
-//                   source={require("../../image/chat.png")}
-//                 />
-//               );
-//             }
-//             if (route.name == "Detail") {
-//               return (
-//                 <Image
-//                   style={{
-//                     resizeMode: "cover",
-//                     tintColor: focused ? "#E94057" : "#748c94",
-//                   }}
-//                   source={require("../../image/home.png")}
-//                 />
-//               );
-//             }
-//             if (route.name == "Profile") {
-//               return (
-//                 <Image
-//                   style={{
-//                     resizeMode: "cover",
-//                     tintColor: focused ? "#E94057" : "#748c94",
-//                   }}
-//                   source={require("../../image/home.png")}
-//                 />
-//               );
-//             }
-//             if (route.name == "notifiCation") {
-//               return (
-//                 <Image
-//                   style={{
-//                     resizeMode: "cover",
-//                     tintColor: focused ? "#E94057" : "#748c94",
-//                   }}
-//                   source={require("../../image/cam.png")}
-//                 />
-//               );
-//             }
-//           },
-//           tabBarShowLabel: false,
+      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="notifiCation" component={notifiCation} />
+      <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
+      <Stack.Screen name="Messenger" component={Messenger} />
+    </Stack.Navigator>
+  );
+}
+function NotiStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{ tabBarShowLabel: false, headerShown: false }}
+    >
+      <Stack.Screen name="notifiCation" component={notifiCation} />
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="PostStatus" component={PostStatus} />
+      <Stack.Screen name="Camxuc" component={Camxuc} />
+      <Stack.Screen name="Chat" component={Chat} />
+      <Stack.Screen name="Profile" component={Profile} />
 
-//           headerShown: false,
-//         })}
-//       >
-//         <Tab.Screen name="Home" component={Home} />
-//         <Tab.Screen name="Home1" component={Home} />
-//         <Tab.Screen
-//           name="Messenger"
-//           component={Messenger}
+      <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
+      <Stack.Screen name="Messenger" component={Messenger} />
+    </Stack.Navigator>
+  );
+}
+export default ProductNavigation = (props) => {
+  const hide = props.routeName != "PostStatus";
+  // const CustomBar = ({ children, onPress }) => (
+  //   <TouchableOpacity
+  //     style={{
+  //       top: -30,
+  //       justifyContent: "center",
+  //       alignItems: "center",
+  //     }}
+  //     onPress={onPress}
+  //   >
+  //     <View
+  //       style={{
+  //         width: 60,
+  //         height: 60,
+  //         borderRadius: 35,
+  //         backgroundColor: "#E94057",
+  //       }}
+  //     >
+  //       {children}
+  //     </View>
+  //   </TouchableOpacity>
+  // );
+  return (
+    <View style={{ width: "100%", height: "100%" }}>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarStyle: {
+            position: "absolute",
+            backgroundColor: "#FFFFFF",
+            height: 50,
+            alignItems: "center",
+          },
+          tabBarIcon: ({ focused }) => {
+            if (route.name == "Home") {
+              return (
+                <Image
+                  style={{
+                    resizeMode: "cover",
 
-//           // options={{
-//           //     tabBarIcon:({focused})=>(
-//           //         <Image style={{resizeMode:'cover',tintColor:'#FFFFFF',width:40,height:40}} source={require('../../image/chat.png')}/>
+                    width: 30,
+                    height: 30,
+                  }}
+                  source={require("../../image/home.png")}
+                />
+              );
+            }
+            if (route.name == "Chat") {
+              return (
+                <Image
+                  style={{
+                    resizeMode: "cover",
 
-//           //         ),
-//           //         tabBarButton:(props)=>(
-//           //             <CustomBar {... props}/>
-//           //         )
-//           // }} />
-//         />
-//         <Tab.Screen name="Chat" component={Chat} />
-//         <Tab.Screen name="Detail" component={Home} />
-//         <Tab.Screen name="Profile" component={Profile} />
-//         <Tab.Screen name="notifiCation" component={notifiCation} />
-//         <Stack.Screen
-//           name="PostStatus"
-//           component={PostStatus}
-//           options={{
-//             headerShown: false,
-//             tabBarStyle: { display: "none" },
-//           }}
-//         />
-//         <Stack.Screen
-//           name="Camxuc"
-//           component={Camxuc}
-//           options={{
-//             headerShown: false,
-//             tabBarStyle: { display: "none" },
-//           }}
-//         />
-//         <Stack.Screen
-//           name="ProfileFriend"
-//           component={ProfileFriend}
-//           options={{
-//             headerShown: false,
-//             tabBarStyle: { display: "none" },
-//           }}
-//         />
-//         <Stack.Screen
-//           name="Mes"
-//           component={Mes}
-//           options={{
-//             headerShown: false,
-//             tabBarStyle: { display: "none" },
-//           }}
-//         />
-//       </Tab.Navigator>
-//     </View>
-//   );
-// };
+                    width: 30,
+                    height: 30,
+                  }}
+                  source={require("../../image/chat.png")}
+                />
+              );
+            }
+            if (route.name == "Profile") {
+              return (
+                <Image
+                  style={{
+                    resizeMode: "cover",
+
+                    width: 30,
+                    height: 30,
+                  }}
+                  source={require("../../image/woman.png")}
+                />
+              );
+            }
+            if (route.name == "notifiCation") {
+              return (
+                <Image
+                  style={{
+                    resizeMode: "cover",
+
+                    width: 30,
+                    height: 30,
+                  }}
+                  source={require("../../image/notify.png")}
+                />
+              );
+            }
+          },
+          headerShown: false,
+        })}
+      >
+        <Tab.Screen name="Home" component={HomeStack} />
+        <Tab.Screen name="Chat" component={ChatStack} />
+        <Tab.Screen name="Profile" component={ProfileStack} />
+        <Tab.Screen name="notifiCation" component={NotiStack} />
+      </Tab.Navigator>
+    </View>
+  );
+};

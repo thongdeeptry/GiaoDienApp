@@ -11,13 +11,11 @@ import {
 import React, { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../../../config";
-import { getMessaging, getToken } from "firebase/messaging";
 import { getAuth } from "firebase/auth";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
 export const Profile = (props) => {
   const { navigation } = props;
   const app = initializeApp(firebaseConfig);
-  const messaging = getMessaging(app);
   const dataImage = [];
   const datas = [];
   let noidung1 = "";
@@ -35,36 +33,36 @@ export const Profile = (props) => {
   }
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
-  function requestPermission() {
-    console.log("Requesting permission...");
-    Notification.requestPermission().then((permission) => {
-      if (permission === "granted") {
-        console.log("Notification permission granted.");
-      }
-    });
-  }
-  requestPermission;
+  // function requestPermission() {
+  //   console.log("Requesting permission...");
+  //   Notification.requestPermission().then((permission) => {
+  //     if (permission === "granted") {
+  //       console.log("Notification permission granted.");
+  //     }
+  //   });
+  // }
+  // requestPermission;
   const sothich2 = [];
   useEffect(() => {
-    getToken(messaging, {
-      vapidKey:
-        "BJOk3-aJz3mJW1mTd3g-ZJ3XwQk0bYzjLnqta-QU4T19-SIRWbFx4u8y2Y0xMemfjhDetjxXznxXLSctNPmXlQ8",
-    })
-      .then((currentToken) => {
-        if (currentToken) {
-          console.log(currentToken + "TOKEN====================?>");
-        } else {
-          // Show permission request UI
-          console.log(
-            "No registration token available. Request permission to generate one."
-          );
-          // ...
-        }
-      })
-      .catch((err) => {
-        console.log("An error occurred while retrieving token. ", err);
-        // ...
-      });
+    // getToken(messaging, {
+    //   vapidKey:
+    //     "BJOk3-aJz3mJW1mTd3g-ZJ3XwQk0bYzjLnqta-QU4T19-SIRWbFx4u8y2Y0xMemfjhDetjxXznxXLSctNPmXlQ8",
+    // })
+    //   .then((currentToken) => {
+    //     if (currentToken) {
+    //       console.log(currentToken + "TOKEN====================?>");
+    //     } else {
+    //       // Show permission request UI
+    //       console.log(
+    //         "No registration token available. Request permission to generate one."
+    //       );
+    //       // ...
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log("An error occurred while retrieving token. ", err);
+    //     // ...
+    //   });
 
     setisLoading(true);
     const reference = ref(db, "users/" + user);
@@ -130,6 +128,12 @@ export const Profile = (props) => {
 
     console.log("User data: ", dataImage);
   });
+  const AddLike = () => {
+    const reference13 = ref(db, "tuongtac/" + user + "/" + id);
+    set(reference13, {
+      like: true,
+    });
+  };
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
@@ -270,7 +274,7 @@ export const Profile = (props) => {
                     renderItem={({ item, index }) => (
                       <View
                         style={{
-                          width: 150,
+                          width: 165,
 
                           flexDirection: "row",
                           alignItems: "center",
@@ -549,7 +553,7 @@ export const Profile = (props) => {
                         </View>
                         <Text
                           style={{
-                            fontSize: 20,
+                            fontSize: 18,
                             color: "black",
                             paddingHorizontal: 10,
                             marginTop: 10,
@@ -558,8 +562,8 @@ export const Profile = (props) => {
                             paddingBottom: 10,
                             width: "100%",
                             alignSelf: "center",
-                            textAlign: "center",
-                            fontWeight: "500",
+                            //textAlign: "center",
+                            fontWeight: "400",
                           }}
                         >
                           {item.noidung}
@@ -568,7 +572,7 @@ export const Profile = (props) => {
                         {item.image != "" ? (
                           <Image
                             style={{
-                              width: 160,
+                              width: "90%",
                               height: 160,
                               alignItems: "center",
                               alignSelf: "center",
@@ -591,7 +595,7 @@ export const Profile = (props) => {
                             paddingBottom: 10,
                             width: "100%",
                             alignSelf: "center",
-                            textAlign: "center",
+                            //textAlign: "center",
                           }}
                         >
                           {item.checkin}
@@ -605,7 +609,7 @@ export const Profile = (props) => {
                             paddingVertical: 10,
                           }}
                         >
-                          <TouchableOpacity>
+                          <TouchableOpacity onPress={AddLike}>
                             <Text style={{ fontSize: 17 }}>Thích</Text>
                           </TouchableOpacity>
                           <TouchableOpacity>

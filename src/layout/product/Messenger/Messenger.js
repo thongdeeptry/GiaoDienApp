@@ -15,10 +15,10 @@ import MessengerItem from "./MessengerItem";
 import { TextInput } from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { v4 as uuid } from "uuid";
-import 'react-native-get-random-values';
+import "react-native-get-random-values";
 import {
   arrayUnion,
-  doc, 
+  doc,
   getDoc,
   serverTimestamp,
   Timestamp,
@@ -41,14 +41,10 @@ function Messenger(props) {
   const user = auth.currentUser.uid;
   console.log("UID - " + user);
   const [typedText, setTypedText] = useState("");
-  const [chatHistory, setChatHistory] = useState([
-  ]);
+  const [chatHistory, setChatHistory] = useState([]);
   const { url, name, userId } = props.route.params.user;
   const { navigate, goBack } = props.navigation;
-  const combinedId =
-    user > userId
-        ? user + userId
-        : userId+ user;
+  const combinedId = user > userId ? user + userId : userId + user;
   useEffect(() => {
     const unSub = onSnapshot(doc(db, "chats", combinedId), (doc) => {
       doc.exists() && setChatHistory(doc.data().messages);
@@ -58,8 +54,8 @@ function Messenger(props) {
       unSub();
     };
   }, [combinedId]);
-  console.log(chatHistory)
-  const sendMess= async()=>{
+  console.log(chatHistory);
+  const sendMess = async () => {
     if (typedText.trim().length == 0) {
       return;
     }
@@ -67,59 +63,57 @@ function Messenger(props) {
     Keyboard.dismiss();
     const docRef = doc(db, "chats", combinedId);
     const docSnap = await getDoc(docRef);
-      if(docSnap.exists){
-        updateDoc(doc(db, `chats/${combinedId}`), {
-          messages: arrayUnion({
-            id: uuid(),
-            showUrl: true,
-            messenger:typedText,
-            text:typedText,
-            senderId: user,
-            date: Timestamp.now(),
-            timestamp: new Date().getTime(),
-            url: url,
-            isSender:true
-          }),
-          
-        });
-        
-      }else{
-        updateDoc(doc(db, `chats/${combinedId}`), {
-          messages: arrayUnion({
-            id: uuid(),
-            showUrl: true,
-            messenger:typedText,
-            text:typedText,
-            senderId: user,
-            date: Timestamp.now(),
-            timestamp: new Date().getTime(),
-            url: url,
-            isSender:true
-          }),
-          
-        });
-      }
-    
+    if (docSnap.exists) {
+      updateDoc(doc(db, `chats/${combinedId}`), {
+        messages: arrayUnion({
+          id: uuid(),
+          showUrl: true,
+          messenger: typedText,
+          text: typedText,
+          senderId: user,
+          date: Timestamp.now(),
+          timestamp: new Date().getTime(),
+          url: url,
+          isSender: true,
+        }),
+      });
+    } else {
+      updateDoc(doc(db, `chats/${combinedId}`), {
+        messages: arrayUnion({
+          id: uuid(),
+          showUrl: true,
+          messenger: typedText,
+          text: typedText,
+          senderId: user,
+          date: Timestamp.now(),
+          timestamp: new Date().getTime(),
+          url: url,
+          isSender: true,
+        }),
+      });
+    }
+
     updateDoc(doc(db, "userChats", user), {
       [`${combinedId}` + ".lastMessage"]: {
-        text:typedText,
+        text: typedText,
       },
-      [`${combinedId}`+ ".date"]: serverTimestamp(),
+      [`${combinedId}` + ".date"]: serverTimestamp(),
     });
 
     updateDoc(doc(db, "userChats", myFriendUserId), {
       [`${combinedId}` + ".lastMessage"]: {
-        text:typedText,
+        text: typedText,
       },
       [`${combinedId}` + ".date"]: serverTimestamp(),
     });
-    setTypedText("")
-  }
+    setTypedText("");
+  };
   return (
     <View
       style={{
         flexDirection: "column",
         flex: 1,
+        paddingBottom: 100,
       }}
     >
       <UIHeader
@@ -137,6 +131,7 @@ function Messenger(props) {
       <FlatList
         style={{
           flex: 1,
+          marginBottom: 20,
         }}
         data={chatHistory}
         renderItem={({ item }) => (
@@ -153,22 +148,22 @@ function Messenger(props) {
         style={{
           height: 50,
           position: "absolute",
-          bottom: 70,
+          bottom: 60,
           left: 10,
           right: 10,
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
           backgroundColor: "white",
-                          borderBottomColor: "#ABABAB",
-                          borderLeftColor: "#ABABAB",
-                          borderLeftWidth: 1,
-                          borderBottomWidth: 1,
-                          borderRightColor: "#ABABAB",
-                          borderTopColor: "#ABABAB",
-                          borderRightWidth: 1,
-                          borderTopWidth: 1,
-                          borderRadius: 8,
+          borderBottomColor: "#ABABAB",
+          borderLeftColor: "#ABABAB",
+          borderLeftWidth: 1,
+          borderBottomWidth: 1,
+          borderRightColor: "#ABABAB",
+          borderTopColor: "#ABABAB",
+          borderRightWidth: 1,
+          borderTopWidth: 1,
+          borderRadius: 8,
         }}
       >
         <TextInput
@@ -183,10 +178,7 @@ function Messenger(props) {
           value={typedText}
           placeholderTextColor={colors.placeholder}
         />
-        <TouchableOpacity
-          onPress={sendMess}
-            
-        >
+        <TouchableOpacity onPress={sendMess}>
           <Icon
             style={{
               padding: 10,
