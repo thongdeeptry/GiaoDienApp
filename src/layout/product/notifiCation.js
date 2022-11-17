@@ -112,14 +112,14 @@ export default notifiCation = () => {
                   >
                     <Text
                       style={{
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: "500",
-                        width: "90%",
+                        width: "85%",
                       }}
                     >
                       {item.name} {item.noidung}
                     </Text>
-                    <Text style={{ fontSize: 14 }}>{item.thoigian}</Text>
+                    <Text style={{ fontSize: 11 }}>{item.thoigian}</Text>
                   </View>
                 </View>
               </View>

@@ -26,9 +26,9 @@ function HomeStack() {
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="PostStatus" component={PostStatus} />
       <Stack.Screen name="Camxuc" component={Camxuc} />
-      <Stack.Screen name="Chat" component={Chat} />
+      {/* <Stack.Screen name="Chat" component={Chat} />
       <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="notifiCation" component={notifiCation} />
+      <Stack.Screen name="notifiCation" component={notifiCation} /> */}
       <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
       <Stack.Screen name="Messenger" component={Messenger} />
     </Stack.Navigator>
@@ -56,12 +56,12 @@ function ChatStack() {
       screenOptions={{ tabBarShowLabel: false, headerShown: false }}
     >
       <Stack.Screen name="Chat" component={Chat} />
-      <Stack.Screen name="Home" component={Home} />
+      {/* <Stack.Screen name="Home" component={Home} /> */}
       <Stack.Screen name="PostStatus" component={PostStatus} />
       <Stack.Screen name="Camxuc" component={Camxuc} />
 
       <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="notifiCation" component={notifiCation} />
+      {/* <Stack.Screen name="notifiCation" component={notifiCation} /> */}
       <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
       <Stack.Screen name="Messenger" component={Messenger} />
     </Stack.Navigator>
@@ -73,11 +73,11 @@ function NotiStack() {
       screenOptions={{ tabBarShowLabel: false, headerShown: false }}
     >
       <Stack.Screen name="notifiCation" component={notifiCation} />
-      <Stack.Screen name="Home" component={Home} />
+      {/* <Stack.Screen name="Home" component={Home} /> */}
       <Stack.Screen name="PostStatus" component={PostStatus} />
       <Stack.Screen name="Camxuc" component={Camxuc} />
-      <Stack.Screen name="Chat" component={Chat} />
-      <Stack.Screen name="Profile" component={Profile} />
+      {/* <Stack.Screen name="Chat" component={Chat} />
+      <Stack.Screen name="Profile" component={Profile} /> */}
 
       <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
       <Stack.Screen name="Messenger" component={Messenger} />
@@ -85,7 +85,6 @@ function NotiStack() {
   );
 }
 export default ProductNavigation = (props) => {
-  const hide = props.routeName != "PostStatus";
   // const CustomBar = ({ children, onPress }) => (
   //   <TouchableOpacity
   //     style={{

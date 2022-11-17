@@ -12,7 +12,7 @@ import React, { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../../../config";
 import { getAuth } from "firebase/auth";
-import { getDatabase, ref, onValue, set, push } from "firebase/database";
+import { getDatabase, ref, onValue, set, push ,update} from "firebase/database";
 export const Profile = (props) => {
   const { navigation } = props;
   const app = initializeApp(firebaseConfig);
@@ -33,6 +33,8 @@ export const Profile = (props) => {
   }
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
+  const [daco, setdaco] = useState();
+  const [dacod, setdacod] = useState();
   // function requestPermission() {
   //   console.log("Requesting permission...");
   //   Notification.requestPermission().then((permission) => {
@@ -63,7 +65,19 @@ export const Profile = (props) => {
     //     console.log("An error occurred while retrieving token. ", err);
     //     // ...
     //   });
-
+    const reference1d1 = ref(db, "tuongtac/" + user);
+    onValue(reference1d1, (snapshot1) => {
+      snapshot1.forEach((childSnapshot) => {
+          const value = childSnapshot.child(user).child("like").val();
+          console.log("du lieu "+value)
+            if (value == true) {
+              setdacod(true);
+              //throw "break-loop";
+            } else if(value!=true){
+              setdacod(false);
+            }
+          });
+    });
     setisLoading(true);
     const reference = ref(db, "users/" + user);
     onValue(reference, (childSnapshot) => {
@@ -128,12 +142,40 @@ export const Profile = (props) => {
 
     console.log("User data: ", dataImage);
   });
-  const AddLike = () => {
-    const reference13 = ref(db, "tuongtac/" + user + "/" + id);
+  const AddLike = (idP) => {
+    
+    let like;
+    let co;
+    let dc = false;
+    
+    const reference11 = ref(db, "tuongtac/" + user+"/"+idP+ "/" + user);
+    onValue(reference11, (snapshot1) => {
+          const value = snapshot1.child("like").exportVal();
+            if (value == true) {
+              setdaco(true);
+              //throw "break-loop";
+            } else if(value!=true){
+              setdaco(false);
+            }
+    });
+    const reference1 = ref(db, "post/" +user+"/"+idP);
+    onValue(reference1, (childSnapshot1) => {
+      co = childSnapshot1.child("like").exportVal();
+      like = co + 1;
+    });
+    if (daco != true) {
+      const reference = ref(db, "post/" + user+"/"+idP);
+      update(reference, {
+        like: like,
+      });
+      console.log("so like :"+like)
+      const reference13 = ref(db, "tuongtac/" +user +"/"+ idP + "/" + user);
     set(reference13, {
       like: true,
     });
-  };
+    }
+    
+  }
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
@@ -609,8 +651,8 @@ export const Profile = (props) => {
                             paddingVertical: 10,
                           }}
                         >
-                          <TouchableOpacity onPress={AddLike}>
-                            <Text style={{ fontSize: 17 }}>Thích</Text>
+                          <TouchableOpacity onPress={()=>AddLike(item.id)}>
+                            <Text style={[{ fontSize: 17,color:"black" },dacod==true?{ fontSize: 17,color:"pink" }:null]}>Thích</Text>
                           </TouchableOpacity>
                           <TouchableOpacity>
                             <Text style={{ fontSize: 17 }}>Bình luận</Text>

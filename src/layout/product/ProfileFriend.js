@@ -27,6 +27,7 @@ export const ProfileFriend = ({ route, navigation }) => {
   let check;
   const app = initializeApp(firebaseConfig);
   const [daco, setdaco] = useState();
+  const [dacod, setdacod] = useState();
   const dataImage = [];
   const datas = [];
   let noidung1 = "";
@@ -50,6 +51,19 @@ export const ProfileFriend = ({ route, navigation }) => {
 
   const sothich2 = [];
   useEffect(() => {
+    const reference1d1 = ref(db, "tuongtac/" + user);
+    onValue(reference1d1, (snapshot1) => {
+      snapshot1.forEach((childSnapshot) => {
+          const value = childSnapshot.child(idCurrent).child("like").val();
+          console.log("du lieu "+value)
+            if (value == true) {
+              setdacod(true);
+              //throw "break-loop";
+            } else if(value!=true){
+              setdacod(false);
+            }
+          });
+    });
     setisLoading(true);
     const reference = ref(db, "users/" + user);
     onValue(reference, (childSnapshot) => {
@@ -196,6 +210,40 @@ export const ProfileFriend = ({ route, navigation }) => {
       });
     }
   };
+  const AddLike = (idP) => {
+    
+    let like;
+    let co;
+    let dc = false;
+    
+    const reference11 = ref(db, "tuongtac/" + user+"/"+idP+ "/" + idCurrent);
+    onValue(reference11, (snapshot1) => {
+          const value = snapshot1.child("like").exportVal();
+            if (value == true) {
+              setdaco(true);
+              //throw "break-loop";
+            } else if(value!=true){
+              setdaco(false);
+            }
+    });
+    const reference1 = ref(db, "post/" +user+"/"+idP);
+    onValue(reference1, (childSnapshot1) => {
+      co = childSnapshot1.child("like").exportVal();
+      like = co + 1;
+    });
+    if (daco != true) {
+      const reference = ref(db, "post/" + user+"/"+idP);
+      update(reference, {
+        like: like,
+      });
+      console.log("so like :"+like)
+      const reference13 = ref(db, "tuongtac/" +user +"/"+ idP + "/" + idCurrent);
+    set(reference13, {
+      like: true,
+    });
+    }
+    
+  }
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
@@ -336,7 +384,7 @@ export const ProfileFriend = ({ route, navigation }) => {
                     renderItem={({ item, index }) => (
                       <View
                         style={{
-                          width: 150,
+                          width: 170,
 
                           flexDirection: "row",
                           alignItems: "center",
@@ -506,7 +554,7 @@ export const ProfileFriend = ({ route, navigation }) => {
                         </View>
                         <Text
                           style={{
-                            fontSize: 20,
+                            fontSize: 18,
                             color: "black",
                             paddingHorizontal: 10,
                             marginTop: 10,
@@ -515,8 +563,8 @@ export const ProfileFriend = ({ route, navigation }) => {
                             paddingBottom: 10,
                             width: "100%",
                             alignSelf: "center",
-                            textAlign: "center",
-                            fontWeight: "500",
+                            //textAlign: "center",
+                            fontWeight: "400",
                           }}
                         >
                           {item.noidung}
@@ -525,7 +573,7 @@ export const ProfileFriend = ({ route, navigation }) => {
                         {item.image != "" ? (
                           <Image
                             style={{
-                              width: 160,
+                              width: "90%",
                               height: 160,
                               alignItems: "center",
                               alignSelf: "center",
@@ -548,7 +596,7 @@ export const ProfileFriend = ({ route, navigation }) => {
                             paddingBottom: 10,
                             width: "100%",
                             alignSelf: "center",
-                            textAlign: "center",
+                            //textAlign: "center",
                           }}
                         >
                           {item.checkin}
@@ -562,8 +610,8 @@ export const ProfileFriend = ({ route, navigation }) => {
                             paddingVertical: 10,
                           }}
                         >
-                          <TouchableOpacity>
-                            <Text style={{ fontSize: 17 }}>Thích</Text>
+                        <TouchableOpacity onPress={()=>AddLike(item.id)}>
+                            <Text style={[{ fontSize: 17,color:"black" },dacod==true?{ fontSize: 17,color:"pink" }:null]}>Thích</Text>
                           </TouchableOpacity>
                           <TouchableOpacity>
                             <Text style={{ fontSize: 17 }}>Bình luận</Text>
