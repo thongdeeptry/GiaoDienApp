@@ -131,8 +131,9 @@ function Chat(props) {
         />
       </View>
       <FlatList
-        style={{}}
+        style={{height:"80%"}}
         data={users}
+        
         renderItem={({ item }) => (
           <ChatItem
             onPress={() => {

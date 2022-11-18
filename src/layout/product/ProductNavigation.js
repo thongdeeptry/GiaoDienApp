@@ -10,7 +10,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-import Home from "../product/Home/Main";
+// import Home from "../product/Home/Main";
 import { Profile } from "../product/Profile";
 import { PostStatus } from "./PostStatus";
 import { Camxuc } from "./Camxuc";
@@ -18,6 +18,7 @@ import { ProfileFriend } from "./ProfileFriend";
 import Messenger from "./Messenger/Messenger";
 import Chat from "./Chat/Chat";
 import notifiCation from "./notifiCation";
+import Home from "../../../components/Home";
 function HomeStack() {
   return (
     <Stack.Navigator

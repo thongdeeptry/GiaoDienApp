@@ -133,6 +133,7 @@ function Messenger(props) {
           flex: 1,
           marginBottom: 20,
         }}
+        
         data={chatHistory}
         renderItem={({ item }) => (
           <MessengerItem
