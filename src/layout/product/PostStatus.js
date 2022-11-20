@@ -11,6 +11,8 @@ import {
   ToastAndroid,
   Animated,
   Easing,
+  Alert,
+  Modal,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
@@ -22,6 +24,7 @@ import * as Permission from "expo-permissions";
 import * as Location from "expo-location";
 import * as ImagePicker from "expo-image-picker";
 import * as Animatable from "react-native-animatable";
+import Checkbox from 'expo-checkbox';
 import {
   getStorage,
   ref as firebaseDatabaseRef,
@@ -45,6 +48,9 @@ export const PostStatus = ({ route, navigation }) => {
   const [image, setImage] = useState(null);
   const [upload, setupload] = useState("");
   const [tinh, settinh] = useState();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [isCheckedStatus, setCheckedStatus] = useState(true);
+  const [isCheckedStory, setCheckedStory] = useState(false);
   let id;
   let cytyy;
   if (!app.length) {
@@ -147,37 +153,90 @@ export const PostStatus = ({ route, navigation }) => {
     });
     console.log("Vị Trí s: " + location);
   };
-
+ const openModal=()=>{
+  setModalVisible(true)
+ }
   const AddPost = () => {
+    setModalVisible(false);
     const d = new Date();
-
     const ngay = d.getDate();
     const thang = d.getMonth() + 1;
     const nam = d.getFullYear();
-    if (
-      (noidung == "" && location == "") ||
-      (noidung == null && location == null)
-    ) {
+    if (noidung == "" || noidung == null) {
       ToastAndroid.show("Chưa có nội dung", ToastAndroid.BOTTOM);
-    } else {
+    }else {
+      if(isCheckedStatus==true){
       const reference13 = ref(db, "post/" + user + "/" + id);
       set(reference13, {
         name: name,
         avt: avt,
         id: id,
         noidung: noidung,
-        checkin: location,
+        checkin: location==undefined?"":location,
         image: upload,
         thoigian: ngay + " Tháng " + thang + " Năm " + nam,
       });
-      ToastAndroid.show("Đã đăng bài viết", ToastAndroid.BOTTOM);
+      }if(isCheckedStory==true){
+        const reference13 = ref(db, "story/" + user + "/" + id);
+      set(reference13, {
+        name: name,
+        avt: avt,
+        id: id,
+        noidung: noidung,
+        checkin: location==undefined?"":location,
+        image: upload,
+        thoigian: ngay + " Tháng " + thang + " Năm " + nam,
+      });
+      }
+      ToastAndroid.show("Đã chia sẻ bài viết", ToastAndroid.BOTTOM);
       navigation.navigate("Profile");
     }
   };
 
   const ChonAnh = () => {};
   return (
+    
     <View style={styles.tong}>
+      <View style={styles.centeredView}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Bạn muốn chia sẻ bài viết ở đâu!</Text>
+            <View style={styles.checkbox}>
+            <Checkbox
+          value={isCheckedStatus}
+          onValueChange={setCheckedStatus}
+          color={isCheckedStatus ? '#E94057' : undefined}
+        />
+        <Text style={{left:5}}>Dòng thời gian</Text>
+            </View>
+            <View style={styles.checkbox}>
+        <Checkbox
+          value={isCheckedStory}
+          onValueChange={setCheckedStory}
+          color={isCheckedStory ? '#E94057' : undefined}
+        />
+        <Text style={{left:5}}>Khoảnh khắc mới</Text>
+        </View>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={AddPost}>
+              <Text style={styles.textStyle}>Chia Sẻ</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+      {/* <Pressable style={[styles.button, styles.buttonOpen]} onPress={() => setModalVisible(true)}>
+        <Text style={styles.textStyle}>Show Modal</Text>
+      </Pressable> */}
+    </View>
       <View style={styles.e}>
         <View
           style={{
@@ -205,7 +264,7 @@ export const PostStatus = ({ route, navigation }) => {
           </View>
           <View style={{ width: 75, height: 45, opacity: 0.4 }}>
             <TouchableOpacity
-              onPress={AddPost}
+              onPress={openModal}
               style={{
                 width: "100%",
                 height: "100%",
@@ -393,7 +452,7 @@ export const PostStatus = ({ route, navigation }) => {
             </TouchableOpacity>
           </View>
           <TouchableOpacity
-            onPress={AddPost}
+            onPress={openModal}
             style={{
               width: "90%",
               height: 50,
@@ -414,6 +473,55 @@ export const PostStatus = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  checkbox: {
+    marginBottom: 8,
+    justifyContent:'flex-start',
+    alignItems:"flex-start",
+    alignSelf:'flex-start',
+    flexDirection:"row",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 15,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 10,
+  },
+  button: {
+    borderRadius: 20,
+    paddingHorizontal: 40,
+    paddingVertical:8,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#E94057',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
   image: {
     left: 20,
     width: 100,

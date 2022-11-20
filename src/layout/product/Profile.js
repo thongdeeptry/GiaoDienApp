@@ -307,7 +307,7 @@ export const Profile = (props) => {
                     }}
                     contentContainerStyle={{
                       flexDirection: "row",
-                      flexWrap: "wrap-reverse",
+                      flexWrap: "wrap",
                       alignItems: "center",
                       justifyContent: "space-between",
                       borderRadius: 15,
@@ -315,8 +315,9 @@ export const Profile = (props) => {
                     data={dataImage}
                     renderItem={({ item, index }) => (
                       <View
+                      key={index}
                         style={{
-                          width: 165,
+                          width: 170,
 
                           flexDirection: "row",
                           alignItems: "center",
@@ -627,7 +628,7 @@ export const Profile = (props) => {
                           />
                         ) : null}
                         <Text
-                          style={{
+                          style={[{
                             fontSize: 15,
                             color: "black",
                             paddingHorizontal: 10,
@@ -638,7 +639,7 @@ export const Profile = (props) => {
                             width: "100%",
                             alignSelf: "center",
                             //textAlign: "center",
-                          }}
+                          },item.checkin==""?{width:0,height:0}:null]}
                         >
                           {item.checkin}
                         </Text>

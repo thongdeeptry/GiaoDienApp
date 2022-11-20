@@ -53,7 +53,7 @@ const Home = (props) => {
   });
     return (
         <ScrollView>
-        <View style={{height: '100%', width: '100%'}}>
+        <View style={{height: '100%', width: '100%',backgroundColor:'white'}}>
         <View style={[styles.mainten, { top: 75 }]}>
                 <View style={styles.phuten}>
                   <View
