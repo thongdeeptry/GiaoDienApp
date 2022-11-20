@@ -15,6 +15,9 @@ import MessengerItem from "./MessengerItem";
 import { TextInput } from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { v4 as uuid } from "uuid";
+import { getDatabase, ref , onValue, set, push } from "firebase/database";
+import { initializeApp } from "firebase/app";
+
 import "react-native-get-random-values";
 import {
   arrayUnion,
@@ -30,22 +33,40 @@ import {
   auth,
   onAuthStateChanged,
   firebaseDatabaseRef,
+  firebaseConfig,
   firebaseSet,
   firebaseDatabase,
   db,
   storage,
 } from "../../../../config";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { async } from "@firebase/util";
+
 function Messenger(props) {
+  const app = initializeApp(firebaseConfig);
+  if (!app.length) {
+    console.log("Kết nối thành công");
+  }
+  const db1 = getDatabase();
   const user = auth.currentUser.uid;
+
   console.log("UID - " + user);
+  const [namee, setname] = useState();
+  const [avt, setavt] = useState();
   const [typedText, setTypedText] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
   const { url, name, userId } = props.route.params.user;
   const { navigate, goBack } = props.navigation;
   const combinedId = user > userId ? user + userId : userId + user;
   useEffect(() => {
+    const reference = ref(db1, "users/" + user);
+    onValue(reference, (childSnapshot) => {
+      const namepr = childSnapshot.child("name").val();
+      const avtpr = childSnapshot.child("avt").val();
+
+      setname(namepr);
+      setavt(avtpr);
+    });
     const unSub = onSnapshot(doc(db, "chats", combinedId), (doc) => {
       doc.exists() && setChatHistory(doc.data().messages);
     });
@@ -73,7 +94,7 @@ function Messenger(props) {
           senderId: user,
           date: Timestamp.now(),
           timestamp: new Date().getTime(),
-          url: url,
+          url: avt,
           isSender: true,
         }),
       });
@@ -87,7 +108,7 @@ function Messenger(props) {
           senderId: user,
           date: Timestamp.now(),
           timestamp: new Date().getTime(),
-          url: url,
+          url: avt,
           isSender: true,
         }),
       });
@@ -129,7 +150,8 @@ function Messenger(props) {
       />
 
       <FlatList
-        style={{
+        style={{ 
+          
           flex: 1,
           marginBottom: 20,
         }}

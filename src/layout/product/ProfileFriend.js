@@ -585,8 +585,8 @@ export const ProfileFriend = ({ route, navigation }) => {
                             source={{ uri: item.image }}
                           />
                         ) : null}
-                        <Text
-                          style={{
+                       <Text
+                          style={[{
                             fontSize: 15,
                             color: "black",
                             paddingHorizontal: 10,
@@ -597,7 +597,7 @@ export const ProfileFriend = ({ route, navigation }) => {
                             width: "100%",
                             alignSelf: "center",
                             //textAlign: "center",
-                          }}
+                          },item.checkin==""?{width:0,height:0}:null]}
                         >
                           {item.checkin}
                         </Text>
@@ -610,11 +610,15 @@ export const ProfileFriend = ({ route, navigation }) => {
                             paddingVertical: 10,
                           }}
                         >
-                        <TouchableOpacity onPress={()=>AddLike(item.id)}>
-                            <Text style={[{ fontSize: 17,color:"black" },dacod==true?{ fontSize: 17,color:"pink" }:null]}>Thích</Text>
+                          <TouchableOpacity style={{flexDirection:'row' }} onPress={()=>AddLike(item.id)}>
+                          <Image style={styles.iclikeContainer} source={require('../../../assets/iclike.png')} />
+                            <Text style={{ fontSize: 17,color:"black" }}>Thích</Text>
                           </TouchableOpacity>
-                          <TouchableOpacity>
+                          <TouchableOpacity  style={{flexDirection:'row' }}>
+                          <Image style={styles.cmtContainer} source={require('../../../assets/iccmt.png')} />
+
                             <Text style={{ fontSize: 17 }}>Bình luận</Text>
+
                           </TouchableOpacity>
                         </View>
                       </Pressable>

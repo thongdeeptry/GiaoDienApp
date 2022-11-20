@@ -6,6 +6,7 @@ import {
   Pressable,
   Image,
   Text,
+  TouchableOpacity,
 } from "react-native";
 
 import Card from "../Card";
@@ -75,7 +76,7 @@ export default function Main({ route, navigation }) {
   );
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container }>
       <View
         style={{
           flexDirection: "row",
@@ -84,9 +85,11 @@ export default function Main({ route, navigation }) {
           width: "100%",
           paddingHorizontal: 20,
           paddingTop: 20,
+          position: 'absolute',
+          height:50,
         }}
       >
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View style={{ flexDirection: "row", alignItems: "center"}}>
           <View>
             <Image source={require("../../../../image/star.png")} />
           </View>
@@ -95,8 +98,10 @@ export default function Main({ route, navigation }) {
           </View>
         </View>
 
-        <View>
+        <View >
+          <TouchableOpacity >
           <Image source={require("../../../../image/lui.png")} />
+          </TouchableOpacity>
         </View>
       </View>
       {pets

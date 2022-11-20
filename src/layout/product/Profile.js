@@ -652,11 +652,15 @@ export const Profile = (props) => {
                             paddingVertical: 10,
                           }}
                         >
-                          <TouchableOpacity onPress={()=>AddLike(item.id)}>
-                            <Text style={[{ fontSize: 17,color:"black" },dacod==true?{ fontSize: 17,color:"pink" }:null]}>Thích</Text>
+                        <TouchableOpacity style={{flexDirection:'row' }} onPress={()=>AddLike(item.id)}>
+                          <Image style={styles.iclikeContainer} source={require('../../../assets/iclike.png')} />
+                            <Text style={{ fontSize: 17,color:"black" }}>Thích</Text>
                           </TouchableOpacity>
-                          <TouchableOpacity>
+                          <TouchableOpacity  style={{flexDirection:'row' }}>
+                          <Image style={styles.cmtContainer} source={require('../../../assets/iccmt.png')} />
+
                             <Text style={{ fontSize: 17 }}>Bình luận</Text>
+
                           </TouchableOpacity>
                         </View>
                       </Pressable>
@@ -695,6 +699,16 @@ export const Profile = (props) => {
 };
 
 const styles = StyleSheet.create({
+  cmtContainer:{
+    right:5,
+     top:3
+  },
+  
+  
+  iclikeContainer: {
+     right:5,
+     top:3
+  },
   tenmain: {
     width: "100%",
     height: 50,

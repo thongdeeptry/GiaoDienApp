@@ -15,6 +15,7 @@ const Home = (props) => {
     console.log("Kết nối thành công");
   }
   const datapost = []
+  const dataStory= []
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
   useEffect(() => {
@@ -51,6 +52,32 @@ const Home = (props) => {
 });
     console.log("User Posst: ", datapost);
   });
+
+  const referencerr = ref(db, "story");
+  onValue(referencerr, (snapshot) => {
+    snapshot.forEach((childSnapshot) => {
+        childSnapshot.forEach((childSnapshotq) => {
+      const id = childSnapshotq.child("id").exportVal();
+      const name = childSnapshotq.child("name").exportVal();
+      const avt = childSnapshotq.child("avt").exportVal();
+      const noidung = childSnapshotq.child("noidung").exportVal();
+      const trangthai = childSnapshotq.child("checkin").exportVal();
+      const thoigian = childSnapshotq.child("thoigian").exportVal();
+      const image = childSnapshotq.child("image").exportVal();
+      dataStory.push({
+        id: id,
+        name: name,
+        avt: avt,
+        noidung: noidung,
+        checkin: trangthai,
+        thoigian: thoigian,
+        image: image,
+      });
+    });
+});
+    console.log("User story: ", dataStory);
+  });
+
     return (
         <ScrollView>
         <View style={{height: '100%', width: '100%',backgroundColor:'white'}}>
@@ -111,20 +138,45 @@ const Home = (props) => {
                   </View>
                 </View>
               </View>
-            <View>
-                <View>
+               {/* <View>
                     <Image style={styles.addContainer} source={{uri:avt}} />
-                </View>
+                </View> */}
+            <FlatList 
+               keyExtractor={(item) => item.id}
+               horizontal={true}
+               scrollEnabled
+               showsHorizontalScrollIndicator={false}
+            
+              contentContainerStyle={{
+                flexDirection: "row",
+             
+              
+                marginRight: 10,
+               
+               
+             
+                top: 135,
+               
+              }}
+              data={dataStory}
+              renderItem={({ item, index }) => (
+                
+                  <View>
+               
+           
+            <View>
+                <Image style={styles.str1Container} source={{uri:item.image}} />
             </View>
             <View>
-                <Image style={styles.str1Container} source={require('../assets/str1.png')} />
+                <Image style={styles.nameContainer} source={{uri:item.avt}} />
             </View>
             <View>
-                <Image style={styles.nameContainer} source={require('../assets/Person.png')} />
+                <Text style={styles.textContainer}>{item.name}</Text>
             </View>
-            <View>
-                <Text style={styles.textContainer}>{name}</Text>
-            </View>
+
+            </View> 
+              )}
+            />
 
             <Text style={{ fontSize: 19,paddingHorizontal:20 }}>Bài viết và hoạt động</Text>
                 <View style={{ width: "100%",paddingHorizontal:20 }}>
@@ -219,8 +271,8 @@ const Home = (props) => {
                             source={{ uri: item.image }}
                           />
                         ) : null}
-                        <Text
-                          style={{
+                      <Text
+                          style={[{
                             fontSize: 15,
                             color: "black",
                             paddingHorizontal: 10,
@@ -231,7 +283,7 @@ const Home = (props) => {
                             width: "100%",
                             alignSelf: "center",
                             //textAlign: "center",
-                          }}
+                          },item.checkin==""?{width:0,height:0}:null]}
                         >
                           {item.checkin}
                         </Text>
@@ -244,11 +296,15 @@ const Home = (props) => {
                             paddingVertical: 10,
                           }}
                         >
-                          <TouchableOpacity onPress={()=>AddLike(item.id)}>
+                          <TouchableOpacity style={{flexDirection:'row' }} onPress={()=>AddLike(item.id)}>
+                          <Image style={styles.iclikeContainer} source={require('../assets/iclike.png')} />
                             <Text style={{ fontSize: 17,color:"black" }}>Thích</Text>
                           </TouchableOpacity>
-                          <TouchableOpacity>
+                          <TouchableOpacity  style={{flexDirection:'row' }}>
+                          <Image style={styles.cmtContainer} source={require('../assets/iccmt.png')} />
+
                             <Text style={{ fontSize: 17 }}>Bình luận</Text>
+
                           </TouchableOpacity>
                         </View>
                       </Pressable>
@@ -286,8 +342,9 @@ const Home = (props) => {
             </View>
             
             <View>
-                <Image style={styles.iclikeContainer} source={require('../assets/iclike.png')} />
+            <Image style={styles.iclikeContainer} source={require('../assets/iclike.png')} />
                 <Text style={styles.thich}>Thích</Text>
+                
             </View>
             <View>
                 <Image style={styles.cmtContainer} source={require('../assets/iccmt.png')} />
@@ -345,10 +402,8 @@ const styles = StyleSheet.create({
         top: -38,
     },
     cmtContainer:{
-        width: 21,
-        height: 18,
-        left: 170,
-        top: -21,
+      right:5,
+       top:3
     },
     thich: {
         width: 50,
@@ -357,10 +412,11 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     iclikeContainer: {
-        width: 21,
-        height: 18,
-        left: 35,
-        top: 14,
+       right:5,
+       top:3
+        
+       
+       
     },
     comment:{
         width: 60,
@@ -438,11 +494,13 @@ const styles = StyleSheet.create({
         height: 25,
         left: 125,
         top: -120,
+        borderRadius:15
     },
     str1Container: {
         width: 90,
         height: 130,
         left: 120,
+        borderRadius:15
     },
     addContainer: {
         width: 90,
