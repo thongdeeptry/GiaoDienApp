@@ -19,6 +19,7 @@ import Messenger from "./Messenger/Messenger";
 import Chat from "./Chat/Chat";
 import notifiCation from "./notifiCation";
 import Home from "../../../components/Home";
+import IndexCall from "./Call/Index";
 function HomeStack() {
   return (
     <Stack.Navigator
@@ -29,9 +30,10 @@ function HomeStack() {
       <Stack.Screen name="Camxuc" component={Camxuc} />
       {/* <Stack.Screen name="Chat" component={Chat} />
       <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="notifiCation" component={notifiCation} /> */}
+      <Stack.Screen name="IndexCall" component={IndexCall} /> */}
       <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
       <Stack.Screen name="Messenger" component={Messenger} />
+      <Stack.Screen name="IndexCall" component={IndexCall} />
     </Stack.Navigator>
   );
 }
@@ -48,6 +50,7 @@ function ProfileStack() {
       <Stack.Screen name="notifiCation" component={notifiCation} />
       <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
       <Stack.Screen name="Messenger" component={Messenger} />
+      <Stack.Screen name="IndexCall" component={IndexCall} />
     </Stack.Navigator>
   );
 }
@@ -60,7 +63,7 @@ function ChatStack() {
       {/* <Stack.Screen name="Home" component={Home} /> */}
       <Stack.Screen name="PostStatus" component={PostStatus} />
       <Stack.Screen name="Camxuc" component={Camxuc} />
-
+      <Stack.Screen name="IndexCall" component={IndexCall} />
       <Stack.Screen name="Profile" component={Profile} />
       {/* <Stack.Screen name="notifiCation" component={notifiCation} /> */}
       <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
@@ -79,7 +82,7 @@ function NotiStack() {
       <Stack.Screen name="Camxuc" component={Camxuc} />
       {/* <Stack.Screen name="Chat" component={Chat} />
       <Stack.Screen name="Profile" component={Profile} /> */}
-
+<Stack.Screen name="IndexCall" component={IndexCall} />
       <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
       <Stack.Screen name="Messenger" component={Messenger} />
     </Stack.Navigator>
