@@ -18,10 +18,6 @@ import firebase from "firebase/compat";
 import { firebaseConfig } from "./config";
 import AsyncStorage from '@react-native-async-storage/async-storage'
 export default function App() {
-  const app = initializeApp(firebaseConfig);
-  if (!app.length) {
-    console.log("Kết nối thành công");
-  }
   return (
     <UserContextProvider>
       <ProductConTextProvider>

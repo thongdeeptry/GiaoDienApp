@@ -6,14 +6,11 @@ import { getAuth } from "firebase/auth";
 import { getDatabase, ref, onValue, set, push ,update} from "firebase/database";
 const Home = (props) => {
     const { navigation } = props;
-  const app = initializeApp(firebaseConfig);
+  initializeApp(firebaseConfig);
     let noidung1 = "";
     const [name, setname] = useState();
   const [avt, setavt] = useState();
   const [id, setid] = useState();
-  if (!app.length) {
-    console.log("Kết nối thành công");
-  }
   const datapost = []
   const dataStory= []
   const user = getAuth().currentUser.uid;
@@ -50,7 +47,6 @@ const Home = (props) => {
       });
     });
 });
-    console.log("User Posst: ", datapost);
   });
 
   const referencerr = ref(db, "story");
@@ -75,13 +71,11 @@ const Home = (props) => {
       });
     });
 });
-    console.log("User story: ", dataStory);
   });
 
     return (
-        <ScrollView>
-        <View style={{height: '100%', width: '100%',backgroundColor:'white'}}>
-        <View style={[styles.mainten, { top: 75 }]}>
+        <ScrollView style={{height: '100%', width: '100%',backgroundColor:'white'}}>
+        <View style={{ top: 75 ,flexDirection:'column',marginBottom:40}}>
                 <View style={styles.phuten}>
                   <View
                     style={{
@@ -137,31 +131,16 @@ const Home = (props) => {
                     </TouchableOpacity>
                   </View>
                 </View>
-              </View>
-               {/* <View>
-                    <Image style={styles.addContainer} source={{uri:avt}} />
-                </View> */}
-            <FlatList 
-               keyExtractor={(item) => item.id}
-               horizontal={true}
-               scrollEnabled
+               <View>
+               <FlatList 
+               horizontal
+               style={styles.addContainer}
+                
                showsHorizontalScrollIndicator={false}
-            
-              contentContainerStyle={{
-                flexDirection: "row",
-             
-              
-                marginRight: 10,
-               
-               
-             
-                top: 135,
-               
-              }}
               data={dataStory}
               renderItem={({ item, index }) => (
                 
-                  <View>
+                  <TouchableOpacity  key={index}>
                
            
             <View>
@@ -174,10 +153,15 @@ const Home = (props) => {
                 <Text style={styles.textContainer}>{item.name}</Text>
             </View>
 
-            </View> 
+            </TouchableOpacity> 
               )}
             />
-
+               </View>
+        </View>
+               {/* <View style={styles.addContainer}>
+                </View> */}
+            
+          <View style={{top:100}}>
             <Text style={{ fontSize: 19,paddingHorizontal:20 }}>Bài viết và hoạt động</Text>
                 <View style={{ width: "100%",paddingHorizontal:20 }}>
                   <FlatList
@@ -311,12 +295,12 @@ const Home = (props) => {
                     )}
                   />
                 </View>
+                </View>
 
 
 
 
-
-            <View>
+            {/* <View>
                 <Image style={styles.gachContainer} source={require('../assets/gachngang.png')} />
             </View>
             <View>
@@ -362,8 +346,7 @@ const Home = (props) => {
             </View>
             <View>
                 <Text style={styles.comment}>4 bình luận</Text>
-            </View>
-        </View>
+            </View> */}
         </ScrollView>
     )
 }
@@ -486,28 +469,24 @@ const styles = StyleSheet.create({
         height: 20,
         fontSize: 15,
         top: -55,
-        left: 125,
         color: 'white',
     },
     nameContainer: {
         width: 25,
         height: 25,
-        left: 125,
+        //left: 125,
         top: -120,
         borderRadius:15
     },
     str1Container: {
         width: 90,
         height: 130,
-        left: 120,
         borderRadius:15
     },
     addContainer: {
-        width: 90,
         height: 135,
-        top: 135,
-        left: 17,
-        borderRadius:20
+        top: 55,
+        marginHorizontal:20
     },
     avtContainer: {
         width: 50,

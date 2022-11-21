@@ -29,7 +29,6 @@ export const Profile = (props) => {
   const [nghenghiep, setnghenghiep] = useState();
   const [isLoading, setisLoading] = useState(false);
   if (!app.length) {
-    console.log("Kết nối thành công");
   }
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
@@ -69,7 +68,6 @@ export const Profile = (props) => {
     onValue(reference1d1, (snapshot1) => {
       snapshot1.forEach((childSnapshot) => {
           const value = childSnapshot.child(user).child("like").val();
-          console.log("du lieu "+value)
             if (value == true) {
               setdacod(true);
               //throw "break-loop";
@@ -118,7 +116,6 @@ export const Profile = (props) => {
         image: image,
       });
     });
-    console.log("User Posst: ", datas);
   });
 
   const reference1 = ref(db, "users/" + user + "/sothich");
@@ -140,7 +137,6 @@ export const Profile = (props) => {
       });
     });
 
-    console.log("User data: ", dataImage);
   });
   const AddLike = (idP) => {
     
@@ -168,7 +164,6 @@ export const Profile = (props) => {
       update(reference, {
         like: like,
       });
-      console.log("so like :"+like)
       const reference13 = ref(db, "tuongtac/" +user +"/"+ idP + "/" + user);
     set(reference13, {
       like: true,
@@ -176,6 +171,7 @@ export const Profile = (props) => {
     }
     
   }
+  const numColumns = 3;
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
@@ -234,13 +230,10 @@ export const Profile = (props) => {
                     style={{
                       left: 20,
                       top: 30,
+                      
                     }}
-                    contentContainerStyle={{
-                      flexDirection: "row",
-                      flexWrap: "wrap-reverse",
-                      marginRight: 10,
-                      alignItems: "center",
-                    }}
+                    contentContainerStyle={{ flex: 1, marginTop: 5,flexDirection: 'row',flexWrap:"wrap" }}
+              horizontal={false}
                     data={sothich2}
                     renderItem={({ item, index }) => (
                       <Pressable
@@ -273,6 +266,7 @@ export const Profile = (props) => {
                         </View>
                       </Pressable>
                     )}
+                    
                   />
                 </View>
               </View>
@@ -305,13 +299,10 @@ export const Profile = (props) => {
                       width: "100%",
                       height: 320,
                     }}
-                    contentContainerStyle={{
-                      flexDirection: "row",
-                      flexWrap: "wrap",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      borderRadius: 15,
-                    }}
+                    contentContainerStyle={{ flexWrap: 'wrap', flex: 1, marginTop: 5,flexDirection:"row",alignItems: "center",
+                    justifyContent: "space-between",
+                    borderRadius: 15,}}
+              horizontal={false}
                     data={dataImage}
                     renderItem={({ item, index }) => (
                       <View
@@ -373,7 +364,7 @@ export const Profile = (props) => {
                     }}
                     contentContainerStyle={{
                       flexDirection: "row",
-                      flexWrap: "wrap-reverse",
+                      flexWrap: "wrap",
                       alignItems: "center",
                       justifyContent: "space-between",
                       borderRadius: 15,

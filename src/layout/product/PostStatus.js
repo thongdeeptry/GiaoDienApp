@@ -17,9 +17,9 @@ import {
 import React, { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
 import firebase from "firebase/compat";
-import { firebaseConfig } from "../../../config";
+import { firebaseConfig ,firebaseDatabaseRef} from "../../../config";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { getDatabase, ref, onValue, set, push } from "firebase/database";
+import { getDatabase, onValue, set, push } from "firebase/database";
 import * as Permission from "expo-permissions";
 import * as Location from "expo-location";
 import * as ImagePicker from "expo-image-picker";
@@ -27,13 +27,12 @@ import * as Animatable from "react-native-animatable";
 import Checkbox from 'expo-checkbox';
 import {
   getStorage,
-  ref as firebaseDatabaseRef,
+  ref,
   uploadBytes,
   uploadString,
 } from "firebase/storage";
 export const PostStatus = ({ route, navigation }) => {
   const { noidung1 } = route.params;
-  console.log("" + noidung1);
   const app = initializeApp(firebaseConfig);
   const data = [];
   const [name, setname] = useState();
@@ -54,14 +53,13 @@ export const PostStatus = ({ route, navigation }) => {
   let id;
   let cytyy;
   if (!app.length) {
-    console.log("Kết nối thành công");
   }
   const auth = getAuth(app);
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
   const storage = getStorage(app);
   useEffect(() => {
-    const reference = ref(db, "users/" + user);
+    const reference = firebaseDatabaseRef(db, "users/" + user);
     onValue(reference, (childSnapshot) => {
       const namepr = childSnapshot.child("name").val();
       const avtpr = childSnapshot.child("avt").val();
@@ -69,27 +67,11 @@ export const PostStatus = ({ route, navigation }) => {
       setname(namepr);
       setavt(avtpr);
     });
-    const reference1 = ref(db, "post/" + user);
+    const reference1 = firebaseDatabaseRef(db, "post/" + user);
     onValue(reference1, (childSnapshot1) => {
       id = childSnapshot1.size + 1;
     });
   });
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.cancelled) {
-      setImage(result.uri);
-    }
-    uploadImageToBucket(image, makeid(60));
-  };
   function makeid(length) {
     var text = "";
     var possible =
@@ -100,26 +82,41 @@ export const PostStatus = ({ route, navigation }) => {
 
     return text;
   }
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+      uploadImageToBucket(image, makeid(60));
+    }
+  };
+  
   const uploadImageToBucket = async (uri, imageName) => {
     const res = await fetch(uri);
     const blob = await res.blob();
-    const storageRef = firebaseDatabaseRef(
-      storage,
-      "images/album/" + user + "/" + imageName + ".png"
-    );
+    const storageRef = ref(storage, "images/album/" + user + "/" + imageName + ".png");
     setupload(
       "https://firebasestorage.googleapis.com/v0/b/duantotnghiepreact.appspot.com/o/images%2Falbum%2F" +
         user +
         "%2F" +
         imageName +
-        ".png?alt=media&token=da2a42e8-f539-4c59-ab86-131c9ba06e37"
+        ".png?alt=media"
     );
 
     console.log("Link Anh: " + upload);
     return uploadBytes(storageRef, blob).then((snapshot) => {
-      console.log("Uploaded a blob or file!");
+      
+      console.log("Uploaded a blob or file!"+snapshot.metadata);
     });
   };
+  
   const getLocation = async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
@@ -151,7 +148,6 @@ export const PostStatus = ({ route, navigation }) => {
       settinh(p.region);
       setlocation(city);
     });
-    console.log("Vị Trí s: " + location);
   };
  const openModal=()=>{
   setModalVisible(true)
@@ -166,7 +162,7 @@ export const PostStatus = ({ route, navigation }) => {
       ToastAndroid.show("Chưa có nội dung", ToastAndroid.BOTTOM);
     }else {
       if(isCheckedStatus==true){
-      const reference13 = ref(db, "post/" + user + "/" + id);
+      const reference13 = firebaseDatabaseRef(db, "post/" + user + "/" + id);
       set(reference13, {
         name: name,
         avt: avt,
@@ -177,7 +173,7 @@ export const PostStatus = ({ route, navigation }) => {
         thoigian: ngay + " Tháng " + thang + " Năm " + nam,
       });
       }if(isCheckedStory==true){
-        const reference13 = ref(db, "story/" + user + "/" + id);
+        const reference13 = firebaseDatabaseRef(db, "story/" + user + "/" + id);
       set(reference13, {
         name: name,
         avt: avt,
@@ -484,7 +480,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: 'center',
-    marginBottom: 40,
+
   },
   modalView: {
     margin: 20,
@@ -526,7 +522,8 @@ const styles = StyleSheet.create({
     left: 20,
     width: 100,
     height: 100,
-    borderRadius: 25,
+    borderRadius: 20,
+    top:10
   },
   mainnhap: {
     flexDirection: "column",

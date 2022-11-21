@@ -23,7 +23,6 @@ import {
 } from "firebase/database";
 export const ProfileFriend = ({ route, navigation }) => {
   const { id } = route.params;
-  console.log("ID : " + id);
   let check;
   const app = initializeApp(firebaseConfig);
   const [daco, setdaco] = useState();
@@ -43,7 +42,6 @@ export const ProfileFriend = ({ route, navigation }) => {
   const [nghenghiep, setnghenghiep] = useState();
   const [isLoading, setisLoading] = useState(false);
   if (!app.length) {
-    console.log("Kết nối thành công");
   }
   const user = id;
   const idCurrent = getAuth().currentUser.uid;

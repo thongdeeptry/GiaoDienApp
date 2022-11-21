@@ -16,7 +16,6 @@ import { getDatabase, ref, onValue, set, push } from "firebase/database";
 export default notifiCation = () => {
   const app = initializeApp(firebaseConfig);
   if (!app.length) {
-    console.log("Kết nối thành công");
   }
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
