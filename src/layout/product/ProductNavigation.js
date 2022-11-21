@@ -20,6 +20,7 @@ import Chat from "./Chat/Chat";
 import notifiCation from "./notifiCation";
 import Home from "../../../components/Home";
 import IndexCall from "./Call/Index";
+import {Story }from "../../layout/product/Story"
 function HomeStack() {
   return (
     <Stack.Navigator
@@ -34,6 +35,7 @@ function HomeStack() {
       <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
       <Stack.Screen name="Messenger" component={Messenger} />
       <Stack.Screen name="IndexCall" component={IndexCall} />
+      <Stack.Screen name="Story" component={Story} />
     </Stack.Navigator>
   );
 }
@@ -51,6 +53,7 @@ function ProfileStack() {
       <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
       <Stack.Screen name="Messenger" component={Messenger} />
       <Stack.Screen name="IndexCall" component={IndexCall} />
+      <Stack.Screen name="Story" component={Story} />
     </Stack.Navigator>
   );
 }
@@ -68,6 +71,7 @@ function ChatStack() {
       {/* <Stack.Screen name="notifiCation" component={notifiCation} /> */}
       <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
       <Stack.Screen name="Messenger" component={Messenger} />
+      <Stack.Screen name="Story" component={Story} />
     </Stack.Navigator>
   );
 }
@@ -85,6 +89,7 @@ function NotiStack() {
 <Stack.Screen name="IndexCall" component={IndexCall} />
       <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
       <Stack.Screen name="Messenger" component={Messenger} />
+      <Stack.Screen name="Story" component={Story} />
     </Stack.Navigator>
   );
 }

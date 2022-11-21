@@ -19,7 +19,7 @@ export const Story = () => {
         <View style={styles.ten}>
           <View style={styles.maininfo}>
             <Image style={styles.avt} source={require("../../image/avt.jpg")} />
-            <Text style={styles.ten1}>Truong Cong Bao</Text>
+            <Text style={styles.ten1}>Trương Công Bảo</Text>
           </View>
           <View style={styles.mainclose}>
             <TouchableOpacity>
@@ -48,6 +48,7 @@ export const Story = () => {
                 alignItems: "center",
                 flexDirection: "row",
                 justifyContent: "center",
+                
               }}
               placeholder="  Gửi tin nhắn"
             ></TextInput>
@@ -55,7 +56,8 @@ export const Story = () => {
               style={styles.sticker}
               source={require("../../image/stickers.png")}
             />
-          </View>
+          </View >
+         
           <View style={styles.gui}>
             <TouchableOpacity
               style={{
@@ -82,21 +84,49 @@ export const Story = () => {
             </TouchableOpacity>
           </View>
         </View>
+        <View style ={styles.tongts}>
+          <Text style={styles.texttamsu}>Trương Công Bảo hh hhh gggggg ggg gg ghd
+
+          
+          
+   </Text>
+          </View>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  tongts:{
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+top:"90%",
+  
+  },
+  texttamsu:{
+   
+    width: '100%',
+    height: 45,
+   
+    fontSize: 15,
+    
+    color:"white",
+    
+   
+  },
   stickerr: {
     position: "relative",
+   
   },
   gui: {
-    position: "absolute",
+   
     width: 45,
     height: 45,
-    right: 0,
+    right:0,
 
+    
+left:10,
     borderRadius: 15,
 
     alignItems: "center",
@@ -112,26 +142,28 @@ const styles = StyleSheet.create({
   nhantin: {
     alignItems: "center",
     flexDirection: "row",
-    justifyContent: "center",
-    position: "absolute",
-    width: "83%",
+    justifyContent: "flex-end",
+    
+    width: "93%",
     height: 45,
 
     borderRadius: 15,
     color: "white",
   },
   nho: {
-    alignItems: "center",
+    alignItems: "flex-end",
     flexDirection: "row",
-    position: "absolute",
-    width: "95%",
-    height: 48,
-
+  position:'absolute',
+    width: "100%",
     top: "100%",
+    
+  
+   
   },
   close: {
     width: 30,
     height: 30,
+    left:45,
   },
   mainclose: {
     width: 40,
@@ -153,11 +185,14 @@ const styles = StyleSheet.create({
     left: 60,
     fontSize: 18,
     fontWeight: "700",
+    color:"white",
+    opacity:0.7
   },
   avt: {
     position: "absolute",
     width: 48,
     height: 48,
+    
 
     borderRadius: 30,
   },
@@ -174,10 +209,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: "85%",
     height: "85%",
-    left: 40,
-    top: 40,
+    left: 10,
+    top: 10,
+
   },
   hinh: {
+   
     width: "100%",
     height: "100%",
     opacity: 0.9,
