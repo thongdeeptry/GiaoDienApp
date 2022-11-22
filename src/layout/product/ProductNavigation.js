@@ -19,7 +19,7 @@ import Messenger from "./Messenger/Messenger";
 import Chat from "./Chat/Chat";
 import notifiCation from "./notifiCation";
 import Home from "../../../components/Home";
-import {Story }from "../../layout/product/Story"
+import Chinhsua from "./Chinhsua"
 function HomeStack() {
   return (
     <Stack.Navigator
@@ -33,7 +33,7 @@ function HomeStack() {
       <Stack.Screen name="notifiCation" component={notifiCation} /> */}
       <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
       <Stack.Screen name="Messenger" component={Messenger} />
-      <Stack.Screen name="Story" component={Story} />
+      <Stack.Screen name="Chinhsua" component={Chinhsua} />
     </Stack.Navigator>
   );
 }
@@ -50,7 +50,7 @@ function ProfileStack() {
       <Stack.Screen name="notifiCation" component={notifiCation} />
       <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
       <Stack.Screen name="Messenger" component={Messenger} />
-      <Stack.Screen name="Story" component={Story} />
+      <Stack.Screen name="Chinhsua" component={Chinhsua} />
     </Stack.Navigator>
   );
 }
@@ -60,7 +60,7 @@ function ChatStack() {
       screenOptions={{ tabBarShowLabel: false, headerShown: false }}
     >
       <Stack.Screen name="Chat" component={Chat} />
-      {/* <Stack.Screen name="Home" component={Home} /> */}
+      {/* <Stack.Screen name=Chinhsua"Home" component={Home} /> */}
       <Stack.Screen name="PostStatus" component={PostStatus} />
       <Stack.Screen name="Camxuc" component={Camxuc} />
 
@@ -68,7 +68,7 @@ function ChatStack() {
       {/* <Stack.Screen name="notifiCation" component={notifiCation} /> */}
       <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
       <Stack.Screen name="Messenger" component={Messenger} />
-      <Stack.Screen name="Story" component={Story} />
+      <Stack.Screen name="Chinhsua" component={Chinhsua} />
     </Stack.Navigator>
   );
 }
@@ -86,7 +86,7 @@ function NotiStack() {
 
       <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
       <Stack.Screen name="Messenger" component={Messenger} />
-      <Stack.Screen name="Story" component={Story} />
+      <Stack.Screen name="Chinhsua" component={Chinhsua} />
     </Stack.Navigator>
   );
 }

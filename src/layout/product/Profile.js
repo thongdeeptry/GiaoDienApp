@@ -674,7 +674,7 @@ export const Profile = (props) => {
                 </TouchableOpacity>
               </View>
               <View>
-                <TouchableOpacity onPress={() => navigation.navigate('Story')} style={{ width: 100, height: 50  }}>
+                <TouchableOpacity onPress={() => navigation.navigate('Chinhsua')} style={{ width: 100, height: 50  }}>
                   <Image
                     style={[styles.containerrrrr, { borderRadius: 12 }]}
                     source={require("../../image/dots.png")}
