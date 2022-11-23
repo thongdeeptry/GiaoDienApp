@@ -22,6 +22,7 @@ import Home from "../../../components/Home";
 import IndexCall from "./Call/Index";
 import Story from "../../layout/product/Story"
 import AllUser from "./Home/Main"
+import Chinhsua from "./Chinhsua"
 function HomeStack() {
   return (
     <Stack.Navigator
@@ -38,6 +39,7 @@ function HomeStack() {
       <Stack.Screen name="IndexCall" component={IndexCall} />
       <Stack.Screen name="Story" component={Story} />
       <Stack.Screen name="AllUser" component={AllUser} />
+      <Stack.Screen name="Chinhsua" component={Chinhsua} />
     </Stack.Navigator>
   );
 }
@@ -76,6 +78,7 @@ function AllUserStack() {
       <Stack.Screen name="Messenger" component={Messenger} />
       <Stack.Screen name="IndexCall" component={IndexCall} />
       <Stack.Screen name="Story" component={Story} />
+      <Stack.Screen name="Chinhsua" component={Chinhsua} />
     </Stack.Navigator>
   );
 }
@@ -85,7 +88,7 @@ function ChatStack() {
       screenOptions={{ tabBarShowLabel: false, headerShown: false }}
     >
       <Stack.Screen name="Chat" component={Chat} />
-      {/* <Stack.Screen name="Home" component={Home} /> */}
+      {/* <Stack.Screen name=Chinhsua"Home" component={Home} /> */}
       <Stack.Screen name="PostStatus" component={PostStatus} />
       <Stack.Screen name="Camxuc" component={Camxuc} />
       <Stack.Screen name="IndexCall" component={IndexCall} />
@@ -95,6 +98,7 @@ function ChatStack() {
       <Stack.Screen name="Messenger" component={Messenger} />
       <Stack.Screen name="Story" component={Story} />
       <Stack.Screen name="AllUser" component={AllUser} />
+      <Stack.Screen name="Chinhsua" component={Chinhsua} />
     </Stack.Navigator>
   );
 }
@@ -114,6 +118,7 @@ function NotiStack() {
       <Stack.Screen name="Messenger" component={Messenger} />
       <Stack.Screen name="Story" component={Story} />
       <Stack.Screen name="AllUser" component={AllUser} />
+      <Stack.Screen name="Chinhsua" component={Chinhsua} />
     </Stack.Navigator>
   );
 }
