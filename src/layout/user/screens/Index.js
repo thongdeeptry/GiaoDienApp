@@ -1,13 +1,46 @@
 
-import React,{useState} from 'react';
+import React,{useState,useContext} from 'react';
 import { StyleSheet, Text, View,Pressable,Image} from 'react-native';
 import Landing1 from './Landing1';
 import Landing2 from './Landing2';
 import Landing3 from './Landing3';
 import PagerView from 'react-native-pager-view';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signInWithPhoneNumber,
+  signInWithCustomToken,
+} from "firebase/auth";
+import { UserContext } from "../UserContext";
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "../../../../config";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const Index = (props) => {
+  
     const {navigation} = props;
+    const { onLogin } = useContext(UserContext);
+    let app = initializeApp(firebaseConfig);
+    if (!app.length) {
+      console.log("Kết nối thành công");
+    }
+  const auth = getAuth(app);
+  const Click = async () => {
+    const email = await AsyncStorage.getItem('email');
+    const password = await AsyncStorage.getItem('password');
+    if(email!=""&&password!=""|email!=null&&password!=null){
+      await signInWithEmailAndPassword(auth, email, password)
+      .then(async () => {
+        console.log("Đăng nhập thành công");
+        const user = getAuth().currentUser.uid;
+        console.log("UID - " + user);
+        onLogin()
+      });
+    }
+  console.log(email)
+  }
+  Click()
+  
   return (
     <View style={{ flex: 1 }}>
         

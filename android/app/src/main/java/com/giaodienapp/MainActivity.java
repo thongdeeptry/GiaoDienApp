@@ -6,9 +6,10 @@ import android.os.Bundle;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
-
+import io.invertase.firebase.app.ReactNativeFirebaseAppPackage;
 import expo.modules.ReactActivityDelegateWrapper;
-
+import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;//<- Dòng này
+import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 public class MainActivity extends ReactActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,17 @@ public class MainActivity extends ReactActivity {
       new ReactActivityDelegate(this, getMainComponentName())
     );
   }
-
+@Override
+    protected List<ReactPackage> getPackages() {
+      @SuppressWarnings("UnnecessaryLocalVariable")
+      List<ReactPackage> packages = new PackageList(this).getPackages();
+      // Packages that cannot be autolinked yet can be added manually here, for example:
+packages.add(new RNFirebaseMessagingPackage());//<- Dòng này
+      packages.add(new RNFirebaseNotificationsPackage());//<- Dòng này
+      packages.add(new ReactNativeFirebaseAppPackage());
+        // packages.add(new RNFirebaseNotificationsPackage());
+      return packages;
+    }
   /**
    * Align the back button behavior with Android S
    * where moving root activities to background instead of finishing activities.

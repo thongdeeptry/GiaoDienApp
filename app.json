@@ -8,6 +8,9 @@
     ],
     "android": {
       "package": "com.thanhthong0312.GiaoDienApp"
+    },
+    "ios": {
+      "bundleIdentifier": "org.name.GiaoDienApp"
     }
   },
   "name": "GiaoDienApp"

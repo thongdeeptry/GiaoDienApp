@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { View, Button, Alert } from "react-native";
-import notifee from "@notifee/react-native";
 import messaging from "@react-native-firebase/messaging";
 import NotificationService from "./NotifyService";
 

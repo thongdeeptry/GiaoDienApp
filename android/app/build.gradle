@@ -1,5 +1,5 @@
 apply plugin: "com.android.application"
-
+apply plugin: 'com.google.gms.google-services' 
 import com.android.build.OutputFile
 import org.apache.tools.ant.taskdefs.condition.Os
 
@@ -236,6 +236,7 @@ android {
             keyPassword 'android'
         }
     }
+
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
@@ -288,9 +289,14 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 implementation "com.google.firebase:firebase-messaging:20.0.0"
+implementation "com.google.firebase:firebase-auth:17.0.0"
+    implementation project(':react-native-firebase')
+    implementation "com.google.android.gms:play-services-base:16.1.0"
+    implementation "com.google.firebase:firebase-storage:15.0.2"
+    implementation "com.google.firebase:firebase-auth"
+    implementation 'com.google.firebase:firebase-core:17.0.0'
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
-
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true";
     def isWebpAnimatedEnabled = (findProperty('expo.webp.animated') ?: "") == "true";
@@ -334,6 +340,7 @@ implementation "com.google.firebase:firebase-messaging:20.0.0"
     } else {
         implementation jscFlavor
     }
+    compile project(':WebRTCModule')
 }
 
 if (isNewArchitectureEnabled()) {

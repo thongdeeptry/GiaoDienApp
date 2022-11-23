@@ -1,13 +1,15 @@
 import { StyleSheet, Text, View, Image, Button, ScrollView,TouchableOpacity,FlatList,Pressable } from 'react-native'
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../config";
-import { getAuth } from "firebase/auth";
+import { getAuth,signOut } from "firebase/auth";
 import { getDatabase, ref, onValue, set, push ,update} from "firebase/database";
-const Home = (props) => {
-    const { navigation } = props;
+import { UserContext } from "../src/layout/user/UserContext";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+const Home = ({ route, navigation }) => {
   initializeApp(firebaseConfig);
     let noidung1 = "";
+    const { onLogout } = useContext(UserContext);
     const [name, setname] = useState();
   const [avt, setavt] = useState();
   const [id, setid] = useState();
@@ -25,6 +27,23 @@ const Home = (props) => {
 
     });
   });
+  const logOut=()=>{
+    const auth = getAuth();
+signOut(auth).then(async () => {
+  alert('Đăng xuất thành công')
+  await AsyncStorage.setItem(
+    'email',
+    ""
+  );
+  await AsyncStorage.setItem(
+    'password',
+    ""
+  );
+  onLogout()
+}).catch((error) => {
+  // An error happened.
+});
+  }
   const referencer = ref(db, "post");
   onValue(referencer, (snapshot) => {
     snapshot.forEach((childSnapshot) => {
@@ -75,7 +94,21 @@ const Home = (props) => {
 
     return (
         <ScrollView style={{height: '100%', width: '100%',backgroundColor:'white'}}>
-        <View style={{ top: 75 ,flexDirection:'column',marginBottom:40}}>
+          <View style={{position:'absolute',paddingHorizontal:20,top:40,flexDirection:'row',
+          justifyContent:"space-between",width:'100%'}}>
+            <View>
+            <Text style={{fontSize:23,color:"#E94057",fontWeight:'600',letterSpacing:1.2}}>GenzLove</Text>
+            </View>
+            <View style={{flexDirection:"row"}}>
+              <TouchableOpacity onPress={logOut}>
+              <Image style={{width:35,height:35,right:5}} source={require('../src/assets/search.png')}/>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={()=>navigation.navigate("Chat")}>
+              <Image style={{width:35,height:35}} source={require('../src/image/chat.png')}/>
+              </TouchableOpacity>
+            </View>
+          </View>
+        <View style={{ top: 50 ,flexDirection:'column',marginBottom:40}}>
                 <View style={styles.phuten}>
                   <View
                     style={{
@@ -101,16 +134,21 @@ const Home = (props) => {
                       top: 40,
                       height: 50,
                       backgroundColor: "white",
+                      flexDirection:'row'
                     }}
                   >
+                    <TouchableOpacity onPress={() =>
+                        navigation.navigate("Profile")
+                      }>
+                    <Image style={{width:45,height:45,borderRadius:22}} source={{uri:avt}}/>
+                    </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() =>
                         navigation.navigate("PostStatus", noidung1)
                       }
                       style={{
-                        width: "100%",
-                        height: 50,
-                        position: "absolute",
+                        width: "85%",
+                        height: 45,
                         backgroundColor: "white",
                         borderBottomColor: "#ABABAB",
                         borderLeftColor: "#ABABAB",
@@ -121,7 +159,8 @@ const Home = (props) => {
                         borderRightWidth: 1,
                         borderTopWidth: 1,
                         borderRadius: 8,
-                        paddingLeft: 20,
+                        paddingLeft: 15,
+                        left:10,
                         justifyContent: "center",
                       }}
                     >
@@ -135,14 +174,17 @@ const Home = (props) => {
                <FlatList 
                horizontal
                style={styles.addContainer}
-                
                showsHorizontalScrollIndicator={false}
               data={dataStory}
               renderItem={({ item, index }) => (
-                
-                  <TouchableOpacity  key={index}>
-               
-           
+                <View>
+                  <TouchableOpacity onPress={()=>navigation.navigate("Story",{
+                    id:item.id,
+                    image:item.image,
+                    avt:item.avt,
+                    name:item.name,
+                    noidung:item.noidung,
+                  })}>
             <View>
                 <Image style={styles.str1Container} source={{uri:item.image}} />
             </View>
@@ -154,6 +196,7 @@ const Home = (props) => {
             </View>
 
             </TouchableOpacity> 
+            </View>
               )}
             />
                </View>
@@ -161,7 +204,7 @@ const Home = (props) => {
                {/* <View style={styles.addContainer}>
                 </View> */}
             
-          <View style={{top:100}}>
+          <View style={{top:80}}>
             <Text style={{ fontSize: 19,paddingHorizontal:20 }}>Bài viết và hoạt động</Text>
                 <View style={{ width: "100%",paddingHorizontal:20 }}>
                   <FlatList
@@ -191,10 +234,15 @@ const Home = (props) => {
                         ]}
                       >
                         <View style={styles.info}>
+                          <TouchableOpacity onPress={()=>navigation.navigate("ProfileFriend",{
+                    id:item.id,
+                    
+                  })}>
                           <Image
                             style={{ width: 40, height: 40, borderRadius: 20 }}
-                            source={{ uri: avt }}
+                            source={{ uri: item.avt }}
                           />
+                          </TouchableOpacity>
                           <View style={styles.tenmain}>
                             <View
                               style={{
@@ -467,16 +515,17 @@ const styles = StyleSheet.create({
     textContainer: {
         width: 100,
         height: 20,
-        fontSize: 15,
-        top: -55,
+        fontSize: 13,
+        top: -50,
         color: 'white',
+        left:5
     },
     nameContainer: {
         width: 25,
         height: 25,
-        //left: 125,
-        top: -120,
-        borderRadius:15
+        left: 5,
+        top: -125,
+        borderRadius:15,
     },
     str1Container: {
         width: 90,

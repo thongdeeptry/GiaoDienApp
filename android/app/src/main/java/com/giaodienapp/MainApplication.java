@@ -13,14 +13,17 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.config.ReactFeatureFlags;
 import com.facebook.soloader.SoLoader;
 import com.giaodienapp.newarchitecture.MainApplicationReactNativeHost;
-
+import io.invertase.firebase.RNFirebasePackage;
+import io.invertase.firebase.auth.RNFirebaseAuthPackage;
+import io.invertase.firebase.database.RNFirebaseDatabasePackage;
+import io.invertase.firebase.storage.RNFirebaseStoragePackage;
 import expo.modules.ApplicationLifecycleDispatcher;
 import expo.modules.ReactNativeHostWrapper;
-import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
-import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
+// import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
+// import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-
+import com.oney.WebRTCModule.WebRTCModulePackage;
 public class MainApplication extends Application implements ReactApplication {
   private final ReactNativeHost mReactNativeHost = new ReactNativeHostWrapper(
     this,
@@ -32,13 +35,13 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      @SuppressWarnings("UnnecessaryLocalVariable")
-      List<ReactPackage> packages = new PackageList(this).getPackages();
-      // Packages that cannot be autolinked yet can be added manually here, for example:
-      // packages.add(new MyReactNativePackage());
-      packages.add(new RNFirebaseMessagingPackage());//<- Dòng này
-      packages.add(new RNFirebaseNotificationsPackage());//<- Dòng này
-      return packages;
+      return Arrays.<ReactPackage>asList(
+              new MainReactPackage(),
+              new RNFirebasePackage(),
+              new RNFirebaseAuthPackage(),
+              new RNFirebaseDatabasePackage(),
+              new RNFirebaseStoragePackage()
+      );
     }
 
     @Override

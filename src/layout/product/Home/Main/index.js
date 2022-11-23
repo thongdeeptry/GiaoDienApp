@@ -25,7 +25,7 @@ export default function Main({ route, navigation }) {
       setPets(petsArray);
     }
   }, [pets.length]);
-  console.log("User pets: ", pets);
+
 
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: () => true,
@@ -77,33 +77,6 @@ export default function Main({ route, navigation }) {
 
   return (
     <View style={styles.container }>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          width: "100%",
-          paddingHorizontal: 20,
-          paddingTop: 20,
-          position: 'absolute',
-          height:50,
-        }}
-      >
-        <View style={{ flexDirection: "row", alignItems: "center"}}>
-          <View>
-            <Image source={require("../../../../image/star.png")} />
-          </View>
-          <View>
-            <Text style={{ fontSize: 25 }}>GenzLove</Text>
-          </View>
-        </View>
-
-        <View >
-          <TouchableOpacity >
-          <Image source={require("../../../../image/lui.png")} />
-          </TouchableOpacity>
-        </View>
-      </View>
       {pets
         .map(({ id, name, source, tuoi, diachi }, index) => {
           const isFirst = index === 0;

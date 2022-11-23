@@ -31,8 +31,7 @@ const app = initializeApp(firebaseConfig);
                 });
             
           });
-         
-          console.log('User data: ', data);
+
          
           
         });           

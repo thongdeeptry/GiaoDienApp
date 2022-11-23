@@ -8,21 +8,28 @@ import {
 } from "react-native";
 import React from "react";
 
-export const Story = () => {
+export default Story = ({ route, navigation }) => {
+  const { id } = route.params;
+  const { image } = route.params;
+  const { avt } = route.params;
+  const { name } = route.params;
+  const { noidung } = route.params;
   return (
     <View style={styles.tong}>
+      
       <Image
         style={styles.hinh}
-        source={require("../../image/avt.jpg")}
+        source={{uri:image}}
+        resizeMode="contain"
       ></Image>
       <View style={styles.con}>
         <View style={styles.ten}>
           <View style={styles.maininfo}>
-            <Image style={styles.avt} source={require("../../image/avt.jpg")} />
-            <Text style={styles.ten1}>Trương Công Bảo</Text>
+            <Image style={styles.avt} source={{uri:avt}} />
+            <Text style={styles.ten1}>{name}</Text>
           </View>
           <View style={styles.mainclose}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>navigation.navigate("Home")}>
               <Image
                 style={styles.close}
                 source={require("../../image/close.png")}
@@ -44,12 +51,14 @@ export const Story = () => {
                 borderTopWidth: 1,
                 width: "100%",
                 height: "100%",
+                color:"white",
                 borderRadius: 15,
                 alignItems: "center",
                 flexDirection: "row",
                 justifyContent: "center",
                 
               }}
+              
               placeholder="  Gửi tin nhắn"
             ></TextInput>
             <Image
@@ -85,11 +94,7 @@ export const Story = () => {
           </View>
         </View>
         <View style ={styles.tongts}>
-          <Text style={styles.texttamsu}>Trương Công Bảo hh hhh gggggg ggg gg ghd
-
-          
-          
-   </Text>
+          <Text style={styles.texttamsu}>{ noidung }</Text>
           </View>
       </View>
     </View>
@@ -101,15 +106,15 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: "100%",
     height: "100%",
-top:"90%",
-  
+    top:"90%",
+    alignItems:"center"
   },
   texttamsu:{
-   
+   textAlign:"center",
     width: '100%',
     height: 45,
-   
-    fontSize: 15,
+    left:20,
+    fontSize: 18,
     
     color:"white",
     
@@ -210,7 +215,7 @@ left:10,
     width: "85%",
     height: "85%",
     left: 10,
-    top: 10,
+    top: 20,
 
   },
   hinh: {
@@ -223,6 +228,7 @@ left:10,
     position: "absolute",
     width: "100%",
     height: "100%",
-    backgroundColor: "white",
+    backgroundColor: "black",
+
   },
 });

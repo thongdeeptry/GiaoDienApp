@@ -10,11 +10,14 @@ export const UserContextProvider = (props) => {
     const onLogin = () =>{
         setisLoggedIn(true);
     }
+    const onLogout = () =>{
+      setisLoggedIn(false);
+  }
   return (
     <UserContext.Provider
         value = {{
             isLoggedIn: isLoggedIn,
-            onLogin
+            onLogin,onLogout
         }}
         >
         {children}

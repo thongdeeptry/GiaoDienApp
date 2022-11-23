@@ -12,20 +12,25 @@ import {
 } from "react-native";
 import { UserContext } from "../UserContext";
 import { initializeApp } from "firebase/app";
-import firebase from "firebase/compat";
+import Checkbox from 'expo-checkbox';
 import { firebaseConfig } from "../../../../config";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import firebase from '@react-native-firebase/app'
+import '@react-native-firebase/messaging'
 import {
   getAuth,
   signInWithEmailAndPassword,
   signInWithPhoneNumber,
+  signInWithCustomToken,
+  
 } from "firebase/auth";
-import AsyncStorage from '@react-native-async-storage/async-storage'
 export const Login = (props) => {
   const { navigation } = props;
   const { onLogin } = useContext(UserContext);
   const [email, setemail] = useState();
   const [password, setpassword] = useState();
   const [sdt, setsdt] = useState();
+  const [isCheckedStatus, setCheckedStatus] = useState(true);
   let app;
   useEffect(() => {
     app = initializeApp(firebaseConfig);
@@ -33,13 +38,35 @@ export const Login = (props) => {
       console.log("Kết nối thành công");
     }
   }, []);
+ 
+  
   const auth = getAuth(app);
   const Click = async () => {
     await signInWithEmailAndPassword(auth, email, password)
-      .then(() => {
+      .then(async () => {
         console.log("Đăng nhập thành công");
         const user = getAuth().currentUser.uid;
         console.log("UID - " + user);
+        
+        if(isCheckedStatus==true){
+    await AsyncStorage.setItem(
+      'email',
+      email
+    );
+    await AsyncStorage.setItem(
+      'password',
+      password
+    );
+        }else{
+          await AsyncStorage.setItem(
+            'email',
+            ""
+          );
+          await AsyncStorage.setItem(
+            'password',
+            ""
+          );
+        }
         onLogin();
       })
       .catch((error) => {
@@ -117,6 +144,8 @@ export const Login = (props) => {
                 placeholder="Mật khẩu"
                 multiline={true}
                 maxLength={100}
+                secureTextEntry={true}
+                textContentType="password"
               ></TextInput>
             </View>
 
@@ -128,20 +157,14 @@ export const Login = (props) => {
                 flexDirection: "row",
               }}
             >
-              <Image
-                style={{ opacity: 0.7 }}
-                source={require("../../../image/checkbox.png")}
-              />
-              <Text
-                style={{
-                  paddingLeft: 10,
-                  fontSize: 17,
-                  alignItems: "center",
-                  color: "#595959",
-                }}
-              >
-                Lưu mật khẩu
-              </Text>
+              <View style={styles.checkbox}>
+            <Checkbox
+          value={isCheckedStatus}
+          onValueChange={setCheckedStatus}
+          color={isCheckedStatus ? '#E94057' : undefined}
+        />
+        <Text style={{left:5}}>Lưu mật khẩu</Text>
+            </View>
             </View>
 
             <View style={styles.mailnut}>
@@ -185,6 +208,13 @@ export const Login = (props) => {
 };
 
 const styles = StyleSheet.create({
+  checkbox: {
+    marginBottom: 8,
+    justifyContent:'flex-start',
+    alignItems:"flex-start",
+    alignSelf:'flex-start',
+    flexDirection:"row",
+  },
   mailnut: {
     position: "absolute",
     width: "100%",

@@ -13,7 +13,7 @@ import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../../../config";
 import { getAuth } from "firebase/auth";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
-export default notifiCation = () => {
+export default notifiCation = ({ route, navigation }) => {
   const app = initializeApp(firebaseConfig);
   if (!app.length) {
   }
@@ -66,7 +66,7 @@ export default notifiCation = () => {
         }}
       >
         <Text style={{ fontSize: 17 }}>Thông báo</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>navigation.navigate("IndexCall")}>
           <Text style={{ fontSize: 17 }}>Đã đọc tất cả</Text>
         </TouchableOpacity>
       </View>
