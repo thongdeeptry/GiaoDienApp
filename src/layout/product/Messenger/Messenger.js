@@ -74,7 +74,7 @@ function Messenger(props) {
     return () => {
       unSub();
     };
-  }, [combinedId]);
+  }, []);
   console.log(chatHistory);
   const sendMess = async () => {
     if (typedText.trim().length == 0) {
@@ -155,8 +155,8 @@ function Messenger(props) {
           flex: 1,
           marginBottom: 20,
         }}
-        
-        data={chatHistory}
+        inverted
+        data={chatHistory.reverse()}
         renderItem={({ item }) => (
           <MessengerItem
             onPress={() => {

@@ -11,36 +11,24 @@ import {
 } from "react-native";
 import { images, colors, icons, fontSizes } from "../../../constants";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import {
-  onAuthStateChanged,
-  firebaseDatabaseRef,
-  firebaseSet,
-  firebaseDatabase,
-  auth,
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-  child,
-  get,
-  db,
-  onValue,
-} from "../../../../config";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  setDoc,
-  doc,
-  updateDoc,
-  serverTimestamp,
-  getDoc,
-  onSnapshot,
-} from "firebase/firestore";
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "../../../../config";
+import { getAuth } from "firebase/auth";
+import { getDatabase, ref, onValue, set, push ,update} from "firebase/database";
 function ChatItem(props) {
-  const user = auth.currentUser.uid;
-  console.log("UID - " + user);
+  initializeApp(firebaseConfig);
+  const user = getAuth().currentUser.uid;
+  const db = getDatabase();
   let { name, url, message, numberOfUnreadMessages, userId } = props.user; //destructuring an object
   const { onPress } = props;
+  const [id, setid] = useState();
+  useEffect(() => {
+    const reference = ref(db, "users/" + userId);
+    onValue(reference, (childSnapshot) => {
+      const trangthai = childSnapshot.child("trangthai").val();
+      setid(trangthai);
+    });
+  },[]);
   const combinedId =
     user > userId
         ? user + userId
@@ -68,7 +56,15 @@ function ChatItem(props) {
           source={{
             uri: url,
           }}
-        />
+        >
+         
+        </Image>
+          {
+            id=="Hoạt Động"?
+            <Image style={{left:5,bottom:50,width:15,height:15}} source={require('../../../image/activeIcon.png')}/>
+            :<Image style={{left:5,bottom:50,width:15,height:15}} source={require('../../../image/new-moon.png')}/>
+          }
+        
         {numberOfUnreadMessages > 0 && (
           <Text
             style={{

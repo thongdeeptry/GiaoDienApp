@@ -176,7 +176,8 @@ export const Profile = (props) => {
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
       showsVerticalScrollIndicator={false}
-      style={{ width: "100%", height: 2000 }}
+      style={{ width: "100%", height: "100%" }}
+      
     >
       <View style={styles.container}>
         {isLoading == true ? (
@@ -194,7 +195,7 @@ export const Profile = (props) => {
           </Text>
         ) : (
           <View style={styles.mainanh}>
-            <View style={{ width: "100%", height: 500, position: "absolute" }}>
+            <View style={{ width: "100%", height: 500, }}>
               <Image style={styles.anh} source={{ uri: avt }} />
             </View>
 
@@ -232,10 +233,11 @@ export const Profile = (props) => {
                       top: 30,
                       
                     }}
-                    contentContainerStyle={{ flex: 1, marginTop: 5,flexDirection: 'row',flexWrap:"wrap" }}
+                    contentContainerStyle={{ flex: 1, marginTop: 5,flexDirection: 'row',flexWrap:'wrap-reverse' }}
               horizontal={false}
                     data={sothich2}
-                    renderItem={({ item, index }) => (
+                    renderItem={({ item, index }) => {
+                      return(
                       <Pressable
                         style={[
                           styles.khungmau,
@@ -265,7 +267,8 @@ export const Profile = (props) => {
                           </Text>
                         </View>
                       </Pressable>
-                    )}
+                      )
+                    }}
                     
                   />
                 </View>
@@ -299,7 +302,7 @@ export const Profile = (props) => {
                       width: "100%",
                       height: 320,
                     }}
-                    contentContainerStyle={{ flexWrap: 'wrap', flex: 1, marginTop: 5,flexDirection:"row",alignItems: "center",
+                    contentContainerStyle={{ flexWrap: 'wrap-reverse', flex: 1, marginTop: 5,flexDirection:"row",alignItems: "center",
                     justifyContent: "space-between",
                     borderRadius: 15,}}
               horizontal={false}
@@ -364,7 +367,7 @@ export const Profile = (props) => {
                     }}
                     contentContainerStyle={{
                       flexDirection: "row",
-                      flexWrap: "wrap",
+                      flexWrap: "wrap-reverse",
                       alignItems: "center",
                       justifyContent: "space-between",
                       borderRadius: 15,
@@ -862,7 +865,7 @@ const styles = StyleSheet.create({
   },
   container: {
     width: "100%",
-    height: 5000,
+    height:4430,
     backgroundColor: "white",
   },
 });

@@ -21,7 +21,7 @@ import notifiCation from "./notifiCation";
 import Home from "../../../components/Home";
 import IndexCall from "./Call/Index";
 import Story from "../../layout/product/Story"
-import AllUser from "./Home/Main"
+import {AllUser} from "./AllUser";
 import Chinhsua from "./Chinhsua"
 function HomeStack() {
   return (
@@ -167,6 +167,7 @@ export default ProductNavigation = (props) => {
                   source={require("../../image/home.png")}
                 />
               );
+              
             }
             if (route.name == "Chat") {
               return (
@@ -223,6 +224,7 @@ export default ProductNavigation = (props) => {
             
           },
           headerShown: false,
+          //tabBarShowLabel:false,
         })}
       >
         <Tab.Screen name="Home" component={HomeStack} />
