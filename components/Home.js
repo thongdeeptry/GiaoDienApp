@@ -231,7 +231,10 @@ const Home = ({ route, navigation }) => {
             />
             <Text style={{ fontSize: 17, color: "black" }}>Thích</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ flexDirection: "row" }}>
+          <TouchableOpacity
+            style={{ flexDirection: "row" }}
+            onPress={() => navigation.navigate("Binhluan")}
+          >
             <Image
               style={styles.cmtContainer}
               source={require("../assets/iccmt.png")}
@@ -271,16 +274,16 @@ const Home = ({ route, navigation }) => {
           </Text>
         </View>
         <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity onPress={logOut}>
+          <TouchableOpacity onPress={() => navigation.navigate("Timkiem")}>
             <Image
               style={{ width: 35, height: 35, right: 5 }}
               source={require("../src/assets/search.png")}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("Chat")}>
+          <TouchableOpacity onPress={() => navigation.navigate("caidat")}>
             <Image
               style={{ width: 35, height: 35 }}
-              source={require("../src/image/chat.png")}
+              source={require("../src/image/setting.png")}
             />
           </TouchableOpacity>
         </View>
