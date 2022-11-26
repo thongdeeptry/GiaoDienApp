@@ -11,14 +11,14 @@ import React, { useState, useEffect } from "react";
 
 export const Camxuc = ({ route, navigation }) => {
   const [hoatdong, sethoatdong] = useState();
-  const [noidung1, setnoidung1] = useState();
+  const [noidung, setnoidung1] = useState();
   const [nhapnd, setnhapnd] = useState();
   const ThemHoatDong = (hd) => {
     sethoatdong(hd);
   };
+
   const ChuyenNoiDung = () => {
-    setnoidung1(hoatdong + " " + nhapnd);
-    navigation.navigate("PostStatus", { noidung1 });
+    navigation.navigate("PostStatus", { hoatdong });
   };
   return (
     <View style={styles.container}>
