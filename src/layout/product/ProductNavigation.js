@@ -19,6 +19,12 @@ import Messenger from "./Messenger/Messenger";
 import Chat from "./Chat/Chat";
 import notifiCation from "./notifiCation";
 import Home from "../../../components/Home";
+import Story from "../../layout/product/Story";
+import { AllUser } from "./AllUser";
+import Chinhsua from "./Chinhsua";
+import { caidat } from "./caidat";
+import Timkiem from "./Timkiem";
+import Binhluan from "./Binhluan";
 import IndexCall from "./Call/Index";
 import Story from "../../layout/product/Story";
 import { AllUser } from "./AllUser";
@@ -40,10 +46,12 @@ function HomeStack() {
       <Stack.Screen name="IndexCall" component={IndexCall} /> */}
       <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
       <Stack.Screen name="Messenger" component={Messenger} />
-      <Stack.Screen name="IndexCall" component={IndexCall} />
+      <Stack.Screen name="Timkiem" component={Timkiem} />
       <Stack.Screen name="Story" component={Story} />
       <Stack.Screen name="AllUser" component={AllUser} />
       <Stack.Screen name="Chinhsua" component={Chinhsua} />
+      <Stack.Screen name="caidat" component={caidat} />
+      <Stack.Screen name="Binhluan" component={Binhluan} />
       <Stack.Screen name="ChangePass" component={ChangePass} />
       <Stack.Screen name="BanBe" component={BanBe} />
       <Stack.Screen name="AnhUser" component={AnhUser} />
@@ -64,9 +72,11 @@ function ProfileStack() {
       <Stack.Screen name="notifiCation" component={notifiCation} />
       <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
       <Stack.Screen name="Messenger" component={Messenger} />
-      <Stack.Screen name="IndexCall" component={IndexCall} />
+      <Stack.Screen name="Timkiem" component={Timkiem} />
       <Stack.Screen name="Story" component={Story} />
       <Stack.Screen name="AllUser" component={AllUser} />
+      <Stack.Screen name="caidat" component={caidat} />
+      <Stack.Screen name="Binhluan" component={Binhluan} />
       <Stack.Screen name="ChangePass" component={ChangePass} />
       <Stack.Screen name="BanBe" component={BanBe} />
       <Stack.Screen name="AnhUser" component={AnhUser} />
@@ -88,9 +98,11 @@ function AllUserStack() {
       <Stack.Screen name="notifiCation" component={notifiCation} />
       <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
       <Stack.Screen name="Messenger" component={Messenger} />
-      <Stack.Screen name="IndexCall" component={IndexCall} />
       <Stack.Screen name="Story" component={Story} />
       <Stack.Screen name="Chinhsua" component={Chinhsua} />
+      <Stack.Screen name="caidat" component={caidat} />
+      <Stack.Screen name="Timkiem" component={Timkiem} />
+      <Stack.Screen name="Binhluan" component={Binhluan} />
       <Stack.Screen name="ChangePass" component={ChangePass} />
       <Stack.Screen name="BanBe" component={BanBe} />
       <Stack.Screen name="AnhUser" component={AnhUser} />
@@ -107,7 +119,6 @@ function ChatStack() {
       {/* <Stack.Screen name=Chinhsua"Home" component={Home} /> */}
       <Stack.Screen name="PostStatus" component={PostStatus} />
       <Stack.Screen name="Camxuc" component={Camxuc} />
-      <Stack.Screen name="IndexCall" component={IndexCall} />
       <Stack.Screen name="Profile" component={Profile} />
       {/* <Stack.Screen name="notifiCation" component={notifiCation} /> */}
       <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
@@ -115,6 +126,9 @@ function ChatStack() {
       <Stack.Screen name="Story" component={Story} />
       <Stack.Screen name="AllUser" component={AllUser} />
       <Stack.Screen name="Chinhsua" component={Chinhsua} />
+      <Stack.Screen name="caidat" component={caidat} />
+      <Stack.Screen name="Timkiem" component={Timkiem} />
+      <Stack.Screen name="Binhluan" component={Binhluan} />
       <Stack.Screen name="ChangePass" component={ChangePass} />
       <Stack.Screen name="BanBe" component={BanBe} />
       <Stack.Screen name="AnhUser" component={AnhUser} />
@@ -139,6 +153,9 @@ function NotiStack() {
       <Stack.Screen name="Story" component={Story} />
       <Stack.Screen name="AllUser" component={AllUser} />
       <Stack.Screen name="Chinhsua" component={Chinhsua} />
+      <Stack.Screen name="caidat" component={caidat} />
+      <Stack.Screen name="Timkiem" component={Timkiem} />
+      <Stack.Screen name="Binhluan" component={Binhluan} />
       <Stack.Screen name="ChangePass" component={ChangePass} />
       <Stack.Screen name="BanBe" component={BanBe} />
       <Stack.Screen name="AnhUser" component={AnhUser} />
