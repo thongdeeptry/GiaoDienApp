@@ -324,7 +324,7 @@ const Home = ({ route, navigation }) => {
             >
               <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
                 <Image
-                  style={{ width: 45, height: 45, borderRadius: 22 }}
+                  style={{ width: 45, height: 45, borderRadius: 10 }}
                   source={{ uri: avt }}
                 />
               </TouchableOpacity>

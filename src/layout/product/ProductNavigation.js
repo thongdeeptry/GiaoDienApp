@@ -19,13 +19,20 @@ import Messenger from "./Messenger/Messenger";
 import Chat from "./Chat/Chat";
 import notifiCation from "./notifiCation";
 import Home from "../../../components/Home";
-
 import Story from "../../layout/product/Story";
 import { AllUser } from "./AllUser";
 import Chinhsua from "./Chinhsua";
 import { caidat } from "./caidat";
 import Timkiem from "./Timkiem";
 import Binhluan from "./Binhluan";
+import IndexCall from "./Call/Index";
+import Story from "../../layout/product/Story";
+import { AllUser } from "./AllUser";
+import Chinhsua from "./Chinhsua";
+import ChangePass from "./changePass";
+import { BanBe } from "./BanBe";
+import { AnhUser } from "./AnhUser";
+import { XemAnh } from "./XemAnh";
 function HomeStack() {
   return (
     <Stack.Navigator
@@ -45,6 +52,10 @@ function HomeStack() {
       <Stack.Screen name="Chinhsua" component={Chinhsua} />
       <Stack.Screen name="caidat" component={caidat} />
       <Stack.Screen name="Binhluan" component={Binhluan} />
+      <Stack.Screen name="ChangePass" component={ChangePass} />
+      <Stack.Screen name="BanBe" component={BanBe} />
+      <Stack.Screen name="AnhUser" component={AnhUser} />
+      <Stack.Screen name="XemAnh" component={XemAnh} />
     </Stack.Navigator>
   );
 }
@@ -66,6 +77,10 @@ function ProfileStack() {
       <Stack.Screen name="AllUser" component={AllUser} />
       <Stack.Screen name="caidat" component={caidat} />
       <Stack.Screen name="Binhluan" component={Binhluan} />
+      <Stack.Screen name="ChangePass" component={ChangePass} />
+      <Stack.Screen name="BanBe" component={BanBe} />
+      <Stack.Screen name="AnhUser" component={AnhUser} />
+      <Stack.Screen name="XemAnh" component={XemAnh} />
     </Stack.Navigator>
   );
 }
@@ -88,6 +103,10 @@ function AllUserStack() {
       <Stack.Screen name="caidat" component={caidat} />
       <Stack.Screen name="Timkiem" component={Timkiem} />
       <Stack.Screen name="Binhluan" component={Binhluan} />
+      <Stack.Screen name="ChangePass" component={ChangePass} />
+      <Stack.Screen name="BanBe" component={BanBe} />
+      <Stack.Screen name="AnhUser" component={AnhUser} />
+      <Stack.Screen name="XemAnh" component={XemAnh} />
     </Stack.Navigator>
   );
 }
@@ -110,6 +129,10 @@ function ChatStack() {
       <Stack.Screen name="caidat" component={caidat} />
       <Stack.Screen name="Timkiem" component={Timkiem} />
       <Stack.Screen name="Binhluan" component={Binhluan} />
+      <Stack.Screen name="ChangePass" component={ChangePass} />
+      <Stack.Screen name="BanBe" component={BanBe} />
+      <Stack.Screen name="AnhUser" component={AnhUser} />
+      <Stack.Screen name="XemAnh" component={XemAnh} />
     </Stack.Navigator>
   );
 }
@@ -124,6 +147,7 @@ function NotiStack() {
       <Stack.Screen name="Camxuc" component={Camxuc} />
       {/* <Stack.Screen name="Chat" component={Chat} />
       <Stack.Screen name="Profile" component={Profile} /> */}
+      <Stack.Screen name="IndexCall" component={IndexCall} />
       <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
       <Stack.Screen name="Messenger" component={Messenger} />
       <Stack.Screen name="Story" component={Story} />
@@ -132,6 +156,10 @@ function NotiStack() {
       <Stack.Screen name="caidat" component={caidat} />
       <Stack.Screen name="Timkiem" component={Timkiem} />
       <Stack.Screen name="Binhluan" component={Binhluan} />
+      <Stack.Screen name="ChangePass" component={ChangePass} />
+      <Stack.Screen name="BanBe" component={BanBe} />
+      <Stack.Screen name="AnhUser" component={AnhUser} />
+      <Stack.Screen name="xemAnh" component={xemAnh} />
     </Stack.Navigator>
   );
 }

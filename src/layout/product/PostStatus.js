@@ -17,22 +17,15 @@ import {
 import React, { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
 import firebase from "firebase/compat";
-import { firebaseConfig ,firebaseDatabaseRef} from "../../../config";
+import { firebaseConfig, firebaseDatabaseRef } from "../../../config";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getDatabase, onValue, set, push } from "firebase/database";
 import * as Permission from "expo-permissions";
 import * as Location from "expo-location";
 import * as ImagePicker from "expo-image-picker";
-import * as Animatable from "react-native-animatable";
-import Checkbox from 'expo-checkbox';
-import {
-  getStorage,
-  ref,
-  uploadBytes,
-  uploadString,
-} from "firebase/storage";
+import Checkbox from "expo-checkbox";
+import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
 export const PostStatus = ({ route, navigation }) => {
-  const { noidung1 } = route.params;
   const app = initializeApp(firebaseConfig);
   const data = [];
   const [name, setname] = useState();
@@ -58,7 +51,12 @@ export const PostStatus = ({ route, navigation }) => {
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
   const storage = getStorage(app);
+  const [noidung1, setnoidung1] = useState();
   useEffect(() => {
+    try {
+      const { hoatdong } = route.params;
+      setnoidung1(hoatdong);
+    } catch (error) {}
     const reference = firebaseDatabaseRef(db, "users/" + user);
     onValue(reference, (childSnapshot) => {
       const namepr = childSnapshot.child("name").val();
@@ -72,6 +70,7 @@ export const PostStatus = ({ route, navigation }) => {
       id = childSnapshot1.size + 1;
     });
   });
+  console.log(noidung1);
   function makeid(length) {
     var text = "";
     var possible =
@@ -91,17 +90,19 @@ export const PostStatus = ({ route, navigation }) => {
       quality: 1,
     });
 
-
     if (!result.cancelled) {
       setImage(result.uri);
       uploadImageToBucket(image, makeid(60));
     }
   };
-  
+
   const uploadImageToBucket = async (uri, imageName) => {
     const res = await fetch(uri);
     const blob = await res.blob();
-    const storageRef = ref(storage, "images/album/" + user + "/" + imageName + ".png");
+    const storageRef = ref(
+      storage,
+      "images/album/" + user + "/" + imageName + ".png"
+    );
     setupload(
       "https://firebasestorage.googleapis.com/v0/b/duantotnghiepreact.appspot.com/o/images%2Falbum%2F" +
         user +
@@ -112,11 +113,10 @@ export const PostStatus = ({ route, navigation }) => {
 
     console.log("Link Anh: " + upload);
     return uploadBytes(storageRef, blob).then((snapshot) => {
-      
-      console.log("Uploaded a blob or file!"+snapshot.metadata);
+      console.log("Uploaded a blob or file!" + snapshot.metadata);
     });
   };
-  
+
   const getLocation = async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
@@ -149,9 +149,9 @@ export const PostStatus = ({ route, navigation }) => {
       setlocation(city);
     });
   };
- const openModal=()=>{
-  setModalVisible(true)
- }
+  const openModal = () => {
+    setModalVisible(true);
+  };
   const AddPost = () => {
     setModalVisible(false);
     const d = new Date();
@@ -160,29 +160,30 @@ export const PostStatus = ({ route, navigation }) => {
     const nam = d.getFullYear();
     if (noidung == "" || noidung == null) {
       ToastAndroid.show("Chưa có nội dung", ToastAndroid.BOTTOM);
-    }else {
-      if(isCheckedStatus==true){
-      const reference13 = firebaseDatabaseRef(db, "post/" + user + "/" + id);
-      set(reference13, {
-        name: name,
-        avt: avt,
-        id: id,
-        noidung: noidung,
-        checkin: location==undefined?"":location,
-        image: upload,
-        thoigian: ngay + " Tháng " + thang + " Năm " + nam,
-      });
-      }if(isCheckedStory==true){
+    } else {
+      if (isCheckedStatus == true) {
+        const reference13 = firebaseDatabaseRef(db, "post/" + user + "/" + id);
+        set(reference13, {
+          name: name,
+          avt: avt,
+          id: id,
+          noidung: noidung,
+          checkin: location == undefined ? "" : location,
+          image: upload,
+          thoigian: ngay + " Tháng " + thang + " Năm " + nam,
+        });
+      }
+      if (isCheckedStory == true) {
         const reference13 = firebaseDatabaseRef(db, "story/" + user + "/" + id);
-      set(reference13, {
-        name: name,
-        avt: avt,
-        id: id,
-        noidung: noidung,
-        checkin: location==undefined?"":location,
-        image: upload,
-        thoigian: ngay + " Tháng " + thang + " Năm " + nam,
-      });
+        set(reference13, {
+          name: name,
+          avt: avt,
+          id: id,
+          noidung: noidung,
+          checkin: location == undefined ? "" : location,
+          image: upload,
+          thoigian: ngay + " Tháng " + thang + " Năm " + nam,
+        });
       }
       ToastAndroid.show("Đã chia sẻ bài viết", ToastAndroid.BOTTOM);
       navigation.navigate("Profile");
@@ -191,48 +192,51 @@ export const PostStatus = ({ route, navigation }) => {
 
   const ChonAnh = () => {};
   return (
-    
     <View style={styles.tong}>
       <View style={styles.centeredView}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Bạn muốn chia sẻ bài viết ở đâu!</Text>
-            <View style={styles.checkbox}>
-            <Checkbox
-          value={isCheckedStatus}
-          onValueChange={setCheckedStatus}
-          color={isCheckedStatus ? '#E94057' : undefined}
-        />
-        <Text style={{left:5}}>Dòng thời gian</Text>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>
+                Bạn muốn chia sẻ bài viết ở đâu!
+              </Text>
+              <View style={styles.checkbox}>
+                <Checkbox
+                  value={isCheckedStatus}
+                  onValueChange={setCheckedStatus}
+                  color={isCheckedStatus ? "#E94057" : undefined}
+                />
+                <Text style={{ left: 5 }}>Dòng thời gian</Text>
+              </View>
+              <View style={styles.checkbox}>
+                <Checkbox
+                  value={isCheckedStory}
+                  onValueChange={setCheckedStory}
+                  color={isCheckedStory ? "#E94057" : undefined}
+                />
+                <Text style={{ left: 5 }}>Khoảnh khắc mới</Text>
+              </View>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={AddPost}
+              >
+                <Text style={styles.textStyle}>Chia Sẻ</Text>
+              </Pressable>
             </View>
-            <View style={styles.checkbox}>
-        <Checkbox
-          value={isCheckedStory}
-          onValueChange={setCheckedStory}
-          color={isCheckedStory ? '#E94057' : undefined}
-        />
-        <Text style={{left:5}}>Khoảnh khắc mới</Text>
-        </View>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={AddPost}>
-              <Text style={styles.textStyle}>Chia Sẻ</Text>
-            </Pressable>
           </View>
-        </View>
-      </Modal>
-      {/* <Pressable style={[styles.button, styles.buttonOpen]} onPress={() => setModalVisible(true)}>
+        </Modal>
+        {/* <Pressable style={[styles.button, styles.buttonOpen]} onPress={() => setModalVisible(true)}>
         <Text style={styles.textStyle}>Show Modal</Text>
       </Pressable> */}
-    </View>
+      </View>
       <View style={styles.e}>
         <View
           style={{
@@ -287,11 +291,7 @@ export const PostStatus = ({ route, navigation }) => {
               style={{ flexDirection: "row", width: "90%", paddingRight: 5 }}
             >
               <Text style={{ fontSize: 16, fontWeight: "500" }}>
-                {name}{" "}
-                {(noidung1 != "") & (noidung1 != null) &&
-                noidung1 != "undefined"
-                  ? "- " + noidung1
-                  : null}
+                {name} - {noidung1}
                 <Text style={{ fontSize: 16 }}>
                   {tinh != "" && tinh != null ? " tại " : null}
                 </Text>
@@ -471,24 +471,23 @@ export const PostStatus = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   checkbox: {
     marginBottom: 8,
-    justifyContent:'flex-start',
-    alignItems:"flex-start",
-    alignSelf:'flex-start',
-    flexDirection:"row",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    alignSelf: "flex-start",
+    flexDirection: "row",
   },
   centeredView: {
     flex: 1,
     justifyContent: "center",
-    alignItems: 'center',
-
+    alignItems: "center",
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 10,
     padding: 15,
-    alignItems: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -500,30 +499,30 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 20,
     paddingHorizontal: 40,
-    paddingVertical:8,
+    paddingVertical: 8,
     elevation: 2,
   },
   buttonOpen: {
-    backgroundColor: '#F194FF',
+    backgroundColor: "#F194FF",
   },
   buttonClose: {
-    backgroundColor: '#E94057',
+    backgroundColor: "#E94057",
   },
   textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
   modalText: {
     marginBottom: 15,
-    textAlign: 'center',
+    textAlign: "center",
   },
   image: {
     left: 20,
     width: 100,
     height: 100,
     borderRadius: 20,
-    top:10
+    top: 10,
   },
   mainnhap: {
     flexDirection: "column",

@@ -47,7 +47,6 @@ export default notifiCation = ({ route, navigation }) => {
       });
     });
   });
-  console.log(dataTB);
   return (
     <View
       style={{
@@ -65,67 +64,71 @@ export default notifiCation = ({ route, navigation }) => {
           marginTop: 40,
         }}
       >
-        <Text style={{ fontSize: 17 }}>Thông báo</Text>
-        <TouchableOpacity onPress={()=>navigation.navigate("IndexCall")}>
+        <Text style={{ fontSize: 17, color: "#E94057", letterSpacing: 1 }}>
+          Thông báo
+        </Text>
+        <TouchableOpacity onPress={() => navigation.navigate("IndexCall")}>
           <Text style={{ fontSize: 17 }}>Đã đọc tất cả</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.dataMap}>
-        {dataTB.map((item, index) => (
-          <Pressable
-            key={index}
-            style={{
-              borderBottomColor: "#ABABAB",
-              borderLeftColor: "#ABABAB",
-              borderLeftWidth: 0.5,
-              borderBottomWidth: 0.5,
-              borderRightColor: "#ABABAB",
-              borderTopColor: "#ABABAB",
-              borderRightWidth: 0.5,
-              borderTopWidth: 0.5,
-              borderRadius: 15,
-              paddingVertical: 5,
-              marginTop: 10,
-            }}
-          >
-            <View style={styles.info}>
-              <Image
-                style={{ width: 40, height: 40, borderRadius: 20 }}
-                source={{ uri: item.avt }}
-              />
-              <View style={styles.tenmain}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    width: "100%",
-                    paddingRight: 5,
-                  }}
-                >
+      <ScrollView style={{ marginBottom: 50 }}>
+        <View style={styles.dataMap}>
+          {dataTB.map((item, index) => (
+            <Pressable
+              key={index}
+              style={{
+                borderBottomColor: "#ABABAB",
+                borderLeftColor: "#ABABAB",
+                borderLeftWidth: 0.5,
+                borderBottomWidth: 0.5,
+                borderRightColor: "#ABABAB",
+                borderTopColor: "#ABABAB",
+                borderRightWidth: 0.5,
+                borderTopWidth: 0.5,
+                borderRadius: 15,
+                paddingVertical: 5,
+                marginTop: 10,
+              }}
+            >
+              <View style={styles.info}>
+                <Image
+                  style={{ width: 40, height: 40, borderRadius: 20 }}
+                  source={{ uri: item.avt }}
+                />
+                <View style={styles.tenmain}>
                   <View
                     style={{
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                      height: 35,
+                      flexDirection: "row",
                       width: "100%",
+                      paddingRight: 5,
                     }}
                   >
-                    <Text
+                    <View
                       style={{
-                        fontSize: 14,
-                        fontWeight: "500",
-                        width: "85%",
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                        height: 35,
+                        width: "100%",
                       }}
                     >
-                      {item.name} {item.noidung}
-                    </Text>
-                    <Text style={{ fontSize: 11 }}>{item.thoigian}</Text>
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          fontWeight: "500",
+                          width: "85%",
+                        }}
+                      >
+                        {item.name} {item.noidung}
+                      </Text>
+                      <Text style={{ fontSize: 11 }}>{item.thoigian}</Text>
+                    </View>
                   </View>
                 </View>
               </View>
-            </View>
-          </Pressable>
-        ))}
-      </View>
+            </Pressable>
+          ))}
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -135,7 +138,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingVertical: 5,
   },
   tenmain: {
     width: "100%",

@@ -26,5 +26,4 @@ onValue(reference, (snapshot) => {
     });
   });
 });
-console.log("User Posst: ", data);
 export const posts = data;
