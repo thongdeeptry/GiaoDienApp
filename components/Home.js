@@ -21,6 +21,8 @@ import {
   set,
   push,
   update,
+  query,
+  limitToLast,
 } from "firebase/database";
 import { UserContext } from "../src/layout/user/UserContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -31,6 +33,7 @@ const Home = ({ route, navigation }) => {
   const [name, setname] = useState();
   const [avt, setavt] = useState();
   const [id, setid] = useState();
+
   const datapost = [];
   const dataStory = [];
   const user = getAuth().currentUser.uid;
@@ -57,7 +60,7 @@ const Home = ({ route, navigation }) => {
         // An error happened.
       });
   };
-  const referencer = ref(db, "post");
+  const referencer = query(ref(db, "post"), limitToLast(1000));
   onValue(referencer, (snapshot) => {
     snapshot.forEach((childSnapshot) => {
       childSnapshot.forEach((childSnapshotq) => {
@@ -68,6 +71,8 @@ const Home = ({ route, navigation }) => {
         const trangthai = childSnapshotq.child("checkin").exportVal();
         const thoigian = childSnapshotq.child("thoigian").exportVal();
         const image = childSnapshotq.child("image").exportVal();
+        const user = childSnapshotq.child("user").exportVal();
+
         datapost.push({
           id: id,
           name: name,
@@ -76,12 +81,13 @@ const Home = ({ route, navigation }) => {
           checkin: trangthai,
           thoigian: thoigian,
           image: image,
+          user: user,
         });
       });
     });
   });
 
-  const referencerr = ref(db, "story");
+  const referencerr = query(ref(db, "story"), limitToLast(1000));
   onValue(referencerr, (snapshot) => {
     snapshot.forEach((childSnapshot) => {
       childSnapshot.forEach((childSnapshotq) => {
@@ -233,7 +239,12 @@ const Home = ({ route, navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={{ flexDirection: "row" }}
-            onPress={() => navigation.navigate("Binhluan")}
+            onPress={() =>
+              navigation.navigate("Binhluan", {
+                idPost: item.id,
+                userID: item.user,
+              })
+            }
           >
             <Image
               style={styles.cmtContainer}
@@ -280,7 +291,7 @@ const Home = ({ route, navigation }) => {
               source={require("../src/assets/search.png")}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("caidat")}>
+          <TouchableOpacity onPress={() => navigation.navigate("CaiDat")}>
             <Image
               style={{ width: 35, height: 35 }}
               source={require("../src/image/setting.png")}
