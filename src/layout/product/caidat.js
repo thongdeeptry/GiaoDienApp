@@ -33,6 +33,17 @@ export const CaiDat = ({ route, navigation }) => {
   const { onLogout } = useContext(UserContext);
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
+  const [name, setname] = useState();
+  const [avt, setavt] = useState();
+  useEffect(() => {
+    const reference = ref(db, "users/" + user);
+    onValue(reference, (childSnapshot) => {
+      const namepr = childSnapshot.child("name").val();
+      const avtpr = childSnapshot.child("avt").val();
+      setname(namepr);
+      setavt(avtpr);
+    });
+  });
   const logOut = () => {
     const auth = getAuth();
     signOut(auth)
@@ -51,15 +62,12 @@ export const CaiDat = ({ route, navigation }) => {
       <Text style={styles.chuu}>Cài đặt</Text>
 
       <View>
-        <Image
-          style={styles.avt}
-          source={require("../../image/hieunghia.jpg")}
-        />
-        <Text style={styles.ten}>Trương Công Bảo</Text>
+        <Image style={styles.avt} source={{ uri: avt }} />
+        <Text style={styles.ten}>{name}</Text>
       </View>
       <View style={styles.a}>
         <View style={styles.khung}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Chinhsua")}>
             <Text style={styles.chu}>Chỉnh sửa thông tin</Text>
 
             <Image
@@ -70,7 +78,7 @@ export const CaiDat = ({ route, navigation }) => {
         </View>
         <View style={{ top: 70 }}>
           <View style={styles.khung}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("Chinhsua")}>
               <Text style={styles.chu}>Mời bạn bè</Text>
 
               <Image
@@ -169,7 +177,7 @@ const styles = StyleSheet.create({
   chuu: {
     width: "100%",
     position: "absolute",
-
+    color: "#E94057",
     left: 20,
     fontSize: 20,
     top: 16,
