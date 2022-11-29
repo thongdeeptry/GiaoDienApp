@@ -3,7 +3,6 @@ import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
 
 export const XemAnh = ({ route, navigation }) => {
   const { linkAnh } = route.params;
-  console.log(linkAnh);
   return (
     <View
       style={{

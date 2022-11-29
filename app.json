@@ -3,14 +3,18 @@
     "name": "GiaoDienApp",
     "slug": "GiaoDienApp",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "android": {
+      "googleServicesFile": "./google-services.json",
       "package": "com.thanhthong0312.GiaoDienApp"
     },
     "ios": {
       "bundleIdentifier": "org.name.GiaoDienApp"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d14b1fd7-bbc9-4484-9db7-3a5e67926caa"
+      }
     }
   },
   "name": "GiaoDienApp"

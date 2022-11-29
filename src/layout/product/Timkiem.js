@@ -131,7 +131,7 @@ const Timkiem = ({ navigation, route }) => {
           flexDirection: "row",
           justifyContent: "space-between",
           width: "100%",
-          top: 60,
+          top: 20,
           paddingHorizontal: 20,
         }}
       >
@@ -144,7 +144,7 @@ const Timkiem = ({ navigation, route }) => {
       </View>
       <View
         style={{
-          top: 70,
+          top: 35,
           paddingHorizontal: 30,
         }}
       >
@@ -174,7 +174,7 @@ const Timkiem = ({ navigation, route }) => {
 
       <View
         style={{
-          top: 110,
+          top: 70,
           backgroundColor: "white",
           width: "100%",
           position: "absolute",
@@ -324,7 +324,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   con: {
-    top: 50,
+    top: 10,
     width: "95%",
     height: 50,
     borderRadius: 20,

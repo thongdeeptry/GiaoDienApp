@@ -27,7 +27,7 @@ export const Camxuc = ({ route, navigation }) => {
           flexDirection: "row",
           alignItems: "center",
           left: 20,
-          top: 40,
+          top: 10,
         }}
       >
         <TouchableOpacity
@@ -40,7 +40,7 @@ export const Camxuc = ({ route, navigation }) => {
           Hoạt động của bạn
         </Text>
       </View>
-      <View style={{ width: "100%", top: 70, backgroundColor: "white" }}>
+      <View style={{ width: "100%", top: 30, backgroundColor: "white" }}>
         <View style={styles.main}>
           <View style={styles.iconmain}>
             <View

@@ -26,7 +26,6 @@ export default function Main({ route, navigation }) {
     }
   }, [pets.length]);
 
-
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: () => true,
     onPanResponderMove: (_, { dx, dy, y0 }) => {
@@ -76,12 +75,11 @@ export default function Main({ route, navigation }) {
   );
 
   return (
-    <View style={styles.container }>
+    <View style={styles.container}>
       {pets
         .map(({ id, name, source, tuoi, diachi }, index) => {
           const isFirst = index === 0;
           const dragHandlers = isFirst ? panResponder.panHandlers : {};
-          console.log("id" + id);
           return (
             <Pressable
               onPress={() => navigation.navigate("ProfileFriend", { id })}

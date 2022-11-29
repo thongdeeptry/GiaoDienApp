@@ -36,7 +36,6 @@ export const ProfileName = ({ route, navigation }) => {
   const app = initializeApp(firebaseConfig);
   const storage = getStorage(app);
   if (!app.length) {
-    console.log("Kết nối thành công");
   }
 
   const getLocation = async () => {
@@ -49,9 +48,7 @@ export const ProfileName = ({ route, navigation }) => {
       latitude: vitri.coords.latitude,
       longitude: vitri.coords.longitude,
     });
-    console.log(
-      "Vị Trí : " + vitri.coords.latitude + ":" + vitri.coords.longitude
-    );
+
     let city;
     let country;
     diachi.find((p) => {
@@ -59,7 +56,6 @@ export const ProfileName = ({ route, navigation }) => {
       city = p.subregion + "," + p.region;
       setlocation(city);
     });
-    console.log("Vị Trí s: " + location);
   };
   getLocation();
   useEffect(() => {
@@ -74,7 +70,6 @@ export const ProfileName = ({ route, navigation }) => {
         ToastAndroid.show("Chưa Đầy Đủ Thông Tin", ToastAndroid.CENTER);
       } else {
         if (sdt != null) {
-          console.log("Link : " + avt);
           navigation.navigate("Selectsex", {
             sdt,
             name,
@@ -84,21 +79,8 @@ export const ProfileName = ({ route, navigation }) => {
             tuoi,
             location,
           });
-          console.log(
-            "Select S - " +
-              user +
-              "sdt -" +
-              sdt +
-              "name -" +
-              name +
-              "avt-" +
-              avt +
-              "tuoi" +
-              tuoi
-          );
         }
         if (email != "") {
-          console.log("Link Mail: " + upload);
           navigation.navigate("Selectsex", {
             email,
             password,
@@ -109,18 +91,6 @@ export const ProfileName = ({ route, navigation }) => {
             tuoi,
             location,
           });
-          console.log(
-            "Profile S - " +
-              user +
-              "mail -" +
-              email +
-              "pass" +
-              password +
-              "name -" +
-              name +
-              "avt-" +
-              avt
-          );
         }
       }
     }
@@ -134,8 +104,6 @@ export const ProfileName = ({ route, navigation }) => {
       aspect: [4, 3],
       quality: 1,
     });
-
-    console.log(result);
 
     if (!result.cancelled) {
       setImage(result.uri);

@@ -19,7 +19,6 @@ const LoginContainer = ({ ...props }) => {
   useEffect(() => {
     app = initializeApp(firebaseConfig);
     if (!app.length) {
-      console.log("Kết nối thành công");
     }
   }, []);
   const auth = getAuth(app);

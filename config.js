@@ -45,7 +45,6 @@ export {
   get,
   onValue, //reload when online DB changed
   signInWithEmailAndPassword,
-  
 };
 export const storage = getStorage();
-export const db = getFirestore()
+// export const db = getFirestore()

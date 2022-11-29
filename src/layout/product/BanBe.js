@@ -46,11 +46,10 @@ export const BanBe = ({ route, navigation }) => {
       <View
         style={{
           paddingHorizontal: 20,
-          top: 40,
           flexDirection: "row",
           justifyContent: "space-between",
           width: "100%",
-          paddingBottom: 50,
+          paddingBottom: 30,
         }}
       >
         <View>

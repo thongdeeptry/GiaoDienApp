@@ -16,6 +16,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../../../config";
 import { getAuth, signOut } from "firebase/auth";
+import { v4 as uuid } from "uuid";
 import {
   getDatabase,
   ref,
@@ -44,6 +45,7 @@ const Binhluan = ({ navigation, route }) => {
   const [image, setimage] = useState();
   const [checkin, setcheckin] = useState();
   const [isCheckedStatus, setCheckedStatus] = useState(false);
+  const [idCmtCr, setIdCmtCr] = useState();
   const dataCmt = [];
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
@@ -84,6 +86,7 @@ const Binhluan = ({ navigation, route }) => {
       const idPostk = childSnapshotq.child("idPost").exportVal();
       const thoigian = childSnapshotq.child("thoigian").exportVal();
       const userIDk = childSnapshotq.child("userID").exportVal();
+      const idCmt = childSnapshotq.child("idCmt").exportVal();
       dataCmt.push({
         name: namek,
         avt: avtk,
@@ -91,23 +94,27 @@ const Binhluan = ({ navigation, route }) => {
         idPost: idPostk,
         thoigian: thoigian,
         userID: userIDk,
+        idCmt: idCmt,
       });
     });
   });
-  const openModal = () => {
+  const openModal = (idCmt) => {
     setCheckedStatus(true);
+    setIdCmtCr(idCmt);
   };
   const closeModal = () => {
     setCheckedStatus(false);
   };
   const AddComment = () => {
+    const key = uuid();
     const d = new Date();
     const ngay = d.getDate();
     const thang = d.getMonth() + 1;
     const nam = d.getFullYear();
-    const referencer = ref(db, "binhluan/" + userID + "/" + idPost);
-    push(referencer, {
+    const referencer = ref(db, "binhluan/" + userID + "/" + idPost + "/" + key);
+    set(referencer, {
       idPost: idPost,
+      idCmt: key,
       id: userID,
       userID: user,
       noidung: binhluan,
@@ -121,7 +128,7 @@ const Binhluan = ({ navigation, route }) => {
   const RemoveComment = () => {
     const referencer = ref(
       db,
-      "binhluan/" + userID + "/" + idPost + "/-NHrW_JHEOaKecSYUWHy"
+      "binhluan/" + userID + "/" + idPost + "/" + idCmtCr
     );
     remove(referencer).then = () => {
       ToastAndroid.show("Xoá bình luận thành công", ToastAndroid.BOTTOM);
@@ -131,7 +138,6 @@ const Binhluan = ({ navigation, route }) => {
   return (
     <View
       style={{
-        top: 20,
         backgroundColor: "white",
         height: "100%",
         width: "100%",
@@ -347,7 +353,7 @@ const Binhluan = ({ navigation, route }) => {
         }}
         contentContainerStyle={{
           width: "100%",
-          paddingBottom: 150,
+          paddingBottom: 130,
         }}
         data={dataCmt}
         renderItem={({ item }) => (
@@ -409,7 +415,7 @@ const Binhluan = ({ navigation, route }) => {
                         left: 35,
                         top: 10,
                       }}
-                      onPress={openModal}
+                      onPress={() => openModal(item.idCmt)}
                     >
                       <Image
                         style={{ width: 20, height: 20 }}
@@ -440,7 +446,7 @@ const Binhluan = ({ navigation, route }) => {
       <View
         style={{
           position: "absolute",
-          bottom: 80,
+          bottom: 60,
           borderRadius: 20,
           borderColor: "#E94057",
           borderWidth: 0.5,

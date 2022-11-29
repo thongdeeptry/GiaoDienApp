@@ -59,10 +59,7 @@ export const Possions = ({ route, navigation }) => {
   const app = initializeApp(firebaseConfig);
 
   if (!app.length) {
-    console.log("Kết nối thành công");
   }
-
-  console.log("Vị Trí Mail: " + location);
 
   const AddData = () => {
     soThichAll.push(
@@ -81,7 +78,6 @@ export const Possions = ({ route, navigation }) => {
       soThich12,
       soThich13
     );
-    console.log("List :" + soThichAll);
     if (soThich.length == 0) {
       ToastAndroid.show(
         "Vui lòng chọn ít nhất 1 sở thích",
@@ -89,18 +85,6 @@ export const Possions = ({ route, navigation }) => {
       );
     } else {
       if (sdt != null) {
-        console.log(
-          "Select S - " +
-            user +
-            "sdt -" +
-            sdt +
-            "name -" +
-            name +
-            "giotinh-" +
-            gioitinh +
-            "avt-" +
-            avt
-        );
         const db = getDatabase();
         const reference = ref(db, "users/" + user);
         set(reference, {
@@ -122,20 +106,6 @@ export const Possions = ({ route, navigation }) => {
         navigation.navigate("Login");
       }
       if (email != "") {
-        console.log(
-          "Po S - " +
-            user +
-            "mail -" +
-            email +
-            "pass" +
-            password +
-            "name -" +
-            name +
-            "giotinh-" +
-            gioitinh +
-            "avt-" +
-            avt
-        );
         const db = getDatabase();
         const reference = ref(db, "users/" + user);
         set(reference, {

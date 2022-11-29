@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "850540325665",
+    "firebase_url": "https://duantotnghiepreact-default-rtdb.firebaseio.com",
+    "project_id": "duantotnghiepreact",
+    "storage_bucket": "duantotnghiepreact.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:850540325665:android:c7145a197b6660f78a2c60",
+        "android_client_info": {
+          "package_name": "com.thanhthong0312.GiaoDienApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "850540325665-imnvc490e2h4n2einfkrdhefcsiunjpe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thanhthong0312.GiaoDienApp",
+            "certificate_hash": "4721cee73130699fcb0f0c046db68f3335f044d6"
+          }
+        },
+        {
+          "client_id": "850540325665-qiil45ckdr106jv8d0804fgdhtcokrht.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvJt0eY32hkq4azKzbkbEx7AsSUIEXr4k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "850540325665-qiil45ckdr106jv8d0804fgdhtcokrht.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

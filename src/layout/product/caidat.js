@@ -162,7 +162,6 @@ const styles = StyleSheet.create({
   tong: {
     width: "100%",
     height: "100%",
-    top: 30,
     textAlign: "center",
     fontSize: 50,
   },

@@ -1,4 +1,4 @@
-import { LinearGradient } from "expo-linear-gradient";
+// import { LinearGradient } from "expo-linear-gradient";
 import React, { useCallback } from "react";
 import { Animated, Image, Text, View, Pressable } from "react-native";
 import Choice from "../Choice";
@@ -69,10 +69,10 @@ export default function Card({
       {...rest}
     >
       <Image source={{ uri: source }} style={styles.image} />
-      <LinearGradient
+      {/* <LinearGradient
         colors={["transparent", "rgba(0,0,0,1)"]}
         style={styles.gradient}
-      />
+      /> */}
 
       <Text style={styles.name}>
         {name}, {tuoi}

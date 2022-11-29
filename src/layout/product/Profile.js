@@ -911,14 +911,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   mainnut2: {
-    left: "4%",
     width: "100%",
     height: 70,
     position: "absolute",
     flexDirection: "row",
     justifyContent: "space-between",
-    top: 30,
+    top: 10,
     opacity: 0.5,
+    paddingLeft: 20,
   },
   mailchitiet: {
     width: "100%",

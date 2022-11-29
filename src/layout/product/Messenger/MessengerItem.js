@@ -24,9 +24,9 @@ import {
 } from "../../../../config";
 function MessengerItem(props) {
   const user = auth.currentUser.uid;
-  console.log("UID - " + user);
   const { onPress } = props;
-  const { url, isSender, messenger, timestamp, showUrl ,senderId,date} = props.item;
+  const { url, isSender, messenger, timestamp, showUrl, senderId, date } =
+    props.item;
   return senderId != user ? (
     <TouchableOpacity
       onPress={onPress}
@@ -46,9 +46,8 @@ function MessengerItem(props) {
             marginRight: 15,
             marginStart: 10,
           }}
-          source={{ uri: url }} 
+          source={{ uri: url }}
         />
-        
       ) : (
         <View
           style={{
@@ -59,16 +58,18 @@ function MessengerItem(props) {
           }}
         />
       )}
-      
+
       <View
         style={{
           width: screenWidth * 0.7,
           flexDirection: "row",
         }}
       >
-        <View style={{
-          flexDirection: "column",
-        }}>
+        <View
+          style={{
+            flexDirection: "column",
+          }}
+        >
           <Text
             style={{
               color: "black",
@@ -83,15 +84,12 @@ function MessengerItem(props) {
           >
             {messenger}
           </Text>
-          
         </View>
-        
+
         <View style={{ width: 20 }}></View>
-       
       </View>
       {/* isSender = true */}
     </TouchableOpacity>
-    
   ) : (
     <TouchableOpacity
       onPress={onPress}

@@ -46,7 +46,7 @@ const Home = ({ route, navigation }) => {
       setname(namepr);
       setavt(avtpr);
     });
-  });
+  }, []);
   const logOut = () => {
     const auth = getAuth();
     signOut(auth)
@@ -265,11 +265,11 @@ const Home = ({ route, navigation }) => {
       <View
         style={{
           paddingHorizontal: 20,
-          top: 40,
+          top: 10,
           flexDirection: "row",
           justifyContent: "space-between",
           width: "100%",
-          paddingBottom: 45,
+          paddingBottom: 20,
         }}
       >
         <View>

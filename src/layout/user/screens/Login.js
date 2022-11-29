@@ -12,17 +12,16 @@ import {
 } from "react-native";
 import { UserContext } from "../UserContext";
 import { initializeApp } from "firebase/app";
-import Checkbox from 'expo-checkbox';
+import Checkbox from "expo-checkbox";
 import { firebaseConfig } from "../../../../config";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import firebase from '@react-native-firebase/app'
-import '@react-native-firebase/messaging'
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import firebase from "@react-native-firebase/app";
+import "@react-native-firebase/messaging";
 import {
   getAuth,
   signInWithEmailAndPassword,
   signInWithPhoneNumber,
   signInWithCustomToken,
-  
 } from "firebase/auth";
 export const Login = (props) => {
   const { navigation } = props;
@@ -35,11 +34,9 @@ export const Login = (props) => {
   useEffect(() => {
     app = initializeApp(firebaseConfig);
     if (!app.length) {
-      console.log("Kết nối thành công");
     }
   }, []);
- 
-  
+
   const auth = getAuth(app);
   const Click = async () => {
     await signInWithEmailAndPassword(auth, email, password)
@@ -47,25 +44,13 @@ export const Login = (props) => {
         console.log("Đăng nhập thành công");
         const user = getAuth().currentUser.uid;
         console.log("UID - " + user);
-        
-        if(isCheckedStatus==true){
-    await AsyncStorage.setItem(
-      'email',
-      email
-    );
-    await AsyncStorage.setItem(
-      'password',
-      password
-    );
-        }else{
-          await AsyncStorage.setItem(
-            'email',
-            ""
-          );
-          await AsyncStorage.setItem(
-            'password',
-            ""
-          );
+
+        if (isCheckedStatus == true) {
+          await AsyncStorage.setItem("email", email);
+          await AsyncStorage.setItem("password", password);
+        } else {
+          await AsyncStorage.setItem("email", "");
+          await AsyncStorage.setItem("password", "");
         }
         onLogin();
       })
@@ -158,13 +143,13 @@ export const Login = (props) => {
               }}
             >
               <View style={styles.checkbox}>
-            <Checkbox
-          value={isCheckedStatus}
-          onValueChange={setCheckedStatus}
-          color={isCheckedStatus ? '#E94057' : undefined}
-        />
-        <Text style={{left:5}}>Lưu mật khẩu</Text>
-            </View>
+                <Checkbox
+                  value={isCheckedStatus}
+                  onValueChange={setCheckedStatus}
+                  color={isCheckedStatus ? "#E94057" : undefined}
+                />
+                <Text style={{ left: 5 }}>Lưu mật khẩu</Text>
+              </View>
             </View>
 
             <View style={styles.mailnut}>
@@ -210,10 +195,10 @@ export const Login = (props) => {
 const styles = StyleSheet.create({
   checkbox: {
     marginBottom: 8,
-    justifyContent:'flex-start',
-    alignItems:"flex-start",
-    alignSelf:'flex-start',
-    flexDirection:"row",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    alignSelf: "flex-start",
+    flexDirection: "row",
   },
   mailnut: {
     position: "absolute",

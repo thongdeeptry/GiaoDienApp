@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     position: "absolute",
-    top: 290,
+    top: 250,
   },
 
   edit: {
@@ -385,7 +385,7 @@ const styles = StyleSheet.create({
     width: "90%",
     height: 170,
     marginHorizontal: 20,
-    top: 70,
+    top: 50,
     backgroundColor: "white",
     opacity: 1,
     borderRadius: 20,
@@ -394,7 +394,6 @@ const styles = StyleSheet.create({
   tieude: {
     width: "100%",
     height: "100%",
-    top: 30,
     textAlign: "center",
     fontSize: 50,
   },

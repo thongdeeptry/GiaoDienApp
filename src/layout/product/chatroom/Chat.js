@@ -27,7 +27,6 @@ export const Chat = () => {
   let data = [];
   const app = initializeApp(firebaseConfig);
   if (!app.length) {
-    console.log("Kết nối thành công");
   }
   const auth = getAuth(app);
   const user = getAuth().currentUser.uid;

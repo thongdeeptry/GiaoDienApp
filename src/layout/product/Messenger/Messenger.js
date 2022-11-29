@@ -15,7 +15,7 @@ import MessengerItem from "./MessengerItem";
 import { TextInput } from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { v4 as uuid } from "uuid";
-import { getDatabase, ref , onValue, set, push } from "firebase/database";
+import { getDatabase, ref, onValue, set, push } from "firebase/database";
 import { initializeApp } from "firebase/app";
 
 import "react-native-get-random-values";
@@ -36,21 +36,19 @@ import {
   firebaseConfig,
   firebaseSet,
   firebaseDatabase,
-  db,
   storage,
 } from "../../../../config";
+import { getFirestore } from "firebase/firestore";
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { async } from "@firebase/util";
 
 function Messenger(props) {
   const app = initializeApp(firebaseConfig);
   if (!app.length) {
-    console.log("Kết nối thành công");
   }
   const db1 = getDatabase();
   const user = auth.currentUser.uid;
-
-  console.log("UID - " + user);
+  const db = getFirestore();
   const [namee, setname] = useState();
   const [avt, setavt] = useState();
   const [typedText, setTypedText] = useState("");
@@ -75,7 +73,6 @@ function Messenger(props) {
       unSub();
     };
   }, []);
-  console.log(chatHistory);
   const sendMess = async () => {
     if (typedText.trim().length == 0) {
       return;
@@ -150,8 +147,7 @@ function Messenger(props) {
       />
 
       <FlatList
-        style={{ 
-          
+        style={{
           flex: 1,
           marginBottom: 20,
         }}

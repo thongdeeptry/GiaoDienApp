@@ -53,7 +53,6 @@ export const ProfileFriend = ({ route, navigation }) => {
     onValue(reference1d1, (snapshot1) => {
       snapshot1.forEach((childSnapshot) => {
         const value = childSnapshot.child(idCurrent).child("like").val();
-        console.log("du lieu " + value);
         if (value == true) {
           setdacod(true);
           //throw "break-loop";

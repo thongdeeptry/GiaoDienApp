@@ -16,20 +16,19 @@ export default Story = ({ route, navigation }) => {
   const { noidung } = route.params;
   return (
     <View style={styles.tong}>
-      
       <Image
         style={styles.hinh}
-        source={{uri:image}}
+        source={{ uri: image }}
         resizeMode="contain"
       ></Image>
       <View style={styles.con}>
         <View style={styles.ten}>
           <View style={styles.maininfo}>
-            <Image style={styles.avt} source={{uri:avt}} />
+            <Image style={styles.avt} source={{ uri: avt }} />
             <Text style={styles.ten1}>{name}</Text>
           </View>
           <View style={styles.mainclose}>
-            <TouchableOpacity onPress={()=>navigation.navigate("Home")}>
+            <TouchableOpacity onPress={() => navigation.navigate("Home")}>
               <Image
                 style={styles.close}
                 source={require("../../image/close.png")}
@@ -51,22 +50,20 @@ export default Story = ({ route, navigation }) => {
                 borderTopWidth: 1,
                 width: "100%",
                 height: "100%",
-                color:"white",
+                color: "white",
                 borderRadius: 15,
                 alignItems: "center",
                 flexDirection: "row",
                 justifyContent: "center",
-                
               }}
-              
               placeholder="  Gửi tin nhắn"
             ></TextInput>
             <Image
               style={styles.sticker}
               source={require("../../image/stickers.png")}
             />
-          </View >
-         
+          </View>
+
           <View style={styles.gui}>
             <TouchableOpacity
               style={{
@@ -93,45 +90,42 @@ export default Story = ({ route, navigation }) => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style ={styles.tongts}>
-          <Text style={styles.texttamsu}>{ noidung }</Text>
-          </View>
+        <View style={styles.tongts}>
+          <Text style={styles.texttamsu}>{noidung}</Text>
+        </View>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  tongts:{
+  tongts: {
     position: "absolute",
     width: "100%",
     height: "100%",
-    top:"90%",
-    alignItems:"center"
+    top: "90%",
+    alignItems: "center",
   },
-  texttamsu:{
-   textAlign:"center",
-    width: '100%',
+  texttamsu: {
+    textAlign: "center",
+    width: "100%",
     height: 45,
-    left:20,
+    left: 20,
     fontSize: 18,
-    
-    color:"white",
-    
-   
+
+    color: "white",
   },
   stickerr: {
-    position: "relative",
-   
-  },
-  gui: {
-   
     width: 45,
     height: 45,
-    right:0,
+    position: "relative",
+  },
+  gui: {
+    width: 45,
+    height: 45,
+    right: 0,
 
-    
-left:10,
+    left: 10,
     borderRadius: 15,
 
     alignItems: "center",
@@ -148,7 +142,7 @@ left:10,
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "flex-end",
-    
+
     width: "93%",
     height: 45,
 
@@ -158,17 +152,14 @@ left:10,
   nho: {
     alignItems: "flex-end",
     flexDirection: "row",
-  position:'absolute',
+    position: "absolute",
     width: "100%",
     top: "100%",
-    
-  
-   
   },
   close: {
     width: 30,
     height: 30,
-    left:45,
+    left: 45,
   },
   mainclose: {
     width: 40,
@@ -190,14 +181,13 @@ left:10,
     left: 60,
     fontSize: 18,
     fontWeight: "700",
-    color:"white",
-    opacity:0.7
+    color: "white",
+    opacity: 0.7,
   },
   avt: {
     position: "absolute",
     width: 48,
     height: 48,
-    
 
     borderRadius: 30,
   },
@@ -205,7 +195,7 @@ left:10,
     position: "absolute",
     width: "100%",
     height: 56,
-    top: 20,
+    top: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -215,11 +205,8 @@ left:10,
     width: "85%",
     height: "85%",
     left: 10,
-    top: 20,
-
   },
   hinh: {
-   
     width: "100%",
     height: "100%",
     opacity: 0.9,
@@ -229,6 +216,5 @@ left:10,
     width: "100%",
     height: "100%",
     backgroundColor: "black",
-
   },
 });

@@ -70,7 +70,6 @@ export const PostStatus = ({ route, navigation }) => {
       id = childSnapshot1.size + 1;
     });
   });
-  console.log(noidung1);
   function makeid(length) {
     var text = "";
     var possible =
@@ -111,11 +110,11 @@ export const PostStatus = ({ route, navigation }) => {
         ".png?alt=media"
     );
 
-    console.log("Link Anh: " + upload);
     return uploadBytes(storageRef, blob).then((snapshot) => {
-      console.log("Uploaded a blob or file!" + snapshot.metadata);
+      console.log("Uploaded a blob or file!" + snapshot);
     });
   };
+  console.log("Link Anh: " + upload);
 
   const getLocation = async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
@@ -531,7 +530,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   infomain: {
-    top: 110,
+    top: 75,
     width: "100%",
     height: "100%",
   },
@@ -558,7 +557,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 40,
 
-    top: 40,
+    top: 10,
     alignItems: "center",
     justifyContent: "center",
   },

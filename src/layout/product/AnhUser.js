@@ -42,11 +42,10 @@ export const AnhUser = ({ route, navigation }) => {
       <View
         style={{
           paddingHorizontal: 20,
-          top: 40,
           flexDirection: "row",
           justifyContent: "space-between",
           width: "100%",
-          paddingBottom: 50,
+          paddingBottom: 30,
         }}
       >
         <View>
@@ -55,7 +54,7 @@ export const AnhUser = ({ route, navigation }) => {
             style={{ position: "absolute", width: 50, height: 50 }}
           >
             <Image
-              style={{ width: 35, height: 35 }}
+              style={{ width: 40, height: 40 }}
               source={require("../../image/lui.png")}
             />
           </TouchableOpacity>
@@ -75,7 +74,7 @@ export const AnhUser = ({ route, navigation }) => {
       </View>
       <View
         style={{
-          paddingBottom: 30,
+          paddingBottom: 10,
           borderTopColor: "#ABABAB",
           borderTopWidth: 0.3,
         }}

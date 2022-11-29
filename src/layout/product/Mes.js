@@ -23,7 +23,6 @@ import { FlatList } from "react-native-gesture-handler";
 
 export const Mes = ({ route, navigation, props }) => {
   const { id } = route.params;
-  console.log("id" + id);
   const app = initializeApp(firebaseConfig);
   const data = [];
   const [name, setname] = useState();
@@ -37,7 +36,6 @@ export const Mes = ({ route, navigation, props }) => {
   const [noidunggui, setnoidunggui] = useState();
   const [sothich, setsothich] = useState([]);
   if (!app.length) {
-    console.log("Kết nối thành công");
   }
   const sothich2 = [];
   const auth = getAuth(app);
@@ -71,7 +69,6 @@ export const Mes = ({ route, navigation, props }) => {
     onValue(reference4, (childSnapshot) => {
       setnamefr(childSnapshot.child("name").val());
       setavtfr(childSnapshot.child("avt").val());
-      console.log("nam fr " + namefr);
     });
 
     firebase

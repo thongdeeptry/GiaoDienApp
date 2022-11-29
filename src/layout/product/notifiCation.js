@@ -61,7 +61,6 @@ export default notifiCation = ({ route, navigation }) => {
           flexDirection: "row",
           justifyContent: "space-between",
           paddingHorizontal: 20,
-          marginTop: 40,
         }}
       >
         <Text style={{ fontSize: 17, color: "#E94057", letterSpacing: 1 }}>

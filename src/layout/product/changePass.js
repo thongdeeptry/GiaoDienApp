@@ -351,7 +351,7 @@ const styles = StyleSheet.create({
   tieude: {
     width: "100%",
     height: "100%",
-    top: 30,
+    top: 0,
     textAlign: "center",
     fontSize: 50,
   },
