@@ -29,6 +29,7 @@ import ChangePass from "./changePass";
 import { BanBe } from "./BanBe";
 import { AnhUser } from "./AnhUser";
 import { XemAnh } from "./XemAnh";
+import CallVideo from "./Call/screens/CallScreen";
 function HomeStack() {
   return (
     <Stack.Navigator
@@ -52,6 +53,7 @@ function HomeStack() {
       <Stack.Screen name="BanBe" component={BanBe} />
       <Stack.Screen name="AnhUser" component={AnhUser} />
       <Stack.Screen name="XemAnh" component={XemAnh} />
+      <Stack.Screen name="CallVideo" component={CallVideo} />
     </Stack.Navigator>
   );
 }
@@ -77,6 +79,7 @@ function ProfileStack() {
       <Stack.Screen name="BanBe" component={BanBe} />
       <Stack.Screen name="AnhUser" component={AnhUser} />
       <Stack.Screen name="XemAnh" component={XemAnh} />
+      <Stack.Screen name="CallVideo" component={CallVideo} />
     </Stack.Navigator>
   );
 }
@@ -103,6 +106,7 @@ function AllUserStack() {
       <Stack.Screen name="BanBe" component={BanBe} />
       <Stack.Screen name="AnhUser" component={AnhUser} />
       <Stack.Screen name="XemAnh" component={XemAnh} />
+      <Stack.Screen name="CallVideo" component={CallVideo} />
     </Stack.Navigator>
   );
 }
@@ -129,6 +133,7 @@ function ChatStack() {
       <Stack.Screen name="BanBe" component={BanBe} />
       <Stack.Screen name="AnhUser" component={AnhUser} />
       <Stack.Screen name="XemAnh" component={XemAnh} />
+      <Stack.Screen name="CallVideo" component={CallVideo} />
     </Stack.Navigator>
   );
 }
@@ -155,6 +160,7 @@ function NotiStack() {
       <Stack.Screen name="BanBe" component={BanBe} />
       <Stack.Screen name="AnhUser" component={AnhUser} />
       <Stack.Screen name="XemAnh" component={XemAnh} />
+      <Stack.Screen name="CallVideo" component={CallVideo} />
     </Stack.Navigator>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import "expo-dev-client";
 import {
   StyleSheet,
   Text,

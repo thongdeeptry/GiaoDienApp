@@ -1,3 +1,5 @@
+/** @format */
+
 import {
   View,
   Text,
@@ -91,7 +93,7 @@ export const CaiDat = ({ route, navigation }) => {
       </View>
       <View style={{ top: 225 }}>
         <View style={styles.khung}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("CallVideo")}>
             <Text style={styles.chu}>Bảo vệ</Text>
 
             <Image

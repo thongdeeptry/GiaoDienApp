@@ -1,3 +1,5 @@
+/** @format */
+
 import React, { useState, useEffect } from "react";
 import {
   Text,
@@ -28,6 +30,7 @@ import {
   updateDoc,
   onSnapshot,
   addDoc,
+  getFirestore,
 } from "firebase/firestore";
 import {
   auth,
@@ -38,7 +41,6 @@ import {
   firebaseDatabase,
   storage,
 } from "../../../../config";
-import { getFirestore } from "firebase/firestore";
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { async } from "@firebase/util";
 
@@ -48,7 +50,6 @@ function Messenger(props) {
   }
   const db1 = getDatabase();
   const user = auth.currentUser.uid;
-  const db = getFirestore();
   const [namee, setname] = useState();
   const [avt, setavt] = useState();
   const [typedText, setTypedText] = useState("");
@@ -65,9 +66,12 @@ function Messenger(props) {
       setname(namepr);
       setavt(avtpr);
     });
-    const unSub = onSnapshot(doc(db, "chats", combinedId), (doc) => {
-      doc.exists() && setChatHistory(doc.data().messages);
-    });
+    const unSub = onSnapshot(
+      doc(getFirestore(), "chats", combinedId),
+      (doc) => {
+        doc.exists() && setChatHistory(doc.data().messages);
+      }
+    );
 
     return () => {
       unSub();
@@ -79,10 +83,10 @@ function Messenger(props) {
     }
     let myFriendUserId = userId;
     Keyboard.dismiss();
-    const docRef = doc(db, "chats", combinedId);
+    const docRef = doc(getFirestore(), "chats", combinedId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists) {
-      updateDoc(doc(db, `chats/${combinedId}`), {
+      updateDoc(doc(getFirestore(), `chats/${combinedId}`), {
         messages: arrayUnion({
           id: uuid(),
           showUrl: true,
@@ -96,7 +100,7 @@ function Messenger(props) {
         }),
       });
     } else {
-      updateDoc(doc(db, `chats/${combinedId}`), {
+      updateDoc(doc(getFirestore(), `chats/${combinedId}`), {
         messages: arrayUnion({
           id: uuid(),
           showUrl: true,
@@ -111,14 +115,14 @@ function Messenger(props) {
       });
     }
 
-    updateDoc(doc(db, "userChats", user), {
+    updateDoc(doc(getFirestore(), "userChats", user), {
       [`${combinedId}` + ".lastMessage"]: {
         text: typedText,
       },
       [`${combinedId}` + ".date"]: serverTimestamp(),
     });
 
-    updateDoc(doc(db, "userChats", myFriendUserId), {
+    updateDoc(doc(getFirestore(), "userChats", myFriendUserId), {
       [`${combinedId}` + ".lastMessage"]: {
         text: typedText,
       },
@@ -142,7 +146,7 @@ function Messenger(props) {
           goBack();
         }}
         onPressRightIcon={() => {
-          alert("press right icon");
+          navigate("CallVideo");
         }}
       />
 
