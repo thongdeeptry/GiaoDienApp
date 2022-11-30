@@ -1,3 +1,5 @@
+/** @format */
+
 import {
   StyleSheet,
   Text,
@@ -33,7 +35,7 @@ const Home = ({ route, navigation }) => {
   const [name, setname] = useState();
   const [avt, setavt] = useState();
   const [id, setid] = useState();
-
+  const [theArray, setTheArray] = useState([]);
   const datapost = [];
   const dataStory = [];
   const user = getAuth().currentUser.uid;
@@ -46,7 +48,35 @@ const Home = ({ route, navigation }) => {
       setname(namepr);
       setavt(avtpr);
     });
-  }, []);
+    const referencer = query(ref(db, "post"), limitToLast(1000));
+    onValue(referencer, (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        childSnapshot.forEach((childSnapshotq) => {
+          const id = childSnapshotq.child("id").exportVal();
+          const name = childSnapshotq.child("name").exportVal();
+          const avt = childSnapshotq.child("avt").exportVal();
+          const noidung = childSnapshotq.child("noidung").exportVal();
+          const trangthai = childSnapshotq.child("checkin").exportVal();
+          const thoigian = childSnapshotq.child("thoigian").exportVal();
+          const image = childSnapshotq.child("image").exportVal();
+          const user = childSnapshotq.child("user").exportVal();
+
+          datapost.push({
+            id: id,
+            name: name,
+            avt: avt,
+            noidung: noidung,
+            checkin: trangthai,
+            thoigian: thoigian,
+            image: image,
+            user: user,
+          });
+        });
+        setTheArray(datapost);
+      });
+    });
+  });
+
   const logOut = () => {
     const auth = getAuth();
     signOut(auth)
@@ -60,32 +90,6 @@ const Home = ({ route, navigation }) => {
         // An error happened.
       });
   };
-  const referencer = query(ref(db, "post"), limitToLast(1000));
-  onValue(referencer, (snapshot) => {
-    snapshot.forEach((childSnapshot) => {
-      childSnapshot.forEach((childSnapshotq) => {
-        const id = childSnapshotq.child("id").exportVal();
-        const name = childSnapshotq.child("name").exportVal();
-        const avt = childSnapshotq.child("avt").exportVal();
-        const noidung = childSnapshotq.child("noidung").exportVal();
-        const trangthai = childSnapshotq.child("checkin").exportVal();
-        const thoigian = childSnapshotq.child("thoigian").exportVal();
-        const image = childSnapshotq.child("image").exportVal();
-        const user = childSnapshotq.child("user").exportVal();
-
-        datapost.push({
-          id: id,
-          name: name,
-          avt: avt,
-          noidung: noidung,
-          checkin: trangthai,
-          thoigian: thoigian,
-          image: image,
-          user: user,
-        });
-      });
-    });
-  });
 
   const referencerr = query(ref(db, "story"), limitToLast(1000));
   onValue(referencerr, (snapshot) => {
@@ -414,7 +418,7 @@ const Home = ({ route, navigation }) => {
           </Text>
           <View style={{ width: "100%", paddingHorizontal: 20 }}>
             <FlatList
-              data={datapost}
+              data={theArray}
               renderItem={renderItem}
               keyExtractor={(item) => Math.random()}
             />

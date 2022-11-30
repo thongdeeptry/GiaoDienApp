@@ -1,17 +1,30 @@
 /** @format */
 
 import "expo-dev-client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AgoraUIKit from "agora-rn-uikit";
 import { View } from "react-native";
+import { ongetTokenAgora } from "../utilities/getTokenAgora.context";
 const CallVideo = () => {
   const [videoCall, setVideoCall] = useState(true);
+  const [channel, setChannel] = useState("123");
+  const [role, setRole] = useState(1);
+  const [uid, setUid] = useState(1);
+  const [expiry, setexpiry] = useState("9999999999999999999");
+  const [token, setToken] = useState();
+  useEffect(() => {
+    async function fetchData() {
+      const res = await ongetTokenAgora(channel, role, "uid", uid, expiry);
+      setToken(res);
+    }
+    fetchData();
+  }, []);
   const props = {
     connectionData: {
-      appId: "d83353ff71674eff91bf6f3e4c97dd46",
-      channel: "test",
-      token:
-        "007eJxTYPjguzMre+etSc7Jxxf3nzSMmZFtvGh/qdLrD4V2ZsqtbzgVGFLNjE0szZLTUg0M0kyMUiySUk2TTSwtjM0NUs3SEo3MRb+3JTcEMjLIPUpmYmSAQBCfhaEktbiEgQEAo9MgRw==",
+      appId: "e63496cfe00f42d8be5c498370e6fa27",
+      channel: channel,
+      uid: uid,
+      token: token,
     },
     rtcCallbacks: {
       EndCall: () => setVideoCall(false),
