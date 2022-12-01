@@ -9,54 +9,42 @@ import {
   TouchableOpacity,
   FlatList,
   Keyboard,
+  TextInput,
 } from "react-native";
 import { images, colors, icons, fontSizes } from "../../../constants";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { UIHeader } from "../../../components";
 import MessengerItem from "./MessengerItem";
-import { TextInput } from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { v4 as uuid } from "uuid";
-import { getDatabase, ref, onValue, set, push } from "firebase/database";
-import { initializeApp } from "firebase/app";
-
 import "react-native-get-random-values";
 import {
-  arrayUnion,
-  doc,
-  getDoc,
+  getDatabase,
+  ref,
+  onValue,
+  set,
+  push,
+  update,
   serverTimestamp,
-  Timestamp,
-  updateDoc,
-  onSnapshot,
-  addDoc,
-  getFirestore,
-} from "firebase/firestore";
-import {
-  auth,
-  onAuthStateChanged,
-  firebaseDatabaseRef,
-  firebaseConfig,
-  firebaseSet,
-  firebaseDatabase,
-  storage,
-} from "../../../../config";
-import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import { async } from "@firebase/util";
+} from "firebase/database";
+import { initializeApp } from "firebase/app";
+import { auth, firebaseConfig } from "../../../../config";
 
 function Messenger(props) {
   const app = initializeApp(firebaseConfig);
   if (!app.length) {
   }
+  const DataHis = [];
   const db1 = getDatabase();
   const user = auth.currentUser.uid;
   const [namee, setname] = useState();
   const [avt, setavt] = useState();
   const [typedText, setTypedText] = useState("");
-  const [chatHistory, setChatHistory] = useState([]);
+  const [chatHistory, setChatHistory] = useState(DataHis);
   const { url, name, userId } = props.route.params.user;
   const { navigate, goBack } = props.navigation;
   const combinedId = user > userId ? user + userId : userId + user;
+
   useEffect(() => {
     const reference = ref(db1, "users/" + user);
     onValue(reference, (childSnapshot) => {
@@ -66,68 +54,92 @@ function Messenger(props) {
       setname(namepr);
       setavt(avtpr);
     });
-    const unSub = onSnapshot(
-      doc(getFirestore(), "chats", combinedId),
-      (doc) => {
-        doc.exists() && setChatHistory(doc.data().messages);
-      }
-    );
-
-    return () => {
-      unSub();
-    };
   }, []);
-  const sendMess = async () => {
+  const unSub = ref(db1, "chats/" + combinedId + "/messages");
+  onValue(unSub, (datasnap) => {
+    datasnap.forEach((datasnapP) => {
+      DataHis.push({
+        id: datasnapP.child("id").exportVal(),
+        date: datasnapP.child("date").exportVal(),
+        isSender: datasnapP.child("isSender").exportVal(),
+        messenger: datasnapP.child("messenger").exportVal(),
+        senderId: datasnapP.child("senderId").exportVal(),
+        showUrl: datasnapP.child("showUrl").exportVal(),
+        text: datasnapP.child("text").exportVal(),
+        timestamp: datasnapP.child("timestamp").exportVal(),
+        url: datasnapP.child("url").exportVal(),
+      });
+    });
+  });
+  const sendMess = () => {
     if (typedText.trim().length == 0) {
       return;
     }
     let myFriendUserId = userId;
     Keyboard.dismiss();
-    const docRef = doc(getFirestore(), "chats", combinedId);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists) {
-      updateDoc(doc(getFirestore(), `chats/${combinedId}`), {
-        messages: arrayUnion({
-          id: uuid(),
-          showUrl: true,
-          messenger: typedText,
-          text: typedText,
-          senderId: user,
-          date: Timestamp.now(),
-          timestamp: new Date().getTime(),
-          url: avt,
-          isSender: true,
-        }),
-      });
-    } else {
-      updateDoc(doc(getFirestore(), `chats/${combinedId}`), {
-        messages: arrayUnion({
-          id: uuid(),
-          showUrl: true,
-          messenger: typedText,
-          text: typedText,
-          senderId: user,
-          date: Timestamp.now(),
-          timestamp: new Date().getTime(),
-          url: avt,
-          isSender: true,
-        }),
-      });
-    }
-
-    updateDoc(doc(getFirestore(), "userChats", user), {
-      [`${combinedId}` + ".lastMessage"]: {
-        text: typedText,
-      },
-      [`${combinedId}` + ".date"]: serverTimestamp(),
+    let key = uuid();
+    const docRef = ref(db1, "chats/" + combinedId + "/messages/" + key);
+    set(docRef, {
+      id: key,
+      showUrl: true,
+      messenger: typedText,
+      text: typedText,
+      senderId: user,
+      date: serverTimestamp(),
+      timestamp: new Date().getTime(),
+      url: avt,
+      isSender: true,
     });
-
-    updateDoc(doc(getFirestore(), "userChats", myFriendUserId), {
-      [`${combinedId}` + ".lastMessage"]: {
-        text: typedText,
-      },
-      [`${combinedId}` + ".date"]: serverTimestamp(),
+    // updateDoc(doc(getFirestore(), getFirestore(), `chats/${combinedId}`), {
+    //   messages: arrayUnion({
+    //     id: uuid(),
+    //     showUrl: true,
+    //     messenger: typedText,
+    //     text: typedText,
+    //     senderId: user,
+    //     date: Timestamp.now(),
+    //     timestamp: new Date().getTime(),
+    //     url: avt,
+    //     isSender: true,
+    //   }),
+    // });
+    const docRefd = ref(
+      db1,
+      "userChats/" + user + "/" + combinedId + "/lastMessage"
+    );
+    update(docRefd, {
+      text: typedText,
     });
+    const docRefdds = ref(db1, "userChats/" + user + "/" + combinedId);
+    update(docRefdds, {
+      date: serverTimestamp(),
+    });
+    // updateDoc(doc(getFirestore(), "userChats", user), {
+    //   [`${combinedId}` + ".lastMessage"]: {
+    //     text: typedText,
+    //   },
+    //   [`${combinedId}` + ".date"]: serverTimestamp(),
+    // });
+    const docRefdd = ref(
+      db1,
+      "userChats/" + myFriendUserId + "/" + combinedId + "/lastMessage"
+    );
+    update(docRefdd, {
+      text: typedText,
+    });
+    const docRefddss = ref(
+      db1,
+      "userChats/" + myFriendUserId + "/" + combinedId
+    );
+    update(docRefddss, {
+      date: serverTimestamp(),
+    });
+    // updateDoc(doc(getFirestore(), "userChats", myFriendUserId), {
+    //   [`${combinedId}` + ".lastMessage"]: {
+    //     text: typedText,
+    //   },
+    //   [`${combinedId}` + ".date"]: serverTimestamp(),
+    // });
     setTypedText("");
   };
   return (
@@ -156,7 +168,7 @@ function Messenger(props) {
           marginBottom: 20,
         }}
         inverted
-        data={chatHistory.reverse()}
+        data={DataHis == [] ? chatHistory : DataHis.reverse()} //chatHistory.reverse()
         renderItem={({ item }) => (
           <MessengerItem
             onPress={() => {

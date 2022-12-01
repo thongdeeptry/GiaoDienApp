@@ -25,6 +25,7 @@ import * as Location from "expo-location";
 import * as ImagePicker from "expo-image-picker";
 import Checkbox from "expo-checkbox";
 import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
+import { v4 as uuid } from "uuid";
 export const PostStatus = ({ route, navigation }) => {
   const app = initializeApp(firebaseConfig);
   const data = [];
@@ -64,10 +65,6 @@ export const PostStatus = ({ route, navigation }) => {
 
       setname(namepr);
       setavt(avtpr);
-    });
-    const reference1 = firebaseDatabaseRef(db, "post/" + user);
-    onValue(reference1, (childSnapshot1) => {
-      id = childSnapshot1.size + 1;
     });
   });
   function makeid(length) {
@@ -152,6 +149,7 @@ export const PostStatus = ({ route, navigation }) => {
     setModalVisible(true);
   };
   const AddPost = () => {
+    const id = uuid();
     setModalVisible(false);
     const d = new Date();
     const ngay = d.getDate();
@@ -170,6 +168,7 @@ export const PostStatus = ({ route, navigation }) => {
           checkin: location == undefined ? "" : location,
           image: upload,
           thoigian: ngay + " Tháng " + thang + " Năm " + nam,
+          user: user,
         });
       }
       if (isCheckedStory == true) {
@@ -182,6 +181,7 @@ export const PostStatus = ({ route, navigation }) => {
           checkin: location == undefined ? "" : location,
           image: upload,
           thoigian: ngay + " Tháng " + thang + " Năm " + nam,
+          user: user,
         });
       }
       ToastAndroid.show("Đã chia sẻ bài viết", ToastAndroid.BOTTOM);
@@ -416,6 +416,7 @@ export const PostStatus = ({ route, navigation }) => {
           >
             <TouchableOpacity
               style={{ flexDirection: "row", alignItems: "center", left: 5 }}
+              onPress={() => navigation.navigate("LiveVideo")}
             >
               <Image
                 style={{ width: 30, height: 30, right: 10 }}

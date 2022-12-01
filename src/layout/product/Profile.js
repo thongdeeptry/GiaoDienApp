@@ -47,36 +47,8 @@ export const Profile = (props) => {
   const db = getDatabase();
   const [daco, setdaco] = useState();
   const [dacod, setdacod] = useState();
-  // function requestPermission() {
-  //   console.log("Requesting permission...");
-  //   Notification.requestPermission().then((permission) => {
-  //     if (permission === "granted") {
-  //       console.log("Notification permission granted.");
-  //     }
-  //   });
-  // }
-  // requestPermission;
   const sothich2 = [];
   useEffect(() => {
-    // getToken(messaging, {
-    //   vapidKey:
-    //     "BJOk3-aJz3mJW1mTd3g-ZJ3XwQk0bYzjLnqta-QU4T19-SIRWbFx4u8y2Y0xMemfjhDetjxXznxXLSctNPmXlQ8",
-    // })
-    //   .then((currentToken) => {
-    //     if (currentToken) {
-    //       console.log(currentToken + "TOKEN====================?>");
-    //     } else {
-    //       // Show permission request UI
-    //       console.log(
-    //         "No registration token available. Request permission to generate one."
-    //       );
-    //       // ...
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log("An error occurred while retrieving token. ", err);
-    //     // ...
-    //   });
     const reference1d1 = ref(db, "tuongtac/" + user);
     onValue(reference1d1, (snapshot1) => {
       snapshot1.forEach((childSnapshot) => {
@@ -119,6 +91,7 @@ export const Profile = (props) => {
       const trangthai = childSnapshot.child("checkin").exportVal();
       const thoigian = childSnapshot.child("thoigian").exportVal();
       const image = childSnapshot.child("image").exportVal();
+      const user = childSnapshot.child("user").exportVal();
       datas.push({
         id: id,
         name: name,
@@ -127,6 +100,7 @@ export const Profile = (props) => {
         checkin: trangthai,
         thoigian: thoigian,
         image: image,
+        user: user,
       });
     });
   });
@@ -308,7 +282,7 @@ export const Profile = (props) => {
                   flex: 1,
                   marginTop: 5,
                   flexDirection: "row",
-                  flexWrap: "wrap-reverse",
+                  flexWrap: "wrap",
                 }}
                 horizontal={false}
                 data={sothich2}
@@ -384,6 +358,7 @@ export const Profile = (props) => {
                 contentContainerStyle={{
                   justifyContent: "space-between",
                   borderRadius: 15,
+                  flexWrap: "wrap",
                 }}
                 data={dataImage}
                 renderItem={({ item, index }) => (
@@ -409,7 +384,6 @@ export const Profile = (props) => {
                     ) : null}
                   </View>
                 )}
-                numColumns={3}
               />
             </View>
           </View>
@@ -449,6 +423,7 @@ export const Profile = (props) => {
                 contentContainerStyle={{
                   justifyContent: "space-between",
                   borderRadius: 15,
+                  flexWrap: "wrap",
                 }}
                 data={dataFriend}
                 renderItem={({ item, index }) => (
@@ -485,7 +460,6 @@ export const Profile = (props) => {
                     </Text>
                   </View>
                 )}
-                numColumns={3}
               />
             </View>
           </View>
@@ -755,7 +729,15 @@ export const Profile = (props) => {
                           Thích
                         </Text>
                       </TouchableOpacity>
-                      <TouchableOpacity style={{ flexDirection: "row" }}>
+                      <TouchableOpacity
+                        style={{ flexDirection: "row" }}
+                        onPress={() =>
+                          navigation.navigate("Binhluan", {
+                            idPost: item.id,
+                            userID: item.user,
+                          })
+                        }
+                      >
                         <Image
                           style={styles.cmtContainer}
                           source={require("../../../assets/iccmt.png")}

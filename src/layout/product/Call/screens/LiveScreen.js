@@ -8,7 +8,7 @@ import { ongetTokenAgora } from "../utilities/getTokenAgora.context";
 const LiveVideo = () => {
   const [videoCall, setVideoCall] = useState(true);
   const [channel, setChannel] = useState("123");
-  const [role, setRole] = useState(1); //role = 2 people follow
+  const [role, setRole] = useState(2); //role = 2 people follow
   const [uid, setUid] = useState(1);
   const [expiry, setexpiry] = useState("9999999999999999999");
   const [token, setToken] = useState();

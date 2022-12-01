@@ -30,11 +30,13 @@ import { BanBe } from "./BanBe";
 import { AnhUser } from "./AnhUser";
 import { XemAnh } from "./XemAnh";
 import CallVideo from "./Call/screens/CallScreen";
+import LiveVideo from "./Call/screens/LiveScreen"
 function HomeStack() {
   return (
     <Stack.Navigator
       screenOptions={{ tabBarShowLabel: false, headerShown: false }}
     >
+      
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="PostStatus" component={PostStatus} />
       <Stack.Screen name="Camxuc" component={Camxuc} />
@@ -54,6 +56,7 @@ function HomeStack() {
       <Stack.Screen name="AnhUser" component={AnhUser} />
       <Stack.Screen name="XemAnh" component={XemAnh} />
       <Stack.Screen name="CallVideo" component={CallVideo} />
+      <Stack.Screen name="LiveVideo" component={LiveVideo} />
     </Stack.Navigator>
   );
 }
@@ -80,6 +83,7 @@ function ProfileStack() {
       <Stack.Screen name="AnhUser" component={AnhUser} />
       <Stack.Screen name="XemAnh" component={XemAnh} />
       <Stack.Screen name="CallVideo" component={CallVideo} />
+      <Stack.Screen name="LiveVideo" component={LiveVideo} />
     </Stack.Navigator>
   );
 }
@@ -107,6 +111,7 @@ function AllUserStack() {
       <Stack.Screen name="AnhUser" component={AnhUser} />
       <Stack.Screen name="XemAnh" component={XemAnh} />
       <Stack.Screen name="CallVideo" component={CallVideo} />
+      <Stack.Screen name="LiveVideo" component={LiveVideo} />
     </Stack.Navigator>
   );
 }
@@ -134,6 +139,7 @@ function ChatStack() {
       <Stack.Screen name="AnhUser" component={AnhUser} />
       <Stack.Screen name="XemAnh" component={XemAnh} />
       <Stack.Screen name="CallVideo" component={CallVideo} />
+      <Stack.Screen name="LiveVideo" component={LiveVideo} />
     </Stack.Navigator>
   );
 }
@@ -161,6 +167,7 @@ function NotiStack() {
       <Stack.Screen name="AnhUser" component={AnhUser} />
       <Stack.Screen name="XemAnh" component={XemAnh} />
       <Stack.Screen name="CallVideo" component={CallVideo} />
+      <Stack.Screen name="LiveVideo" component={LiveVideo} />
     </Stack.Navigator>
   );
 }

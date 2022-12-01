@@ -13,6 +13,7 @@ import {
   ToastAndroid,
   Modal,
   Alert,
+  Keyboard,
 } from "react-native";
 import React, { useState, useEffect, useContext } from "react";
 import { initializeApp } from "firebase/app";
@@ -126,6 +127,7 @@ const Binhluan = ({ navigation, route }) => {
     });
     ToastAndroid.show("Đã đăng bình luận", ToastAndroid.BOTTOM);
     setbinhluan("");
+    Keyboard.dismiss();
   };
   const RemoveComment = () => {
     const referencer = ref(
