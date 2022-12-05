@@ -18,7 +18,7 @@ export const Camxuc = ({ route, navigation }) => {
   };
 
   const ChuyenNoiDung = () => {
-    navigation.navigate("PostStatus", { hoatdong });
+    navigation.navigate("PostStatus", { hoatdong: hoatdong });
   };
   return (
     <View style={styles.container}>
@@ -34,13 +34,16 @@ export const Camxuc = ({ route, navigation }) => {
           onPress={() => navigation.goBack()}
           style={{ flexDirection: "row", alignItems: "center" }}
         >
-          <Image source={require("../../image/lui.png")} />
+          <Image
+            style={{ width: 25, height: 25 }}
+            source={require("../../image/back.png")}
+          />
         </TouchableOpacity>
         <Text style={{ fontSize: 22, left: 10, opacity: 0.7 }}>
           Hoạt động của bạn
         </Text>
       </View>
-      <View style={{ width: "100%", top: 30, backgroundColor: "white" }}>
+      <View style={{ width: "100%", top: 25, backgroundColor: "white" }}>
         <View style={styles.main}>
           <View style={styles.iconmain}>
             <View

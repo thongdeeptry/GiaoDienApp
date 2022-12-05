@@ -140,9 +140,12 @@ const ChangePass = ({ navigation, route }) => {
         <View style={styles.nen}></View>
         <TouchableOpacity
           style={styles.back}
-          onPress={() => navigation.navigator("Profile")}
+          onPress={() => navigation.goBack()}
         >
-          <Image source={require("../../image/backArrow.png")} />
+          <Image
+            style={{ width: 25, height: 25, tintColor: "white", bottom: 5 }}
+            source={require("../../image/back.png")}
+          />
         </TouchableOpacity>
         <Text style={styles.chu}>Chỉnh sửa mật khẩu </Text>
         <View style={styles.khung}>

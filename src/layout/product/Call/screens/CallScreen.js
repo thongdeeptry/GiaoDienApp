@@ -5,17 +5,23 @@ import React, { useState, useEffect } from "react";
 import AgoraUIKit from "agora-rn-uikit";
 import { View } from "react-native";
 import { ongetTokenAgora } from "../utilities/getTokenAgora.context";
-const CallVideo = () => {
+import { initializeApp } from "firebase/app";
+import { auth, firebaseConfig } from "../../../../../config";
+const CallVideo = ({ route, navigation }) => {
+  initializeApp(firebaseConfig);
+  const user = auth.currentUser.metadata;
+  const { combinedId } = route.params;
   const [videoCall, setVideoCall] = useState(true);
-  const [channel, setChannel] = useState("123");
+  const [channel, setChannel] = useState(combinedId);
   const [role, setRole] = useState(1);
-  const [uid, setUid] = useState(1);
-  const [expiry, setexpiry] = useState("9999999999999999999");
+  const [uid, setUid] = useState(Number(user.createdAt));
+  const [expiry, setexpiry] = useState(9999999999999999999);
   const [token, setToken] = useState();
   useEffect(() => {
     async function fetchData() {
       const res = await ongetTokenAgora(channel, role, "uid", uid, expiry);
       setToken(res);
+      console.log(uid);
     }
     fetchData();
   }, []);
@@ -27,7 +33,10 @@ const CallVideo = () => {
       token: token,
     },
     rtcCallbacks: {
-      EndCall: () => setVideoCall(false),
+      EndCall: () => {
+        setVideoCall(false);
+        navigation.goBack();
+      },
     },
   };
 

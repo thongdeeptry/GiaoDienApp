@@ -357,22 +357,23 @@ export const Profile = (props) => {
                 }}
                 contentContainerStyle={{
                   justifyContent: "space-between",
+                  flexDirection: "row",
                   borderRadius: 15,
                   flexWrap: "wrap",
                 }}
                 data={dataImage}
-                renderItem={({ item, index }) => (
-                  <View
-                    style={{
-                      width: 118,
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      borderRadius: 15,
-                      marginBottom: 5,
-                      paddingLeft: 5,
-                    }}
-                  >
-                    {item.image != "" ? (
+                renderItem={({ item, index }) =>
+                  item.image != "" ? (
+                    <View
+                      style={{
+                        width: 110,
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        borderRadius: 15,
+                        marginBottom: 5,
+                        paddingLeft: 5,
+                      }}
+                    >
                       <Image
                         style={{
                           width: "100%",
@@ -381,9 +382,11 @@ export const Profile = (props) => {
                         }}
                         source={{ uri: item.image }}
                       />
-                    ) : null}
-                  </View>
-                )}
+                    </View>
+                  ) : (
+                    <></>
+                  )
+                }
               />
             </View>
           </View>
@@ -423,13 +426,14 @@ export const Profile = (props) => {
                 contentContainerStyle={{
                   justifyContent: "space-between",
                   borderRadius: 15,
+                  flexDirection: "row",
                   flexWrap: "wrap",
                 }}
                 data={dataFriend}
                 renderItem={({ item, index }) => (
                   <View
                     style={{
-                      width: 118,
+                      width: 110,
                       alignItems: "center",
                       justifyContent: "space-between",
                       borderRadius: 15,
@@ -656,58 +660,67 @@ export const Profile = (props) => {
                         </View>
                       </View>
                     </View>
-                    <Text
-                      style={{
-                        fontSize: 18,
-                        color: "black",
-                        paddingHorizontal: 10,
-                        marginTop: 10,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        paddingBottom: 10,
-                        width: "100%",
-                        alignSelf: "center",
-                        //textAlign: "center",
-                        fontWeight: "400",
-                      }}
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate("Binhluan", {
+                          idPost: item.id,
+                          userID: item.user,
+                        })
+                      }
                     >
-                      {item.noidung}
-                    </Text>
-
-                    {item.image != "" ? (
-                      <Image
+                      <Text
                         style={{
-                          width: "90%",
-                          height: 160,
-                          alignItems: "center",
-                          alignSelf: "center",
-                          alignContent: "center",
-                          justifyContent: "center",
-                          borderRadius: 15,
-                          marginBottom: 10,
-                        }}
-                        source={{ uri: item.image }}
-                      />
-                    ) : null}
-                    <Text
-                      style={[
-                        {
-                          fontSize: 15,
+                          fontSize: 18,
                           color: "black",
                           paddingHorizontal: 10,
-                          fontWeight: "300",
+                          marginTop: 10,
                           alignItems: "center",
                           justifyContent: "center",
                           paddingBottom: 10,
                           width: "100%",
                           alignSelf: "center",
                           //textAlign: "center",
-                        },
-                        item.checkin == "" ? { width: 0, height: 0 } : null,
-                      ]}
-                    >
-                      {item.checkin}
-                    </Text>
+                          fontWeight: "400",
+                        }}
+                      >
+                        {item.noidung}
+                      </Text>
+
+                      {item.image != "" ? (
+                        <Image
+                          style={{
+                            width: "90%",
+                            height: 160,
+                            alignItems: "center",
+                            alignSelf: "center",
+                            alignContent: "center",
+                            justifyContent: "center",
+                            borderRadius: 15,
+                            marginBottom: 10,
+                          }}
+                          source={{ uri: item.image }}
+                        />
+                      ) : null}
+                      <Text
+                        style={[
+                          {
+                            fontSize: 15,
+                            color: "black",
+                            paddingHorizontal: 10,
+                            fontWeight: "300",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            paddingBottom: 10,
+                            width: "100%",
+                            alignSelf: "center",
+                            //textAlign: "center",
+                          },
+                          item.checkin == "" ? { width: 0, height: 0 } : null,
+                        ]}
+                      >
+                        {item.checkin}
+                      </Text>
+                    </TouchableOpacity>
                     <View
                       style={{
                         width: "100%",
@@ -761,18 +774,18 @@ export const Profile = (props) => {
             >
               <Image
                 style={styles.containerrrrr}
-                source={require("../../image/lui.png")}
+                source={require("../../image/back.png")}
               />
             </TouchableOpacity>
           </View>
           <View>
             <TouchableOpacity
               onPress={() => navigation.navigate("Chinhsua")}
-              style={{ width: 100, height: 50 }}
+              style={{ width: 100, height: 50, left: 60 }}
             >
               <Image
                 style={[styles.containerrrrr, { borderRadius: 12 }]}
-                source={require("../../image/dots.png")}
+                source={require("../../image/more.png")}
               />
             </TouchableOpacity>
           </View>
@@ -838,8 +851,10 @@ const styles = StyleSheet.create({
     height: 50,
   },
   containerrrrr: {
-    width: 50,
-    height: 50,
+    width: 25,
+    height: 25,
+    color: "white",
+    tintColor: "white",
   },
   vitrii: {
     width: 80,
@@ -899,8 +914,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     top: 10,
-    opacity: 0.5,
-    paddingLeft: 20,
+    paddingLeft: 10,
   },
   mailchitiet: {
     width: "100%",

@@ -67,7 +67,7 @@ export const AllUser = ({ route, navigation }) => {
           flexDirection: "row",
           justifyContent: "space-between",
           width: "100%",
-          paddingBottom: 20,
+          paddingVertical: 10,
         }}
       >
         <View>

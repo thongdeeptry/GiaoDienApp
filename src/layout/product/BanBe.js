@@ -49,7 +49,8 @@ export const BanBe = ({ route, navigation }) => {
           flexDirection: "row",
           justifyContent: "space-between",
           width: "100%",
-          paddingBottom: 30,
+          paddingBottom: 25,
+          top: 10,
         }}
       >
         <View>
@@ -58,8 +59,8 @@ export const BanBe = ({ route, navigation }) => {
             style={{ position: "absolute", width: 50, height: 50 }}
           >
             <Image
-              style={{ width: 35, height: 35 }}
-              source={require("../../image/lui.png")}
+              style={{ width: 25, height: 25 }}
+              source={require("../../image/back.png")}
             />
           </TouchableOpacity>
         </View>

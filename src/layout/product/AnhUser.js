@@ -45,17 +45,17 @@ export const AnhUser = ({ route, navigation }) => {
           flexDirection: "row",
           justifyContent: "space-between",
           width: "100%",
-          paddingBottom: 30,
+          paddingBottom: 25,
         }}
       >
         <View>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
-            style={{ position: "absolute", width: 50, height: 50 }}
+            style={{ position: "absolute", width: 50, height: 50, top: 10 }}
           >
             <Image
-              style={{ width: 40, height: 40 }}
-              source={require("../../image/lui.png")}
+              style={{ width: 25, height: 25, tintColor: "black" }}
+              source={require("../../image/back.png")}
             />
           </TouchableOpacity>
         </View>
@@ -66,6 +66,7 @@ export const AnhUser = ({ route, navigation }) => {
               color: "#E94057",
               fontWeight: "600",
               letterSpacing: 1.2,
+              top: 10,
             }}
           >
             Album Ảnh

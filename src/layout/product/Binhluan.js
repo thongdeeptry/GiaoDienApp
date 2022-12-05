@@ -278,19 +278,23 @@ const Binhluan = ({ navigation, route }) => {
             {noidung}
           </Text>
           {image != "" ? (
-            <Image
-              style={{
-                width: "90%",
-                height: 160,
-                alignItems: "center",
-                alignSelf: "center",
-                alignContent: "center",
-                justifyContent: "center",
-                borderRadius: 15,
-                marginBottom: 10,
-              }}
-              source={{ uri: image }}
-            />
+            <TouchableOpacity
+              onPress={() => navigation.navigate("XemAnh", { linkAnh: image })}
+            >
+              <Image
+                style={{
+                  width: "90%",
+                  height: 160,
+                  alignItems: "center",
+                  alignSelf: "center",
+                  alignContent: "center",
+                  justifyContent: "center",
+                  borderRadius: 15,
+                  marginBottom: 10,
+                }}
+                source={{ uri: image }}
+              />
+            </TouchableOpacity>
           ) : null}
           <Text
             style={[

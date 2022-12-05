@@ -87,7 +87,7 @@ function Chat(props) {
         leftIconName={"arrow-left"}
         rightIconName={"search"}
         onPressLeftIcon={() => {
-          alert("press left icon");
+          goBack();
         }}
         onPressRightIcon={() => {
           alert("press right icon");

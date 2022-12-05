@@ -147,7 +147,10 @@ const Chinhsua = ({ navigation, route }) => {
           style={styles.back}
           onPress={() => navigation.navigate("Profile")}
         >
-          <Image source={require("../../image/backArrow.png")} />
+          <Image
+            style={{ width: 25, height: 25, bottom: 5, tintColor: "white" }}
+            source={require("../../image/back.png")}
+          />
         </TouchableOpacity>
         <Text style={styles.chu}>Chỉnh sửa thông tin </Text>
         <View style={styles.khung}>

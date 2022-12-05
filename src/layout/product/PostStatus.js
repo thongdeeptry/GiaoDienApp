@@ -37,17 +37,14 @@ export const PostStatus = ({ route, navigation }) => {
   const [gioitinh, setgioitinh] = useState();
   const [sothich, setsothich] = useState();
   const [location, setlocation] = useState();
-  const [noidung, setnoidung] = useState();
+  const [noidung, setnoidung] = useState("");
   const [image, setImage] = useState(null);
   const [upload, setupload] = useState("");
+  const [uplink, setuplink] = useState();
   const [tinh, settinh] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   const [isCheckedStatus, setCheckedStatus] = useState(true);
   const [isCheckedStory, setCheckedStory] = useState(false);
-  let id;
-  let cytyy;
-  if (!app.length) {
-  }
   const auth = getAuth(app);
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
@@ -81,17 +78,18 @@ export const PostStatus = ({ route, navigation }) => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
+      allowsEditing: false,
       aspect: [4, 3],
       quality: 1,
     });
-
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setImage(result.uri);
-      uploadImageToBucket(image, makeid(60));
+      let idk = makeid(60);
+      uploadImageToBucket(result.uri, idk);
+      setuplink(idk + ".png?alt=media");
+      console.log(uplink);
     }
   };
-
   const uploadImageToBucket = async (uri, imageName) => {
     const res = await fetch(uri);
     const blob = await res.blob();
@@ -99,19 +97,12 @@ export const PostStatus = ({ route, navigation }) => {
       storage,
       "images/album/" + user + "/" + imageName + ".png"
     );
-    setupload(
-      "https://firebasestorage.googleapis.com/v0/b/duantotnghiepreact.appspot.com/o/images%2Falbum%2F" +
-        user +
-        "%2F" +
-        imageName +
-        ".png?alt=media"
-    );
-
-    return uploadBytes(storageRef, blob).then((snapshot) => {
-      console.log("Uploaded a blob or file!" + snapshot);
+    setuplink(imageName + ".png?alt=media");
+    uploadBytes(storageRef, blob).then((snapshot) => {
+      console.log("Uploaded a blob or file!" + snapshot.metadata.name);
+      return snapshot.metadata.name;
     });
   };
-  console.log("Link Anh: " + upload);
 
   const getLocation = async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
@@ -155,7 +146,10 @@ export const PostStatus = ({ route, navigation }) => {
     const ngay = d.getDate();
     const thang = d.getMonth() + 1;
     const nam = d.getFullYear();
-    if (noidung == "" || noidung == null) {
+    if (
+      noidung == "" ||
+      (noidung == null && image == null && location == undefined)
+    ) {
       ToastAndroid.show("Chưa có nội dung", ToastAndroid.BOTTOM);
     } else {
       if (isCheckedStatus == true) {
@@ -166,7 +160,11 @@ export const PostStatus = ({ route, navigation }) => {
           id: id,
           noidung: noidung,
           checkin: location == undefined ? "" : location,
-          image: upload,
+          image:
+            "https://firebasestorage.googleapis.com/v0/b/duantotnghiepreact.appspot.com/o/images%2Falbum%2F" +
+            user +
+            "%2F" +
+            uplink,
           thoigian: ngay + " Tháng " + thang + " Năm " + nam,
           user: user,
         });
@@ -179,7 +177,11 @@ export const PostStatus = ({ route, navigation }) => {
           id: id,
           noidung: noidung,
           checkin: location == undefined ? "" : location,
-          image: upload,
+          image:
+            "https://firebasestorage.googleapis.com/v0/b/duantotnghiepreact.appspot.com/o/images%2Falbum%2F" +
+            user +
+            "%2F" +
+            uplink,
           thoigian: ngay + " Tháng " + thang + " Năm " + nam,
           user: user,
         });
@@ -255,7 +257,10 @@ export const PostStatus = ({ route, navigation }) => {
               onPress={() => navigation.goBack()}
               style={{ flexDirection: "row", alignItems: "center" }}
             >
-              <Image source={require("../../image/lui.png")} />
+              <Image
+                style={{ width: 25, height: 25 }}
+                source={require("../../image/back.png")}
+              />
             </TouchableOpacity>
             <Text style={{ fontSize: 23, left: 10, opacity: 0.7 }}>
               Tạo bài viết
@@ -371,6 +376,7 @@ export const PostStatus = ({ route, navigation }) => {
           >
             <TouchableOpacity
               style={{ flexDirection: "row", alignItems: "center", left: 5 }}
+              onPress={() => uploadImageToBucket(image, makeid(60))}
             >
               <Image
                 style={{ width: 30, height: 30, right: 10 }}

@@ -5,11 +5,15 @@ import React, { useState, useEffect } from "react";
 import AgoraUIKit from "agora-rn-uikit";
 import { View } from "react-native";
 import { ongetTokenAgora } from "../utilities/getTokenAgora.context";
-const LiveVideo = () => {
+import { initializeApp } from "firebase/app";
+import { auth, firebaseConfig } from "../../../../../config";
+const LiveVideo = ({ navigation, route }) => {
+  initializeApp(firebaseConfig);
+  const user = auth.currentUser.metadata;
   const [videoCall, setVideoCall] = useState(true);
-  const [channel, setChannel] = useState("123");
-  const [role, setRole] = useState(2); //role = 2 people follow
-  const [uid, setUid] = useState(1);
+  const [channel, setChannel] = useState(user);
+  const [role, setRole] = useState(1); //role = 2 people follow
+  const [uid, setUid] = useState(Number(user.createdAt));
   const [expiry, setexpiry] = useState("9999999999999999999");
   const [token, setToken] = useState();
   useEffect(() => {
@@ -27,7 +31,10 @@ const LiveVideo = () => {
       token: token,
     },
     rtcCallbacks: {
-      EndCall: () => setVideoCall(false),
+      EndCall: () => {
+        setVideoCall(false);
+        navigation.goBack();
+      },
     },
   };
 

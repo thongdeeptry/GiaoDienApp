@@ -28,6 +28,7 @@ import {
 } from "firebase/database";
 import { UserContext } from "../src/layout/user/UserContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const Home = ({ route, navigation }) => {
   initializeApp(firebaseConfig);
   let noidung1 = "";
@@ -47,7 +48,6 @@ const Home = ({ route, navigation }) => {
       setname(namepr);
       setavt(avtpr);
     });
-    
   });
 
   const logOut = () => {
@@ -168,58 +168,67 @@ const Home = ({ route, navigation }) => {
             </View>
           </View>
         </View>
-        <Text
-          style={{
-            fontSize: 18,
-            color: "black",
-            paddingHorizontal: 10,
-            marginTop: 10,
-            alignItems: "center",
-            justifyContent: "center",
-            paddingBottom: 10,
-            width: "100%",
-            alignSelf: "center",
-            //textAlign: "center",
-            fontWeight: "400",
-          }}
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Binhluan", {
+              idPost: item.id,
+              userID: item.user,
+            })
+          }
         >
-          {item.noidung}
-        </Text>
-
-        {item.image != "" ? (
-          <Image
+          <Text
             style={{
-              width: "90%",
-              height: 160,
-              alignItems: "center",
-              alignSelf: "center",
-              alignContent: "center",
-              justifyContent: "center",
-              borderRadius: 15,
-              marginBottom: 10,
-            }}
-            source={{ uri: item.image }}
-          />
-        ) : null}
-        <Text
-          style={[
-            {
-              fontSize: 15,
+              fontSize: 18,
               color: "black",
               paddingHorizontal: 10,
-              fontWeight: "300",
+              marginTop: 10,
               alignItems: "center",
               justifyContent: "center",
               paddingBottom: 10,
               width: "100%",
               alignSelf: "center",
               //textAlign: "center",
-            },
-            item.checkin == "" ? { width: 0, height: 0 } : null,
-          ]}
-        >
-          {item.checkin}
-        </Text>
+              fontWeight: "400",
+            }}
+          >
+            {item.noidung}
+          </Text>
+
+          {item.image != "" ? (
+            <Image
+              style={{
+                width: "90%",
+                height: 160,
+                alignItems: "center",
+                alignSelf: "center",
+                alignContent: "center",
+                justifyContent: "center",
+                borderRadius: 15,
+                marginBottom: 10,
+              }}
+              source={{ uri: item.image }}
+            />
+          ) : null}
+          <Text
+            style={[
+              {
+                fontSize: 15,
+                color: "black",
+                paddingHorizontal: 10,
+                fontWeight: "300",
+                alignItems: "center",
+                justifyContent: "center",
+                paddingBottom: 10,
+                width: "100%",
+                alignSelf: "center",
+                //textAlign: "center",
+              },
+              item.checkin == "" ? { width: 0, height: 0 } : null,
+            ]}
+          >
+            {item.checkin}
+          </Text>
+        </TouchableOpacity>
         <View
           style={{
             width: "100%",

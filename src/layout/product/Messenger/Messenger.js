@@ -90,19 +90,6 @@ function Messenger(props) {
       url: avt,
       isSender: true,
     });
-    // updateDoc(doc(getFirestore(), getFirestore(), `chats/${combinedId}`), {
-    //   messages: arrayUnion({
-    //     id: uuid(),
-    //     showUrl: true,
-    //     messenger: typedText,
-    //     text: typedText,
-    //     senderId: user,
-    //     date: Timestamp.now(),
-    //     timestamp: new Date().getTime(),
-    //     url: avt,
-    //     isSender: true,
-    //   }),
-    // });
     const docRefd = ref(
       db1,
       "userChats/" + user + "/" + combinedId + "/lastMessage"
@@ -114,12 +101,6 @@ function Messenger(props) {
     update(docRefdds, {
       date: serverTimestamp(),
     });
-    // updateDoc(doc(getFirestore(), "userChats", user), {
-    //   [`${combinedId}` + ".lastMessage"]: {
-    //     text: typedText,
-    //   },
-    //   [`${combinedId}` + ".date"]: serverTimestamp(),
-    // });
     const docRefdd = ref(
       db1,
       "userChats/" + myFriendUserId + "/" + combinedId + "/lastMessage"
@@ -134,12 +115,6 @@ function Messenger(props) {
     update(docRefddss, {
       date: serverTimestamp(),
     });
-    // updateDoc(doc(getFirestore(), "userChats", myFriendUserId), {
-    //   [`${combinedId}` + ".lastMessage"]: {
-    //     text: typedText,
-    //   },
-    //   [`${combinedId}` + ".date"]: serverTimestamp(),
-    // });
     setTypedText("");
   };
   return (
@@ -158,7 +133,7 @@ function Messenger(props) {
           goBack();
         }}
         onPressRightIcon={() => {
-          navigate("CallVideo");
+          navigate("CallVideo", { combinedId });
         }}
       />
 

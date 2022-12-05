@@ -19,16 +19,16 @@ export const XemAnh = ({ route, navigation }) => {
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={{
-          width: 35,
-          height: 35,
-          top: 50,
-          left: 20,
+          width: 40,
+          height: 40,
+          top: 20,
+          left: 10,
           position: "absolute",
         }}
       >
         <Image
-          style={{ width: 35, height: 35 }}
-          source={require("../../image/lui.png")}
+          style={{ width: 25, height: 25, tintColor: "white" }}
+          source={require("../../image/back.png")}
         />
       </TouchableOpacity>
     </View>
