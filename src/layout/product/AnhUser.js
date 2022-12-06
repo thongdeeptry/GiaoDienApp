@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   FlatList,
+  RefreshControl,
 } from "react-native";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../../../config";
@@ -21,11 +22,24 @@ import {
   push,
   update,
 } from "firebase/database";
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 export const AnhUser = ({ route, navigation }) => {
   const { idFr } = route.params;
   initializeApp(firebaseConfig);
   const db = getDatabase();
   const dataImage = [];
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
+  useEffect(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
   const referenceImage = ref(db, "post/" + idFr);
   onValue(referenceImage, (snapshot) => {
     snapshot.forEach((ImageSnapshot) => {
@@ -83,11 +97,14 @@ export const AnhUser = ({ route, navigation }) => {
         <View>
           <FlatList
             style={{
-              paddingHorizontal: 20,
+              paddingHorizontal: 15,
               top: 5,
               width: "100%",
               paddingBottom: 100,
             }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
             contentContainerStyle={{
               justifyContent: "space-between",
               borderRadius: 15,

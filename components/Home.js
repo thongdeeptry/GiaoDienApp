@@ -11,6 +11,7 @@ import {
   FlatList,
   Pressable,
   SafeAreaView,
+  RefreshControl,
 } from "react-native";
 import React, { useState, useEffect, useContext } from "react";
 import { initializeApp } from "firebase/app";
@@ -28,7 +29,9 @@ import {
 } from "firebase/database";
 import { UserContext } from "../src/layout/user/UserContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 const Home = ({ route, navigation }) => {
   initializeApp(firebaseConfig);
   let noidung1 = "";
@@ -42,6 +45,8 @@ const Home = ({ route, navigation }) => {
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
   useEffect(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
     const reference = ref(db, "users/" + user);
     onValue(reference, (childSnapshot) => {
       const namepr = childSnapshot.child("name").val();
@@ -49,8 +54,13 @@ const Home = ({ route, navigation }) => {
       setname(namepr);
       setavt(avtpr);
     });
-  });
+  }, []);
+  const [refreshing, setRefreshing] = React.useState(false);
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
   const logOut = () => {
     const auth = getAuth();
     signOut(auth)
@@ -338,6 +348,9 @@ const Home = ({ route, navigation }) => {
           borderTopColor: "#ABABAB",
           borderTopWidth: 0.3,
         }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       >
         <View style={{ paddingBottom: 30 }}>
           <View>

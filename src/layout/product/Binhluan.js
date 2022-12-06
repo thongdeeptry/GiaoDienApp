@@ -14,6 +14,7 @@ import {
   Modal,
   Alert,
   Keyboard,
+  RefreshControl,
 } from "react-native";
 import React, { useState, useEffect, useContext } from "react";
 import { initializeApp } from "firebase/app";
@@ -31,7 +32,9 @@ import {
 } from "firebase/database";
 import { UserContext } from "../user/UserContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 const Binhluan = ({ navigation, route }) => {
   const { idPost } = route.params;
   const { userID } = route.params;
@@ -52,7 +55,15 @@ const Binhluan = ({ navigation, route }) => {
   const dataCmt = [];
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
   useEffect(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
     const reference = ref(db, "users/" + user);
     onValue(reference, (childSnapshot) => {
       const namepr = childSnapshot.child("name").val();
@@ -79,7 +90,7 @@ const Binhluan = ({ navigation, route }) => {
       setimage(image);
       setcheckin(snapshot.child("checkin").val());
     });
-  });
+  }, []);
   const referencer = ref(db, "binhluan/" + userID + "/" + idPost);
   onValue(referencer, (snapshot) => {
     snapshot.forEach((childSnapshotq) => {
@@ -363,6 +374,9 @@ const Binhluan = ({ navigation, route }) => {
           width: "100%",
           paddingBottom: 130,
         }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         data={dataCmt}
         renderItem={({ item }) => (
           <View

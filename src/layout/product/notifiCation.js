@@ -7,12 +7,16 @@ import {
   FlatList,
   Pressable,
   Image,
+  RefreshControl,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../../../config";
 import { getAuth } from "firebase/auth";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 export default notifiCation = ({ route, navigation }) => {
   const app = initializeApp(firebaseConfig);
   if (!app.length) {
@@ -27,7 +31,16 @@ export default notifiCation = ({ route, navigation }) => {
   const [users, setusers] = useState();
   const [isLoading, setisLoading] = useState(false);
   const dataTB = [];
+  const [refreshing, setRefreshing] = React.useState(false);
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
+  useEffect(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
   const reference = ref(db, "notification/" + user);
   onValue(reference, (childSnapshot) => {
     childSnapshot.forEach((snapshot) => {
@@ -70,7 +83,12 @@ export default notifiCation = ({ route, navigation }) => {
           <Text style={{ fontSize: 17 }}>Đã đọc tất cả</Text>
         </TouchableOpacity>
       </View>
-      <ScrollView style={{ marginBottom: 50 }}>
+      <ScrollView
+        style={{ marginBottom: 70 }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View style={styles.dataMap}>
           {dataTB.map((item, index) => (
             <Pressable

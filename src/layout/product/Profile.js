@@ -9,6 +9,7 @@ import {
   Pressable,
   Modal,
   ToastAndroid,
+  RefreshControl,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
@@ -22,9 +23,12 @@ import {
   update,
   remove,
 } from "firebase/database";
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 export const Profile = (props) => {
   const { navigation } = props;
-  const app = initializeApp(firebaseConfig);
+  initializeApp(firebaseConfig);
   const dataImage = [];
   const datas = [];
   const dataFriend = [];
@@ -40,8 +44,12 @@ export const Profile = (props) => {
   const [isLoading, setisLoading] = useState(false);
   const [idPost, setidPost] = useState();
   const [isCheckedStatus, setCheckedStatus] = useState(false);
-  if (!app.length) {
-  }
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
   const user = getAuth().currentUser.uid;
   const idFr = getAuth().currentUser.uid;
   const db = getDatabase();
@@ -49,6 +57,8 @@ export const Profile = (props) => {
   const [dacod, setdacod] = useState();
   const sothich2 = [];
   useEffect(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
     const reference1d1 = ref(db, "tuongtac/" + user);
     onValue(reference1d1, (snapshot1) => {
       snapshot1.forEach((childSnapshot) => {
@@ -80,7 +90,7 @@ export const Profile = (props) => {
       setnghenghiep(nghenghiep);
       setisLoading(false);
     });
-  });
+  }, []);
   const referencer = ref(db, "post/" + user);
   onValue(referencer, (snapshot) => {
     snapshot.forEach((childSnapshot) => {
@@ -189,6 +199,9 @@ export const Profile = (props) => {
       contentContainerStyle={{ flexGrow: 1 }}
       showsVerticalScrollIndicator={false}
       style={{ width: "100%", height: "100%" }}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
     >
       <View style={styles.centeredView}>
         <Modal

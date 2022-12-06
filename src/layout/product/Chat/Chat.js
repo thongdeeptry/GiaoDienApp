@@ -6,6 +6,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   FlatList,
+  RefreshControl,
 } from "react-native";
 import { images, colors, icons, fontSizes } from "../../../constants";
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -20,11 +21,20 @@ import {
   onValue,
 } from "../../../../config";
 import { setDoc, doc, getDoc } from "firebase/firestore";
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 function Chat(props) {
   const user = auth.currentUser.uid;
   const [users, setUsers] = useState([]);
   const { navigation, route } = props;
   const { navigate, goBack } = navigation;
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
   const handleSelect = async (ite) => {
     //check whether the group(chats in firestore) exists, if not create
     const combinedId =
@@ -43,6 +53,8 @@ function Chat(props) {
     navigate("Messenger", { user: ite });
   };
   useEffect(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
     onValue(
       firebaseDatabaseRef(firebaseDatabase, "users"),
       async (snapshot) => {
@@ -121,6 +133,9 @@ function Chat(props) {
         />
       </View>
       <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         style={{ height: "85%" }}
         data={users}
         renderItem={({ item }) => (

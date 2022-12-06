@@ -9,6 +9,7 @@ import {
   Pressable,
   ToastAndroid,
   Modal,
+  RefreshControl,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
@@ -22,6 +23,9 @@ import {
   push,
   update,
 } from "firebase/database";
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 export const ProfileFriend = ({ route, navigation }) => {
   const { id } = route.params;
   let check;
@@ -52,7 +56,15 @@ export const ProfileFriend = ({ route, navigation }) => {
   const [daco, setdaco] = useState();
   const [dacod, setdacod] = useState();
   const sothich2 = [];
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
   useEffect(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
     const reference1d1 = ref(db, "tuongtac/" + user);
     onValue(reference1d1, (snapshot1) => {
       snapshot1.forEach((childSnapshot) => {
@@ -91,7 +103,7 @@ export const ProfileFriend = ({ route, navigation }) => {
       setnameCr(namepr);
       setavtCr(avtpr);
     });
-  });
+  }, []);
   const referencer = ref(db, "post/" + user);
   onValue(referencer, (snapshot) => {
     snapshot.forEach((childSnapshot) => {
@@ -302,6 +314,9 @@ export const ProfileFriend = ({ route, navigation }) => {
       contentContainerStyle={{ flexGrow: 1 }}
       showsVerticalScrollIndicator={false}
       style={{ width: "100%", height: "100%" }}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
     >
       <View style={styles.centeredView}>
         <Modal

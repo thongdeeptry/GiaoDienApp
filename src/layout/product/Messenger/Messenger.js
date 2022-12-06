@@ -10,6 +10,7 @@ import {
   FlatList,
   Keyboard,
   TextInput,
+  RefreshControl,
 } from "react-native";
 import { images, colors, icons, fontSizes } from "../../../constants";
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -29,7 +30,9 @@ import {
 } from "firebase/database";
 import { initializeApp } from "firebase/app";
 import { auth, firebaseConfig } from "../../../../config";
-
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 function Messenger(props) {
   const app = initializeApp(firebaseConfig);
   if (!app.length) {
@@ -44,8 +47,15 @@ function Messenger(props) {
   const { url, name, userId } = props.route.params.user;
   const { navigate, goBack } = props.navigation;
   const combinedId = user > userId ? user + userId : userId + user;
+  const [refreshing, setRefreshing] = React.useState(false);
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
   useEffect(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
     const reference = ref(db1, "users/" + user);
     onValue(reference, (childSnapshot) => {
       const namepr = childSnapshot.child("name").val();
@@ -142,6 +152,9 @@ function Messenger(props) {
           flex: 1,
           marginBottom: 20,
         }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         inverted
         data={DataHis == [] ? chatHistory : DataHis.reverse()} //chatHistory.reverse()
         renderItem={({ item }) => (

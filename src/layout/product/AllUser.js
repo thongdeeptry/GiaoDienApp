@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   FlatList,
+  RefreshControl,
 } from "react-native";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../../../config";
@@ -22,6 +23,9 @@ import {
   update,
 } from "firebase/database";
 import { UserContext } from "../user/UserContext";
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 export const AllUser = ({ route, navigation }) => {
   initializeApp(firebaseConfig);
   const { onLogout } = useContext(UserContext);
@@ -29,6 +33,15 @@ export const AllUser = ({ route, navigation }) => {
   const db = getDatabase();
   const [id, setid] = useState();
   const dataFl = [];
+  const [refreshing, setRefreshing] = React.useState(false);
+  useEffect(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
   const logOut = () => {
     const auth = getAuth();
     signOut(auth)
@@ -132,6 +145,9 @@ export const AllUser = ({ route, navigation }) => {
           <FlatList
             showsVerticalScrollIndicator={false}
             data={dataFl}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
             renderItem={({ item, index }) =>
               item.trangthai == "Hoạt Động" ? (
                 <View

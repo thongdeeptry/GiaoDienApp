@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   FlatList,
+  RefreshControl,
 } from "react-native";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../../../config";
@@ -21,11 +22,24 @@ import {
   push,
   update,
 } from "firebase/database";
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 export const BanBe = ({ route, navigation }) => {
   const { idFr } = route.params;
   initializeApp(firebaseConfig);
   const db = getDatabase();
   const dataFriend = [];
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
+  useEffect(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
   const referencebanbe = ref(db, "banbe/" + idFr);
   onValue(referencebanbe, (childSnapshot1) => {
     childSnapshot1.forEach((snapshot1) => {
@@ -88,6 +102,9 @@ export const BanBe = ({ route, navigation }) => {
           <FlatList
             showsVerticalScrollIndicator={false}
             data={dataFriend}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
             renderItem={({ item, index }) => (
               <View
                 style={{

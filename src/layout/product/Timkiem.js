@@ -11,6 +11,7 @@ import {
   ToastAndroid,
   Modal,
   Alert,
+  RefreshControl,
 } from "react-native";
 import React, { useState, useEffect, useContext } from "react";
 import { initializeApp } from "firebase/app";
@@ -27,6 +28,9 @@ import {
   query,
   equalTo,
 } from "firebase/database";
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 const Timkiem = ({ navigation, route }) => {
   initializeApp(firebaseConfig);
   const dataUser = [];
@@ -34,7 +38,16 @@ const Timkiem = ({ navigation, route }) => {
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
   const [dulieu, setdulieu] = useState("");
+  const [refreshing, setRefreshing] = React.useState(false);
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
+  useEffect(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
   const reference = ref(db, "users");
   onValue(reference, (snapshot) => {
     snapshot.forEach((childSnapshot) => {
@@ -148,8 +161,18 @@ const Timkiem = ({ navigation, route }) => {
           paddingHorizontal: 30,
         }}
       >
-        {dataUserGoiY.map((item, index) => {
-          return (
+        <FlatList
+          style={{ width: "100%", height: "100%" }}
+          contentContainerStyle={{
+            width: "100%",
+            paddingBottom: 80,
+            height: "100%",
+          }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          data={dataUserGoiY}
+          renderItem={({ item }) => (
             <View
               style={{
                 flexDirection: "row",
@@ -168,8 +191,8 @@ const Timkiem = ({ navigation, route }) => {
                 />
               </TouchableOpacity>
             </View>
-          );
-        })}
+          )}
+        />
       </View>
 
       <View

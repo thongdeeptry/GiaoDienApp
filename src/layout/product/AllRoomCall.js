@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   FlatList,
+  RefreshControl,
 } from "react-native";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../../../config";
@@ -21,10 +22,22 @@ import {
   push,
   update,
 } from "firebase/database";
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 export const AllRoomCall = ({ route, navigation }) => {
   initializeApp(firebaseConfig);
   const db = getDatabase();
   const dataRoom = [];
+  const [refreshing, setRefreshing] = React.useState(false);
+  useEffect(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
   const referencerrs = ref(db, "roomCall");
   onValue(referencerrs, (snapshot) => {
     snapshot.forEach((childSnapshotq) => {
@@ -91,8 +104,12 @@ export const AllRoomCall = ({ route, navigation }) => {
       >
         <View>
           <FlatList
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
             showsVerticalScrollIndicator={false}
             data={dataRoom}
+            style={{ height: "100%" }}
             renderItem={({ item, index }) => (
               <View
                 style={{
