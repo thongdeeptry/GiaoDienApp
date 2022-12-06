@@ -38,6 +38,7 @@ const Home = ({ route, navigation }) => {
   const [id, setid] = useState();
   const datapost = [];
   const dataStory = [];
+  const dataLive = [];
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
   useEffect(() => {
@@ -63,7 +64,7 @@ const Home = ({ route, navigation }) => {
         // An error happened.
       });
   };
-  const referencer = query(ref(db, "post"), limitToLast(1000));
+  const referencer = ref(db, "post");
   onValue(referencer, (snapshot) => {
     snapshot.forEach((childSnapshot) => {
       childSnapshot.forEach((childSnapshotq) => {
@@ -89,7 +90,7 @@ const Home = ({ route, navigation }) => {
       });
     });
   });
-  const referencerr = query(ref(db, "story"), limitToLast(1000));
+  const referencerr = ref(db, "story");
   onValue(referencerr, (snapshot) => {
     snapshot.forEach((childSnapshot) => {
       childSnapshot.forEach((childSnapshotq) => {
@@ -109,6 +110,27 @@ const Home = ({ route, navigation }) => {
           thoigian: thoigian,
           image: image,
         });
+      });
+    });
+  });
+  const referencerrs = ref(db, "livestream");
+  onValue(referencerrs, (snapshot) => {
+    snapshot.forEach((childSnapshotq) => {
+      const id = childSnapshotq.child("id").exportVal();
+      const name = childSnapshotq.child("name").exportVal();
+      const avt = childSnapshotq.child("avt").exportVal();
+      const token = childSnapshotq.child("token").exportVal();
+      const channel = childSnapshotq.child("channel").exportVal();
+      const thoigian = childSnapshotq.child("ngaytao").exportVal();
+      const luotxem = childSnapshotq.child("luotxem").exportVal();
+      dataLive.push({
+        id: id,
+        name: name,
+        avt: avt,
+        token: token,
+        channel: channel,
+        thoigian: thoigian,
+        luotxem: luotxem,
       });
     });
   });
@@ -423,6 +445,47 @@ const Home = ({ route, navigation }) => {
           <Text style={{ fontSize: 19, paddingHorizontal: 20 }}>
             Bài viết và hoạt động
           </Text>
+          <View>
+            <FlatList
+              horizontal
+              style={[{}, dataLive.length > 0 ? styles.addContainerlive : null]}
+              showsHorizontalScrollIndicator={false}
+              data={dataLive}
+              renderItem={({ item, index }) => (
+                <View>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate("JoinLive", {
+                        token: item.token,
+                        channel: item.channel,
+                        nameLive: item.name,
+                        thoigian: item.thoigian,
+                        avt: item.avt,
+                        id: item.id,
+                        luotxem: item.luotxem,
+                      })
+                    }
+                  >
+                    <View>
+                      <Image
+                        style={styles.str1Container1}
+                        source={{ uri: item.avt }}
+                      />
+                    </View>
+                    <View>
+                      <Image
+                        style={styles.nameContainer}
+                        source={require("../src/image/live.png")}
+                      />
+                    </View>
+                    <View>
+                      <Text style={styles.textContainer}>{item.name}</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              )}
+            />
+          </View>
           <View style={{ width: "100%", paddingHorizontal: 20 }}>
             <FlatList
               data={datapost}
@@ -566,9 +629,21 @@ const styles = StyleSheet.create({
     height: 130,
     borderRadius: 15,
   },
+  str1Container1: {
+    width: 90,
+    height: 130,
+    borderRadius: 15,
+    borderColor: "#E94057",
+    borderWidth: 2,
+  },
   addContainer: {
     height: 135,
     top: 20,
+    marginHorizontal: 20,
+  },
+  addContainerlive: {
+    height: 135,
+    top: 10,
     marginHorizontal: 20,
   },
   avtContainer: {

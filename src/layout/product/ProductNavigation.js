@@ -30,13 +30,16 @@ import { BanBe } from "./BanBe";
 import { AnhUser } from "./AnhUser";
 import { XemAnh } from "./XemAnh";
 import CallVideo from "./Call/screens/CallScreen";
-import LiveVideo from "./Call/screens/LiveScreen"
+import LiveVideo from "./Call/screens/LiveScreen";
+import JoinLive from "./Call/screens/JoinLive";
+import RoomCall from "./Call/screens/RoomScreen";
+import JoinRoom from "./Call/screens/JoinRoom";
+import { AllRoomCall } from "./AllRoomCall";
 function HomeStack() {
   return (
     <Stack.Navigator
       screenOptions={{ tabBarShowLabel: false, headerShown: false }}
     >
-      
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="PostStatus" component={PostStatus} />
       <Stack.Screen name="Camxuc" component={Camxuc} />
@@ -57,6 +60,10 @@ function HomeStack() {
       <Stack.Screen name="XemAnh" component={XemAnh} />
       <Stack.Screen name="CallVideo" component={CallVideo} />
       <Stack.Screen name="LiveVideo" component={LiveVideo} />
+      <Stack.Screen name="JoinLive" component={JoinLive} />
+      <Stack.Screen name="RoomCall" component={RoomCall} />
+      <Stack.Screen name="JoinRoom" component={JoinRoom} />
+      <Stack.Screen name="AllRoomCall" component={AllRoomCall} />
     </Stack.Navigator>
   );
 }
@@ -84,6 +91,10 @@ function ProfileStack() {
       <Stack.Screen name="XemAnh" component={XemAnh} />
       <Stack.Screen name="CallVideo" component={CallVideo} />
       <Stack.Screen name="LiveVideo" component={LiveVideo} />
+      <Stack.Screen name="JoinLive" component={JoinLive} />
+      <Stack.Screen name="RoomCall" component={RoomCall} />
+      <Stack.Screen name="JoinRoom" component={JoinRoom} />
+      <Stack.Screen name="AllRoomCall" component={AllRoomCall} />
     </Stack.Navigator>
   );
 }
@@ -112,6 +123,10 @@ function AllUserStack() {
       <Stack.Screen name="XemAnh" component={XemAnh} />
       <Stack.Screen name="CallVideo" component={CallVideo} />
       <Stack.Screen name="LiveVideo" component={LiveVideo} />
+      <Stack.Screen name="JoinLive" component={JoinLive} />
+      <Stack.Screen name="RoomCall" component={RoomCall} />
+      <Stack.Screen name="JoinRoom" component={JoinRoom} />
+      <Stack.Screen name="AllRoomCall" component={AllRoomCall} />
     </Stack.Navigator>
   );
 }
@@ -140,6 +155,10 @@ function ChatStack() {
       <Stack.Screen name="XemAnh" component={XemAnh} />
       <Stack.Screen name="CallVideo" component={CallVideo} />
       <Stack.Screen name="LiveVideo" component={LiveVideo} />
+      <Stack.Screen name="JoinLive" component={JoinLive} />
+      <Stack.Screen name="RoomCall" component={RoomCall} />
+      <Stack.Screen name="JoinRoom" component={JoinRoom} />
+      <Stack.Screen name="AllRoomCall" component={AllRoomCall} />
     </Stack.Navigator>
   );
 }
@@ -168,6 +187,10 @@ function NotiStack() {
       <Stack.Screen name="XemAnh" component={XemAnh} />
       <Stack.Screen name="CallVideo" component={CallVideo} />
       <Stack.Screen name="LiveVideo" component={LiveVideo} />
+      <Stack.Screen name="JoinLive" component={JoinLive} />
+      <Stack.Screen name="RoomCall" component={RoomCall} />
+      <Stack.Screen name="JoinRoom" component={JoinRoom} />
+      <Stack.Screen name="AllRoomCall" component={AllRoomCall} />
     </Stack.Navigator>
   );
 }

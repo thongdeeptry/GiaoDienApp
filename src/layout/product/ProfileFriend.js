@@ -615,26 +615,6 @@ export const ProfileFriend = ({ route, navigation }) => {
                     ]}
                   >
                     <View style={styles.info}>
-                      <TouchableOpacity
-                        style={{
-                          width: 20,
-                          height: 20,
-                          borderRadius: 10,
-                          position: "absolute",
-                          right: 13,
-                          top: -3,
-                        }}
-                        onPress={() => openModal(item.id)}
-                      >
-                        <Image
-                          style={{
-                            width: 20,
-                            height: 20,
-                            borderRadius: 10,
-                          }}
-                          source={require("../../image/remove.png")}
-                        />
-                      </TouchableOpacity>
                       <Image
                         style={{ width: 40, height: 40, borderRadius: 20 }}
                         source={{ uri: avt }}

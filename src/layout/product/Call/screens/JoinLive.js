@@ -9,7 +9,6 @@ import {
   Text,
   TouchableOpacity,
   ToastAndroid,
-  TextInput,
 } from "react-native";
 import { ongetTokenAgora } from "../utilities/getTokenAgora.context";
 import { initializeApp } from "firebase/app";
@@ -25,73 +24,55 @@ import {
   remove,
   serverTimestamp,
 } from "firebase/database";
-const RoomCall = ({ navigation, route }) => {
+const JoinLive = ({ navigation, route }) => {
+  const { token, channel, nameLive, thoigian, avt, luotxem, id } = route.params;
   initializeApp(firebaseConfig);
-  const user = auth.currentUser.uid;
   const db = getDatabase();
   const [videoCall, setVideoCall] = useState(true);
-  const [channel, setChannel] = useState(user);
-  const [role, setRole] = useState(1); //role = 2 people follow
-  const [uid, setUid] = useState(1);
+  const [role, setRole] = useState(2); //role = 2 people follow
+  const [uid, setUid] = useState(2);
   const [expiry, setexpiry] = useState("9999999999999999999");
-  const [token, setToken] = useState("");
-  const [name, setname] = useState();
-  const [avt, setavt] = useState();
   const [ngay, setNgay] = useState();
-  const [view, setView] = useState();
-  const [nameRoom, setNameRoom] = useState();
+  const [view, setView] = useState(1);
+  const [token1, setToken] = useState();
+
   useEffect(() => {
     async function fetchData() {
-      const reference = ref(db, "users/" + user);
-      onValue(reference, (childSnapshot) => {
-        const namepr = childSnapshot.child("name").val();
-        const avtpr = childSnapshot.child("avt").val();
-        setname(namepr);
-        setavt(avtpr);
-      });
-
       const res = await ongetTokenAgora(channel, role, "uid", uid, expiry);
       setToken(res);
+      if (token != "") {
+        const referencer = ref(db, "livestream/" + id);
+        update(referencer, {
+          luotxem: Number(luotxem) + 1,
+        });
+        ToastAndroid.show(
+          "Đã tham gia phòng phát trực tiếp của " + nameLive,
+          ToastAndroid.BOTTOM
+        );
+      }
     }
     fetchData();
   }, []);
-  const BatDau = () => {
-    const referencer = ref(db, "roomCall/" + user);
-    set(referencer, {
-      id: user,
-      avt: avt,
-      name: nameRoom,
-      songuoi: 1,
-      ngaytao: serverTimestamp(),
-      token: token,
-      channel: channel,
-      uid: 1,
-    });
-    ToastAndroid.show("Đã tạo phòng trò chuyện", ToastAndroid.BOTTOM);
-    const reference = ref(db, "roomCall/" + user);
-    onValue(reference, (childSnapshot) => {
-      const namepr = childSnapshot.child("ngaytao").val();
-      const vi = childSnapshot.child("songuoi").val();
-      setNgay(namepr);
-      setView(vi);
-    });
-  };
   const props = {
     connectionData: {
       appId: "e63496cfe00f42d8be5c498370e6fa27",
       channel: channel,
       uid: uid,
-      token: token,
+      token: token1,
       role: role,
     },
     rtcCallbacks: {
       EndCall: () => {
         setVideoCall(false);
         navigation.goBack();
-        const referencer = ref(db, "roomCall/" + user);
-        remove(referencer).then(() => {
-          ToastAndroid.show("Bạn đã tắt phòng trò chuyện", ToastAndroid.BOTTOM);
+        const referencer = ref(db, "livestream/" + id);
+        update(referencer, {
+          luotxem: Number(luotxem),
         });
+        ToastAndroid.show(
+          "Đã thoát phòng phát trực tiếp của " + nameLive,
+          ToastAndroid.BOTTOM
+        );
       },
     },
   };
@@ -128,43 +109,43 @@ const RoomCall = ({ navigation, route }) => {
         connectionData={props.connectionData}
         rtcCallbacks={props.rtcCallbacks}
       />
-      <TextInput
+      <Text
         style={{
           position: "absolute",
           left: 70,
-          backgroundColor: "white",
+          color: "white",
           fontSize: 20,
-          top: 10,
-          height: 40,
-          width: 250,
-          borderRadius: 10,
-          paddingLeft: 10,
+          top: 5,
         }}
-        placeholder="Nhập tên phòng"
-        value={nameRoom}
-        onChangeText={setNameRoom}
-      ></TextInput>
-
-      <TouchableOpacity
+      >
+        {nameLive}
+      </Text>
+      <Text
         style={{
           position: "absolute",
-          right: 10,
-          height: 40,
+          left: 70,
+          color: "white",
+          fontSize: 15,
+          top: 30,
+          opacity: 0.7,
         }}
-        onPress={BatDau}
       >
-        <Text
-          style={{
-            color: "#E94057",
-            fontSize: 20,
-            top: 20,
-          }}
-        >
-          Bắt đầu
-        </Text>
-      </TouchableOpacity>
+        {thoigian}
+      </Text>
+      <Text
+        style={{
+          position: "absolute",
+          right: 20,
+          color: "white",
+          fontSize: 20,
+          top: 10,
+          opacity: 0.7,
+        }}
+      >
+        {view}
+      </Text>
     </View>
   ) : null;
 };
 
-export default RoomCall;
+export default JoinLive;

@@ -376,7 +376,7 @@ export const PostStatus = ({ route, navigation }) => {
           >
             <TouchableOpacity
               style={{ flexDirection: "row", alignItems: "center", left: 5 }}
-              onPress={() => uploadImageToBucket(image, makeid(60))}
+              onPress={() => navigation.navigate("RoomCall")}
             >
               <Image
                 style={{ width: 30, height: 30, right: 10 }}
