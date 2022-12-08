@@ -38,6 +38,7 @@ const LiveVideo = ({ navigation, route }) => {
   const [avt, setavt] = useState();
   const [ngay, setNgay] = useState();
   const [view, setView] = useState();
+  const [visible, setVisible] = useState(true);
   useEffect(() => {
     async function fetchData() {
       const referencek = ref(db, "users/" + user);
@@ -50,28 +51,31 @@ const LiveVideo = ({ navigation, route }) => {
 
       const res = await ongetTokenAgora(channel, role, "uid", uid, expiry);
       setToken(res);
-      const referencera = ref(db, "livestream/" + user);
-      set(referencera, {
-        id: user,
-        avt: avt,
-        name: name,
-        luotxem: 0,
-        ngaytao: serverTimestamp(),
-        token: token,
-        channel: channel,
-        uid: 1,
-      });
-      ToastAndroid.show("Đã tạo phòng phát trực tiếp", ToastAndroid.BOTTOM);
-      const reference = ref(db, "livestream/" + user);
-      onValue(reference, (childSnapshot) => {
-        const namepr = childSnapshot.child("ngaytao").val();
-        const vi = childSnapshot.child("luotxem").val();
-        setNgay(namepr);
-        setView(vi);
-      });
     }
     fetchData();
   }, []);
+  const Livestream = () => {
+    const referencera = ref(db, "livestream/" + user);
+    set(referencera, {
+      id: user,
+      avt: avt,
+      name: name,
+      luotxem: 0,
+      ngaytao: serverTimestamp(),
+      token: token,
+      channel: channel,
+      uid: 1,
+    });
+    ToastAndroid.show("Đã tạo phòng phát trực tiếp", ToastAndroid.BOTTOM);
+    const reference = ref(db, "livestream/" + user);
+    onValue(reference, (childSnapshot) => {
+      const namepr = childSnapshot.child("ngaytao").val();
+      const vi = childSnapshot.child("luotxem").val();
+      setNgay(namepr);
+      setView(vi);
+    });
+    setVisible(false);
+  };
   const props = {
     connectionData: {
       appId: "e63496cfe00f42d8be5c498370e6fa27",
@@ -120,6 +124,7 @@ const LiveVideo = ({ navigation, route }) => {
           source={{ uri: avt }}
         />
       </TouchableOpacity>
+
       <AgoraUIKit
         connectionData={props.connectionData}
         rtcCallbacks={props.rtcCallbacks}
@@ -135,6 +140,16 @@ const LiveVideo = ({ navigation, route }) => {
       >
         {name}
       </Text>
+      {visible == true ? (
+        <TouchableOpacity
+          style={{ position: "absolute", right: 10 }}
+          onPress={Livestream}
+        >
+          <Text style={{ color: "white", fontSize: 20, top: 10 }}>Bắt đầu</Text>
+        </TouchableOpacity>
+      ) : (
+        <></>
+      )}
       <Text
         style={{
           position: "absolute",
