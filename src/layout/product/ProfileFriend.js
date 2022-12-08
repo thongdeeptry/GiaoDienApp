@@ -53,7 +53,7 @@ export const ProfileFriend = ({ route, navigation }) => {
   const idFr = getAuth().currentUser.uid;
   const idCurrent = getAuth().currentUser.uid;
   const db = getDatabase();
-  const [daco, setdaco] = useState();
+  const [daco, setdaco] = useState(false);
   const [dacod, setdacod] = useState();
   const sothich2 = [];
   const [refreshing, setRefreshing] = React.useState(false);
@@ -65,18 +65,18 @@ export const ProfileFriend = ({ route, navigation }) => {
   useEffect(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
-    const reference1d1 = ref(db, "tuongtac/" + user);
+    const reference1d1 = ref(db, "favourite/" + id);
     onValue(reference1d1, (snapshot1) => {
       snapshot1.forEach((childSnapshot) => {
-        const value = childSnapshot.child(user).child("like").val();
-        if (value == true) {
-          setdacod(true);
-          //throw "break-loop";
-        } else if (value != true) {
-          setdacod(false);
+        const value = childSnapshot.child("user").val();
+        if (value == idCurrent) {
+          setdaco(true);
+        } else {
+          setdaco(false);
         }
       });
     });
+    console.log(daco);
     setisLoading(true);
     const reference = ref(db, "users/" + user);
     onValue(reference, (childSnapshot) => {
@@ -223,11 +223,11 @@ export const ProfileFriend = ({ route, navigation }) => {
           try {
             if (idCurrent == value) {
               dc = true;
-              setdaco(dc);
+              setdaco(true);
               check = true;
               throw "break-loop";
             } else {
-              setdaco(dc);
+              setdaco(false);
               check = false;
             }
           } catch (error) {
@@ -791,7 +791,7 @@ export const ProfileFriend = ({ route, navigation }) => {
             <Image
               style={[
                 { width: "100%", height: "100%", top: 5 },
-                check != true
+                daco == false
                   ? { width: "100%", height: "100%", top: 5, opacity: 0.5 }
                   : null,
               ]}
