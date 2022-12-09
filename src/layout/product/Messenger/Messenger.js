@@ -87,7 +87,7 @@ function Messenger(props) {
     }
     let myFriendUserId = userId;
     Keyboard.dismiss();
-    let key = uuid();
+    let key = new Date().getTime();
     const docRef = ref(db1, "chats/" + combinedId + "/messages/" + key);
     set(docRef, {
       id: key,
@@ -96,7 +96,7 @@ function Messenger(props) {
       text: typedText,
       senderId: user,
       date: serverTimestamp(),
-      timestamp: new Date().getTime(),
+      timestamp: serverTimestamp(),
       url: avt,
       isSender: true,
     });
@@ -156,11 +156,12 @@ function Messenger(props) {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         inverted
-        data={DataHis == [] ? chatHistory : DataHis.reverse()} //chatHistory.reverse()
+        keyExtractor={(item, index) => index}
+        data={DataHis == [] ? [] : DataHis.reverse()} //chatHistory.reverse()
         renderItem={({ item }) => (
           <MessengerItem
             onPress={() => {
-              alert(`You press item's name: ${item.timestamp}`);
+              navigate("ProfileFriend", { id: item.senderId });
             }}
             item={item}
             key={`${item.timestamp}`}

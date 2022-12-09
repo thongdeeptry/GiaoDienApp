@@ -54,7 +54,7 @@ export const ProfileFriend = ({ route, navigation }) => {
   const idCurrent = getAuth().currentUser.uid;
   const db = getDatabase();
   const [daco, setdaco] = useState(false);
-  const [dacod, setdacod] = useState();
+  const [dacod, setdacod] = useState(false);
   const sothich2 = [];
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -176,11 +176,12 @@ export const ProfileFriend = ({ route, navigation }) => {
     const reference11 = ref(db, "tuongtac/" + user + "/" + idP + "/" + user);
     onValue(reference11, (snapshot1) => {
       const value = snapshot1.child("like").exportVal();
+      console.log(value);
       if (value == true) {
-        setdaco(true);
+        setdacod(true);
         //throw "break-loop";
-      } else if (value != true) {
-        setdaco(false);
+      } else {
+        setdacod(false);
       }
     });
     const reference1 = ref(db, "post/" + user + "/" + idP);
@@ -188,7 +189,7 @@ export const ProfileFriend = ({ route, navigation }) => {
       co = childSnapshot1.child("like").exportVal();
       like = co + 1;
     });
-    if (daco != true) {
+    if (dacod == false) {
       const reference = ref(db, "post/" + user + "/" + idP);
       update(reference, {
         like: like,
@@ -197,6 +198,9 @@ export const ProfileFriend = ({ route, navigation }) => {
       set(reference13, {
         like: true,
       });
+      ToastAndroid.show("Đã gửi lượt thích bài viết", ToastAndroid.BOTTOM);
+    } else {
+      ToastAndroid.show("Bạn đã thích bài viết này rồi", ToastAndroid.BOTTOM);
     }
   };
   const numColumns = 3;

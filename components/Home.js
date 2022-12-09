@@ -12,6 +12,7 @@ import {
   Pressable,
   SafeAreaView,
   RefreshControl,
+  ToastAndroid,
 } from "react-native";
 import React, { useState, useEffect, useContext } from "react";
 import { initializeApp } from "firebase/app";
@@ -39,6 +40,8 @@ const Home = ({ route, navigation }) => {
   const [name, setname] = useState();
   const [avt, setavt] = useState();
   const [id, setid] = useState();
+  const [daco, setdaco] = useState();
+  const [dacod, setdacod] = useState(false);
   const datapost = [];
   const dataStory = [];
   const dataLive = [];
@@ -272,7 +275,7 @@ const Home = ({ route, navigation }) => {
         >
           <TouchableOpacity
             style={{ flexDirection: "row" }}
-            onPress={() => AddLike(item.id)}
+            onPress={() => AddLike(item.user, item.id)}
           >
             <Image
               style={styles.iclikeContainer}
@@ -300,7 +303,41 @@ const Home = ({ route, navigation }) => {
       </Pressable>
     );
   };
+  const AddLike = (id, idP) => {
+    let like;
+    let co;
+    let dc = false;
 
+    const reference11 = ref(db, "tuongtac/" + id + "/" + idP + "/" + id);
+    onValue(reference11, (snapshot1) => {
+      const value = snapshot1.child("like").exportVal();
+      console.log(value);
+      if (value == true) {
+        setdacod(true);
+        //throw "break-loop";
+      } else {
+        setdacod(false);
+      }
+    });
+    const reference1 = ref(db, "post/" + id + "/" + idP);
+    onValue(reference1, (childSnapshot1) => {
+      co = childSnapshot1.child("like").exportVal();
+      like = co + 1;
+    });
+    if (dacod == false) {
+      const reference = ref(db, "post/" + id + "/" + idP);
+      update(reference, {
+        like: like,
+      });
+      const reference13 = ref(db, "tuongtac/" + id + "/" + idP + "/" + id);
+      set(reference13, {
+        like: true,
+      });
+      ToastAndroid.show("Đã gửi lượt thích bài viết", ToastAndroid.BOTTOM);
+    } else {
+      ToastAndroid.show("Bạn đã thích bài viết này rồi", ToastAndroid.BOTTOM);
+    }
+  };
   return (
     <SafeAreaView
       style={{ height: "100%", width: "100%", backgroundColor: "white" }}
