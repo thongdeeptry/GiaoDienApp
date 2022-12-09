@@ -10,6 +10,7 @@ import {
   Keyboard,
   FlatList,
   RefreshControl,
+  ToastAndroid,
 } from "react-native";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../../../config";
@@ -22,6 +23,7 @@ import {
   push,
   update,
 } from "firebase/database";
+import { sendMess } from "../../constants/sendMess";
 import { UserContext } from "../user/UserContext";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -29,32 +31,32 @@ const wait = (timeout) => {
 export const AllUser = ({ route, navigation }) => {
   initializeApp(firebaseConfig);
   const { onLogout } = useContext(UserContext);
-  const user = getAuth().currentUser.uid;
+  const idCurrent = getAuth().currentUser.uid;
   const db = getDatabase();
   const [id, setid] = useState();
+  const [nameCr, setnameCr] = useState();
+  const [avtCr, setavtCr] = useState();
+  const [daco, setdaco] = useState(false);
+  const [dacod, setdacod] = useState(false);
+  const [tokendvCr, settokendvCr] = useState();
   const dataFl = [];
   const [refreshing, setRefreshing] = React.useState(false);
   useEffect(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
+    const referencecr = ref(db, "users/" + idCurrent);
+    onValue(referencecr, (childSnapshot) => {
+      const namepr = childSnapshot.child("name").val();
+      const avtpr = childSnapshot.child("avt").val();
+      setnameCr(namepr);
+      setavtCr(avtpr);
+    });
   }, []);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
   }, []);
-  const logOut = () => {
-    const auth = getAuth();
-    signOut(auth)
-      .then(async () => {
-        alert("Đăng xuất thành công");
-        await AsyncStorage.setItem("email", "");
-        await AsyncStorage.setItem("password", "");
-        onLogout();
-      })
-      .catch((error) => {
-        // An error happened.
-      });
-  };
+  const logOut = () => {};
   const referencer = ref(db, "users");
   onValue(referencer, (snapshot) => {
     snapshot.forEach((childSnapshot) => {
@@ -72,6 +74,119 @@ export const AllUser = ({ route, navigation }) => {
       });
     });
   });
+  const date = new Date();
+  let thang = date.getMonth() + 1;
+  const Love = (id) => {
+    let fl;
+    let co;
+    let dc = false;
+    const referencecr = ref(db, "users/" + id);
+    onValue(referencecr, (childSnapshot) => {
+      const tokendv = childSnapshot.child("token").val();
+      settokendvCr(tokendv);
+    });
+    const reference11 = ref(db, "favourite/" + id);
+    onValue(reference11, (childSnapshot1) => {
+      try {
+        childSnapshot1.forEach((snapshot1) => {
+          const value = snapshot1.child("user").exportVal();
+          try {
+            if (idCurrent == value) {
+              dc = true;
+              setdaco(true);
+              check = true;
+              throw "break-loop";
+            } else {
+              setdaco(false);
+              check = false;
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    });
+    const reference1 = ref(db, "users/" + id);
+    onValue(reference1, (childSnapshot1) => {
+      co = childSnapshot1.child("follow").val();
+      fl = co + 1;
+    });
+    console.log("số fl : " + fl);
+    const reference112 = ref(db, "favourite/" + idCurrent);
+    onValue(reference112, (childSnapshot1) => {
+      childSnapshot1.forEach((snapshot1) => {
+        const value = snapshot1.child("user").val();
+        console.log(value);
+        try {
+          if (id == value) {
+            const reference3 = ref(db, "banbe/" + idCurrent + "/" + id);
+            set(reference3, {
+              user: id,
+              id: idCurrent,
+              avt: avt,
+              name: nameCr,
+            });
+            const reference3d = ref(db, "banbe/" + id + "/" + idCurrent);
+            set(reference3d, {
+              user: idCurrent,
+              id: id,
+              avt: avt,
+              name: nameCr,
+            });
+            ToastAndroid.show("Đã là bạn bè của nhau", ToastAndroid.BOTTOM);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      });
+    });
+    if (daco != true) {
+      const reference = ref(db, "users/" + id);
+      update(reference, {
+        follow: fl,
+      });
+      const reference3 = ref(db, "favourite/" + id);
+      push(reference3, {
+        user: idCurrent,
+      });
+      const reference5 = ref(db, "notification/" + id);
+      push(reference5, {
+        user: idCurrent,
+        id: id,
+        noidung: " vừa gửi lượt thích đến bạn",
+        thoigian:
+          date.getHours() +
+          ":" +
+          date.getMinutes() +
+          " ngày " +
+          date.getDate() +
+          "/" +
+          thang +
+          "/" +
+          date.getFullYear(),
+        avt: avtCr,
+        name: nameCr,
+      });
+      ToastAndroid.show("Đã gửi lượt thích", ToastAndroid.BOTTOM);
+      sendMess(
+        tokendvCr,
+        "Thông báo mới từ " + nameCr,
+        nameCr + " vừa yêu thích bạn"
+      );
+    }
+    if (daco == true) {
+      const reference = ref(db, "users/" + id);
+      update(reference, {
+        follow: co,
+      });
+      ToastAndroid.show(
+        "Bạn đã yêu thích tài khoản này rồi!",
+        ToastAndroid.BOTTOM
+      );
+    }
+  };
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <View
@@ -253,6 +368,7 @@ export const AllUser = ({ route, navigation }) => {
                       justifyContent: "flex-end",
                       alignItems: "flex-end",
                     }}
+                    onPress={() => Love(item.id)}
                   >
                     <Image
                       style={{ width: 40, height: 40 }}

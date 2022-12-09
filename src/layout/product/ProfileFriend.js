@@ -23,6 +23,7 @@ import {
   push,
   update,
 } from "firebase/database";
+import { sendMess } from "../../constants/sendMess";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
@@ -36,6 +37,7 @@ export const ProfileFriend = ({ route, navigation }) => {
   let noidung1 = "";
   const [nameCr, setnameCr] = useState();
   const [avtCr, setavtCr] = useState();
+  const [tokendvCr, settokendvCr] = useState();
   const [name, setname] = useState();
   const [avt, setavt] = useState();
   const [tuoi, settuoi] = useState();
@@ -100,6 +102,8 @@ export const ProfileFriend = ({ route, navigation }) => {
     onValue(referencecr, (childSnapshot) => {
       const namepr = childSnapshot.child("name").val();
       const avtpr = childSnapshot.child("avt").val();
+      const tokendv = childSnapshot.child("token").val();
+      settokendvCr(tokendv);
       setnameCr(namepr);
       setavtCr(avtpr);
     });
@@ -199,6 +203,11 @@ export const ProfileFriend = ({ route, navigation }) => {
         like: true,
       });
       ToastAndroid.show("Đã gửi lượt thích bài viết", ToastAndroid.BOTTOM);
+      sendMess(
+        tokendvCr,
+        "Thông báo mới từ " + nameCr,
+        nameCr + " đã thích bài viết của bạn"
+      );
     } else {
       ToastAndroid.show("Bạn đã thích bài viết này rồi", ToastAndroid.BOTTOM);
     }
@@ -304,6 +313,11 @@ export const ProfileFriend = ({ route, navigation }) => {
         name: nameCr,
       });
       ToastAndroid.show("Đã gửi lượt thích", ToastAndroid.BOTTOM);
+      sendMess(
+        tokendvCr,
+        "Thông báo mới từ " + nameCr,
+        nameCr + " vừa gửi lượt thích đến bạn"
+      );
     }
     if (daco == true) {
       const reference = ref(db, "users/" + id);

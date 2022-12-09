@@ -18,6 +18,7 @@ import { ProductConTextProvider } from "./src/layout/product/ProductContext";
 import messaging from "@react-native-firebase/messaging";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Audio } from "expo-av";
+
 export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
   const [title, setTitle] = useState();
@@ -40,17 +41,6 @@ export default function App() {
         .then(async (token) => {
           console.log(token);
           await AsyncStorage.setItem("token", token);
-          // messaging()
-          //   .sendMessage({
-          //     notification: {
-          //       title: "Background Message Title",
-          //       body: "Background message body",
-          //     },
-          //     token: token,
-          //   })
-          //   .then((response) => {
-          //     console.log("Messages were sent successfully" + response);
-          //   });
         });
     } else {
       console.log("Khong Co Quyen");
@@ -73,6 +63,18 @@ export default function App() {
     //backgroubnd
     messaging().setBackgroundMessageHandler(async (remoteMessage) => {
       console.log("Message handled in the background!", remoteMessage);
+      setTitle(remoteMessage.notification.title);
+      setBody(remoteMessage.notification.body);
+      ToastAndroid.show("Bạn có 1 thông báo mới!", ToastAndroid.CENTER);
+      setModalVisible(true);
+      console.log("Loading Sound");
+      const { sound } = await Audio.Sound.createAsync(require("./nhac.mp3"));
+      setSound(sound);
+      console.log("Playing Sound");
+      await sound.playAsync();
+      setTimeout(() => {
+        setModalVisible(false);
+      }, 3000);
     });
 
     //alert

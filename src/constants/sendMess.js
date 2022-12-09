@@ -1,16 +1,20 @@
 import messaging from "@react-native-firebase/messaging";
 import React, { useEffect } from "react";
 import { ToastAndroid } from "react-native";
-export const sendMess = (token, title, body) => {
-  messaging()
-    .sendMessage({
-      notification: {
-        title: title,
-        body: body,
-      },
-      token: token,
-    })
-    .then((response) => {
-      console.log("Messages were sent successfully" + response);
-    });
+import axiosInstance from "./axios";
+export const sendMess = async (token, title, body) => {
+  const Data = {
+    data: {
+      title: "Firebase notification",
+      detail: "I am firebase notification. you can customise me. enjoy",
+    },
+    notification: {
+      title: title,
+      body: body,
+    },
+    to: token,
+  };
+  await axiosInstance.post("fcm/send", Data).then((res) => {
+    console.log(res);
+  });
 };

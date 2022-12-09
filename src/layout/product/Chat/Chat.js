@@ -69,16 +69,18 @@ function Chat(props) {
               .filter((item) => item != myUserId)
               .map((eachKey) => {
                 let eachObject = snapshotObject[eachKey];
-                return {
-                  //default profile url
-                  url: eachObject.avt,
-                  name: eachObject.name,
-                  email: eachObject.email,
-                  accessToken: eachObject.accessToken,
-                  numberOfUnreadMessages: 0,
-                  userId: eachKey,
-                  message: eachObject.nghenghiep,
-                };
+                return eachObject.trangthai == "Hoạt Động"
+                  ? {
+                      //default profile url
+                      url: eachObject.avt,
+                      name: eachObject.name,
+                      email: eachObject.email,
+                      accessToken: eachObject.accessToken,
+                      numberOfUnreadMessages: 0,
+                      userId: eachKey,
+                      message: eachObject.nghenghiep,
+                    }
+                  : null;
               })
           );
           debugger;

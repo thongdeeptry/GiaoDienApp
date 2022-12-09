@@ -32,6 +32,7 @@ import {
 } from "firebase/database";
 import { UserContext } from "../user/UserContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { sendMess } from "../../constants/sendMess";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
@@ -42,6 +43,7 @@ const Binhluan = ({ navigation, route }) => {
   const [binhluan, setbinhluan] = useState();
   const [name, setname] = useState();
   const [avt, setavt] = useState();
+  const [tokendvCr, settokendvCr] = useState();
   const [id, setid] = useState();
   const [nameP, setnameP] = useState();
   const [avtP, setavtP] = useState();
@@ -71,7 +73,11 @@ const Binhluan = ({ navigation, route }) => {
       setname(namepr);
       setavt(avtpr);
     });
-
+    const references = ref(db, "users/" + userID);
+    onValue(references, (childSnapshot) => {
+      const tokenpr = childSnapshot.child("token").val();
+      settokendvCr(tokenpr);
+    });
     const referencer = ref(db, "post/" + userID + "/" + idPost);
     onValue(referencer, (snapshot) => {
       const id = snapshot.child("id").exportVal();
@@ -137,6 +143,11 @@ const Binhluan = ({ navigation, route }) => {
       avt: avt,
     });
     ToastAndroid.show("Đã đăng bình luận", ToastAndroid.BOTTOM);
+    sendMess(
+      tokendvCr,
+      "Thông báo mới từ " + name,
+      name + " vừa bình luận bài viết"
+    );
     setbinhluan("");
     Keyboard.dismiss();
   };
