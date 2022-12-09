@@ -8,36 +8,50 @@ import { ongetTokenAgora } from "../utilities/getTokenAgora.context";
 import { initializeApp } from "firebase/app";
 import { auth, firebaseConfig } from "../../../../../config";
 import messaging from "@react-native-firebase/messaging";
+import { sendMess } from "../../../../constants/sendMess";
+import {
+  getDatabase,
+  ref,
+  onValue,
+  set,
+  push,
+  update,
+} from "firebase/database";
 const CallVideo = ({ route, navigation }) => {
   initializeApp(firebaseConfig);
+  const db = getDatabase();
   const user = auth.currentUser.metadata;
-  const { combinedId } = route.params;
+  const { combinedId, userId } = route.params;
   const [videoCall, setVideoCall] = useState(true);
   const [channel, setChannel] = useState(combinedId);
   const [role, setRole] = useState(1);
   const [uid, setUid] = useState(Number(user.createdAt));
   const [expiry, setexpiry] = useState(9999999999999999999);
   const [token, setToken] = useState();
+  const [tokendvCr, settokendvCr] = useState();
+  const [nameCr, setnameCr] = useState();
+  const [avtCr, setavtCr] = useState();
   useEffect(() => {
-    async function fetchData() {
-      const res = await ongetTokenAgora(channel, role, "uid", uid, expiry);
-      setToken(res);
-      console.log(uid);
-      messaging()
-        .sendMessage({
-          notification: {
-            title: "Background Message Title",
-            body: "Background message body",
-          },
-          to: "cB0fWnGDSRyQ29XlMOSinK:APA91bHTTKCDubVMVIJzqBeAan5IqjtVDpdjThLI43ogpBMlrcleaBKJzWRaCa2BiSn2o01qyoZTbazOLdzm0iyJwsSgPXhSGImVZVkt8uWELjImrWyucd--RUX1808CqsOr87DLULFH",
-          token:
-            "cB0fWnGDSRyQ29XlMOSinK:APA91bHTTKCDubVMVIJzqBeAan5IqjtVDpdjThLI43ogpBMlrcleaBKJzWRaCa2BiSn2o01qyoZTbazOLdzm0iyJwsSgPXhSGImVZVkt8uWELjImrWyucd--RUX1808CqsOr87DLULFH",
-        })
-        .then((response) => {
-          console.log("Messages were sent successfully" + response);
-        });
-    }
-    fetchData();
+    const referencecr = ref(db, "users/" + userId);
+    onValue(referencecr, (childSnapshot) => {
+      const namepr = childSnapshot.child("name").val();
+      const avtpr = childSnapshot.child("avt").val();
+      const token = childSnapshot.child("token").val();
+      setnameCr(namepr);
+      setavtCr(avtpr);
+      settokendvCr(token);
+      async function fetchData() {
+        const res = await ongetTokenAgora(channel, role, "uid", uid, expiry);
+        setToken(res);
+        console.log(uid);
+        sendMess(
+          token,
+          "Thông báo mới từ " + namepr,
+          namepr + " đang gọi cho bạn"
+        );
+      }
+      fetchData();
+    });
   }, []);
   const props = {
     connectionData: {

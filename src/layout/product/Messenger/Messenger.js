@@ -143,7 +143,7 @@ function Messenger(props) {
           goBack();
         }}
         onPressRightIcon={() => {
-          navigate("CallVideo", { combinedId });
+          navigate("CallVideo", { combinedId, userId });
         }}
       />
 
