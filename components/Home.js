@@ -57,6 +57,15 @@ const Home = ({ route, navigation }) => {
       setname(namepr);
       setavt(avtpr);
     });
+    const getTokenDv = async () => {
+      const token = await AsyncStorage.getItem("token");
+      console.log("Token Dv : " + token);
+      const referencerrs = ref(db, "users/" + user);
+      update(referencerrs, {
+        token: token,
+      });
+    };
+    getTokenDv();
   }, []);
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -64,19 +73,6 @@ const Home = ({ route, navigation }) => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
   }, []);
-  const logOut = () => {
-    const auth = getAuth();
-    signOut(auth)
-      .then(async () => {
-        alert("Đăng xuất thành công");
-        await AsyncStorage.setItem("email", "");
-        await AsyncStorage.setItem("password", "");
-        onLogout();
-      })
-      .catch((error) => {
-        // An error happened.
-      });
-  };
   const referencer = ref(db, "post");
   onValue(referencer, (snapshot) => {
     snapshot.forEach((childSnapshot) => {

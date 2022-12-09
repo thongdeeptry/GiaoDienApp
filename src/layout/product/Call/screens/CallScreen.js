@@ -7,6 +7,7 @@ import { View } from "react-native";
 import { ongetTokenAgora } from "../utilities/getTokenAgora.context";
 import { initializeApp } from "firebase/app";
 import { auth, firebaseConfig } from "../../../../../config";
+import messaging from "@react-native-firebase/messaging";
 const CallVideo = ({ route, navigation }) => {
   initializeApp(firebaseConfig);
   const user = auth.currentUser.metadata;
@@ -22,6 +23,18 @@ const CallVideo = ({ route, navigation }) => {
       const res = await ongetTokenAgora(channel, role, "uid", uid, expiry);
       setToken(res);
       console.log(uid);
+      messaging()
+        .sendMessage({
+          notification: {
+            title: "Background Message Title",
+            body: "Background message body",
+          },
+          token:
+            "cB0fWnGDSRyQ29XlMOSinK:APA91bHTTKCDubVMVIJzqBeAan5IqjtVDpdjThLI43ogpBMlrcleaBKJzWRaCa2BiSn2o01qyoZTbazOLdzm0iyJwsSgPXhSGImVZVkt8uWELjImrWyucd--RUX1808CqsOr87DLULFH",
+        })
+        .then((response) => {
+          console.log("Messages were sent successfully" + response);
+        });
     }
     fetchData();
   }, []);

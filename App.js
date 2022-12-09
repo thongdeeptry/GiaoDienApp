@@ -37,9 +37,9 @@ export default function App() {
     if (requestPermision()) {
       messaging()
         .getToken()
-        .then((token) => {
+        .then(async (token) => {
           console.log(token);
-
+          await AsyncStorage.setItem("token", token);
           // messaging()
           //   .sendMessage({
           //     notification: {
