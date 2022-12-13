@@ -44,11 +44,7 @@ const CallVideo = ({ route, navigation }) => {
         const res = await ongetTokenAgora(channel, role, "uid", uid, expiry);
         setToken(res);
         console.log(uid);
-        sendMess(
-          token,
-          "Thông báo mới từ " + namepr,
-          namepr + " đang gọi cho bạn"
-        );
+        sendMess(token, "Bạn có cuộc gọi đến", namepr + " đang gọi cho bạn");
       }
       fetchData();
     });

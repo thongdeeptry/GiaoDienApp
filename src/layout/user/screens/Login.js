@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -17,6 +17,12 @@ import { firebaseConfig } from "../../../../config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import firebase from "@react-native-firebase/app";
 import "@react-native-firebase/messaging";
+import { Formik } from "formik";
+import * as Yup from "yup";
+const LoginSchema = Yup.object().shape({
+  email: Yup.string().email("Email không đúng định dạng").required("nhap"),
+  password: Yup.string().min(6).max(100).required("nhap"),
+});
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -24,6 +30,7 @@ import {
   signInWithCustomToken,
 } from "firebase/auth";
 export const Login = (props) => {
+  const formikRef = useRef(null);
   const { navigation } = props;
   const { onLogin } = useContext(UserContext);
   const [email, setemail] = useState();
@@ -55,140 +62,171 @@ export const Login = (props) => {
         onLogin();
       })
       .catch((error) => {
-        console.log(error);
+        ToastAndroid.show(
+          "Email hoặc mật khẩu không đúng",
+          ToastAndroid.BOTTOM
+        );
       });
   };
   return (
-    // <KeyboardAvoidingView
-    //   style={{ width: "100%", height: "100%", backgroundColor: "white" }}
-    // >
-    <ScrollView
-      contentContainerStyle={{ flexGrow: 1 }}
-      showsVerticalScrollIndicator={false}
-      style={{ width: "100%", height: "100%" }}
+    <Formik
+      innerRef={formikRef}
+      initialValues={{
+        email: "",
+        password: "",
+      }}
+      validationSchema={LoginSchema}
     >
-      <View style={styles.container}>
-        <View style={styles.mainplanta}>
-          <Text style={styles.textplanta}>GenzLove</Text>
-        </View>
-        <View style={styles.mainchitiet}>
-          <Text style={styles.chitiet}>Tìm kiếm 1 nửa của bạn</Text>
-        </View>
-
-        <View
-          style={{
-            position: "relative",
-            width: "100%",
-            height: "100%",
-            marginTop: "10%",
-            backgroundColor: "#ffffff",
-            borderTopEndRadius: 30,
-            borderTopLeftRadius: 30,
-          }}
+      {({
+        values,
+        errors,
+        touched,
+        handleSubmit,
+        isValid,
+        handleChange,
+        setFieldTouched,
+      }) => (
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          showsVerticalScrollIndicator={false}
+          style={{ width: "100%", height: "100%" }}
         >
-          <View style={{ flexDirection: "column" }}>
-            <Text
-              style={{
-                top: 28,
-                left: 28,
-                fontSize: 28,
-                fontWeight: "700",
-                fontStyle: "normal",
-              }}
-            >
-              Chào mừng trở lại
-            </Text>
-            <Text
-              style={{
-                top: 28,
-                left: 28,
-                fontSize: 16,
-                color: "#898A8D",
-                fontWeight: "400",
-              }}
-            >
-              Đăng nhập để tiếp tục
-            </Text>
-          </View>
-          <View style={styles.khunghinh}>
-            <View style={styles.khung}>
-              <TextInput
-                style={{ fontSize: 20 }}
-                value={email}
-                onChangeText={setemail}
-                placeholder="Email hoặc Số điện thoại"
-                multiline={true}
-                maxLength={100}
-              ></TextInput>
-            </View>
-            <View style={styles.khung1}>
-              <TextInput
-                style={{ fontSize: 20 }}
-                value={password}
-                onChangeText={setpassword}
-                placeholder="Mật khẩu"
-                multiline={true}
-                maxLength={100}
-                secureTextEntry={true}
-                textContentType="password"
-              ></TextInput>
-            </View>
+          <KeyboardAvoidingView
+            style={{ width: "100%", height: "100%", backgroundColor: "white" }}
+          >
+            <View style={styles.container}>
+              <View style={styles.mainplanta}>
+                <Text style={styles.textplanta}>GenzLove</Text>
+              </View>
+              <View style={styles.mainchitiet}>
+                <Text style={styles.chitiet}>Tìm kiếm 1 nửa của bạn</Text>
+              </View>
 
-            <View
-              style={{
-                paddingTop: 15,
-                width: "100%",
-                height: 50,
-                flexDirection: "row",
-              }}
-            >
-              <View style={styles.checkbox}>
-                <Checkbox
-                  value={isCheckedStatus}
-                  onValueChange={setCheckedStatus}
-                  color={isCheckedStatus ? "#E94057" : undefined}
-                />
-                <Text style={{ left: 5 }}>Lưu mật khẩu</Text>
+              <View
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  height: "100%",
+                  marginTop: "10%",
+                  backgroundColor: "#ffffff",
+                  borderTopEndRadius: 30,
+                  borderTopLeftRadius: 30,
+                }}
+              >
+                <View style={{ flexDirection: "column" }}>
+                  <Text
+                    style={{
+                      top: 28,
+                      left: 28,
+                      fontSize: 28,
+                      fontWeight: "700",
+                      fontStyle: "normal",
+                    }}
+                  >
+                    Chào mừng trở lại
+                  </Text>
+                  <Text
+                    style={{
+                      top: 28,
+                      left: 28,
+                      fontSize: 16,
+                      color: "#898A8D",
+                      fontWeight: "400",
+                    }}
+                  >
+                    Đăng nhập để tiếp tục
+                  </Text>
+                </View>
+                <View style={styles.khunghinh}>
+                  <View
+                    style={[
+                      styles.khung,
+                      errors.email ? styles.khungerr : null,
+                    ]}
+                  >
+                    <TextInput
+                      style={{ fontSize: 20 }}
+                      value={values.email}
+                      onChangeText={handleChange("email")}
+                      placeholder="Email hoặc Số điện thoại"
+                      multiline={true}
+                      maxLength={100}
+                    ></TextInput>
+                  </View>
+                  <View
+                    style={[
+                      styles.khung1,
+                      errors.password ? styles.khung1err : null,
+                    ]}
+                  >
+                    <TextInput
+                      style={{ fontSize: 20 }}
+                      value={values.password}
+                      onChangeText={handleChange("password")}
+                      placeholder="Mật khẩu"
+                      multiline={true}
+                      maxLength={100}
+                      secureTextEntry={true}
+                    ></TextInput>
+                  </View>
+
+                  <View
+                    style={{
+                      paddingTop: 15,
+                      width: "100%",
+                      height: 50,
+                      flexDirection: "row",
+                    }}
+                  >
+                    <View style={styles.checkbox}>
+                      <Checkbox
+                        value={isCheckedStatus}
+                        onValueChange={setCheckedStatus}
+                        color={isCheckedStatus ? "#E94057" : undefined}
+                      />
+                      <Text style={{ left: 5 }}>Lưu mật khẩu</Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.mailnut}>
+                    <Pressable style={styles.nut} onPress={Click}>
+                      <Text style={styles.nutText}>Đăng Nhập</Text>
+                    </Pressable>
+                    <View style={{ paddingTop: 10 }}>
+                      <Text
+                        style={{
+                          fontSize: 15,
+                          color: "#1F1F1F",
+                          fontWeight: "400",
+                        }}
+                      >
+                        Bạn đã quên mật khẩu?
+                      </Text>
+                    </View>
+                    <View style={{ paddingTop: 5 }}>
+                      <Text
+                        onPress={() => navigation.navigate("LoginPhone")}
+                        style={{ color: "#FD397F", fontWeight: "400" }}
+                      >
+                        Đăng nhập bằng số điện thoại
+                      </Text>
+                    </View>
+                  </View>
+                </View>
               </View>
             </View>
-
-            <View style={styles.mailnut}>
-              <Pressable style={styles.nut} onPress={Click}>
-                <Text style={styles.nutText}>Đăng Nhập</Text>
+            <View style={styles.mailnut1}>
+              <Pressable
+                style={styles.nut1}
+                onPress={() => navigation.navigate("Landing4")}
+              >
+                <Text style={styles.nutText1}>Đăng Ký</Text>
               </Pressable>
-              <View style={{ paddingTop: 10 }}>
-                <Text
-                  style={{
-                    fontSize: 15,
-                    color: "#1F1F1F",
-                    fontWeight: "400",
-                  }}
-                >
-                  Bạn đã quên mật khẩu?
-                </Text>
-              </View>
-              <View style={{ paddingTop: 5 }}>
-                <Text
-                  onPress={() => navigation.navigate("LoginPhone")}
-                  style={{ color: "#FD397F", fontWeight: "400" }}
-                >
-                  Đăng nhập bằng số điện thoại
-                </Text>
-              </View>
             </View>
-          </View>
-        </View>
-      </View>
-      <View style={styles.mailnut1}>
-        <Pressable
-          style={styles.nut1}
-          onPress={() => navigation.navigate("Landing4")}
-        >
-          <Text style={styles.nutText1}>Đăng Ký</Text>
-        </Pressable>
-      </View>
-    </ScrollView>
-    //</KeyboardAvoidingView>
+          </KeyboardAvoidingView>
+        </ScrollView>
+      )}
+    </Formik>
   );
 };
 
@@ -233,14 +271,12 @@ const styles = StyleSheet.create({
   mailnut1: {
     position: "absolute",
     width: "100%",
-    height: "100%",
-    top: "90%",
     paddingHorizontal: 30,
+    bottom: 20,
   },
   nut1: {
     width: "100%",
     height: 50,
-
     backgroundColor: "#ffffff",
     justifyContent: "center",
     alignItems: "center",
@@ -293,6 +329,41 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderRightColor: "#ABABAB",
     borderTopColor: "#ABABAB",
+    borderRightWidth: 0.5,
+    borderTopWidth: 0.5,
+    borderRadius: 8,
+  },
+  khungerr: {
+    margin: 20,
+    paddingLeft: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    position: "relative",
+    width: "100%",
+    height: "100%",
+    borderBottomColor: "#E94057",
+    borderLeftColor: "#E94057",
+    borderLeftWidth: 0.5,
+    borderBottomWidth: 0.5,
+    borderRightColor: "#E94057",
+    borderTopColor: "#E94057",
+    borderRightWidth: 0.5,
+    borderTopWidth: 0.5,
+    borderRadius: 8,
+  },
+  khung1err: {
+    paddingLeft: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    position: "relative",
+    width: "100%",
+    height: "100%",
+    borderBottomColor: "#E94057",
+    borderLeftColor: "#E94057",
+    borderLeftWidth: 0.5,
+    borderBottomWidth: 0.5,
+    borderRightColor: "#E94057",
+    borderTopColor: "#E94057",
     borderRightWidth: 0.5,
     borderTopWidth: 0.5,
     borderRadius: 8,

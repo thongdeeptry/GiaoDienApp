@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "GiaoDienApp",
+    "name": "GenzLove",
     "slug": "GiaoDienApp",
     "version": "1.0.0",
     "assetBundlePatterns": ["**/*"],
@@ -17,5 +17,5 @@
       }
     }
   },
-  "name": "GiaoDienApp"
+  "name": "GenzLove"
 }

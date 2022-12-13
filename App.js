@@ -51,13 +51,43 @@ export default function App() {
       .getInitialNotification()
       .then(async (remotemess) => {
         if (remotemess) {
-          console.log("Khong The Mo thong Bao", remotemess.notification);
+          console.log("Message handled in the background!", remotemess);
+          setTitle(remotemess.notification.title);
+          setBody(remotemess.notification.body);
+          if (remotemess.notification.title == "Bạn có cuộc gọi đến") {
+          } else {
+            setModalVisible(true);
+            console.log("Loading Sound");
+            const { sound } = await Audio.Sound.createAsync(
+              require("./nhac.mp3")
+            );
+            setSound(sound);
+            console.log("Playing Sound");
+            await sound.playAsync();
+            setTimeout(() => {
+              setModalVisible(false);
+            }, 3000);
+          }
         }
       });
 
     ///sss
     messaging().onNotificationOpenedApp(async (remotemess) => {
-      console.log("Khong the Mo DUoi Nen", remotemess.notification);
+      console.log("Message handled in the background!", remotemess);
+      setTitle(remotemess.notification.title);
+      setBody(remotemess.notification.body);
+      if (remotemess.notification.title == "Bạn có cuộc gọi đến") {
+      } else {
+        setModalVisible(true);
+        console.log("Loading Sound");
+        const { sound } = await Audio.Sound.createAsync(require("./nhac.mp3"));
+        setSound(sound);
+        console.log("Playing Sound");
+        await sound.playAsync();
+        setTimeout(() => {
+          setModalVisible(false);
+        }, 3000);
+      }
     });
 
     //backgroubnd
@@ -65,32 +95,36 @@ export default function App() {
       console.log("Message handled in the background!", remoteMessage);
       setTitle(remoteMessage.notification.title);
       setBody(remoteMessage.notification.body);
-      ToastAndroid.show("Bạn có 1 thông báo mới!", ToastAndroid.CENTER);
-      setModalVisible(true);
-      console.log("Loading Sound");
-      const { sound } = await Audio.Sound.createAsync(require("./nhac.mp3"));
-      setSound(sound);
-      console.log("Playing Sound");
-      await sound.playAsync();
-      setTimeout(() => {
-        setModalVisible(false);
-      }, 3000);
+      if (remoteMessage.notification.title == "Bạn có cuộc gọi đến") {
+      } else {
+        setModalVisible(true);
+        console.log("Loading Sound");
+        const { sound } = await Audio.Sound.createAsync(require("./nhac.mp3"));
+        setSound(sound);
+        console.log("Playing Sound");
+        await sound.playAsync();
+        setTimeout(() => {
+          setModalVisible(false);
+        }, 3000);
+      }
     });
 
     //alert
     const unsubscribe = messaging().onMessage(async (remoteMessage) => {
       setTitle(remoteMessage.notification.title);
       setBody(remoteMessage.notification.body);
-      ToastAndroid.show("Bạn có 1 thông báo mới!", ToastAndroid.CENTER);
-      setModalVisible(true);
-      console.log("Loading Sound");
-      const { sound } = await Audio.Sound.createAsync(require("./nhac.mp3"));
-      setSound(sound);
-      console.log("Playing Sound");
-      await sound.playAsync();
-      setTimeout(() => {
-        setModalVisible(false);
-      }, 3000);
+      if (remoteMessage.notification.title == "Bạn có cuộc gọi đến") {
+      } else {
+        setModalVisible(true);
+        console.log("Loading Sound");
+        const { sound } = await Audio.Sound.createAsync(require("./nhac.mp3"));
+        setSound(sound);
+        console.log("Playing Sound");
+        await sound.playAsync();
+        setTimeout(() => {
+          setModalVisible(false);
+        }, 2000);
+      }
     });
 
     return unsubscribe;
