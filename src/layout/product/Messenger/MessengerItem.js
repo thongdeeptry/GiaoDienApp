@@ -92,7 +92,6 @@ function MessengerItem(props) {
     </TouchableOpacity>
   ) : (
     <TouchableOpacity
-      onPress={onPress}
       style={{
         marginTop: 5,
         flexDirection: "row",

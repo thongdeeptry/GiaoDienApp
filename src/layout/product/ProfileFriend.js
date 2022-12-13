@@ -290,8 +290,8 @@ export const ProfileFriend = ({ route, navigation }) => {
       update(reference, {
         follow: fl,
       });
-      const reference3 = ref(db, "favourite/" + id);
-      push(reference3, {
+      const reference3 = ref(db, "favourite/" + id + "/" + idCurrent);
+      set(reference3, {
         user: idCurrent,
       });
       const reference5 = ref(db, "notification/" + id);
@@ -479,7 +479,7 @@ export const ProfileFriend = ({ route, navigation }) => {
               >
                 <Text style={styles.diachi}>Ảnh</Text>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("AnhUser", { idFr })}
+                  onPress={() => navigation.navigate("AnhUser", { id })}
                 >
                   <Text
                     style={{
@@ -545,7 +545,7 @@ export const ProfileFriend = ({ route, navigation }) => {
               >
                 <Text style={styles.diachi}>Bạn bè</Text>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("BanBe", { idFr })}
+                  onPress={() => navigation.navigate("BanBe", { id, us: 1 })}
                 >
                   <Text
                     style={{
@@ -798,7 +798,7 @@ export const ProfileFriend = ({ route, navigation }) => {
         <View style={styles.mainnut}>
           <TouchableOpacity
             style={styles.nut1}
-            onPress={() => navigation.navigate("Chat", { id })}
+            onPress={() => navigation.navigate("SayHello", { id })}
           >
             <Image
               style={{ width: "60%", height: "60%", left: 10, top: 6 }}

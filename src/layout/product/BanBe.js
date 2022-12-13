@@ -26,7 +26,7 @@ const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 export const BanBe = ({ route, navigation }) => {
-  const { idFr } = route.params;
+  const { id, us } = route.params;
   initializeApp(firebaseConfig);
   const db = getDatabase();
   const dataFriend = [];
@@ -40,7 +40,7 @@ export const BanBe = ({ route, navigation }) => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
   }, []);
-  const referencebanbe = ref(db, "banbe/" + idFr);
+  const referencebanbe = ref(db, "banbe/" + id);
   onValue(referencebanbe, (childSnapshot1) => {
     childSnapshot1.forEach((snapshot1) => {
       const id = snapshot1.child("id").val();
@@ -155,7 +155,7 @@ export const BanBe = ({ route, navigation }) => {
                           opacity: 0.8,
                         }}
                       >
-                        Các bạn đã là
+                        {us == 1 ? "Các bạn đã là" : null}
                       </Text>
                       <Text
                         style={{
@@ -164,7 +164,7 @@ export const BanBe = ({ route, navigation }) => {
                           color: "#E94057",
                         }}
                       >
-                        bạn bè
+                        {us == 1 ? "bạn bè" : null}
                       </Text>
                     </View>
                   </View>

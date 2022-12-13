@@ -37,18 +37,18 @@ function Chat(props) {
   }, []);
   const handleSelect = async (ite) => {
     //check whether the group(chats in firestore) exists, if not create
-    const combinedId =
-      user > ite.userId ? user + ite.userId : ite.userId + user;
-    try {
-      const res = await getDoc(doc(db, "chats", combinedId));
-      if (!res.exists()) {
-        console.log(combinedId);
-        //create a chat in chats collection
-        await setDoc(doc(db, "chats", combinedId), { messages: [] });
-        await setDoc(doc(db, "userChats", user), {});
-        await setDoc(doc(db, "userChats", ite.userId), {});
-      }
-    } catch {}
+    // const combinedId =
+    //   user > ite.userId ? user + ite.userId : ite.userId + user;
+    // try {
+    //   const res = await getDoc(doc(db, "chats", combinedId));
+    //   if (!res.exists()) {
+    //     console.log(combinedId);
+    //     //create a chat in chats collection
+    //     await setDoc(doc(db, "chats", combinedId), { messages: [] });
+    //     await setDoc(doc(db, "userChats", user), {});
+    //     await setDoc(doc(db, "userChats", ite.userId), {});
+    //   }
+    // } catch {}
 
     navigate("Messenger", { user: ite });
   };
@@ -56,12 +56,11 @@ function Chat(props) {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
     onValue(
-      firebaseDatabaseRef(firebaseDatabase, "users"),
+      firebaseDatabaseRef(firebaseDatabase, "listChat/" + user),
       async (snapshot) => {
         debugger;
         if (snapshot.exists()) {
           let snapshotObject = snapshot.val();
-          let stringUser = await AsyncStorage.getItem("user");
           let myUserId = "1";
           debugger;
           setUsers(
@@ -77,7 +76,7 @@ function Chat(props) {
                   accessToken: eachObject.accessToken,
                   numberOfUnreadMessages: 0,
                   userId: eachKey,
-                  message: eachObject.nghenghiep,
+                  message: eachObject.trangthai,
                 };
               })
           );

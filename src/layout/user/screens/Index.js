@@ -19,8 +19,7 @@ export const Index = (props) => {
   const { navigation } = props;
   const { onLogin } = useContext(UserContext);
   let app = initializeApp(firebaseConfig);
-  if (!app.length) {
-  }
+
   const auth = getAuth(app);
   const Click = async () => {
     const email = await AsyncStorage.getItem("email");

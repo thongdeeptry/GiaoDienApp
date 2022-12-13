@@ -44,9 +44,12 @@ function Messenger(props) {
   const [avt, setavt] = useState();
   const [typedText, setTypedText] = useState("");
   const [chatHistory, setChatHistory] = useState(DataHis);
-  const { url, name, userId } = props.route.params.user;
+  const [nameu, setnameu] = useState();
+  const [avtu, setavtu] = useState();
+  const [userId, setuserId] = useState();
+
   const { navigate, goBack } = props.navigation;
-  const combinedId = user > userId ? user + userId : userId + user;
+
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
@@ -64,7 +67,25 @@ function Messenger(props) {
       setname(namepr);
       setavt(avtpr);
     });
+    try {
+      const { url, name, userId } = props.route.params.user;
+      console.log(name);
+      setnameu(name);
+      setavtu(url);
+      setuserId(userId);
+    } catch (error) {
+      const { url, name, userId } = props.route.params;
+      console.log(name + "pppp");
+      setnameu(name);
+      setavtu(url);
+      setuserId(userId);
+    }
+    const reference3w = ref(db, "listChat/" + userId + "/" + user);
+    update(reference3w, {
+      trangthai: "Đã xem",
+    });
   }, []);
+  const combinedId = user > userId ? user + userId : userId + user;
   const unSub = ref(db1, "chats/" + combinedId + "/messages");
   onValue(unSub, (datasnap) => {
     datasnap.forEach((datasnapP) => {
@@ -88,6 +109,14 @@ function Messenger(props) {
     let myFriendUserId = userId;
     Keyboard.dismiss();
     let key = new Date().getTime();
+    const reference3w = ref(db, "listChat/" + user + "/" + userId);
+    update(reference3w, {
+      trangthai: typedText,
+    });
+    const reference3ws = ref(db, "listChat/" + userId + "/" + user);
+    update(reference3ws, {
+      trangthai: typedText,
+    });
     const docRef = ref(db1, "chats/" + combinedId + "/messages/" + key);
     set(docRef, {
       id: key,
@@ -126,6 +155,8 @@ function Messenger(props) {
       date: serverTimestamp(),
     });
     setTypedText("");
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
   };
   return (
     <View
@@ -136,7 +167,7 @@ function Messenger(props) {
       }}
     >
       <UIHeader
-        title={name}
+        title={nameu}
         leftIconName={"arrow-left"}
         rightIconName={"ellipsis-v"}
         onPressLeftIcon={() => {

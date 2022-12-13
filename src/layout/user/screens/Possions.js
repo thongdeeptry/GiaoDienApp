@@ -102,6 +102,7 @@ export const Possions = ({ route, navigation }) => {
           tick: "false",
           trangthai: "Hoạt Động",
           follow: 0,
+          phanquyen: 0,
         });
         const reference1 = ref(db, "users/" + user + "/sothich");
         set(reference1, {
@@ -140,6 +141,7 @@ export const Possions = ({ route, navigation }) => {
           tick: "false",
           trangthai: "Hoạt Động",
           follow: 0,
+          phanquyen: 0,
         });
         const reference1 = ref(db, "users/" + user + "/sothich");
         set(reference1, {

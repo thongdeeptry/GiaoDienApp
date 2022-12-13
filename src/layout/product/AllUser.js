@@ -44,13 +44,6 @@ export const AllUser = ({ route, navigation }) => {
   useEffect(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
-    const referencecr = ref(db, "users/" + idCurrent);
-    onValue(referencecr, (childSnapshot) => {
-      const namepr = childSnapshot.child("name").val();
-      const avtpr = childSnapshot.child("avt").val();
-      setnameCr(namepr);
-      setavtCr(avtpr);
-    });
   }, []);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -83,31 +76,21 @@ export const AllUser = ({ route, navigation }) => {
     const referencecr = ref(db, "users/" + id);
     onValue(referencecr, (childSnapshot) => {
       const tokendv = childSnapshot.child("token").val();
+      const avtCr = childSnapshot.child("avt").val();
+      const nameCr = childSnapshot.child("name").val();
       settokendvCr(tokendv);
+      setavtCr(avtCr);
+      setnameCr(nameCr);
     });
-    const reference11 = ref(db, "favourite/" + id);
-    onValue(reference11, (childSnapshot1) => {
-      try {
-        childSnapshot1.forEach((snapshot1) => {
-          const value = snapshot1.child("user").exportVal();
-          try {
-            if (idCurrent == value) {
-              dc = true;
-              setdaco(true);
-              check = true;
-              throw "break-loop";
-            } else {
-              setdaco(false);
-              check = false;
-            }
-          } catch (error) {
-            console.log(error);
-          }
-        });
-      } catch (error) {
-        console.log(error);
+    const reference1d1s = ref(db, "favourite/" + id + "/" + idCurrent);
+    onValue(reference1d1s, (snapshot1) => {
+      if (snapshot1.exists()) {
+        setdaco(true);
+      } else {
+        setdaco(false);
       }
     });
+
     const reference1 = ref(db, "users/" + id);
     onValue(reference1, (childSnapshot1) => {
       co = childSnapshot1.child("follow").val();
@@ -142,13 +125,13 @@ export const AllUser = ({ route, navigation }) => {
         }
       });
     });
-    if (daco != true) {
+    if (daco == false) {
       const reference = ref(db, "users/" + id);
       update(reference, {
         follow: fl,
       });
-      const reference3 = ref(db, "favourite/" + id);
-      push(reference3, {
+      const reference3 = ref(db, "favourite/" + id + "/" + idCurrent);
+      set(reference3, {
         user: idCurrent,
       });
       const reference5 = ref(db, "notification/" + id);

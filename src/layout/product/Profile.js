@@ -418,7 +418,7 @@ export const Profile = (props) => {
               >
                 <Text style={styles.diachi}>Bạn bè</Text>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("BanBe", { idFr })}
+                  onPress={() => navigation.navigate("BanBe", { idFr, us: 0 })}
                 >
                   <Text
                     style={{
