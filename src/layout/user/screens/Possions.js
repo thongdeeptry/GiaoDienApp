@@ -101,8 +101,25 @@ export const Possions = ({ route, navigation }) => {
           thaotac: user,
           tick: "false",
           trangthai: "Hoạt Động",
+          follow: 0,
         });
-
+        const reference1 = ref(db, "users/" + user + "/sothich");
+        set(reference1, {
+          soThich,
+          soThich1,
+          soThich2,
+          soThich3,
+          soThich4,
+          soThich5,
+          soThich6,
+          soThich7,
+          soThich8,
+          soThich9,
+          soThich10,
+          soThich11,
+          soThich12,
+          soThich13,
+        });
         navigation.navigate("Login");
       }
       if (email != "") {
@@ -122,6 +139,7 @@ export const Possions = ({ route, navigation }) => {
           thaotac: user,
           tick: "false",
           trangthai: "Hoạt Động",
+          follow: 0,
         });
         const reference1 = ref(db, "users/" + user + "/sothich");
         set(reference1, {
@@ -143,6 +161,7 @@ export const Possions = ({ route, navigation }) => {
 
         navigation.navigate("Login");
       }
+      ToastAndroid.show("Đăng ký thành công", ToastAndroid.BOTTOM);
     }
   };
   const SetNum = () => {
@@ -1001,7 +1020,7 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     left: 45,
-    top: 44,
+    top: 20,
   },
   mailnut: {
     position: "absolute",
@@ -1096,13 +1115,13 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     width: "90%",
     height: 24,
-    top: 56,
+    top: 35,
   },
   imagelui: {
     position: "absolute",
     width: 52,
     height: 52,
     left: 40,
-    top: 44,
+    top: 20,
   },
 });

@@ -33,9 +33,9 @@ export const Register = (props) => {
   if (!app.length) {
   }
   const auth = getAuth(app);
-  const createUser = (email, password) => {
+  const createUser = async (email, password) => {
     if (isCheckedStatus == true) {
-      createUserWithEmailAndPassword(auth, email, password)
+      await createUserWithEmailAndPassword(auth, email, password)
         .then(() => {
           console.log("Tạo tài khoản thành công");
           const user = getAuth().currentUser.uid;
@@ -185,7 +185,12 @@ export const Register = (props) => {
                   <View style={styles.mailnut}>
                     <Pressable
                       style={styles.nut}
-                      onPress={() => createUser(email, password)}
+                      onPress={() =>
+                        createUser(
+                          formikRef.current?.values?.email,
+                          formikRef.current?.values?.password
+                        )
+                      }
                     >
                       <Text style={styles.nutText}>Đăng Ký</Text>
                     </Pressable>

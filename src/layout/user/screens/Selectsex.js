@@ -207,7 +207,7 @@ export const Selectsex = ({ route, navigation }) => {
               />
             </TouchableOpacity>
           </View>
-          <View style={styles.mailnut1}>
+          <View style={styles.khung4}>
             <TouchableOpacity
               style={[
                 {
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     left: 40,
-    top: 44,
+    top: 20,
   },
   mailnut1: {
     position: "relative",
@@ -432,6 +432,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     width: "90%",
     height: 24,
-    top: 56,
+    top: 40,
   },
 });

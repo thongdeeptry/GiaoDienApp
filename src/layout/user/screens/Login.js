@@ -46,15 +46,22 @@ export const Login = (props) => {
 
   const auth = getAuth(app);
   const Click = async () => {
-    await signInWithEmailAndPassword(auth, email, password)
+    await signInWithEmailAndPassword(
+      auth,
+      formikRef.current?.values?.email,
+      formikRef.current?.values?.password
+    )
       .then(async () => {
         console.log("Đăng nhập thành công");
         const user = getAuth().currentUser.uid;
         console.log("UID - " + user);
 
         if (isCheckedStatus == true) {
-          await AsyncStorage.setItem("email", email);
-          await AsyncStorage.setItem("password", password);
+          await AsyncStorage.setItem("email", formikRef.current?.values?.email);
+          await AsyncStorage.setItem(
+            "password",
+            formikRef.current?.values?.password
+          );
         } else {
           await AsyncStorage.setItem("email", "");
           await AsyncStorage.setItem("password", "");

@@ -35,8 +35,6 @@ export const ProfileName = ({ route, navigation }) => {
   const [city, setcity] = useState();
   const app = initializeApp(firebaseConfig);
   const storage = getStorage(app);
-  if (!app.length) {
-  }
 
   const getLocation = async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
