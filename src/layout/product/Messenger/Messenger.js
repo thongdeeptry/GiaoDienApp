@@ -12,6 +12,7 @@ import {
   TextInput,
   RefreshControl,
 } from "react-native";
+import { sendMess } from "../../../constants/sendMess";
 import { images, colors, icons, fontSizes } from "../../../constants";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { UIHeader } from "../../../components";
@@ -63,7 +64,6 @@ function Messenger(props) {
     onValue(reference, (childSnapshot) => {
       const namepr = childSnapshot.child("name").val();
       const avtpr = childSnapshot.child("avt").val();
-
       setname(namepr);
       setavt(avtpr);
     });
@@ -107,7 +107,7 @@ function Messenger(props) {
       });
     });
   });
-  const sendMess = () => {
+  const sendMessT = () => {
     if (typedText.trim().length == 0) {
       return;
     }
@@ -158,6 +158,11 @@ function Messenger(props) {
     );
     update(docRefddss, {
       date: serverTimestamp(),
+    });
+    const referencecrd = ref(db, "users/" + userId);
+    onValue(referencecrd, (childSnapshot) => {
+      const tokendv = childSnapshot.child("token").val();
+      sendMess(tokendv, namee + " vừa gửi cho bạn 1 tin nhắn", typedText);
     });
     setTypedText("");
     setRefreshing(true);
@@ -238,7 +243,7 @@ function Messenger(props) {
           value={typedText}
           placeholderTextColor={colors.placeholder}
         />
-        <TouchableOpacity onPress={sendMess}>
+        <TouchableOpacity onPress={sendMessT}>
           <Icon
             style={{
               padding: 10,
