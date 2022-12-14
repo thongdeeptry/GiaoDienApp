@@ -6,6 +6,7 @@ import {
   TextInput,
   Image,
   ToastAndroid,
+  TouchableOpacity,
 } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import {
@@ -13,12 +14,15 @@ import {
   FirebaseRecaptchaBanner,
 } from "expo-firebase-recaptcha";
 import { firebaseConfig } from "../../../../config";
+import { initializeApp } from "firebase/app";
 import firebase from "firebase/compat/app";
 import { getAuth } from "firebase/auth";
 
 export const RegisterPhone = (props) => {
+  firebase.initializeApp(firebaseConfig);
+  const app = initializeApp(firebaseConfig);
   const { navigation } = props;
-  const [sdt, setsdt] = useState("");
+  const [sdt, setsdt] = useState();
   const [verificationId, setVerificationId] = useState(null);
   const recaptchaVerifier = useRef(null);
   const { initialMinute = 0, initialSeconds = 10000000000 } = navigation;
@@ -40,14 +44,13 @@ export const RegisterPhone = (props) => {
       phoneProvider
         .verifyPhoneNumber(sdtt, recaptchaVerifier.current)
         .then(setVerificationId);
-      const user = getAuth().currentUser.uid;
-      navigation.navigate("CfPhone", {
-        sdt,
-        user,
-        verificationId,
-      });
+
+      // navigation.navigate("CfPhone", {
+      //   sdt,
+      //   verificationId,
+      // });
     } catch (error) {
-      alert(error);
+      console.log(error);
     }
   };
   // ...
@@ -81,9 +84,12 @@ export const RegisterPhone = (props) => {
         <Text style={{ position: "relative", right: 105 }}>(+84)</Text>
       </View>
       <View style={styles.mailnut}>
-        <Pressable style={styles.nut} onPress={() => SendOTP("+84" + sdt)}>
+        <TouchableOpacity
+          style={styles.nut}
+          onPress={() => SendOTP("+84" + sdt)}
+        >
           <Text style={styles.nutText}>Tiếp tục</Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
     </View>
   );

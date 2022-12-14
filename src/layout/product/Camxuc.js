@@ -10,15 +10,15 @@ import {
 import React, { useState, useEffect } from "react";
 
 export const Camxuc = ({ route, navigation }) => {
-  const [hoatdong, sethoatdong] = useState();
+  const [hoatdong, sethoatdong] = useState("");
   const [noidung, setnoidung1] = useState();
-  const [nhapnd, setnhapnd] = useState();
+  const [nhapnd, setnhapnd] = useState("");
   const ThemHoatDong = (hd) => {
     sethoatdong(hd);
   };
 
   const ChuyenNoiDung = () => {
-    navigation.navigate("PostStatus", { hoatdong: hoatdong });
+    navigation.navigate("PostStatus", { hoatdong: hoatdong + " " + nhapnd });
   };
   return (
     <View style={styles.container}>
@@ -30,15 +30,6 @@ export const Camxuc = ({ route, navigation }) => {
           top: 10,
         }}
       >
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{ flexDirection: "row", alignItems: "center" }}
-        >
-          <Image
-            style={{ width: 25, height: 25 }}
-            source={require("../../image/back.png")}
-          />
-        </TouchableOpacity>
         <Text style={{ fontSize: 22, left: 10, opacity: 0.7 }}>
           Hoạt động của bạn
         </Text>

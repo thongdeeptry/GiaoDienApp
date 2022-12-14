@@ -350,7 +350,7 @@ export const Profile = (props) => {
               >
                 <Text style={styles.diachi}>Ảnh</Text>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("AnhUser", { idFr })}
+                  onPress={() => navigation.navigate("AnhUser", { idT: idFr })}
                 >
                   <Text
                     style={{
@@ -418,7 +418,9 @@ export const Profile = (props) => {
               >
                 <Text style={styles.diachi}>Bạn bè</Text>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("BanBe", { idFr, us: 0 })}
+                  onPress={() =>
+                    navigation.navigate("BanBe", { idT: idFr, us: 0 })
+                  }
                 >
                   <Text
                     style={{

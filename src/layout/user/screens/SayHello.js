@@ -54,6 +54,19 @@ export const SayHello = ({ navigation, route }) => {
         });
       }
     });
+    const reference3s = ref(db, "listChat/" + id + "/" + idCurrent);
+    onValue(reference3s, (childSnapshot) => {
+      if (!childSnapshot.exists()) {
+        update(reference3s, {
+          id: idCurrent,
+          name: name,
+          avt: avt,
+          email: email,
+          nghenghiep: nghenghiep,
+          trangthai: "Chưa có tin nhắn nào được gửi",
+        });
+      }
+    });
     navigation.navigate("Messenger", {
       url: "",
       name: name,

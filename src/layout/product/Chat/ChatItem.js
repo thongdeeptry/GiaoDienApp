@@ -98,18 +98,25 @@ function ChatItem(props) {
         <Text
           style={{
             color: "black",
-            fontSize: fontSizes.h6,
-            fontWeight: "bold",
+            fontSize: 18,
+            fontWeight: "500",
           }}
         >
           {name}
         </Text>
         <Text
-          style={{
-            color: "black",
-            fontSize: fontSizes.h6,
-            color: colors.inactive,
-          }}
+          style={[
+            {
+              fontSize: fontSizes.h5,
+              color: colors.inactive,
+            },
+            message != "Đã xem"
+              ? {
+                  color: "#E94057",
+                  fontSize: fontSizes.h5,
+                }
+              : null,
+          ]}
         >
           {message}
         </Text>
@@ -125,11 +132,11 @@ function ChatItem(props) {
         <Text
           style={{
             color: "black",
-            fontSize: fontSizes.h6 * 0.8,
+            fontSize: fontSizes.h6,
             marginRight: 10,
           }}
         >
-          4 phút trước
+          {message == "Đã xem" ? "Tin nhắn mới" : "Chưa xem"}
         </Text>
       </View>
     </TouchableOpacity>

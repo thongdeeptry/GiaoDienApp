@@ -26,7 +26,7 @@ const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 export const AnhUser = ({ route, navigation }) => {
-  const { id } = route.params;
+  const { idT } = route.params;
   initializeApp(firebaseConfig);
   const db = getDatabase();
   const dataImage = [];
@@ -40,7 +40,7 @@ export const AnhUser = ({ route, navigation }) => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
   }, []);
-  const referenceImage = ref(db, "post/" + id);
+  const referenceImage = ref(db, "post/" + idT);
   onValue(referenceImage, (snapshot) => {
     snapshot.forEach((ImageSnapshot) => {
       const id = ImageSnapshot.child("id").exportVal();

@@ -84,11 +84,12 @@ export const Possions = ({ route, navigation }) => {
         ToastAndroid.CENTER
       );
     } else {
-      if (sdt != null) {
+      console.log(sdt + " --- email " + email);
+      if (sdt != undefined) {
         const db = getDatabase();
         const reference = ref(db, "users/" + user);
         set(reference, {
-          sdt: sdt,
+          sdt: "+84" + sdt,
           sothich: soThich,
           gioitinh: gioitinh,
           name: name,
@@ -122,8 +123,9 @@ export const Possions = ({ route, navigation }) => {
           soThich13,
         });
         navigation.navigate("Login");
+        ToastAndroid.show("Đăng ký thành công", ToastAndroid.BOTTOM);
       }
-      if (email != "") {
+      if (email != "" && email != undefined) {
         const db = getDatabase();
         const reference = ref(db, "users/" + user);
         set(reference, {
@@ -162,8 +164,8 @@ export const Possions = ({ route, navigation }) => {
         });
 
         navigation.navigate("Login");
+        ToastAndroid.show("Đăng ký thành công", ToastAndroid.BOTTOM);
       }
-      ToastAndroid.show("Đăng ký thành công", ToastAndroid.BOTTOM);
     }
   };
   const SetNum = () => {

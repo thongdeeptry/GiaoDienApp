@@ -275,8 +275,8 @@ export const ProfileFriend = ({ route, navigation }) => {
             set(reference3d, {
               user: idCurrent,
               id: id,
-              avt: avt,
-              name: name,
+              avt: avtCr,
+              name: nameCr,
             });
             ToastAndroid.show("Đã là bạn bè của nhau", ToastAndroid.BOTTOM);
           }
@@ -479,7 +479,7 @@ export const ProfileFriend = ({ route, navigation }) => {
               >
                 <Text style={styles.diachi}>Ảnh</Text>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("AnhUser", { id })}
+                  onPress={() => navigation.navigate("AnhUser", { idT: id })}
                 >
                   <Text
                     style={{
@@ -545,7 +545,9 @@ export const ProfileFriend = ({ route, navigation }) => {
               >
                 <Text style={styles.diachi}>Bạn bè</Text>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("BanBe", { id, us: 1 })}
+                  onPress={() =>
+                    navigation.navigate("BanBe", { idT: id, us: 1 })
+                  }
                 >
                   <Text
                     style={{

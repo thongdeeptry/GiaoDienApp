@@ -36,6 +36,8 @@ export const AllUser = ({ route, navigation }) => {
   const [id, setid] = useState();
   const [nameCr, setnameCr] = useState();
   const [avtCr, setavtCr] = useState();
+  const [name, setname] = useState();
+  const [avt, setavt] = useState();
   const [daco, setdaco] = useState(false);
   const [dacod, setdacod] = useState(false);
   const [tokendvCr, settokendvCr] = useState();
@@ -44,6 +46,13 @@ export const AllUser = ({ route, navigation }) => {
   useEffect(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
+    const referencecrd = ref(db, "users/" + idCurrent);
+    onValue(referencecrd, (childSnapshot) => {
+      const avtCrư = childSnapshot.child("avt").val();
+      const nameCrư = childSnapshot.child("name").val();
+      setavt(avtCrư);
+      setname(nameCrư);
+    });
   }, []);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -73,6 +82,7 @@ export const AllUser = ({ route, navigation }) => {
     let fl;
     let co;
     let dc = false;
+    setdaco(false);
     const referencecr = ref(db, "users/" + id);
     onValue(referencecr, (childSnapshot) => {
       const tokendv = childSnapshot.child("token").val();
@@ -108,16 +118,18 @@ export const AllUser = ({ route, navigation }) => {
             set(reference3, {
               user: id,
               id: idCurrent,
-              avt: avt,
+              avt: avtCr,
               name: nameCr,
             });
+
             const reference3d = ref(db, "banbe/" + id + "/" + idCurrent);
             set(reference3d, {
               user: idCurrent,
               id: id,
               avt: avt,
-              name: nameCr,
+              name: name,
             });
+
             ToastAndroid.show("Đã là bạn bè của nhau", ToastAndroid.BOTTOM);
           }
         } catch (error) {
@@ -149,14 +161,14 @@ export const AllUser = ({ route, navigation }) => {
           thang +
           "/" +
           date.getFullYear(),
-        avt: avtCr,
-        name: nameCr,
+        avt: avt,
+        name: name,
       });
       ToastAndroid.show("Đã gửi lượt thích", ToastAndroid.BOTTOM);
       sendMess(
         tokendvCr,
-        "Thông báo mới từ " + nameCr,
-        nameCr + " vừa yêu thích bạn"
+        "Thông báo mới từ " + name,
+        name + " vừa yêu thích bạn"
       );
     }
     if (daco == true) {

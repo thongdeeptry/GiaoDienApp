@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   ToastAndroid,
+  TouchableOpacity,
 } from "react-native";
 import { UserContext } from "../UserContext";
 import { initializeApp } from "firebase/app";
@@ -160,6 +161,8 @@ export const Register = (props) => {
                       multiline={true}
                       maxLength={100}
                       setFieldTouched={password}
+                      textContentType={"password"}
+                      secureTextEntry={true}
                     ></TextInput>
                   </View>
 
@@ -183,7 +186,7 @@ export const Register = (props) => {
                     </View>
                   </View>
                   <View style={styles.mailnut}>
-                    <Pressable
+                    <TouchableOpacity
                       style={styles.nut}
                       onPress={() =>
                         createUser(
@@ -193,7 +196,7 @@ export const Register = (props) => {
                       }
                     >
                       <Text style={styles.nutText}>Đăng Ký</Text>
-                    </Pressable>
+                    </TouchableOpacity>
                     <View style={{ paddingTop: 10 }}>
                       <Text
                         style={{
@@ -215,12 +218,12 @@ export const Register = (props) => {
               </View>
             </View>
             <View style={styles.mailnut1}>
-              <Pressable
+              <TouchableOpacity
                 style={styles.nut1}
                 onPress={() => navigation.navigate("Login")}
               >
                 <Text style={styles.nutText1}>Đăng Nhập</Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
           </ScrollView>
         </KeyboardAvoidingView>

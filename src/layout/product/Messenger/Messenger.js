@@ -73,19 +73,24 @@ function Messenger(props) {
       setnameu(name);
       setavtu(url);
       setuserId(userId);
+      const reference3w = ref(db1, "listChat/" + userId + "/" + user);
+      update(reference3w, {
+        trangthai: "Đã xem",
+      });
     } catch (error) {
       const { url, name, userId } = props.route.params;
       console.log(name + "pppp");
       setnameu(name);
       setavtu(url);
       setuserId(userId);
+      const reference3w = ref(db1, "listChat/" + userId + "/" + user);
+      update(reference3w, {
+        trangthai: "Đã xem",
+      });
     }
-    const reference3w = ref(db, "listChat/" + userId + "/" + user);
-    update(reference3w, {
-      trangthai: "Đã xem",
-    });
   }, []);
   const combinedId = user > userId ? user + userId : userId + user;
+
   const unSub = ref(db1, "chats/" + combinedId + "/messages");
   onValue(unSub, (datasnap) => {
     datasnap.forEach((datasnapP) => {
@@ -109,11 +114,11 @@ function Messenger(props) {
     let myFriendUserId = userId;
     Keyboard.dismiss();
     let key = new Date().getTime();
-    const reference3w = ref(db, "listChat/" + user + "/" + userId);
+    const reference3w = ref(db1, "listChat/" + user + "/" + userId);
     update(reference3w, {
       trangthai: typedText,
     });
-    const reference3ws = ref(db, "listChat/" + userId + "/" + user);
+    const reference3ws = ref(db1, "listChat/" + userId + "/" + user);
     update(reference3ws, {
       trangthai: typedText,
     });

@@ -7,6 +7,7 @@ import {
   Image,
   ToastAndroid,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 import {
@@ -16,7 +17,10 @@ import {
 import { firebaseConfig } from "../../../../config";
 import firebase from "firebase/compat/app";
 import { UserContext } from "../UserContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getAuth } from "firebase/auth";
 export const LoginCfPhone = ({ route, navigation }) => {
+  firebase.initializeApp(firebaseConfig);
   const { verificationId } = route.params;
   const { sdt } = route.params;
   const { onLogin } = useContext(UserContext);
@@ -30,7 +34,13 @@ export const LoginCfPhone = ({ route, navigation }) => {
   const [Code4, setCode4] = useState("");
   const [Code5, setCode5] = useState("");
   const [Code6, setCode6] = useState("");
-
+  const ref_input2 = useRef();
+  const ref_input3 = useRef();
+  const ref_input4 = useRef();
+  const ref_input5 = useRef();
+  const ref_input6 = useRef();
+  initializeApp(firebaseConfig);
+  firebase.initializeApp(firebaseConfig);
   useEffect(() => {
     let myInterval = setInterval(() => {
       if (seconds > 0) {
@@ -39,6 +49,7 @@ export const LoginCfPhone = ({ route, navigation }) => {
       if (seconds === 0) {
         if (minutes === 0) {
           clearInterval(myInterval);
+          navigation.navigate("LoginPhone");
         } else {
           setMinutes(minutes - 1);
           setSeconds(0);
@@ -58,7 +69,7 @@ export const LoginCfPhone = ({ route, navigation }) => {
     firebase
       .auth()
       .signInWithCredential(credential)
-      .then(() => {
+      .then(async () => {
         setCode1("");
         setCode2("");
         setCode3("");
@@ -66,6 +77,13 @@ export const LoginCfPhone = ({ route, navigation }) => {
         setCode5("");
         setCode6("");
         ToastAndroid.show("Đã xác nhận mã", ToastAndroid.BOTTOM);
+        await AsyncStorage.setItem(
+          "tokenLogin",
+          (
+            await getAuth().currentUser.getIdTokenResult()
+          ).token
+        );
+        console.log((await getAuth().currentUser.getIdTokenResult()).token);
         onLogin();
       })
       .catch((error) => {
@@ -99,6 +117,8 @@ export const LoginCfPhone = ({ route, navigation }) => {
               maxLength={1}
               value={Code1}
               onChangeText={setCode1}
+              returnKeyType="next"
+              onSubmitEditing={() => ref_input2.current.focus()}
             ></TextInput>
           </View>
           <View style={styles.khung2}>
@@ -108,6 +128,9 @@ export const LoginCfPhone = ({ route, navigation }) => {
               maxLength={1}
               value={Code2}
               onChangeText={setCode2}
+              returnKeyType="next"
+              onSubmitEditing={() => ref_input3.current.focus()}
+              ref={ref_input2}
             ></TextInput>
           </View>
           <View style={styles.khung3}>
@@ -117,6 +140,9 @@ export const LoginCfPhone = ({ route, navigation }) => {
               maxLength={1}
               value={Code3}
               onChangeText={setCode3}
+              ref={ref_input3}
+              returnKeyType="next"
+              onSubmitEditing={() => ref_input4.current.focus()}
             ></TextInput>
           </View>
           <View style={styles.khung4}>
@@ -126,6 +152,9 @@ export const LoginCfPhone = ({ route, navigation }) => {
               maxLength={1}
               value={Code4}
               onChangeText={setCode4}
+              ref={ref_input4}
+              returnKeyType="next"
+              onSubmitEditing={() => ref_input5.current.focus()}
             ></TextInput>
           </View>
           <View style={styles.khung3}>
@@ -135,6 +164,9 @@ export const LoginCfPhone = ({ route, navigation }) => {
               maxLength={1}
               value={Code5}
               onChangeText={setCode5}
+              ref={ref_input5}
+              returnKeyType="next"
+              onSubmitEditing={() => ref_input6.current.focus()}
             ></TextInput>
           </View>
           <View style={styles.khung4}>
@@ -144,28 +176,31 @@ export const LoginCfPhone = ({ route, navigation }) => {
               maxLength={1}
               value={Code6}
               onChangeText={setCode6}
+              ref={ref_input6}
             ></TextInput>
           </View>
         </View>
-        <Text
-          style={{
-            color: "#E94057",
-            fontSize: 16,
-            flexDirection: "row",
-            justifyContent: "center",
-            textAlign: "center",
-            fontWeight: "500",
-            top: 750,
-            fontStyle: "normal",
-          }}
-        >
-          Gửi lại mã
-        </Text>
+        <TouchableOpacity onPress={() => navigation.navigate("RegisterPhone")}>
+          <Text
+            style={{
+              color: "#E94057",
+              fontSize: 16,
+              flexDirection: "row",
+              justifyContent: "center",
+              textAlign: "center",
+              fontWeight: "500",
+              top: 750,
+              fontStyle: "normal",
+            }}
+          >
+            Gửi lại mã
+          </Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.mailnut}>
-        <Pressable style={styles.nut} onPress={ConfimCode}>
+        <TouchableOpacity style={styles.nut} onPress={ConfimCode}>
           <Text style={styles.nutText}>Đăng Nhập</Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
     </View>
   );

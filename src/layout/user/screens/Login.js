@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   ToastAndroid,
+  TouchableOpacity,
 } from "react-native";
 import { UserContext } from "../UserContext";
 import { initializeApp } from "firebase/app";
@@ -57,14 +58,15 @@ export const Login = (props) => {
         console.log("UID - " + user);
 
         if (isCheckedStatus == true) {
-          await AsyncStorage.setItem("email", formikRef.current?.values?.email);
           await AsyncStorage.setItem(
-            "password",
-            formikRef.current?.values?.password
+            "tokenLogin",
+            (
+              await getAuth().currentUser.getIdTokenResult()
+            ).token
           );
+          console.log((await getAuth().currentUser.getIdTokenResult()).token);
         } else {
-          await AsyncStorage.setItem("email", "");
-          await AsyncStorage.setItem("password", "");
+          await AsyncStorage.setItem("tokenLogin", "");
         }
         onLogin();
       })
@@ -174,6 +176,7 @@ export const Login = (props) => {
                       multiline={true}
                       maxLength={100}
                       secureTextEntry={true}
+                      textContentType={"password"}
                     ></TextInput>
                   </View>
 
@@ -196,9 +199,9 @@ export const Login = (props) => {
                   </View>
 
                   <View style={styles.mailnut}>
-                    <Pressable style={styles.nut} onPress={Click}>
+                    <TouchableOpacity style={styles.nut} onPress={Click}>
                       <Text style={styles.nutText}>Đăng Nhập</Text>
-                    </Pressable>
+                    </TouchableOpacity>
                     <View style={{ paddingTop: 10 }}>
                       <Text
                         style={{
@@ -223,12 +226,12 @@ export const Login = (props) => {
               </View>
             </View>
             <View style={styles.mailnut1}>
-              <Pressable
+              <TouchableOpacity
                 style={styles.nut1}
                 onPress={() => navigation.navigate("Landing4")}
               >
                 <Text style={styles.nutText1}>Đăng Ký</Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
         </ScrollView>

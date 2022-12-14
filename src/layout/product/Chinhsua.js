@@ -160,6 +160,7 @@ const Chinhsua = ({ navigation, route }) => {
             style={styles.ten}
             value={name}
             onChangeText={setname}
+            textContentType={"name"}
           ></TextInput>
           <Text style={styles.id}>{id}</Text>
         </View>
@@ -173,6 +174,7 @@ const Chinhsua = ({ navigation, route }) => {
               placeholder="abc@gmail.com"
               value={email}
               onChangeText={setemail}
+              textContentType={"emailAddress"}
             ></TextInput>
             <TouchableOpacity onPress={() => setemail("")}>
               <Image
@@ -190,6 +192,7 @@ const Chinhsua = ({ navigation, route }) => {
               placeholder="Hồ chí minh"
               value={diachi}
               onChangeText={setdiachi}
+              textContentType={"fullStreetAddress"}
             ></TextInput>
             <TouchableOpacity onPress={() => setdiachi("")}>
               <Image
@@ -241,6 +244,7 @@ const Chinhsua = ({ navigation, route }) => {
               placeholder="Nam"
               value={gioitinh}
               onChangeText={setgioitinh}
+              textContentType={"name"}
             ></TextInput>
             <TouchableOpacity onPress={() => setgioitinh("")}>
               <Image

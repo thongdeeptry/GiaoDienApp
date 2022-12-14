@@ -67,7 +67,7 @@ export const ProfileName = ({ route, navigation }) => {
       if (name == "" || ngaysinh == "") {
         ToastAndroid.show("Chưa Đầy Đủ Thông Tin", ToastAndroid.CENTER);
       } else {
-        if (sdt != null) {
+        if (sdt != undefined && tuoi > 12) {
           navigation.navigate("Selectsex", {
             sdt,
             name,
@@ -78,7 +78,7 @@ export const ProfileName = ({ route, navigation }) => {
             location,
           });
         }
-        if (email != "") {
+        if (email != undefined && tuoi > 12) {
           navigation.navigate("Selectsex", {
             email,
             password,
@@ -89,6 +89,11 @@ export const ProfileName = ({ route, navigation }) => {
             tuoi,
             location,
           });
+        } else {
+          ToastAndroid.show(
+            "Các điều khoản dịch vụ của chúng tôi yêu cầu số tuổi phải lớn hơn 12",
+            ToastAndroid.CENTER
+          );
         }
       }
     }
@@ -207,6 +212,7 @@ export const ProfileName = ({ route, navigation }) => {
               maxLength={100}
               value={ho}
               onChangeText={setho}
+              textContentType={"name"}
             ></TextInput>
           </View>
 
@@ -218,6 +224,7 @@ export const ProfileName = ({ route, navigation }) => {
               maxLength={100}
               value={ten}
               onChangeText={setten}
+              textContentType={"name"}
             ></TextInput>
           </View>
           <View style={styles.mailnut1}>

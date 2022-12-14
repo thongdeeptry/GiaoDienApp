@@ -43,7 +43,7 @@ export const Selectsex = ({ route, navigation }) => {
     if (gioitinh == "") {
       ToastAndroid.show("Chưa Đầy Đủ Thông Tin", ToastAndroid.CENTER);
     } else {
-      if (sdt != null) {
+      if (sdt != undefined) {
         navigation.navigate("Possions", {
           sdt,
           name,
@@ -55,7 +55,7 @@ export const Selectsex = ({ route, navigation }) => {
           location,
         });
       }
-      if (email != "") {
+      if (email != undefined) {
         navigation.navigate("Possions", {
           email,
           password,

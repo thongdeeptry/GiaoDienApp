@@ -295,7 +295,7 @@ export const PostStatus = ({ route, navigation }) => {
               style={{ flexDirection: "row", width: "90%", paddingRight: 5 }}
             >
               <Text style={{ fontSize: 16, fontWeight: "500" }}>
-                {name} - {noidung1}
+                {name + " "} {noidung1}
                 <Text style={{ fontSize: 16 }}>
                   {tinh != "" && tinh != null ? " tại " : null}
                 </Text>
