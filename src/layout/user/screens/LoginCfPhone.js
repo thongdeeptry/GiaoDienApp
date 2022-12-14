@@ -77,12 +77,7 @@ export const LoginCfPhone = ({ route, navigation }) => {
         setCode5("");
         setCode6("");
         ToastAndroid.show("Đã xác nhận mã", ToastAndroid.BOTTOM);
-        await AsyncStorage.setItem(
-          "tokenLogin",
-          (
-            await getAuth().currentUser.getIdTokenResult()
-          ).token
-        );
+        await AsyncStorage.setItem("phone", sdt);
         console.log((await getAuth().currentUser.getIdTokenResult()).token);
         onLogin();
       })

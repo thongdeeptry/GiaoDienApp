@@ -18,6 +18,8 @@ export const SayHello = ({ navigation, route }) => {
   const [avt, setavt] = useState();
   const [email, setemail] = useState();
   const [nghenghiep, setnghenghiep] = useState();
+  const [emailCR, setemailCR] = useState();
+  const [nghenghiepCR, setnghenghiepCR] = useState();
   const [nameCr, setnameCr] = useState();
   const [avtCr, setavtCr] = useState();
   const idCurrent = getAuth().currentUser.uid;
@@ -38,6 +40,8 @@ export const SayHello = ({ navigation, route }) => {
       const avtpr = childSnapshot.child("avt").val();
       setnameCr(namepr);
       setavtCr(avtpr);
+      setemailCR(childSnapshot.child("email").val());
+      setnghenghiepCR(childSnapshot.child("nghenghiep").val());
     });
   });
   const AddListChat = () => {
@@ -45,7 +49,7 @@ export const SayHello = ({ navigation, route }) => {
     onValue(reference3, (childSnapshot) => {
       if (!childSnapshot.exists()) {
         set(reference3, {
-          id: idCurrent,
+          id: id,
           name: name,
           avt: avt,
           email: email,
@@ -55,10 +59,10 @@ export const SayHello = ({ navigation, route }) => {
         const reference3s = ref(db, "listChat/" + id + "/" + idCurrent);
         set(reference3s, {
           id: idCurrent,
-          name: name,
-          avt: avt,
-          email: email,
-          nghenghiep: nghenghiep,
+          name: nameCr,
+          avt: avtCr,
+          email: emailCR,
+          nghenghiep: nghenghiepCR,
           trangthai: "Chưa có tin nhắn nào được gửi",
         });
       }

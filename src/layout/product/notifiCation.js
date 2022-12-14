@@ -109,10 +109,18 @@ export default notifiCation = ({ route, navigation }) => {
               }}
             >
               <View style={styles.info}>
-                <Image
-                  style={{ width: 40, height: 40, borderRadius: 20 }}
-                  source={{ uri: item.avt }}
-                />
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("ProfileFriend", {
+                      id: item.user,
+                    })
+                  }
+                >
+                  <Image
+                    style={{ width: 40, height: 40, borderRadius: 20 }}
+                    source={{ uri: item.avt }}
+                  />
+                </TouchableOpacity>
                 <View style={styles.tenmain}>
                   <View
                     style={{

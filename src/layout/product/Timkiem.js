@@ -124,7 +124,7 @@ const Timkiem = ({ navigation, route }) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image style={styles.edit} source={require("../../image/back.png")} />
         </TouchableOpacity>
-        {/* <TouchableOpacity>
+        <TouchableOpacity onPress={() => setdulieu("")}>
           <Image
             style={{
               width: 20,
@@ -134,9 +134,9 @@ const Timkiem = ({ navigation, route }) => {
               top: 15,
               opacity: 0.8,
             }}
-            source={require("../../image/loupe.png")}
+            source={require("../../image/remove.png")}
           />
-        </TouchableOpacity> */}
+        </TouchableOpacity>
       </View>
 
       <View

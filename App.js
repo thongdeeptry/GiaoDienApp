@@ -39,7 +39,6 @@ export default function App() {
       messaging()
         .getToken()
         .then(async (token) => {
-          console.log(token);
           await AsyncStorage.setItem("token", token);
         });
     } else {
@@ -51,62 +50,62 @@ export default function App() {
       .getInitialNotification()
       .then(async (remotemess) => {
         if (remotemess) {
-          console.log("Message handled in the background!", remotemess);
-          setTitle(remotemess.notification.title);
-          setBody(remotemess.notification.body);
-          if (remotemess.notification.title == "Bạn có cuộc gọi đến") {
-          } else {
-            setModalVisible(true);
-            console.log("Loading Sound");
-            const { sound } = await Audio.Sound.createAsync(
-              require("./nhac.mp3")
-            );
-            setSound(sound);
-            console.log("Playing Sound");
-            await sound.playAsync();
-            setTimeout(() => {
-              setModalVisible(false);
-            }, 3000);
-          }
+          // console.log("Message handled in the background!", remotemess);
+          // setTitle(remotemess.notification.title);
+          // setBody(remotemess.notification.body);
+          // if (remotemess.notification.title == "Bạn có cuộc gọi đến") {
+          // } else {
+          //   setModalVisible(true);
+          //   console.log("Loading Sound");
+          //   const { sound } = await Audio.Sound.createAsync(
+          //     require("./nhac.mp3")
+          //   );
+          //   setSound(sound);
+          //   console.log("Playing Sound");
+          //   await sound.playAsync();
+          //   setTimeout(() => {
+          //     setModalVisible(false);
+          //   }, 3000);
+          // }
         }
       });
 
     ///sss
     messaging().onNotificationOpenedApp(async (remotemess) => {
       console.log("Message handled in the background!", remotemess);
-      setTitle(remotemess.notification.title);
-      setBody(remotemess.notification.body);
-      if (remotemess.notification.title == "Bạn có cuộc gọi đến") {
-      } else {
-        setModalVisible(true);
-        console.log("Loading Sound");
-        const { sound } = await Audio.Sound.createAsync(require("./nhac.mp3"));
-        setSound(sound);
-        console.log("Playing Sound");
-        await sound.playAsync();
-        setTimeout(() => {
-          setModalVisible(false);
-        }, 3000);
-      }
+      // setTitle(remotemess.notification.title);
+      // setBody(remotemess.notification.body);
+      // if (remotemess.notification.title == "Bạn có cuộc gọi đến") {
+      // } else {
+      //   setModalVisible(true);
+      //   console.log("Loading Sound");
+      //   const { sound } = await Audio.Sound.createAsync(require("./nhac.mp3"));
+      //   setSound(sound);
+      //   console.log("Playing Sound");
+      //   await sound.playAsync();
+      //   setTimeout(() => {
+      //     setModalVisible(false);
+      //   }, 3000);
+      // }
     });
 
     //backgroubnd
     messaging().setBackgroundMessageHandler(async (remoteMessage) => {
       console.log("Message handled in the background!", remoteMessage);
-      setTitle(remoteMessage.notification.title);
-      setBody(remoteMessage.notification.body);
-      if (remoteMessage.notification.title == "Bạn có cuộc gọi đến") {
-      } else {
-        setModalVisible(true);
-        console.log("Loading Sound");
-        const { sound } = await Audio.Sound.createAsync(require("./nhac.mp3"));
-        setSound(sound);
-        console.log("Playing Sound");
-        await sound.playAsync();
-        setTimeout(() => {
-          setModalVisible(false);
-        }, 3000);
-      }
+      // setTitle(remoteMessage.notification.title);
+      // setBody(remoteMessage.notification.body);
+      // if (remoteMessage.notification.title == "Bạn có cuộc gọi đến") {
+      // } else {
+      //   setModalVisible(true);
+      //   console.log("Loading Sound");
+      //   const { sound } = await Audio.Sound.createAsync(require("./nhac.mp3"));
+      //   setSound(sound);
+      //   console.log("Playing Sound");
+      //   await sound.playAsync();
+      //   setTimeout(() => {
+      //     setModalVisible(false);
+      //   }, 1000);
+      // }
     });
 
     //alert
@@ -123,7 +122,7 @@ export default function App() {
         await sound.playAsync();
         setTimeout(() => {
           setModalVisible(false);
-        }, 2000);
+        }, 1000);
       }
     });
 

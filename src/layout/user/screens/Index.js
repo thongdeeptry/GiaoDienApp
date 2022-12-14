@@ -29,20 +29,15 @@ export const Index = (props) => {
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const Click = async () => {
-    const tokenLogin = await AsyncStorage.getItem("tokenLogin");
-    console.log(tokenLogin);
-    if (tokenLogin != "" && tokenLogin != "") {
-      await signInWithCustomToken(auth, tokenLogin)
-        .then((userCredential) => {
-          //auto Signed in
-          ToastAndroid.show(
-            "Đăng nhập với tư cách : " + userCredential.user.uid
-          );
-          onLogin();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    const email = await AsyncStorage.getItem("email");
+    const password = await AsyncStorage.getItem("password");
+    if (email != "" && (password != "") | (email != null) && password != null) {
+      await signInWithEmailAndPassword(auth, email, password).then(async () => {
+        console.log("Đăng nhập thành công");
+        const user = getAuth().currentUser.uid;
+        console.log("UID - " + user);
+        onLogin();
+      });
     }
   };
   Click();

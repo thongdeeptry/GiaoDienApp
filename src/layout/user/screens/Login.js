@@ -58,15 +58,14 @@ export const Login = (props) => {
         console.log("UID - " + user);
 
         if (isCheckedStatus == true) {
+          await AsyncStorage.setItem("email", formikRef.current?.values?.email);
           await AsyncStorage.setItem(
-            "tokenLogin",
-            (
-              await getAuth().currentUser.getIdTokenResult()
-            ).token
+            "password",
+            formikRef.current?.values?.password
           );
-          console.log((await getAuth().currentUser.getIdTokenResult()).token);
         } else {
-          await AsyncStorage.setItem("tokenLogin", "");
+          await AsyncStorage.setItem("email", "");
+          await AsyncStorage.setItem("password", "");
         }
         onLogin();
       })
