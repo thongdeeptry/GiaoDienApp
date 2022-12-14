@@ -165,11 +165,15 @@ export const AllUser = ({ route, navigation }) => {
         name: name,
       });
       ToastAndroid.show("Đã gửi lượt thích", ToastAndroid.BOTTOM);
-      sendMess(
-        tokendvCr,
-        "Thông báo mới từ " + name,
-        name + " vừa yêu thích bạn"
-      );
+      const referencecrd = ref(db, "users/" + id);
+      onValue(referencecrd, (childSnapshot) => {
+        const tokendv = childSnapshot.child("token").val();
+        sendMess(
+          tokendv,
+          "Thông báo mới từ " + name,
+          name + " vừa yêu thích bạn"
+        );
+      });
     }
     if (daco == true) {
       const reference = ref(db, "users/" + id);
@@ -253,6 +257,7 @@ export const AllUser = ({ route, navigation }) => {
         </View>
         <View>
           <FlatList
+            style={{ marginBottom: 130 }}
             showsVerticalScrollIndicator={false}
             data={dataFl}
             refreshControl={

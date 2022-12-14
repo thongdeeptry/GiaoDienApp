@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { ToastAndroid } from "react-native";
 import axiosInstance from "./axios";
 export const sendMess = async (token, title, body) => {
+  console.log(token + " =====> body" + body);
   const Data = {
     data: {
       title: "Firebase notification",

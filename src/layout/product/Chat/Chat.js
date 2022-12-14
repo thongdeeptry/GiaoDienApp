@@ -36,20 +36,6 @@ function Chat(props) {
     wait(1000).then(() => setRefreshing(false));
   }, []);
   const handleSelect = async (ite) => {
-    //check whether the group(chats in firestore) exists, if not create
-    // const combinedId =
-    //   user > ite.userId ? user + ite.userId : ite.userId + user;
-    // try {
-    //   const res = await getDoc(doc(db, "chats", combinedId));
-    //   if (!res.exists()) {
-    //     console.log(combinedId);
-    //     //create a chat in chats collection
-    //     await setDoc(doc(db, "chats", combinedId), { messages: [] });
-    //     await setDoc(doc(db, "userChats", user), {});
-    //     await setDoc(doc(db, "userChats", ite.userId), {});
-    //   }
-    // } catch {}
-
     navigate("Messenger", { user: ite });
   };
   useEffect(() => {

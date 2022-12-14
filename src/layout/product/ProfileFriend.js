@@ -495,12 +495,22 @@ export const ProfileFriend = ({ route, navigation }) => {
               </View>
 
               <FlatList
-                style={{
-                  left: 20,
-                  top: 35,
-                  width: "100%",
-                  height: 220,
-                }}
+                style={[
+                  {
+                    left: 20,
+                    top: 35,
+                    width: "100%",
+                    maxHeight: 220,
+                  },
+                  dataImage == []
+                    ? {
+                        left: 20,
+                        top: 35,
+                        width: "100%",
+                        maxHeight: 20,
+                      }
+                    : null,
+                ]}
                 contentContainerStyle={{
                   justifyContent: "space-between",
                   borderRadius: 15,
@@ -563,12 +573,22 @@ export const ProfileFriend = ({ route, navigation }) => {
               </View>
 
               <FlatList
-                style={{
-                  left: 20,
-                  top: 35,
-                  width: "100%",
-                  height: 220,
-                }}
+                style={[
+                  {
+                    left: 20,
+                    top: 35,
+                    width: "100%",
+                    maxHeight: 220,
+                  },
+                  dataFriend == []
+                    ? {
+                        left: 20,
+                        top: 35,
+                        width: "100%",
+                        maxHeight: 20,
+                      }
+                    : null,
+                ]}
                 contentContainerStyle={{
                   justifyContent: "space-between",
                   borderRadius: 15,
@@ -617,11 +637,12 @@ export const ProfileFriend = ({ route, navigation }) => {
           <View
             style={{
               width: "100%",
-              top: 133,
+              top: 100,
               marginHorizontal: 20,
             }}
           >
             <Text style={{ fontSize: 19 }}>Bài viết và hoạt động</Text>
+
             <View style={{ width: "90%", paddingBottom: 110 }}>
               <FlatList
                 contentContainerStyle={{

@@ -65,7 +65,6 @@ export default notifiCation = ({ route, navigation }) => {
       style={{
         width: "100%",
         flexDirection: "column",
-        backgroundColor: "white",
       }}
     >
       <View
@@ -76,12 +75,11 @@ export default notifiCation = ({ route, navigation }) => {
           paddingHorizontal: 20,
         }}
       >
-        <Text style={{ fontSize: 17, color: "#E94057", letterSpacing: 1 }}>
+        <Text
+          style={{ fontSize: 20, color: "#E94057", letterSpacing: 1, top: 10 }}
+        >
           Thông báo
         </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("IndexCall")}>
-          <Text style={{ fontSize: 17 }}>Đã đọc tất cả</Text>
-        </TouchableOpacity>
       </View>
       <ScrollView
         style={{ marginBottom: 70 }}
@@ -90,6 +88,9 @@ export default notifiCation = ({ route, navigation }) => {
         }
       >
         <View style={styles.dataMap}>
+          <Text style={{ fontSize: 16, textAlign: "center", top: 5 }}>
+            {dataTB.length == 0 ? "Không có thông báo" : ""}
+          </Text>
           {dataTB.map((item, index) => (
             <Pressable
               key={index}

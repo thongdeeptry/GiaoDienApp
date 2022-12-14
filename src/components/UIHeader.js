@@ -42,6 +42,7 @@ function UIHeader(props) {
       >
         {title}
       </Text>
+
       {rightIconName != undefined ? (
         <Icon
           name={rightIconName}

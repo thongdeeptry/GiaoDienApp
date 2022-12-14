@@ -44,7 +44,16 @@ export const SayHello = ({ navigation, route }) => {
     const reference3 = ref(db, "listChat/" + idCurrent + "/" + id);
     onValue(reference3, (childSnapshot) => {
       if (!childSnapshot.exists()) {
-        update(reference3, {
+        set(reference3, {
+          id: idCurrent,
+          name: name,
+          avt: avt,
+          email: email,
+          nghenghiep: nghenghiep,
+          trangthai: "Chưa có tin nhắn nào được gửi",
+        });
+        const reference3s = ref(db, "listChat/" + id + "/" + idCurrent);
+        set(reference3s, {
           id: idCurrent,
           name: name,
           avt: avt,
@@ -54,19 +63,7 @@ export const SayHello = ({ navigation, route }) => {
         });
       }
     });
-    const reference3s = ref(db, "listChat/" + id + "/" + idCurrent);
-    onValue(reference3s, (childSnapshot) => {
-      if (!childSnapshot.exists()) {
-        update(reference3s, {
-          id: idCurrent,
-          name: name,
-          avt: avt,
-          email: email,
-          nghenghiep: nghenghiep,
-          trangthai: "Chưa có tin nhắn nào được gửi",
-        });
-      }
-    });
+
     navigation.navigate("Messenger", {
       url: "",
       name: name,
