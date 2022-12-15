@@ -36,6 +36,7 @@ import RoomCall from "./Call/screens/RoomScreen";
 import JoinRoom from "./Call/screens/JoinRoom";
 import { AllRoomCall } from "./AllRoomCall";
 import { SayHello } from "../user/screens/SayHello";
+import hotro from "./hotro";
 function HomeStack() {
   return (
     <Stack.Navigator
@@ -66,6 +67,7 @@ function HomeStack() {
       <Stack.Screen name="JoinRoom" component={JoinRoom} />
       <Stack.Screen name="AllRoomCall" component={AllRoomCall} />
       <Stack.Screen name="SayHello" component={SayHello} />
+      <Stack.Screen name="hotro" component={hotro} />
     </Stack.Navigator>
   );
 }
@@ -98,6 +100,7 @@ function ProfileStack() {
       <Stack.Screen name="JoinRoom" component={JoinRoom} />
       <Stack.Screen name="AllRoomCall" component={AllRoomCall} />
       <Stack.Screen name="SayHello" component={SayHello} />
+      <Stack.Screen name="hotro" component={hotro} />
     </Stack.Navigator>
   );
 }
@@ -131,6 +134,7 @@ function AllUserStack() {
       <Stack.Screen name="JoinRoom" component={JoinRoom} />
       <Stack.Screen name="AllRoomCall" component={AllRoomCall} />
       <Stack.Screen name="SayHello" component={SayHello} />
+      <Stack.Screen name="hotro" component={hotro} />
     </Stack.Navigator>
   );
 }
@@ -164,6 +168,7 @@ function ChatStack() {
       <Stack.Screen name="JoinRoom" component={JoinRoom} />
       <Stack.Screen name="AllRoomCall" component={AllRoomCall} />
       <Stack.Screen name="SayHello" component={SayHello} />
+      <Stack.Screen name="hotro" component={hotro} />
     </Stack.Navigator>
   );
 }
@@ -197,6 +202,7 @@ function NotiStack() {
       <Stack.Screen name="JoinRoom" component={JoinRoom} />
       <Stack.Screen name="AllRoomCall" component={AllRoomCall} />
       <Stack.Screen name="SayHello" component={SayHello} />
+      <Stack.Screen name="hotro" component={hotro} />
     </Stack.Navigator>
   );
 }

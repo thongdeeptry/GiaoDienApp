@@ -1,10 +1,13 @@
 {
   "expo": {
     "name": "GenzLove",
+    "icon": "icon.png",
     "slug": "GiaoDienApp",
-    "version": "1.0.0",
+    "version": "1.1.0",
+
     "assetBundlePatterns": ["**/*"],
     "android": {
+      "versionCode": 2,
       "googleServicesFile": "./google-services.json",
       "package": "com.thanhthong0312.GiaoDienApp"
     },

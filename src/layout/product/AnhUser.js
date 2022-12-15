@@ -94,6 +94,9 @@ export const AnhUser = ({ route, navigation }) => {
           borderTopWidth: 0.3,
         }}
       >
+        <Text style={{ textAlign: "center", top: 10 }}>
+          {dataImage.length == 0 ? "Không có ảnh nào" : ""}
+        </Text>
         <View>
           <FlatList
             style={{

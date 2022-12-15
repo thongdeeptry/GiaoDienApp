@@ -10,7 +10,7 @@
         "buildType": "apk"
       },
       "ios": {
-        "buildConfiguration": "Debug"
+        "buildConfiguration": "Release"
       }
     },
     "preview": {

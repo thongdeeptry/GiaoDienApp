@@ -138,48 +138,56 @@ export const AllUser = ({ route, navigation }) => {
       });
     });
     if (daco == false) {
-      const reference = ref(db, "users/" + id);
-      update(reference, {
-        follow: fl,
-      });
       const reference3 = ref(db, "favourite/" + id + "/" + idCurrent);
-      set(reference3, {
-        user: idCurrent,
+      onValue(reference3, (childSnapshot) => {
+        if (!childSnapshot.exists()) {
+          set(reference3, {
+            user: idCurrent,
+          });
+          const reference = ref(db, "users/" + id);
+          update(reference, {
+            follow: fl,
+          });
+          const reference5 = ref(db, "notification/" + id);
+          push(reference5, {
+            user: idCurrent,
+            id: id,
+            noidung: " vừa gửi lượt thích đến bạn",
+            thoigian:
+              date.getHours() +
+              ":" +
+              date.getMinutes() +
+              " ngày " +
+              date.getDate() +
+              "/" +
+              thang +
+              "/" +
+              date.getFullYear(),
+            avt: avt,
+            name: name,
+          });
+          ToastAndroid.show("Đã gửi lượt thích", ToastAndroid.BOTTOM);
+          const referencecrd = ref(db, "users/" + id);
+          onValue(referencecrd, (childSnapshot) => {
+            const tokendv = childSnapshot.child("token").val();
+            sendMess(
+              tokendv,
+              "Thông báo mới từ " + name,
+              name + " vừa yêu thích bạn"
+            );
+          });
+        } else {
+          const reference = ref(db, "users/" + id);
+          update(reference, {
+            follow: co,
+          });
+          ToastAndroid.show(
+            "Bạn đã yêu thích tài khoản này rồi!",
+            ToastAndroid.BOTTOM
+          );
+        }
       });
-      const reference5 = ref(db, "notification/" + id);
-      push(reference5, {
-        user: idCurrent,
-        id: id,
-        noidung: " vừa gửi lượt thích đến bạn",
-        thoigian:
-          date.getHours() +
-          ":" +
-          date.getMinutes() +
-          " ngày " +
-          date.getDate() +
-          "/" +
-          thang +
-          "/" +
-          date.getFullYear(),
-        avt: avt,
-        name: name,
-      });
-      ToastAndroid.show("Đã gửi lượt thích", ToastAndroid.BOTTOM);
-      const referencecrd = ref(db, "users/" + id);
-      onValue(referencecrd, (childSnapshot) => {
-        const tokendv = childSnapshot.child("token").val();
-        sendMess(
-          tokendv,
-          "Thông báo mới từ " + name,
-          name + " vừa yêu thích bạn"
-        );
-      });
-    }
-    if (daco == true) {
-      const reference = ref(db, "users/" + id);
-      update(reference, {
-        follow: co,
-      });
+    } else {
       ToastAndroid.show(
         "Bạn đã yêu thích tài khoản này rồi!",
         ToastAndroid.BOTTOM
@@ -278,7 +286,7 @@ export const AllUser = ({ route, navigation }) => {
                   <View style={{ flexDirection: "row" }}>
                     <TouchableOpacity
                       onPress={() =>
-                        navigation.navigate("ProfileFriend", { id: item.id })
+                        navigation.navigate("XemAnh", { linkAnh: item.avt })
                       }
                     >
                       <Image
@@ -358,23 +366,48 @@ export const AllUser = ({ route, navigation }) => {
                       </View>
                     </View>
                   </View>
-                  <TouchableOpacity
+
+                  <View
                     style={{
                       width: 40,
                       height: 40,
-                      top: 10,
+                      top: 20,
                       right: 20,
                       elevation: 10,
-                      justifyContent: "flex-end",
-                      alignItems: "flex-end",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      flexDirection: "column",
                     }}
-                    onPress={() => Love(item.id)}
                   >
-                    <Image
-                      style={{ width: 40, height: 40 }}
-                      source={require("../../image/tim.png")}
-                    />
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{
+                        width: 40,
+                        height: 40,
+                        bottom: 5,
+                      }}
+                      onPress={() => Love(item.id)}
+                    >
+                      <Image
+                        style={{ width: 40, height: 40 }}
+                        source={require("../../image/tim.png")}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{
+                        width: 30,
+                        height: 30,
+                        bottom: 10,
+                      }}
+                      onPress={() =>
+                        navigation.navigate("ProfileFriend", { id: item.id })
+                      }
+                    >
+                      <Image
+                        style={{ width: 30, height: 30 }}
+                        source={require("../../image/info.png")}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
               ) : null
             }

@@ -27,6 +27,7 @@ import {
   update,
   query,
   limitToLast,
+  remove,
 } from "firebase/database";
 import { UserContext } from "../src/layout/user/UserContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -150,7 +151,7 @@ const Home = ({ route, navigation }) => {
     let co;
     let dc = false;
 
-    const reference11 = ref(db, "tuongtac/" + id + "/" + idP + "/" + id);
+    const reference11 = ref(db, "tuongtac/" + user + "/" + idP + "/" + user);
     onValue(reference11, (snapshot1) => {
       const value = snapshot1.child("like").exportVal();
       console.log(value);
@@ -161,34 +162,43 @@ const Home = ({ route, navigation }) => {
         setdacod(false);
       }
     });
-    const reference1 = ref(db, "post/" + id + "/" + idP);
+    const reference1 = ref(db, "post/" + user + "/" + idP);
     onValue(reference1, (childSnapshot1) => {
       co = childSnapshot1.child("like").exportVal();
       like = co + 1;
     });
-    if (dacod == false) {
-      const reference = ref(db, "post/" + id + "/" + idP);
-      update(reference, {
-        like: like,
-      });
-      const reference13 = ref(db, "tuongtac/" + id + "/" + idP + "/" + id);
-      set(reference13, {
-        like: true,
-      });
-      ToastAndroid.show("Đã gửi lượt thích bài viết", ToastAndroid.BOTTOM);
-      const referencecr = ref(db, "users/" + id);
-      onValue(referencecr, (childSnapshot) => {
-        const tokendv = childSnapshot.child("token").val();
-        console.log(tokendv);
-        sendMess(
-          tokendv,
-          "Thông báo mới từ " + name,
-          name + " đã thích bài viết của bạn"
-        );
-      });
-    } else {
-      ToastAndroid.show("Bạn đã thích bài viết này rồi", ToastAndroid.BOTTOM);
-    }
+    const reference13 = ref(db, "tuongtac/" + user + "/" + idP + "/" + user);
+    onValue(reference13, (childSnapshot1) => {
+      if (!childSnapshot1.exists()) {
+        set(reference13, {
+          like: true,
+        });
+        const reference = ref(db, "post/" + id + "/" + idP);
+        update(reference, {
+          like: like,
+        });
+        ToastAndroid.show("Đã gửi lượt thích bài viết", ToastAndroid.BOTTOM);
+        const referencecr = ref(db, "users/" + id);
+        onValue(referencecr, (childSnapshot) => {
+          const tokendv = childSnapshot.child("token").val();
+          console.log(tokendv);
+          sendMess(
+            tokendv,
+            "Thông báo mới từ " + name,
+            name + " đã thích bài viết của bạn"
+          );
+        });
+      } else {
+        ToastAndroid.show("Bạn đã thích bài viết này rồi", ToastAndroid.BOTTOM);
+      }
+    });
+  };
+  const deletePost = (id, idPost) => {
+    const referencerm = ref(db, "post/" + id + "/" + idPost);
+    remove(referencerm).then = () => {
+      ToastAndroid.show("Đã xoá bài viết thành công", ToastAndroid.BOTTOM);
+      onRefresh();
+    };
   };
   const renderItem = ({ item, index }) => {
     return (
@@ -211,6 +221,30 @@ const Home = ({ route, navigation }) => {
         ]}
       >
         <View style={styles.info}>
+          {item.user == user ? (
+            <TouchableOpacity
+              style={{
+                width: 20,
+                height: 20,
+                borderRadius: 10,
+                position: "absolute",
+                right: 13,
+                top: -3,
+              }}
+              onPress={() => deletePost(item.user, item.id)}
+            >
+              <Image
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: 10,
+                }}
+                source={require("../src/image/remove.png")}
+              />
+            </TouchableOpacity>
+          ) : (
+            <></>
+          )}
           <TouchableOpacity
             onPress={() =>
               navigation.navigate("ProfileFriend", {

@@ -98,24 +98,9 @@ function Chat(props) {
           paddingStart: 10,
         }}
       >
-        <Text
-          style={{
-            color: "black",
-            fontSize: fontSizes.h6,
-            marginStart: 10,
-          }}
-        >
-          6 tin nhắn mới
+        <Text style={{ textAlign: "center", top: 10 }}>
+          {user.length == 0 ? "Không có tin nhắn nào" : ""}
         </Text>
-        <Icon
-          name={"search"}
-          style={{ padding: 15 }}
-          size={15}
-          color={"black"}
-          onPress={() => {
-            alert("You pressed Delete");
-          }}
-        />
       </View>
       <FlatList
         refreshControl={

@@ -159,7 +159,7 @@ function Messenger(props) {
     update(docRefddss, {
       date: serverTimestamp(),
     });
-    const referencecrd = ref(db, "users/" + userId);
+    const referencecrd = ref(db1, "users/" + userId);
     onValue(referencecrd, (childSnapshot) => {
       const tokendv = childSnapshot.child("token").val();
       sendMess(tokendv, namee + " vừa gửi cho bạn 1 tin nhắn", typedText);

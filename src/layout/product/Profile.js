@@ -10,6 +10,7 @@ import {
   Modal,
   ToastAndroid,
   RefreshControl,
+  TextInput,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
@@ -40,10 +41,13 @@ export const Profile = (props) => {
   const [ngaysinh, setngaysinh] = useState();
   const [gioitinh, setgioitinh] = useState();
   const [sothich, setsothich] = useState();
+  const [tieusu, settieusu] = useState();
+  const [tieusum, settieusum] = useState();
   const [nghenghiep, setnghenghiep] = useState();
   const [isLoading, setisLoading] = useState(false);
   const [idPost, setidPost] = useState();
   const [isCheckedStatus, setCheckedStatus] = useState(false);
+  const [isCheckedStatus1, setCheckedStatus1] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
@@ -88,6 +92,7 @@ export const Profile = (props) => {
       setgioitinh(gioitinhpr);
       setngaysinh(ngaysinhpr);
       setnghenghiep(nghenghiep);
+      settieusum(childSnapshot.child("tieusu").val());
       setisLoading(false);
     });
   }, []);
@@ -198,6 +203,19 @@ export const Profile = (props) => {
     };
     setCheckedStatus(false);
   };
+  const openModal1 = () => {
+    setCheckedStatus1(true);
+  };
+  const closeModal1 = () => {
+    setCheckedStatus1(false);
+  };
+  const updatetieusu = () => {
+    const referencets = ref(db, "users/" + user);
+    update(referencets, { tieusu: tieusu }).then(() => {
+      ToastAndroid.show("Đã cập nhật tiểu sử", ToastAndroid.BOTTOM);
+    });
+    closeModal1();
+  };
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
@@ -257,6 +275,49 @@ export const Profile = (props) => {
           <Text style={styles.textStyle}>Show Modal</Text>
         </Pressable> */}
       </View>
+      <View style={styles.centeredView1}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={isCheckedStatus1}
+          onRequestClose={() => {
+            setCheckedStatus1(!isCheckedStatus1);
+          }}
+        >
+          <View style={styles.centeredView1}>
+            <View style={styles.modalView1}>
+              <TouchableOpacity
+                style={{ width: "100%", position: "absolute" }}
+                onPress={closeModal1}
+              >
+                <Image
+                  style={{ width: 20, height: 20 }}
+                  source={require("./../../image/remove.png")}
+                />
+              </TouchableOpacity>
+              <Text style={styles.modalText}>
+                Thay đổi tiểu sử theo phong cách mà bạn yêu thích
+              </Text>
+              <TextInput
+                style={styles.veryPass}
+                placeholder="Nhập tiểu sử"
+                value={tieusu}
+                onChangeText={settieusu}
+                maxLength={222}
+              />
+              <TouchableOpacity
+                style={[styles.button, styles.buttonClose]}
+                onPress={updatetieusu}
+              >
+                <Text style={styles.textStyle}>Thay Đổi</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+        {/* <Pressable style={[styles.button, styles.buttonOpen]} onPress={() => setModalVisible(true)}>
+        <Text style={styles.textStyle}>Show Modal</Text>
+      </Pressable> */}
+      </View>
       <View style={styles.mainanh}>
         <View style={{ width: "100%", height: 500 }}>
           <Image style={styles.anh} source={{ uri: avt }} />
@@ -280,10 +341,17 @@ export const Profile = (props) => {
           <View style={[styles.mainten, { top: 25 }]}>
             <View style={styles.phuten}>
               <Text style={styles.diachi}>Tiểu sử</Text>
-              <Text style={styles.gioitinh}>
-                Tôi là Ngô Thành Thông tôi năm nay 21 tuổi đã có người yêu rất
-                xinh đẹp, tôi ao ước có 1 công việc ổn định để kiếm tiền lo cho
-                gia đình tôi.
+              <TouchableOpacity
+                style={{ width: 25, paddingLeft: 100, top: 2 }}
+                onPress={openModal1}
+              >
+                <Image
+                  style={{ width: 25, height: 25 }}
+                  source={require("../../image/edit-2.png")}
+                />
+              </TouchableOpacity>
+              <Text style={{ fontSize: 16, left: 20, top: 10, opacity: 0.7 }}>
+                {tieusum}
               </Text>
             </View>
           </View>
@@ -818,7 +886,7 @@ export const Profile = (props) => {
           </View>
           <View>
             <TouchableOpacity
-              onPress={() => navigation.navigate("Chinhsua")}
+              onPress={() => navigation.navigate("hotro")}
               style={{ width: 100, height: 50, left: 60 }}
             >
               <Image
@@ -1034,5 +1102,49 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     elevation: 2,
     top: 10,
+  },
+
+  centeredView1: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalView1: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 15,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 10,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#E94057",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 5,
+    textAlign: "center",
+  },
+  veryPass: {
+    width: 300,
+    height: 100,
+    textAlign: "center",
+    borderColor: "#ABABAB",
+    borderWidth: 0.5,
+    borderRadius: 20,
   },
 });

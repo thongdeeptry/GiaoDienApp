@@ -177,7 +177,10 @@ export const ProfileFriend = ({ route, navigation }) => {
     let co;
     let dc = false;
 
-    const reference11 = ref(db, "tuongtac/" + user + "/" + idP + "/" + user);
+    const reference11 = ref(
+      db,
+      "tuongtac/" + idCurrent + "/" + idP + "/" + idCurrent
+    );
     onValue(reference11, (snapshot1) => {
       const value = snapshot1.child("like").exportVal();
       console.log(value);
@@ -188,26 +191,42 @@ export const ProfileFriend = ({ route, navigation }) => {
         setdacod(false);
       }
     });
-    const reference1 = ref(db, "post/" + user + "/" + idP);
+    const reference1 = ref(db, "post/" + idCurrent + "/" + idP);
     onValue(reference1, (childSnapshot1) => {
       co = childSnapshot1.child("like").exportVal();
       like = co + 1;
     });
     if (dacod == false) {
-      const reference = ref(db, "post/" + user + "/" + idP);
-      update(reference, {
-        like: like,
-      });
-      const reference13 = ref(db, "tuongtac/" + user + "/" + idP + "/" + user);
-      set(reference13, {
-        like: true,
-      });
-      ToastAndroid.show("Đã gửi lượt thích bài viết", ToastAndroid.BOTTOM);
-      sendMess(
-        tokendvCr,
-        "Thông báo mới từ " + nameCr,
-        nameCr + " đã thích bài viết của bạn"
+      const reference13 = ref(
+        db,
+        "tuongtac/" + idCurrent + "/" + idP + "/" + idCurrent
       );
+      onValue(reference13, (childSnapshot1) => {
+        if (!childSnapshot1.exists()) {
+          set(reference13, {
+            like: true,
+          });
+          const reference = ref(db, "post/" + id + "/" + idP);
+          update(reference, {
+            like: like,
+          });
+          ToastAndroid.show("Đã gửi lượt thích bài viết", ToastAndroid.BOTTOM);
+          const referencecrd = ref(db, "users/" + id);
+          onValue(referencecrd, (childSnapshot) => {
+            const tokendv = childSnapshot.child("token").val();
+            sendMess(
+              tokendv,
+              "Thông báo mới từ " + nameCr,
+              nameCr + " đã thích bài viết của bạn"
+            );
+          });
+        } else {
+          ToastAndroid.show(
+            "Bạn đã thích bài viết này rồi",
+            ToastAndroid.BOTTOM
+          );
+        }
+      });
     } else {
       ToastAndroid.show("Bạn đã thích bài viết này rồi", ToastAndroid.BOTTOM);
     }
@@ -285,45 +304,66 @@ export const ProfileFriend = ({ route, navigation }) => {
         }
       });
     });
-    if (daco != true) {
-      const reference = ref(db, "users/" + id);
-      update(reference, {
-        follow: fl,
-      });
+    if (daco == false) {
       const reference3 = ref(db, "favourite/" + id + "/" + idCurrent);
-      set(reference3, {
-        user: idCurrent,
+      onValue(reference3, (childSnapshot) => {
+        if (!childSnapshot.exists()) {
+          set(reference3, {
+            user: idCurrent,
+          });
+          const reference = ref(db, "users/" + id);
+          update(reference, {
+            follow: fl,
+          });
+          const reference5 = ref(db, "notification/" + id);
+          push(reference5, {
+            user: idCurrent,
+            id: id,
+            noidung: " vừa gửi lượt thích đến bạn",
+            thoigian:
+              date.getHours() +
+              ":" +
+              date.getMinutes() +
+              " ngày " +
+              date.getDate() +
+              "/" +
+              thang +
+              "/" +
+              date.getFullYear(),
+            avt: avtCr,
+            name: nameCr,
+          });
+          ToastAndroid.show("Đã gửi lượt thích", ToastAndroid.BOTTOM);
+          const referencecrd = ref(db, "users/" + id);
+          onValue(referencecrd, (childSnapshot) => {
+            const tokendv = childSnapshot.child("token").val();
+            sendMess(
+              tokendv,
+              "Thông báo mới từ " + nameCr,
+              nameCr + " vừa gửi lượt thích đến bạn"
+            );
+          });
+        } else {
+          const reference = ref(db, "users/" + id);
+          update(reference, {
+            follow: co,
+          });
+          ToastAndroid.show(
+            "Bạn đã yêu thích tài khoản này rồi!",
+            ToastAndroid.BOTTOM
+          );
+        }
       });
-      const reference5 = ref(db, "notification/" + id);
-      push(reference5, {
-        user: idCurrent,
-        id: id,
-        noidung: " vừa gửi lượt thích đến bạn",
-        thoigian:
-          date.getHours() +
-          ":" +
-          date.getMinutes() +
-          " ngày " +
-          date.getDate() +
-          "/" +
-          thang +
-          "/" +
-          date.getFullYear(),
-        avt: avtCr,
-        name: nameCr,
-      });
-      ToastAndroid.show("Đã gửi lượt thích", ToastAndroid.BOTTOM);
-      sendMess(
-        tokendvCr,
-        "Thông báo mới từ " + nameCr,
-        nameCr + " vừa gửi lượt thích đến bạn"
-      );
     }
     if (daco == true) {
       const reference = ref(db, "users/" + id);
       update(reference, {
         follow: co,
       });
+      ToastAndroid.show(
+        "Bạn đã yêu thích tài khoản này rồi!",
+        ToastAndroid.BOTTOM
+      );
     }
   };
 
@@ -814,6 +854,17 @@ export const ProfileFriend = ({ route, navigation }) => {
               <Image
                 style={styles.containerrrrr}
                 source={require("../../image/back.png")}
+              />
+            </TouchableOpacity>
+          </View>
+          <View>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("hotro")}
+              style={{ width: 100, height: 50, left: 60 }}
+            >
+              <Image
+                style={[styles.containerrrrr, { borderRadius: 12 }]}
+                source={require("../../image/more.png")}
               />
             </TouchableOpacity>
           </View>

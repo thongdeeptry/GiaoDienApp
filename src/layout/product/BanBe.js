@@ -98,6 +98,9 @@ export const BanBe = ({ route, navigation }) => {
           borderTopWidth: 0.3,
         }}
       >
+        <Text style={{ textAlign: "center", top: 10 }}>
+          {dataFriend.length == 0 ? "Không có bạn bè nào" : ""}
+        </Text>
         <View>
           <FlatList
             showsVerticalScrollIndicator={false}

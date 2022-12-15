@@ -60,7 +60,7 @@ const Chinhsua = ({ navigation, route }) => {
       setid(idpr);
       setrepassword(childSnapshot.child("password").val());
     });
-  });
+  },[]);
   const openModal = () => {
     setCheckedStatus(true);
   };
