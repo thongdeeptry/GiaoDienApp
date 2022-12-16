@@ -15,12 +15,12 @@ import {
   Alert,
   Keyboard,
   RefreshControl,
-} from "react-native";
-import React, { useState, useEffect, useContext } from "react";
-import { initializeApp } from "firebase/app";
-import { firebaseConfig } from "../../../config";
-import { getAuth, signOut } from "firebase/auth";
-import { v4 as uuid } from "uuid";
+} from 'react-native';
+import React, {useState, useEffect, useContext} from 'react';
+import {initializeApp} from 'firebase/app';
+import {firebaseConfig} from '../../../config';
+import {getAuth, signOut} from 'firebase/auth';
+import {v4 as uuid} from 'uuid';
 import {
   getDatabase,
   ref,
@@ -29,16 +29,16 @@ import {
   push,
   update,
   remove,
-} from "firebase/database";
-import { UserContext } from "../user/UserContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { sendMess } from "../../constants/sendMess";
-const wait = (timeout) => {
-  return new Promise((resolve) => setTimeout(resolve, timeout));
+} from 'firebase/database';
+import {UserContext} from '../user/UserContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {sendMess} from '../../constants/sendMess';
+const wait = timeout => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
 };
-const Binhluan = ({ navigation, route }) => {
-  const { idPost } = route.params;
-  const { userID } = route.params;
+const Binhluan = ({navigation, route}) => {
+  const {idPost} = route.params;
+  const {userID} = route.params;
   initializeApp(firebaseConfig);
   const [binhluan, setbinhluan] = useState();
   const [name, setname] = useState();
@@ -67,27 +67,27 @@ const Binhluan = ({ navigation, route }) => {
   useEffect(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
-    const reference = ref(db, "users/" + user);
-    onValue(reference, (childSnapshot) => {
-      const namepr = childSnapshot.child("name").val();
-      const avtpr = childSnapshot.child("avt").val();
+    const reference = ref(db, 'users/' + user);
+    onValue(reference, childSnapshot => {
+      const namepr = childSnapshot.child('name').val();
+      const avtpr = childSnapshot.child('avt').val();
       setname(namepr);
       setavt(avtpr);
     });
-    const references = ref(db, "users/" + userID);
-    onValue(references, (childSnapshot) => {
-      const tokenpr = childSnapshot.child("token").val();
+    const references = ref(db, 'users/' + userID);
+    onValue(references, childSnapshot => {
+      const tokenpr = childSnapshot.child('token').val();
       settokendvCr(tokenpr);
     });
-    const referencer = ref(db, "post/" + userID + "/" + idPost);
-    onValue(referencer, (snapshot) => {
-      const id = snapshot.child("id").exportVal();
-      const name = snapshot.child("name").exportVal();
-      const avt = snapshot.child("avt").exportVal();
-      const noidung = snapshot.child("noidung").exportVal();
-      const trangthai = snapshot.child("checkin").exportVal();
-      const thoigian = snapshot.child("thoigian").exportVal();
-      const image = snapshot.child("image").exportVal();
+    const referencer = ref(db, 'post/' + userID + '/' + idPost);
+    onValue(referencer, snapshot => {
+      const id = snapshot.child('id').exportVal();
+      const name = snapshot.child('name').exportVal();
+      const avt = snapshot.child('avt').exportVal();
+      const noidung = snapshot.child('noidung').exportVal();
+      const trangthai = snapshot.child('checkin').exportVal();
+      const thoigian = snapshot.child('thoigian').exportVal();
+      const image = snapshot.child('image').exportVal();
       setid(id);
       setnameP(name);
       setavtP(avt);
@@ -95,19 +95,19 @@ const Binhluan = ({ navigation, route }) => {
       settrangthai(trangthai);
       setthoigian(thoigian);
       setimage(image);
-      setcheckin(snapshot.child("checkin").val());
+      setcheckin(snapshot.child('checkin').val());
     });
   }, []);
-  const referencer = ref(db, "binhluan/" + userID + "/" + idPost);
-  onValue(referencer, (snapshot) => {
-    snapshot.forEach((childSnapshotq) => {
-      const namek = childSnapshotq.child("name").exportVal();
-      const avtk = childSnapshotq.child("avt").exportVal();
-      const noidungk = childSnapshotq.child("noidung").exportVal();
-      const idPostk = childSnapshotq.child("idPost").exportVal();
-      const thoigian = childSnapshotq.child("thoigian").exportVal();
-      const userIDk = childSnapshotq.child("userID").exportVal();
-      const idCmt = childSnapshotq.child("idCmt").exportVal();
+  const referencer = ref(db, 'binhluan/' + userID + '/' + idPost);
+  onValue(referencer, snapshot => {
+    snapshot.forEach(childSnapshotq => {
+      const namek = childSnapshotq.child('name').exportVal();
+      const avtk = childSnapshotq.child('avt').exportVal();
+      const noidungk = childSnapshotq.child('noidung').exportVal();
+      const idPostk = childSnapshotq.child('idPost').exportVal();
+      const thoigian = childSnapshotq.child('thoigian').exportVal();
+      const userIDk = childSnapshotq.child('userID').exportVal();
+      const idCmt = childSnapshotq.child('idCmt').exportVal();
       dataCmt.push({
         name: namek,
         avt: avtk,
@@ -119,7 +119,7 @@ const Binhluan = ({ navigation, route }) => {
       });
     });
   });
-  const openModal = (idCmt) => {
+  const openModal = idCmt => {
     setCheckedStatus(true);
     setIdCmtCr(idCmt);
   };
@@ -132,44 +132,44 @@ const Binhluan = ({ navigation, route }) => {
     const ngay = d.getDate();
     const thang = d.getMonth() + 1;
     const nam = d.getFullYear();
-    const referencer = ref(db, "binhluan/" + userID + "/" + idPost + "/" + key);
+    const referencer = ref(db, 'binhluan/' + userID + '/' + idPost + '/' + key);
     set(referencer, {
       idPost: idPost,
       idCmt: key,
       id: userID,
       userID: user,
       noidung: binhluan,
-      thoigian: ngay + " Tháng " + thang + " Năm " + nam,
+      thoigian: ngay + ' Tháng ' + thang + ' Năm ' + nam,
       name: name,
       avt: avt,
     });
-    ToastAndroid.show("Đã đăng bình luận", ToastAndroid.BOTTOM);
+    ToastAndroid.show('Đã đăng bình luận', ToastAndroid.BOTTOM);
     sendMess(
       tokendvCr,
-      "Thông báo mới từ " + name,
-      name + " vừa bình luận bài viết"
+      'Thông báo mới từ ' + name,
+      name + ' vừa bình luận bài viết',
     );
-    setbinhluan("");
+    setbinhluan('');
     Keyboard.dismiss();
   };
   const RemoveComment = () => {
     const referencer = ref(
       db,
-      "binhluan/" + userID + "/" + idPost + "/" + idCmtCr
+      'binhluan/' + userID + '/' + idPost + '/' + idCmtCr,
     );
     remove(referencer).then = () => {
-      ToastAndroid.show("Xoá bình luận thành công", ToastAndroid.BOTTOM);
+      ToastAndroid.show('Xoá bình luận thành công', ToastAndroid.BOTTOM);
       setCheckedStatus(false);
     };
   };
-  const AddLike = (idP) => {
+  const AddLike = idP => {
     let like;
     let co;
     let dc = false;
 
-    const reference11 = ref(db, "tuongtac/" + user + "/" + idP + "/" + user);
-    onValue(reference11, (snapshot1) => {
-      const value = snapshot1.child("like").exportVal();
+    const reference11 = ref(db, 'tuongtac/' + user + '/' + idP + '/' + user);
+    onValue(reference11, snapshot1 => {
+      const value = snapshot1.child('like').exportVal();
       console.log(value);
       if (value == true) {
         setdacod(true);
@@ -178,54 +178,53 @@ const Binhluan = ({ navigation, route }) => {
         setdacod(false);
       }
     });
-    const reference1 = ref(db, "post/" + user + "/" + idP);
-    onValue(reference1, (childSnapshot1) => {
-      co = childSnapshot1.child("like").exportVal();
+    const reference1 = ref(db, 'post/' + user + '/' + idP);
+    onValue(reference1, childSnapshot1 => {
+      co = childSnapshot1.child('like').exportVal();
       like = co + 1;
     });
-    if (dacod == false) {
-      const reference13 = ref(db, "tuongtac/" + user + "/" + idP + "/" + user);
-      onValue(reference13, (childSnapshot1) => {
+    if (dacod == false && dacod != null) {
+      const reference13 = ref(db, 'tuongtac/' + user + '/' + idP + '/' + user);
+      onValue(reference13, childSnapshot1 => {
         if (!childSnapshot1.exists()) {
           set(reference13, {
             like: true,
           });
-          const reference = ref(db, "post/" + userID + "/" + idP);
+          const reference = ref(db, 'post/' + userID + '/' + idP);
           update(reference, {
             like: like,
           });
-          ToastAndroid.show("Đã gửi lượt thích bài viết", ToastAndroid.BOTTOM);
+          ToastAndroid.show('Đã gửi lượt thích bài viết', ToastAndroid.BOTTOM);
           sendMess(
             tokendvCr,
-            "Thông báo mới từ " + name,
-            name + " đã thích bài viết của bạn"
+            'Thông báo mới từ ' + name,
+            name + ' đã thích bài viết của bạn',
           );
         } else {
           ToastAndroid.show(
-            "Bạn đã thích bài viết này rồi",
-            ToastAndroid.BOTTOM
+            'Bạn đã thích bài viết này rồi',
+            ToastAndroid.BOTTOM,
           );
         }
       });
     } else {
-      ToastAndroid.show("Bạn đã thích bài viết này rồi", ToastAndroid.BOTTOM);
+      ToastAndroid.show('Bạn đã thích bài viết này rồi', ToastAndroid.BOTTOM);
     }
   };
   const deletePost = () => {
-    const referencerm = ref(db, "post/" + userID + "/" + idPost);
+    const referencerm = ref(db, 'post/' + userID + '/' + idPost);
     remove(referencerm).then = () => {
-      ToastAndroid.show("Đã xoá bài viết thành công", ToastAndroid.BOTTOM);
+      ToastAndroid.show('Đã xoá bài viết thành công', ToastAndroid.BOTTOM);
     };
   };
   return (
     <View
       style={{
-        backgroundColor: "white",
-        height: "100%",
-        width: "100%",
+        backgroundColor: 'white',
+        height: '100%',
+        width: '100%',
         paddingHorizontal: 10,
-      }}
-    >
+      }}>
       <View style={styles.centeredView}>
         <Modal
           animationType="slide"
@@ -233,17 +232,15 @@ const Binhluan = ({ navigation, route }) => {
           visible={isCheckedStatus}
           onRequestClose={() => {
             setCheckedStatus(!isCheckedStatus);
-          }}
-        >
+          }}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <TouchableOpacity
-                style={{ width: "115%", position: "absolute" }}
-                onPress={closeModal}
-              >
+                style={{width: '115%', position: 'absolute'}}
+                onPress={closeModal}>
                 <Image
-                  style={{ width: 20, height: 20 }}
-                  source={require("./../../image/remove.png")}
+                  style={{width: 20, height: 20}}
+                  source={require('./../../image/remove.png')}
                 />
               </TouchableOpacity>
               <Text style={styles.modalText}>
@@ -251,21 +248,18 @@ const Binhluan = ({ navigation, route }) => {
               </Text>
               <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  width: "90%",
-                }}
-              >
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  width: '90%',
+                }}>
                 <TouchableOpacity
                   style={[styles.button1, styles.buttonClose]}
-                  onPress={closeModal}
-                >
+                  onPress={closeModal}>
                   <Text style={styles.textStyle}>Sửa</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[styles.button, styles.buttonClose]}
-                  onPress={RemoveComment}
-                >
+                  onPress={RemoveComment}>
                   <Text style={styles.textStyle}>Xoá</Text>
                 </TouchableOpacity>
               </View>
@@ -279,7 +273,7 @@ const Binhluan = ({ navigation, route }) => {
       <View>
         <Text style={styles.chu}>Bài viết </Text>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image style={styles.edit} source={require("../../image/back.png")} />
+          <Image style={styles.edit} source={require('../../image/back.png')} />
         </TouchableOpacity>
       </View>
 
@@ -287,21 +281,20 @@ const Binhluan = ({ navigation, route }) => {
         <Pressable
           style={[
             {
-              borderBottomColor: "#ABABAB",
-              borderLeftColor: "#ABABAB",
+              borderBottomColor: '#ABABAB',
+              borderLeftColor: '#ABABAB',
               borderLeftWidth: 0.5,
               borderBottomWidth: 0.5,
-              borderRightColor: "#ABABAB",
-              borderTopColor: "#ABABAB",
+              borderRightColor: '#ABABAB',
+              borderTopColor: '#ABABAB',
               borderRightWidth: 0.5,
               borderTopWidth: 0.5,
               borderRadius: 15,
               marginTop: 40,
-              width: "98%",
+              width: '98%',
             },
-            id == "" ? { width: 0, height: 0, display: "none" } : null,
-          ]}
-        >
+            id == '' ? {width: 0, height: 0, display: 'none'} : null,
+          ]}>
           <View style={styles.info}>
             {userID == user ? (
               <TouchableOpacity
@@ -309,19 +302,18 @@ const Binhluan = ({ navigation, route }) => {
                   width: 20,
                   height: 20,
                   borderRadius: 10,
-                  position: "absolute",
+                  position: 'absolute',
                   right: 13,
                   top: -3,
                 }}
-                onPress={() => deletePost()}
-              >
+                onPress={() => deletePost()}>
                 <Image
                   style={{
                     width: 20,
                     height: 20,
                     borderRadius: 10,
                   }}
-                  source={require("../../image/remove.png")}
+                  source={require('../../image/remove.png')}
                 />
               </TouchableOpacity>
             ) : (
@@ -329,35 +321,30 @@ const Binhluan = ({ navigation, route }) => {
             )}
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate("ProfileFriend", {
+                navigation.navigate('ProfileFriend', {
                   id: id,
                 })
-              }
-            >
+              }>
               <Image
-                style={{ width: 40, height: 40, borderRadius: 20 }}
-                source={{ uri: avtP }}
+                style={{width: 40, height: 40, borderRadius: 20}}
+                source={{uri: avtP}}
               />
             </TouchableOpacity>
             <View style={styles.tenmain}>
               <View
                 style={{
-                  flexDirection: "row",
-                  width: "100%",
+                  flexDirection: 'row',
+                  width: '100%',
                   paddingRight: 5,
-                }}
-              >
+                }}>
                 <View
                   style={{
-                    flexDirection: "column",
-                    justifyContent: "space-between",
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
                     height: 35,
-                  }}
-                >
-                  <Text style={{ fontSize: 16, fontWeight: "500" }}>
-                    {nameP}
-                  </Text>
-                  <Text style={{ fontSize: 14 }}>{thoigian}</Text>
+                  }}>
+                  <Text style={{fontSize: 16, fontWeight: '500'}}>{nameP}</Text>
+                  <Text style={{fontSize: 14}}>{thoigian}</Text>
                 </View>
               </View>
             </View>
@@ -365,36 +352,34 @@ const Binhluan = ({ navigation, route }) => {
           <Text
             style={{
               fontSize: 18,
-              color: "black",
+              color: 'black',
               paddingHorizontal: 10,
               marginTop: 10,
-              alignItems: "center",
-              justifyContent: "center",
+              alignItems: 'center',
+              justifyContent: 'center',
               paddingBottom: 10,
-              width: "100%",
-              alignSelf: "center",
+              width: '100%',
+              alignSelf: 'center',
               //textAlign: "center",
-              fontWeight: "400",
-            }}
-          >
+              fontWeight: '400',
+            }}>
             {noidung}
           </Text>
-          {image != "" ? (
+          {image != '' ? (
             <TouchableOpacity
-              onPress={() => navigation.navigate("XemAnh", { linkAnh: image })}
-            >
+              onPress={() => navigation.navigate('XemAnh', {linkAnh: image})}>
               <Image
                 style={{
-                  width: "90%",
+                  width: '90%',
                   height: 160,
-                  alignItems: "center",
-                  alignSelf: "center",
-                  alignContent: "center",
-                  justifyContent: "center",
+                  alignItems: 'center',
+                  alignSelf: 'center',
+                  alignContent: 'center',
+                  justifyContent: 'center',
                   borderRadius: 15,
                   marginBottom: 10,
                 }}
-                source={{ uri: image }}
+                source={{uri: image}}
               />
             </TouchableOpacity>
           ) : null}
@@ -402,55 +387,50 @@ const Binhluan = ({ navigation, route }) => {
             style={[
               {
                 fontSize: 15,
-                color: "black",
+                color: 'black',
                 paddingHorizontal: 10,
-                fontWeight: "300",
-                alignItems: "center",
-                justifyContent: "center",
+                fontWeight: '300',
+                alignItems: 'center',
+                justifyContent: 'center',
                 paddingBottom: 10,
-                width: "100%",
-                alignSelf: "center",
+                width: '100%',
+                alignSelf: 'center',
                 //textAlign: "center",
               },
-              checkin == "" ? { width: 0, height: 0 } : null,
-            ]}
-          >
+              checkin == '' ? {width: 0, height: 0} : null,
+            ]}>
             {checkin}
           </Text>
           <View
             style={{
-              width: "100%",
-              flexDirection: "row",
-              justifyContent: "space-around",
+              width: '100%',
+              flexDirection: 'row',
+              justifyContent: 'space-around',
               borderTopWidth: 0.2,
               paddingVertical: 10,
-            }}
-          >
+            }}>
             <TouchableOpacity
-              style={{ flexDirection: "row" }}
-              onPress={() => AddLike(id)}
-            >
+              style={{flexDirection: 'row'}}
+              onPress={() => AddLike(id)}>
               <Image
                 style={styles.iclikeContainer}
-                source={require("../../../assets/iclike.png")}
+                source={require('../../../assets/iclike.png')}
               />
-              <Text style={{ fontSize: 17, color: "black" }}>Thích</Text>
+              <Text style={{fontSize: 17, color: 'black'}}>Thích</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{ flexDirection: "row" }}>
+            <TouchableOpacity style={{flexDirection: 'row'}}>
               <Image
                 style={styles.cmtContainer}
-                source={require("../../../assets/iccmt.png")}
+                source={require('../../../assets/iccmt.png')}
               />
 
-              <Text style={{ fontSize: 17 }}>Bình luận</Text>
+              <Text style={{fontSize: 17}}>Bình luận</Text>
             </TouchableOpacity>
           </View>
         </Pressable>
       </View>
-      <View style={{ top: 10, left: 10, right: 10 }}>
-        <Text style={{ opacity: 0.7, fontSize: 15 }}>
-          Bình luận về bài viết
-        </Text>
+      <View style={{top: 10, left: 10, right: 10}}>
+        <Text style={{opacity: 0.7, fontSize: 15}}>Bình luận về bài viết</Text>
       </View>
 
       {/* Item Comment */}
@@ -458,81 +438,75 @@ const Binhluan = ({ navigation, route }) => {
         style={{
           top: 20,
           marginHorizontal: 10,
-          width: "100%",
+          width: '100%',
           right: 10,
         }}
         contentContainerStyle={{
-          width: "100%",
+          width: '100%',
           paddingBottom: 130,
         }}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         data={dataCmt}
-        renderItem={({ item }) => (
+        renderItem={({item}) => (
           <View
             style={{
-              width: "100%",
-              flexDirection: "row",
+              width: '100%',
+              flexDirection: 'row',
               marginVertical: 5,
-              borderBottomColor: "#ABABAB",
-            }}
-          >
+              borderBottomColor: '#ABABAB',
+            }}>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate("ProfileFriend", {
+                navigation.navigate('ProfileFriend', {
                   id: item.userID,
                 })
-              }
-            >
+              }>
               <Image
-                style={{ width: 45, height: 45, borderRadius: 23 }}
-                source={{ uri: item.avt }}
+                style={{width: 45, height: 45, borderRadius: 23}}
+                source={{uri: item.avt}}
               />
             </TouchableOpacity>
-            <View style={{ left: 5 }}>
+            <View style={{left: 5}}>
               <View
                 style={{
-                  flexDirection: "column",
-                  justifyContent: "space-between",
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
                   marginRight: 60,
                   borderRadius: 10,
-                  backgroundColor: "white",
+                  backgroundColor: 'white',
                   opacity: 0.7,
                   elevation: 5,
                   padding: 2,
-                }}
-              >
+                }}>
                 <View
                   style={{
-                    flexDirection: "row",
+                    flexDirection: 'row',
                     paddingHorizontal: 5,
                     paddingTop: 2,
-                    alignItems: "center",
-                  }}
-                >
+                    alignItems: 'center',
+                  }}>
                   <Text
                     style={{
                       fontSize: 16,
-                    }}
-                  >
+                    }}>
                     {item.name}
                   </Text>
                   {item.userID == user ? (
                     <TouchableOpacity
                       style={{
-                        width: "100%",
-                        position: "absolute",
-                        alignItems: "flex-end",
-                        flexDirection: "column",
+                        width: '100%',
+                        position: 'absolute',
+                        alignItems: 'flex-end',
+                        flexDirection: 'column',
                         left: 35,
                         top: 10,
                       }}
-                      onPress={() => openModal(item.idCmt)}
-                    >
+                      onPress={() => openModal(item.idCmt)}>
                       <Image
-                        style={{ width: 20, height: 20 }}
-                        source={require("../../image/dots.png")}
+                        style={{width: 20, height: 20}}
+                        source={require('../../image/dots.png')}
                       />
                     </TouchableOpacity>
                   ) : (
@@ -547,8 +521,7 @@ const Binhluan = ({ navigation, route }) => {
                     paddingHorizontal: 5,
                     opacity: 0.8,
                     paddingBottom: 3,
-                  }}
-                >
+                  }}>
                   {item.noidung}
                 </Text>
               </View>
@@ -558,47 +531,44 @@ const Binhluan = ({ navigation, route }) => {
       />
       <View
         style={{
-          position: "absolute",
+          position: 'absolute',
           bottom: 60,
           borderRadius: 20,
-          borderColor: "#E94057",
+          borderColor: '#E94057',
           borderWidth: 0.5,
-          width: "98%",
+          width: '98%',
           height: 45,
           right: 10,
           left: 10,
           paddingLeft: 10,
-          justifyContent: "center",
-          backgroundColor: "white",
-        }}
-      >
+          justifyContent: 'center',
+          backgroundColor: 'white',
+        }}>
         <TextInput
-          style={{ opacity: 0.9 }}
+          style={{opacity: 0.9}}
           placeholder="Viết bình luận của bạn..."
           value={binhluan}
           onChangeText={setbinhluan}
         />
         <TouchableOpacity
-          style={{ position: "absolute", width: 40, height: 40, right: 3 }}
-          onPress={AddComment}
-        >
+          style={{position: 'absolute', width: 40, height: 40, right: 3}}
+          onPress={AddComment}>
           <Image
-            style={{ width: 40, height: 40 }}
-            source={require("../../image/send.png")}
+            style={{width: 40, height: 40}}
+            source={require('../../image/send.png')}
           />
         </TouchableOpacity>
       </View>
       <View
         style={{
-          width: "100%",
+          width: '100%',
           height: 300,
-          position: "absolute",
-          flexDirection: "column",
-          alignItems: "flex-end",
-          justifyContent: "flex-end",
+          position: 'absolute',
+          flexDirection: 'column',
+          alignItems: 'flex-end',
+          justifyContent: 'flex-end',
           bottom: 0,
-        }}
-      ></View>
+        }}></View>
     </View>
   );
 };
@@ -634,36 +604,36 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   chu: {
-    width: "100%",
-    position: "absolute",
-    textAlign: "center",
+    width: '100%',
+    position: 'absolute',
+    textAlign: 'center',
     fontSize: 20,
     top: 15,
   },
   tenmain: {
-    width: "100%",
+    width: '100%',
     height: 50,
     left: 10,
   },
   info: {
-    width: "100%",
+    width: '100%',
     height: 50,
     left: 10,
     top: 5,
     paddingRight: 10,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   centeredView: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
   },
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 10,
     padding: 15,
-    alignItems: "center",
-    width: "78%",
+    alignItems: 'center',
+    width: '78%',
     elevation: 10,
   },
   button: {
@@ -681,18 +651,18 @@ const styles = StyleSheet.create({
     top: 10,
   },
   buttonOpen: {
-    backgroundColor: "#F194FF",
+    backgroundColor: '#F194FF',
   },
   buttonClose: {
-    backgroundColor: "#E94057",
+    backgroundColor: '#E94057',
   },
   textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center",
+    textAlign: 'center',
   },
 });

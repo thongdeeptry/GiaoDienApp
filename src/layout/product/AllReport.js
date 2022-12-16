@@ -18,35 +18,44 @@ import {getDatabase, ref, onValue, set, push, update} from 'firebase/database';
 const wait = timeout => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
-export const BanBe = ({route, navigation}) => {
-  const {idT, us} = route.params;
+export const AllReport = ({route, navigation}) => {
   initializeApp(firebaseConfig);
+  const user = getAuth().currentUser.uid;
   const db = getDatabase();
-  const dataFriend = [];
+  const dataRoom = [];
   const [refreshing, setRefreshing] = React.useState(false);
-
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    wait(1000).then(() => setRefreshing(false));
-  }, []);
+  initializeApp(firebaseConfig);
   useEffect(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
   }, []);
-  const referencebanbe = ref(db, 'banbe/' + idT);
-  onValue(referencebanbe, childSnapshot1 => {
-    childSnapshot1.forEach(snapshot1 => {
-      const id = snapshot1.child('id').val();
-      const user = snapshot1.child('user').val();
-      const name = snapshot1.child('name').val();
-      const avt = snapshot1.child('avt').val();
-      dataFriend.push({
-        id: id,
-        user: user,
-        name: name,
-        avt: avt,
-        tick: snapshot1.child('tick').val(),
-      });
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
+  const referencerrs = ref(db, 'reports');
+  onValue(referencerrs, snapshot => {
+    snapshot.forEach(childSnapshotq1 => {
+      if (childSnapshotq1.child('id_send').exportVal() == user) {
+        const id = childSnapshotq1.child('id').exportVal();
+        const avt = childSnapshotq1.child('avt').exportVal();
+        const id_vipham = childSnapshotq1.child('id_vipham').exportVal();
+        const link = childSnapshotq1.child('link').exportVal();
+        const phanhoi = childSnapshotq1.child('phanhoi').exportVal();
+        const noidung = childSnapshotq1.child('noidung').exportVal();
+        const thaotac = childSnapshotq1.child('thaotac').exportVal();
+        const trangthai = childSnapshotq1.child('trangthai').exportVal();
+        dataRoom.push({
+          id: id,
+          avt: avt,
+          id_vipham: id_vipham,
+          link: link,
+          phanhoi: phanhoi,
+          noidung: noidung,
+          thaotac: thaotac,
+          trangthai: trangthai,
+        });
+      }
     });
   });
   return (
@@ -78,7 +87,7 @@ export const BanBe = ({route, navigation}) => {
               fontWeight: '600',
               letterSpacing: 1.2,
             }}>
-            Bạn bè
+            Đơn báo cáo đã gửi
           </Text>
         </View>
       </View>
@@ -88,16 +97,14 @@ export const BanBe = ({route, navigation}) => {
           borderTopColor: '#ABABAB',
           borderTopWidth: 0.3,
         }}>
-        <Text style={{textAlign: 'center', top: 10}}>
-          {dataFriend.length == 0 ? 'Không có bạn bè nào' : ''}
-        </Text>
         <View>
           <FlatList
-            showsVerticalScrollIndicator={false}
-            data={dataFriend}
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
+            showsVerticalScrollIndicator={false}
+            data={dataRoom}
+            style={{height: '100%'}}
             renderItem={({item, index}) => (
               <View
                 style={{
@@ -111,17 +118,33 @@ export const BanBe = ({route, navigation}) => {
                 <View style={{flexDirection: 'row'}}>
                   <TouchableOpacity
                     onPress={() =>
-                      navigation.navigate('ProfileFriend', {id: item.user})
+                      navigation.navigate('ProfileFriend', {id: item.id_vipham})
                     }>
                     <Image
-                      style={{
-                        width: 60,
-                        height: 60,
-                        resizeMode: 'cover',
-                        borderRadius: 10,
-                        marginRight: 10,
-                        marginStart: 10,
-                      }}
+                      style={[
+                        {
+                          width: 60,
+                          height: 60,
+                          resizeMode: 'cover',
+                          borderRadius: 10,
+                          marginRight: 10,
+                          marginStart: 10,
+                          borderColor: 'blue',
+                          borderWidth: 2,
+                        },
+                        item.trangthai == 'Hoàn Tất'
+                          ? {
+                              width: 60,
+                              height: 60,
+                              resizeMode: 'cover',
+                              borderRadius: 10,
+                              marginRight: 10,
+                              marginStart: 10,
+                              borderColor: '#E94057',
+                              borderWidth: 2,
+                            }
+                          : null,
+                      ]}
                       source={{uri: item.avt}}></Image>
                   </TouchableOpacity>
                   <View
@@ -129,57 +152,51 @@ export const BanBe = ({route, navigation}) => {
                       flexDirection: 'column',
                       top: 7,
                     }}>
-                    <View style={{flexDirection: 'row'}}>
+                    <TouchableOpacity>
                       <Text
                         style={{
                           fontSize: 16,
                           fontWeight: '500',
                         }}>
-                        {item.name}
+                        Nội dung : {item.noidung}
                       </Text>
-                      {item.tick == 'true' ? (
-                        <Image
-                          style={{width: 25, height: 25, left: 5, bottom: 5}}
-                          source={require('../../image/verify.png')}
-                        />
-                      ) : (
-                        <></>
-                      )}
-                    </View>
+                    </TouchableOpacity>
                     <View style={{flexDirection: 'row'}}>
                       <Text
                         style={{
                           fontSize: 15,
                           opacity: 0.8,
                         }}>
-                        {us != 1 ? 'Các bạn đã là' : 'Bạn bè của'}
+                        Trạng thái :
                       </Text>
                       <Text
                         style={{
                           fontSize: 15,
                           left: 3,
-                          color: '#E94057',
+                          color: 'blue',
                         }}>
-                        {us != 1 ? 'bạn bè' : 'người này'}
+                        {item.trangthai}
+                      </Text>
+                    </View>
+                    <View style={{flexDirection: 'row'}}>
+                      <Text
+                        style={{
+                          fontSize: 15,
+                          opacity: 0.8,
+                        }}></Text>
+                      <Text
+                        style={{
+                          fontSize: 15,
+                          left: 1,
+                          color: '#E94057',
+                          width: 300,
+                          right: 10,
+                        }}>
+                        {item.phanhoi}
                       </Text>
                     </View>
                   </View>
                 </View>
-                <TouchableOpacity
-                  style={{
-                    width: 40,
-                    height: 40,
-                    top: 10,
-                    right: 20,
-                    elevation: 10,
-                    justifyContent: 'flex-end',
-                    alignItems: 'flex-end',
-                  }}>
-                  <Image
-                    style={{width: 40, height: 40}}
-                    source={require('../../image/tim.png')}
-                  />
-                </TouchableOpacity>
               </View>
             )}
           />

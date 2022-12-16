@@ -10,36 +10,30 @@ import {
   ToastAndroid,
   Modal,
   RefreshControl,
-} from "react-native";
-import React, { useState, useEffect } from "react";
-import { initializeApp } from "firebase/app";
-import { firebaseConfig } from "../../../config";
-import { getAuth } from "firebase/auth";
-import {
-  getDatabase,
-  ref,
-  onValue,
-  set,
-  push,
-  update,
-} from "firebase/database";
-import { sendMess } from "../../constants/sendMess";
-const wait = (timeout) => {
-  return new Promise((resolve) => setTimeout(resolve, timeout));
+} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {initializeApp} from 'firebase/app';
+import {firebaseConfig} from '../../../config';
+import {getAuth} from 'firebase/auth';
+import {getDatabase, ref, onValue, set, push, update} from 'firebase/database';
+import {sendMess} from '../../constants/sendMess';
+const wait = timeout => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
 };
-export const ProfileFriend = ({ route, navigation }) => {
-  const { id } = route.params;
+export const ProfileFriend = ({route, navigation}) => {
+  const {id} = route.params;
   let check;
   const app = initializeApp(firebaseConfig);
   const dataImage = [];
   const datas = [];
   const dataFriend = [];
-  let noidung1 = "";
+  let noidung1 = '';
   const [nameCr, setnameCr] = useState();
   const [avtCr, setavtCr] = useState();
   const [tokendvCr, settokendvCr] = useState();
   const [name, setname] = useState();
   const [avt, setavt] = useState();
+  const [tick, settick] = useState();
   const [tuoi, settuoi] = useState();
   const [diachi, setdiachi] = useState();
   const [ngaysinh, setngaysinh] = useState();
@@ -47,8 +41,10 @@ export const ProfileFriend = ({ route, navigation }) => {
   const [sothich, setsothich] = useState();
   const [nghenghiep, setnghenghiep] = useState();
   const [isLoading, setisLoading] = useState(false);
+  const [tieusu, settieusu] = useState();
   const [idPost, setidPost] = useState();
   const [isCheckedStatus, setCheckedStatus] = useState(false);
+  const [tickfr, settickfr] = useState();
   if (!app.length) {
   }
   const user = id;
@@ -67,28 +63,25 @@ export const ProfileFriend = ({ route, navigation }) => {
   useEffect(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
-    const reference1d1 = ref(db, "favourite/" + id);
-    onValue(reference1d1, (snapshot1) => {
-      snapshot1.forEach((childSnapshot) => {
-        const value = childSnapshot.child("user").val();
-        if (value == idCurrent) {
-          setdaco(true);
-        } else {
-          setdaco(false);
-        }
-      });
+    const reference1d1 = ref(db, 'favourite/' + id + '/' + idCurrent);
+    onValue(reference1d1, snapshot1 => {
+      if (snapshot1.exists()) {
+        setdaco(true);
+      } else {
+        setdaco(false);
+      }
     });
     console.log(daco);
     setisLoading(true);
-    const reference = ref(db, "users/" + user);
-    onValue(reference, (childSnapshot) => {
-      const namepr = childSnapshot.child("name").val();
-      const avtpr = childSnapshot.child("avt").val();
-      const tuoipr = childSnapshot.child("tuoi").val();
-      const diachipr = childSnapshot.child("diachi").val();
-      const ngaysinhpr = childSnapshot.child("ngaysinh").val();
-      const gioitinhpr = childSnapshot.child("gioitinh").val();
-      const nghenghiep = childSnapshot.child("nghenghiep").val();
+    const reference = ref(db, 'users/' + user);
+    onValue(reference, childSnapshot => {
+      const namepr = childSnapshot.child('name').val();
+      const avtpr = childSnapshot.child('avt').val();
+      const tuoipr = childSnapshot.child('tuoi').val();
+      const diachipr = childSnapshot.child('diachi').val();
+      const ngaysinhpr = childSnapshot.child('ngaysinh').val();
+      const gioitinhpr = childSnapshot.child('gioitinh').val();
+      const nghenghiep = childSnapshot.child('nghenghiep').val();
       setname(namepr);
       setavt(avtpr);
       setdiachi(diachipr);
@@ -97,28 +90,31 @@ export const ProfileFriend = ({ route, navigation }) => {
       setngaysinh(ngaysinhpr);
       setnghenghiep(nghenghiep);
       setisLoading(false);
+      settick(childSnapshot.child('tick').val());
+      settieusu(childSnapshot.child('tieusu').val());
     });
-    const referencecr = ref(db, "users/" + idCurrent);
-    onValue(referencecr, (childSnapshot) => {
-      const namepr = childSnapshot.child("name").val();
-      const avtpr = childSnapshot.child("avt").val();
-      const tokendv = childSnapshot.child("token").val();
+    const referencecr = ref(db, 'users/' + idCurrent);
+    onValue(referencecr, childSnapshot => {
+      const namepr = childSnapshot.child('name').val();
+      const avtpr = childSnapshot.child('avt').val();
+      const tokendv = childSnapshot.child('token').val();
       settokendvCr(tokendv);
       setnameCr(namepr);
       setavtCr(avtpr);
+      settickfr(childSnapshot.child('tick').val());
     });
   }, []);
-  const referencer = ref(db, "post/" + user);
-  onValue(referencer, (snapshot) => {
-    snapshot.forEach((childSnapshot) => {
-      const id = childSnapshot.child("id").exportVal();
-      const name = childSnapshot.child("name").exportVal();
-      const avt = childSnapshot.child("avt").exportVal();
-      const noidung = childSnapshot.child("noidung").exportVal();
-      const trangthai = childSnapshot.child("checkin").exportVal();
-      const thoigian = childSnapshot.child("thoigian").exportVal();
-      const image = childSnapshot.child("image").exportVal();
-      const user = childSnapshot.child("user").exportVal();
+  const referencer = ref(db, 'post/' + user);
+  onValue(referencer, snapshot => {
+    snapshot.forEach(childSnapshot => {
+      const id = childSnapshot.child('id').exportVal();
+      const name = childSnapshot.child('name').exportVal();
+      const avt = childSnapshot.child('avt').exportVal();
+      const noidung = childSnapshot.child('noidung').exportVal();
+      const trangthai = childSnapshot.child('checkin').exportVal();
+      const thoigian = childSnapshot.child('thoigian').exportVal();
+      const image = childSnapshot.child('image').exportVal();
+      const user = childSnapshot.child('user').exportVal();
       datas.push({
         id: id,
         name: name,
@@ -131,25 +127,25 @@ export const ProfileFriend = ({ route, navigation }) => {
       });
     });
   });
-  const openModal = (id) => {
+  const openModal = id => {
     setidPost(id);
     setCheckedStatus(true);
   };
   const closeModal = () => {
     setCheckedStatus(false);
   };
-  const reference1 = ref(db, "users/" + user + "/sothich");
-  onValue(reference1, (childSnapshot1) => {
-    childSnapshot1.forEach((snapshot1) => {
+  const reference1 = ref(db, 'users/' + user + '/sothich');
+  onValue(reference1, childSnapshot1 => {
+    childSnapshot1.forEach(snapshot1 => {
       const key = snapshot1.val();
       sothich2.push(key);
     });
   });
-  const referenceImage = ref(db, "post/" + user);
-  onValue(referenceImage, (snapshot) => {
-    snapshot.forEach((ImageSnapshot) => {
-      const id = ImageSnapshot.child("id").exportVal();
-      const image = ImageSnapshot.child("image").exportVal();
+  const referenceImage = ref(db, 'post/' + user);
+  onValue(referenceImage, snapshot => {
+    snapshot.forEach(ImageSnapshot => {
+      const id = ImageSnapshot.child('id').exportVal();
+      const image = ImageSnapshot.child('image').exportVal();
 
       dataImage.push({
         id: id,
@@ -157,13 +153,13 @@ export const ProfileFriend = ({ route, navigation }) => {
       });
     });
   });
-  const referencebanbe = ref(db, "banbe/" + user);
-  onValue(referencebanbe, (childSnapshot1) => {
-    childSnapshot1.forEach((snapshot1) => {
-      const id = snapshot1.child("id").val();
-      const user = snapshot1.child("user").val();
-      const name = snapshot1.child("name").val();
-      const avt = snapshot1.child("avt").val();
+  const referencebanbe = ref(db, 'banbe/' + user);
+  onValue(referencebanbe, childSnapshot1 => {
+    childSnapshot1.forEach(snapshot1 => {
+      const id = snapshot1.child('id').val();
+      const user = snapshot1.child('user').val();
+      const name = snapshot1.child('name').val();
+      const avt = snapshot1.child('avt').val();
       dataFriend.push({
         id: id,
         user: user,
@@ -172,17 +168,17 @@ export const ProfileFriend = ({ route, navigation }) => {
       });
     });
   });
-  const AddLike = (idP) => {
+  const AddLike = idP => {
     let like;
     let co;
     let dc = false;
 
     const reference11 = ref(
       db,
-      "tuongtac/" + idCurrent + "/" + idP + "/" + idCurrent
+      'tuongtac/' + idCurrent + '/' + idP + '/' + idCurrent,
     );
-    onValue(reference11, (snapshot1) => {
-      const value = snapshot1.child("like").exportVal();
+    onValue(reference11, snapshot1 => {
+      const value = snapshot1.child('like').exportVal();
       console.log(value);
       if (value == true) {
         setdacod(true);
@@ -191,51 +187,49 @@ export const ProfileFriend = ({ route, navigation }) => {
         setdacod(false);
       }
     });
-    const reference1 = ref(db, "post/" + idCurrent + "/" + idP);
-    onValue(reference1, (childSnapshot1) => {
-      co = childSnapshot1.child("like").exportVal();
+    const reference1 = ref(db, 'post/' + idCurrent + '/' + idP);
+    onValue(reference1, childSnapshot1 => {
+      co = childSnapshot1.child('like').exportVal();
       like = co + 1;
     });
-    if (dacod == false) {
+    if (dacod != null) {
       const reference13 = ref(
         db,
-        "tuongtac/" + idCurrent + "/" + idP + "/" + idCurrent
+        'tuongtac/' + idCurrent + '/' + idP + '/' + idCurrent,
       );
-      onValue(reference13, (childSnapshot1) => {
+      onValue(reference13, childSnapshot1 => {
         if (!childSnapshot1.exists()) {
           set(reference13, {
             like: true,
           });
-          const reference = ref(db, "post/" + id + "/" + idP);
+          const reference = ref(db, 'post/' + id + '/' + idP);
           update(reference, {
             like: like,
           });
-          ToastAndroid.show("Đã gửi lượt thích bài viết", ToastAndroid.BOTTOM);
-          const referencecrd = ref(db, "users/" + id);
-          onValue(referencecrd, (childSnapshot) => {
-            const tokendv = childSnapshot.child("token").val();
+          ToastAndroid.show('Đã gửi lượt thích bài viết', ToastAndroid.BOTTOM);
+          const referencecrd = ref(db, 'users/' + id);
+          onValue(referencecrd, childSnapshot => {
+            const tokendv = childSnapshot.child('token').val();
             sendMess(
               tokendv,
-              "Thông báo mới từ " + nameCr,
-              nameCr + " đã thích bài viết của bạn"
+              'Thông báo mới từ ' + nameCr,
+              nameCr + ' đã thích bài viết của bạn',
             );
           });
         } else {
           ToastAndroid.show(
-            "Bạn đã thích bài viết này rồi",
-            ToastAndroid.BOTTOM
+            'Bạn đã thích bài viết này rồi',
+            ToastAndroid.BOTTOM,
           );
         }
       });
-    } else {
-      ToastAndroid.show("Bạn đã thích bài viết này rồi", ToastAndroid.BOTTOM);
     }
   };
   const numColumns = 3;
   const deletePost = () => {
-    const referencerm = ref(db, "post/" + user + "/" + idPost);
+    const referencerm = ref(db, 'post/' + user + '/' + idPost);
     remove(referencerm).then = () => {
-      ToastAndroid.show("Đã xoá bài viết thành công", ToastAndroid.BOTTOM);
+      ToastAndroid.show('Đã xoá bài viết thành công', ToastAndroid.BOTTOM);
     };
     setCheckedStatus(false);
   };
@@ -247,135 +241,105 @@ export const ProfileFriend = ({ route, navigation }) => {
     let co;
     let dc = false;
 
-    const reference11 = ref(db, "favourite/" + id);
-    onValue(reference11, (childSnapshot1) => {
-      try {
-        childSnapshot1.forEach((snapshot1) => {
-          const value = snapshot1.child("user").exportVal();
-          try {
-            if (idCurrent == value) {
-              dc = true;
-              setdaco(true);
-              check = true;
-              throw "break-loop";
-            } else {
-              setdaco(false);
-              check = false;
-            }
-          } catch (error) {
-            console.log(error);
-          }
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    });
-    const reference1 = ref(db, "users/" + id);
-    onValue(reference1, (childSnapshot1) => {
-      co = childSnapshot1.child("follow").val();
+    const reference1 = ref(db, 'users/' + id);
+    onValue(reference1, childSnapshot1 => {
+      co = childSnapshot1.child('follow').val();
       fl = co + 1;
     });
-    console.log("số fl : " + fl);
-    const reference112 = ref(db, "favourite/" + idCurrent);
-    onValue(reference112, (childSnapshot1) => {
-      childSnapshot1.forEach((snapshot1) => {
-        const value = snapshot1.child("user").val();
+    console.log('số fl : ' + fl);
+    const reference112 = ref(db, 'favourite/' + idCurrent);
+    onValue(reference112, childSnapshot1 => {
+      childSnapshot1.forEach(snapshot1 => {
+        const value = snapshot1.child('user').val();
         console.log(value);
         try {
           if (id == value) {
-            const reference3 = ref(db, "banbe/" + idCurrent + "/" + id);
+            const reference3 = ref(db, 'banbe/' + idCurrent + '/' + id);
             set(reference3, {
               user: id,
               id: idCurrent,
               avt: avt,
               name: name,
+              tick: tick,
             });
-            const reference3d = ref(db, "banbe/" + id + "/" + idCurrent);
+            const reference3d = ref(db, 'banbe/' + id + '/' + idCurrent);
             set(reference3d, {
               user: idCurrent,
               id: id,
               avt: avtCr,
               name: nameCr,
+              tick: tickfr,
             });
-            ToastAndroid.show("Đã là bạn bè của nhau", ToastAndroid.BOTTOM);
+            ToastAndroid.show('Đã là bạn bè của nhau', ToastAndroid.BOTTOM);
           }
         } catch (error) {
           console.log(error);
         }
       });
     });
-    if (daco == false) {
-      const reference3 = ref(db, "favourite/" + id + "/" + idCurrent);
-      onValue(reference3, (childSnapshot) => {
+    if (daco == false && daco != null) {
+      const reference3 = ref(db, 'favourite/' + id + '/' + idCurrent);
+      onValue(reference3, childSnapshot => {
         if (!childSnapshot.exists()) {
           set(reference3, {
             user: idCurrent,
           });
-          const reference = ref(db, "users/" + id);
+          const reference = ref(db, 'users/' + id);
           update(reference, {
             follow: fl,
           });
-          const reference5 = ref(db, "notification/" + id);
+          const reference5 = ref(db, 'notification/' + id);
           push(reference5, {
             user: idCurrent,
             id: id,
-            noidung: " vừa gửi lượt thích đến bạn",
+            noidung: ' vừa gửi lượt thích đến bạn',
             thoigian:
               date.getHours() +
-              ":" +
+              ':' +
               date.getMinutes() +
-              " ngày " +
+              ' ngày ' +
               date.getDate() +
-              "/" +
+              '/' +
               thang +
-              "/" +
+              '/' +
               date.getFullYear(),
             avt: avtCr,
             name: nameCr,
           });
-          ToastAndroid.show("Đã gửi lượt thích", ToastAndroid.BOTTOM);
-          const referencecrd = ref(db, "users/" + id);
-          onValue(referencecrd, (childSnapshot) => {
-            const tokendv = childSnapshot.child("token").val();
+          ToastAndroid.show('Đã gửi lượt thích', ToastAndroid.BOTTOM);
+          const referencecrd = ref(db, 'users/' + id);
+          onValue(referencecrd, childSnapshot => {
+            const tokendv = childSnapshot.child('token').val();
             sendMess(
               tokendv,
-              "Thông báo mới từ " + nameCr,
-              nameCr + " vừa gửi lượt thích đến bạn"
+              'Thông báo mới từ ' + nameCr,
+              nameCr + ' vừa gửi lượt thích đến bạn',
             );
           });
         } else {
-          const reference = ref(db, "users/" + id);
-          update(reference, {
-            follow: co,
-          });
           ToastAndroid.show(
-            "Bạn đã yêu thích tài khoản này rồi!",
-            ToastAndroid.BOTTOM
+            'Bạn đã yêu thích tài khoản này rồi!',
+            ToastAndroid.BOTTOM,
           );
         }
       });
     }
     if (daco == true) {
-      const reference = ref(db, "users/" + id);
-      update(reference, {
-        follow: co,
-      });
       ToastAndroid.show(
-        "Bạn đã yêu thích tài khoản này rồi!",
-        ToastAndroid.BOTTOM
+        'Bạn đã yêu thích tài khoản này rồi!',
+        ToastAndroid.BOTTOM,
       );
     }
   };
 
   return (
     <ScrollView
-      contentContainerStyle={{ flexGrow: 1 }}
+      contentContainerStyle={{flexGrow: 1}}
       showsVerticalScrollIndicator={false}
-      style={{ width: "100%", height: "100%" }}
+      style={{width: '100%', height: '100%'}}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-    >
+      }>
       <View style={styles.centeredView}>
         <Modal
           animationType="slide"
@@ -383,17 +347,15 @@ export const ProfileFriend = ({ route, navigation }) => {
           visible={isCheckedStatus}
           onRequestClose={() => {
             setCheckedStatus(!isCheckedStatus);
-          }}
-        >
+          }}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <TouchableOpacity
-                style={{ width: "115%", position: "absolute" }}
-                onPress={closeModal}
-              >
+                style={{width: '115%', position: 'absolute'}}
+                onPress={closeModal}>
                 <Image
-                  style={{ width: 20, height: 20 }}
-                  source={require("./../../image/remove.png")}
+                  style={{width: 20, height: 20}}
+                  source={require('./../../image/remove.png')}
                 />
               </TouchableOpacity>
               <Text style={styles.modalText}>
@@ -401,21 +363,18 @@ export const ProfileFriend = ({ route, navigation }) => {
               </Text>
               <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  width: "90%",
-                }}
-              >
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  width: '90%',
+                }}>
                 <TouchableOpacity
                   style={[styles.button1, styles.buttonClose]}
-                  onPress={closeModal}
-                >
+                  onPress={closeModal}>
                   <Text style={styles.textStyle}>Không</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[styles.button, styles.buttonClose]}
-                  onPress={() => deletePost("1")}
-                >
+                  onPress={() => deletePost('1')}>
                   <Text style={styles.textStyle}>Có</Text>
                 </TouchableOpacity>
               </View>
@@ -427,36 +386,41 @@ export const ProfileFriend = ({ route, navigation }) => {
         </Pressable> */}
       </View>
       <View style={styles.mainanh}>
-        <View style={{ width: "100%", height: 500 }}>
-          <Image style={styles.anh} source={{ uri: avt }} />
+        <View style={{width: '100%', height: 500}}>
+          <Image style={styles.anh} source={{uri: avt}} />
         </View>
 
         <View style={styles.mailchitiet}>
           <View style={styles.mainten}>
             <View style={styles.phuten}>
-              <Text style={styles.ten}>
-                {name}, {tuoi}
-              </Text>
+              <View style={{flexDirection: 'row', top: 5}}>
+                <Text style={styles.ten}>{name}</Text>
+                {tick == 'true' ? (
+                  <Image
+                    style={{width: 25, height: 25, top: 31, left: 20}}
+                    source={require('../../image/verify.png')}
+                  />
+                ) : (
+                  <></>
+                )}
+                <Text style={styles.ten}>, {tuoi}</Text>
+              </View>
               <Text style={styles.gioitinh}>{nghenghiep}</Text>
             </View>
           </View>
-          <View style={[styles.mainten, { top: 15 }]}>
+          <View style={[styles.mainten, {top: 15}]}>
             <View style={styles.phuten}>
               <Text style={styles.diachi}>Địa chỉ</Text>
               <Text style={styles.gioitinh}>{diachi}</Text>
             </View>
           </View>
-          <View style={[styles.mainten, { top: 25 }]}>
+          <View style={[styles.mainten, {top: 25}]}>
             <View style={styles.phuten}>
               <Text style={styles.diachi}>Tiểu sử</Text>
-              <Text style={styles.gioitinh}>
-                Tôi là Ngô Thành Thông tôi năm nay 21 tuổi đã có người yêu rất
-                xinh đẹp, tôi ao ước có 1 công việc ổn định để kiếm tiền lo cho
-                gia đình tôi.
-              </Text>
+              <Text style={styles.gioitinh}>{tieusu}</Text>
             </View>
           </View>
-          <View style={[styles.mainten, { top: 35 }]}>
+          <View style={[styles.mainten, {top: 35}]}>
             <View style={styles.phuten}>
               <Text style={styles.diachi}>Sở thích</Text>
               <FlatList
@@ -467,38 +431,35 @@ export const ProfileFriend = ({ route, navigation }) => {
                 contentContainerStyle={{
                   flex: 1,
                   marginTop: 5,
-                  flexDirection: "row",
-                  flexWrap: "wrap",
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
                 }}
                 horizontal={false}
                 data={sothich2}
-                renderItem={({ item, index }) => {
+                renderItem={({item, index}) => {
                   return (
                     <Pressable
                       style={[
                         styles.khungmau,
-                        item == ""
-                          ? { width: 0, height: 0, display: "none" }
+                        item == ''
+                          ? {width: 0, height: 0, display: 'none'}
                           : null,
-                      ]}
-                    >
+                      ]}>
                       <View
                         style={{
                           fontSize: 20,
-                          flexDirection: "row",
-                          alignItems: "center",
-                        }}
-                      >
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                        }}>
                         <Text
                           key={index}
                           style={{
                             fontSize: 16,
-                            fontStyle: "normal",
-                            fontWeight: "400",
-                            alignItems: "center",
-                            color: "white",
-                          }}
-                        >
+                            fontStyle: 'normal',
+                            fontWeight: '400',
+                            alignItems: 'center',
+                            color: 'white',
+                          }}>
                           {item}
                         </Text>
                       </View>
@@ -508,27 +469,24 @@ export const ProfileFriend = ({ route, navigation }) => {
               />
             </View>
           </View>
-          <View style={[styles.mainten, { top: 45 }]}>
+          <View style={[styles.mainten, {top: 45}]}>
             <View style={styles.phuten}>
               <View
                 style={{
-                  alignItems: "center",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}>
                 <Text style={styles.diachi}>Ảnh</Text>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("AnhUser", { idT: id })}
-                >
+                  onPress={() => navigation.navigate('AnhUser', {idT: id})}>
                   <Text
                     style={{
                       left: 20,
                       top: 30,
                       fontSize: 15,
-                      color: "red",
-                    }}
-                  >
+                      color: 'red',
+                    }}>
                     Xem thêm
                   </Text>
                 </TouchableOpacity>
@@ -539,44 +497,42 @@ export const ProfileFriend = ({ route, navigation }) => {
                   {
                     left: 20,
                     top: 35,
-                    width: "100%",
+                    width: '100%',
                     maxHeight: 220,
                   },
                   dataImage == []
                     ? {
                         left: 20,
                         top: 35,
-                        width: "100%",
+                        width: '100%',
                         maxHeight: 20,
                       }
                     : null,
                 ]}
                 contentContainerStyle={{
-                  justifyContent: "space-between",
                   borderRadius: 15,
-                  flexWrap: "wrap",
-                  flexDirection: "row",
+                  flexWrap: 'wrap',
+                  flexDirection: 'row',
                 }}
                 data={dataImage}
-                renderItem={({ item, index }) => (
+                renderItem={({item, index}) => (
                   <View
                     style={{
                       width: 110,
-                      alignItems: "center",
-                      justifyContent: "space-between",
+                      alignItems: 'center',
+                      left: 5,
                       borderRadius: 15,
                       marginBottom: 5,
                       paddingLeft: 5,
-                    }}
-                  >
-                    {item.image != "" ? (
+                    }}>
+                    {item.image != '' ? (
                       <Image
                         style={{
-                          width: "100%",
+                          width: '100%',
                           height: 105,
                           borderRadius: 15,
                         }}
-                        source={{ uri: item.image }}
+                        source={{uri: item.image}}
                       />
                     ) : null}
                   </View>
@@ -584,29 +540,26 @@ export const ProfileFriend = ({ route, navigation }) => {
               />
             </View>
           </View>
-          <View style={[styles.mainten, { top: 55 }]}>
+          <View style={[styles.mainten, {top: 55}]}>
             <View style={styles.phuten}>
               <View
                 style={{
-                  alignItems: "center",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}>
                 <Text style={styles.diachi}>Bạn bè</Text>
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.navigate("BanBe", { idT: id, us: 1 })
-                  }
-                >
+                    navigation.navigate('BanBe', {idT: id, us: 1})
+                  }>
                   <Text
                     style={{
                       left: 20,
                       top: 30,
                       fontSize: 15,
-                      color: "red",
-                    }}
-                  >
+                      color: 'red',
+                    }}>
                     Xem thêm
                   </Text>
                 </TouchableOpacity>
@@ -617,55 +570,53 @@ export const ProfileFriend = ({ route, navigation }) => {
                   {
                     left: 20,
                     top: 35,
-                    width: "100%",
+                    width: '100%',
                     maxHeight: 220,
                   },
                   dataFriend == []
                     ? {
                         left: 20,
                         top: 35,
-                        width: "100%",
+                        width: '100%',
                         maxHeight: 20,
                       }
                     : null,
                 ]}
                 contentContainerStyle={{
-                  justifyContent: "space-between",
                   borderRadius: 15,
-                  flexDirection: "row",
-                  flexWrap: "wrap",
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
                 }}
                 data={dataFriend}
-                renderItem={({ item, index }) => (
+                renderItem={({item, index}) => (
                   <View
                     style={{
                       width: 110,
-                      alignItems: "center",
-                      justifyContent: "space-between",
+                      alignItems: 'center',
+                      left: 5,
+
                       borderRadius: 15,
                       marginBottom: 5,
                       paddingLeft: 5,
-                    }}
-                  >
+                    }}>
                     <Image
                       style={{
-                        width: "100%",
+                        width: '100%',
                         height: 105,
                         borderRadius: 15,
-                        alignItems: "center",
+                        alignItems: 'center',
                       }}
-                      source={{ uri: item.avt }}
+                      source={{uri: item.avt}}
                     />
                     <Text
                       style={{
-                        position: "absolute",
+                        position: 'absolute',
                         width: 100,
                         margin: 5,
                         fontSize: 12,
-                        color: "white",
+                        color: 'white',
                         bottom: 3,
-                      }}
-                    >
+                      }}>
                       {item.name}
                     </Text>
                   </View>
@@ -676,167 +627,155 @@ export const ProfileFriend = ({ route, navigation }) => {
 
           <View
             style={{
-              width: "100%",
+              width: '100%',
               top: 100,
               marginHorizontal: 20,
-            }}
-          >
-            <Text style={{ fontSize: 19 }}>Bài viết và hoạt động</Text>
+            }}>
+            <Text style={{fontSize: 19}}>Bài viết và hoạt động</Text>
 
-            <View style={{ width: "90%", paddingBottom: 110 }}>
+            <View style={{width: '90%', paddingBottom: 110}}>
               <FlatList
                 contentContainerStyle={{
-                  flexDirection: "column",
+                  flexDirection: 'column',
                 }}
                 data={datas}
-                renderItem={({ item, index }) => (
+                renderItem={({item, index}) => (
                   <Pressable
                     key={index}
                     style={[
                       {
-                        borderBottomColor: "#ABABAB",
-                        borderLeftColor: "#ABABAB",
+                        borderBottomColor: '#ABABAB',
+                        borderLeftColor: '#ABABAB',
                         borderLeftWidth: 0.5,
                         borderBottomWidth: 0.5,
-                        borderRightColor: "#ABABAB",
-                        borderTopColor: "#ABABAB",
+                        borderRightColor: '#ABABAB',
+                        borderTopColor: '#ABABAB',
                         borderRightWidth: 0.5,
                         borderTopWidth: 0.5,
                         borderRadius: 15,
                         marginTop: 20,
                       },
-                      item == ""
-                        ? { width: 0, height: 0, display: "none" }
+                      item == ''
+                        ? {width: 0, height: 0, display: 'none'}
                         : null,
-                    ]}
-                  >
+                    ]}>
                     <View style={styles.info}>
                       <Image
-                        style={{ width: 40, height: 40, borderRadius: 20 }}
-                        source={{ uri: avt }}
+                        style={{width: 40, height: 40, borderRadius: 20}}
+                        source={{uri: avt}}
                       />
                       <View style={styles.tenmain}>
                         <View
                           style={{
-                            flexDirection: "row",
-                            width: "100%",
+                            flexDirection: 'row',
+                            width: '100%',
                             paddingRight: 5,
-                          }}
-                        >
+                          }}>
                           <View
                             style={{
-                              flexDirection: "column",
-                              justifyContent: "space-between",
+                              flexDirection: 'column',
+                              justifyContent: 'space-between',
                               height: 35,
-                            }}
-                          >
-                            <Text style={{ fontSize: 16, fontWeight: "500" }}>
+                            }}>
+                            <Text style={{fontSize: 16, fontWeight: '500'}}>
                               {name}
                             </Text>
-                            <Text style={{ fontSize: 14 }}>
-                              {item.thoigian}
-                            </Text>
+                            <Text style={{fontSize: 14}}>{item.thoigian}</Text>
                           </View>
                         </View>
                       </View>
                     </View>
                     <TouchableOpacity
                       onPress={() =>
-                        navigation.navigate("Binhluan", {
+                        navigation.navigate('Binhluan', {
                           idPost: item.id,
                           userID: item.user,
                         })
-                      }
-                    >
+                      }>
                       <Text
                         style={{
                           fontSize: 18,
-                          color: "black",
+                          color: 'black',
                           paddingHorizontal: 10,
                           marginTop: 10,
-                          alignItems: "center",
-                          justifyContent: "center",
+                          alignItems: 'center',
+                          justifyContent: 'center',
                           paddingBottom: 10,
-                          width: "100%",
-                          alignSelf: "center",
+                          width: '100%',
+                          alignSelf: 'center',
                           //textAlign: "center",
-                          fontWeight: "400",
-                        }}
-                      >
+                          fontWeight: '400',
+                        }}>
                         {item.noidung}
                       </Text>
 
-                      {item.image != "" ? (
+                      {item.image != '' ? (
                         <Image
                           style={{
-                            width: "90%",
+                            width: '90%',
                             height: 160,
-                            alignItems: "center",
-                            alignSelf: "center",
-                            alignContent: "center",
-                            justifyContent: "center",
+                            alignItems: 'center',
+                            alignSelf: 'center',
+                            alignContent: 'center',
+                            justifyContent: 'center',
                             borderRadius: 15,
                             marginBottom: 10,
                           }}
-                          source={{ uri: item.image }}
+                          source={{uri: item.image}}
                         />
                       ) : null}
                       <Text
                         style={[
                           {
                             fontSize: 15,
-                            color: "black",
+                            color: 'black',
                             paddingHorizontal: 10,
-                            fontWeight: "300",
-                            alignItems: "center",
-                            justifyContent: "center",
+                            fontWeight: '300',
+                            alignItems: 'center',
+                            justifyContent: 'center',
                             paddingBottom: 10,
-                            width: "100%",
-                            alignSelf: "center",
+                            width: '100%',
+                            alignSelf: 'center',
                             //textAlign: "center",
                           },
-                          item.checkin == "" ? { width: 0, height: 0 } : null,
-                        ]}
-                      >
+                          item.checkin == '' ? {width: 0, height: 0} : null,
+                        ]}>
                         {item.checkin}
                       </Text>
                     </TouchableOpacity>
                     <View
                       style={{
-                        width: "100%",
-                        flexDirection: "row",
-                        justifyContent: "space-around",
+                        width: '100%',
+                        flexDirection: 'row',
+                        justifyContent: 'space-around',
                         borderTopWidth: 0.2,
                         paddingVertical: 10,
-                      }}
-                    >
+                      }}>
                       <TouchableOpacity
-                        style={{ flexDirection: "row" }}
-                        onPress={() => AddLike(item.id)}
-                      >
+                        style={{flexDirection: 'row'}}
+                        onPress={() => AddLike(item.id)}>
                         <Image
                           style={styles.iclikeContainer}
-                          source={require("../../../assets/iclike.png")}
+                          source={require('../../../assets/iclike.png')}
                         />
-                        <Text style={{ fontSize: 17, color: "black" }}>
+                        <Text style={{fontSize: 17, color: 'black'}}>
                           Thích
                         </Text>
                       </TouchableOpacity>
                       <TouchableOpacity
-                        style={{ flexDirection: "row" }}
+                        style={{flexDirection: 'row'}}
                         onPress={() =>
-                          navigation.navigate("Binhluan", {
+                          navigation.navigate('Binhluan', {
                             idPost: item.id,
                             userID: item.user,
                           })
-                        }
-                      >
+                        }>
                         <Image
                           style={styles.cmtContainer}
-                          source={require("../../../assets/iccmt.png")}
+                          source={require('../../../assets/iccmt.png')}
                         />
 
-                        <Text style={{ fontSize: 17 }}>Bình luận</Text>
+                        <Text style={{fontSize: 17}}>Bình luận</Text>
                       </TouchableOpacity>
                     </View>
                   </Pressable>
@@ -849,22 +788,20 @@ export const ProfileFriend = ({ route, navigation }) => {
           <View>
             <TouchableOpacity
               onPress={() => navigation.goBack()}
-              style={styles.containerrr}
-            >
+              style={styles.containerrr}>
               <Image
                 style={styles.containerrrrr}
-                source={require("../../image/back.png")}
+                source={require('../../image/back.png')}
               />
             </TouchableOpacity>
           </View>
           <View>
             <TouchableOpacity
-              onPress={() => navigation.navigate("hotro")}
-              style={{ width: 100, height: 50, left: 60 }}
-            >
+              onPress={() => navigation.navigate('BaoCao', {id})}
+              style={{width: 100, height: 50, left: 60}}>
               <Image
-                style={[styles.containerrrrr, { borderRadius: 12 }]}
-                source={require("../../image/more.png")}
+                style={[styles.containerrrrr, {borderRadius: 12}]}
+                source={require('../../image/more.png')}
               />
             </TouchableOpacity>
           </View>
@@ -872,28 +809,27 @@ export const ProfileFriend = ({ route, navigation }) => {
         <View style={styles.mainnut}>
           <TouchableOpacity
             style={styles.nut1}
-            onPress={() => navigation.navigate("SayHello", { id })}
-          >
+            onPress={() => navigation.navigate('SayHello', {id})}>
             <Image
-              style={{ width: "60%", height: "60%", left: 10, top: 6 }}
-              source={require("../../image/close-cro.png")}
+              style={{width: '60%', height: '60%', left: 10, top: 6}}
+              source={require('../../image/close-cro.png')}
             />
           </TouchableOpacity>
           <TouchableOpacity style={styles.nut2} onPress={Love}>
             <Image
               style={[
-                { width: "100%", height: "100%", top: 5 },
+                {width: '100%', height: '100%', top: 5},
                 daco == false
-                  ? { width: "100%", height: "100%", top: 5, opacity: 0.5 }
+                  ? {width: '100%', height: '100%', top: 5, opacity: 0.5}
                   : null,
               ]}
-              source={require("../../image/tim.png")}
+              source={require('../../image/tim.png')}
             />
           </TouchableOpacity>
           <TouchableOpacity style={styles.nut1}>
             <Image
-              style={{ width: "60%", height: "60%", left: 10, top: 6 }}
-              source={require("../../image/star.png")}
+              style={{width: '60%', height: '60%', left: 10, top: 6}}
+              source={require('../../image/star.png')}
             />
           </TouchableOpacity>
         </View>
@@ -913,20 +849,20 @@ const styles = StyleSheet.create({
     top: 3,
   },
   tenmain: {
-    width: "100%",
+    width: '100%',
     height: 50,
     left: 10,
   },
   info: {
-    width: "100%",
+    width: '100%',
     height: 50,
     left: 10,
     top: 5,
     paddingRight: 20,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   containerr: {
-    position: "absolute",
+    position: 'absolute',
 
     width: 40,
     height: 40,
@@ -935,32 +871,32 @@ const styles = StyleSheet.create({
   khungmau: {
     marginRight: 5,
     marginTop: 5,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     padding: 5,
-    position: "relative",
-    backgroundColor: "#E94057",
+    position: 'relative',
+    backgroundColor: '#E94057',
     height: 35,
-    borderBottomColor: "#ABABAB",
-    borderLeftColor: "#ABABAB",
+    borderBottomColor: '#ABABAB',
+    borderLeftColor: '#ABABAB',
     borderLeftWidth: 0.5,
     borderBottomWidth: 0.5,
-    borderRightColor: "#ABABAB",
-    borderTopColor: "#ABABAB",
+    borderRightColor: '#ABABAB',
+    borderTopColor: '#ABABAB',
     borderRightWidth: 0.5,
     borderTopWidth: 0.5,
     borderRadius: 8,
   },
   containerrr: {
-    position: "absolute",
+    position: 'absolute',
     width: 50,
     height: 50,
   },
   containerrrrr: {
     width: 25,
     height: 25,
-    tintColor: "white",
+    tintColor: 'white',
   },
   vitrii: {
     width: 80,
@@ -970,25 +906,25 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   imagelui: {
-    position: "absolute",
+    position: 'absolute',
     width: 52,
     height: 52,
   },
   phuten: {
-    width: "87%",
+    width: '87%',
   },
   nhantin: {
-    width: "15%",
+    width: '15%',
     right: 30,
     height: 52,
     top: 35,
     elevation: 10,
   },
   mainten: {
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   nut2: {
     width: 80,
@@ -1000,32 +936,32 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 50,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     elevation: 10,
   },
   mainnut: {
-    left: "7%",
-    width: "85%",
+    left: '7%',
+    width: '85%',
     height: 70,
-    position: "absolute",
+    position: 'absolute',
     top: 390,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   mainnut2: {
-    width: "100%",
+    width: '100%',
     height: 70,
-    position: "absolute",
-    flexDirection: "row",
-    justifyContent: "space-between",
+    position: 'absolute',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     top: 10,
     paddingLeft: 10,
   },
   mailchitiet: {
-    width: "100%",
+    width: '100%',
     bottom: 80,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
   },
@@ -1042,7 +978,7 @@ const styles = StyleSheet.create({
   gioitinh: {
     fontSize: 16,
     left: 20,
-    top: 30,
+    top: 35,
     opacity: 0.7,
   },
   diachi: {
@@ -1054,39 +990,39 @@ const styles = StyleSheet.create({
     fontSize: 20,
     left: 20,
     top: 30,
-    fontStyle: "normal",
+    fontStyle: 'normal',
   },
   ten: {
     fontSize: 25,
     left: 20,
     top: 30,
-    fontStyle: "normal",
+    fontStyle: 'normal',
   },
   anh: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
   },
   mainanh: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
   },
   container: {
-    width: "100%",
+    width: '100%',
     height: 4430,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   centeredView: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 10,
     padding: 15,
-    alignItems: "center",
-    width: "80%",
+    alignItems: 'center',
+    width: '80%',
     elevation: 10,
   },
   button: {

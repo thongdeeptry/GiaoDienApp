@@ -19,71 +19,41 @@ import {getAuth, updatePassword, onAuthStateChanged} from 'firebase/auth';
 import {getDatabase, ref, onValue, set, push, update} from 'firebase/database';
 import Checkbox from 'expo-checkbox';
 import {v4 as uuid} from 'uuid';
-const hotro = ({navigation, route}) => {
+const BaoCao = ({navigation, route}) => {
+  const {id} = route.params;
   initializeApp(firebaseConfig);
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
   const [name, setname] = useState('');
   const [avt, setavt] = useState('');
   const [noidung, setnoidung] = useState('');
-  const [lydo, setlydo] = useState('');
-  const [isCheckedStatus, setCheckedStatus] = useState(false);
-  const [isCheckedStory, setCheckedStory] = useState(false);
   useEffect(() => {
-    const reference = ref(db, 'users/' + user);
+    const reference = ref(db, 'users/' + id);
     onValue(reference, childSnapshot => {
       const name = childSnapshot.child('name').val();
       setname(name);
       setavt(childSnapshot.child('avt').val());
     });
-    if (isCheckedStatus == true) {
-      setCheckedStory(false);
-    }
-    if (isCheckedStory == true) {
-      setCheckedStatus(false);
-    }
   });
   const sendHoTro = () => {
-    if (isCheckedStatus == true || isCheckedStory == true) {
-      if (noidung != '' || lydo != '') {
-        const id = uuid();
-        if (isCheckedStatus == true) {
-          const reference = ref(db, 'support/tickblue/' + id);
-          set(reference, {
-            id: id,
-            link: 'http://localhost:3000/#/admin/profile/' + user,
-            name: name,
-            noidung: noidung,
-            thaotac: user,
-            trangthai: 'Chờ Xử Lý',
-            lydokhac: lydo,
-            avt: avt,
-          });
-          ToastAndroid.show('Đã gửi đơn hỗ trợ', ToastAndroid.BOTTOM);
-          navigation.navigate('Profile');
-        } else {
-          const reference = ref(db, 'support/khac/' + id);
-          set(reference, {
-            id: id,
-            link: 'http://localhost:3000/#/admin/profile/' + user,
-            name: name,
-            noidung: noidung,
-            thaotac: user,
-            trangthai: 'Chờ Xử Lý',
-            lydokhac: lydo,
-            avt: avt,
-          });
-          ToastAndroid.show('Đã gửi đơn hỗ trợ', ToastAndroid.BOTTOM);
-          navigation.navigate('Profile');
-        }
-      } else {
-        ToastAndroid.show('Không được để trống', ToastAndroid.BOTTOM);
-      }
+    if (noidung != '') {
+      const ids = uuid();
+      const reference = ref(db, 'reports/' + ids);
+      set(reference, {
+        id: ids,
+        link: 'http://localhost:3000/#/admin/profile/' + id,
+        id_send: user,
+        id_vipham: id,
+        noidung: noidung,
+        thaotac: ids,
+        trangthai: 'Chờ Xử Lý',
+        phanhoi: 'Chưa có',
+        avt: avt,
+      });
+      ToastAndroid.show('Đã gửi đơn báo cáo', ToastAndroid.BOTTOM);
+      navigation.navigate('ProfileFriend', {id});
     } else {
-      ToastAndroid.show(
-        'Phải chọn một trong hai cách thức gửi đơn hỗ trợ',
-        ToastAndroid.BOTTOM,
-      );
+      ToastAndroid.show('Không được để trống', ToastAndroid.BOTTOM);
     }
   };
   return (
@@ -98,7 +68,7 @@ const hotro = ({navigation, route}) => {
             source={require('../../image/back.png')}
           />
         </TouchableOpacity>
-        <Text style={styles.chu}>{name}</Text>
+        <Text style={styles.chu}>Báo cáo trang cá nhân</Text>
         <View style={styles.khung}>
           <Text
             style={{
@@ -107,26 +77,22 @@ const hotro = ({navigation, route}) => {
               paddingTop: 20,
               fontWeight: '600',
             }}>
-            Vui lòng nhập nội dung muốn hỗ trợ
+            Vui lòng mô tả nội dung muốn báo cáo
           </Text>
           <Text style={{paddingHorizontal: 20, fontSize: 12, opacity: 0.7}}>
-            * Xác nhận và chắc chắn rằng phù hợp với điều khoản dịch vụ
+            * Xác nhận và chắc chắn rằng bạn báo cáo đúng
           </Text>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={{paddingLeft: 20, fontSize: 16, opacity: 0.7}}>
+              Bạn đang báo cáo :
+            </Text>
+            <Text
+              style={{paddingHorizontal: 5, fontSize: 18, color: '#E94057'}}>
+              {name}
+            </Text>
+          </View>
           <TextInput
-            placeholder="Nhập lý do muốn hỗ trợ"
-            value={lydo}
-            onChangeText={setlydo}
-            style={{
-              marginHorizontal: 20,
-              marginTop: 20,
-              borderColor: '#E94057',
-              borderWidth: 0.5,
-              borderRadius: 10,
-              height: 50,
-              paddingLeft: 10,
-            }}></TextInput>
-          <TextInput
-            placeholder="Nhập nội dung muốn hỗ trợ"
+            placeholder="Nhập mô tả nội dung bạn muốn báo cáo"
             value={noidung}
             onChangeText={setnoidung}
             style={{
@@ -139,24 +105,9 @@ const hotro = ({navigation, route}) => {
               paddingLeft: 10,
               paddingBottom: 70,
             }}></TextInput>
-          <View style={styles.checkbox}>
-            <Checkbox
-              value={isCheckedStatus}
-              onValueChange={setCheckedStatus}
-              color={isCheckedStatus ? '#E94057' : undefined}
-            />
-            <Text style={{left: 5}}>Hỗ trợ vấn đề xác minh danh tính</Text>
-          </View>
-          <View style={styles.checkbox}>
-            <Checkbox
-              value={isCheckedStory}
-              onValueChange={setCheckedStory}
-              color={isCheckedStory ? '#E94057' : undefined}
-            />
-            <Text style={{left: 5}}>Hỗ trợ các vấn đề khác</Text>
-          </View>
+
           <TouchableOpacity style={styles.saveBtn} onPress={sendHoTro}>
-            <Text style={styles.save}>Hỗ trợ</Text>
+            <Text style={styles.save}>Báo cáo</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -164,7 +115,7 @@ const hotro = ({navigation, route}) => {
   );
 };
 
-export default hotro;
+export default BaoCao;
 
 const styles = StyleSheet.create({
   checkbox: {
@@ -286,7 +237,7 @@ const styles = StyleSheet.create({
   khung: {
     position: 'absolute',
     width: '90%',
-    height: 400,
+    height: 300,
     marginHorizontal: 20,
     top: 70,
     backgroundColor: 'white',

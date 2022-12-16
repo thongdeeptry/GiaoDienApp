@@ -1,47 +1,49 @@
-import React from "react";
+import React from 'react';
 import {
   View,
   Image,
   StyleSheet,
   TouchableOpacity,
   Animated,
-} from "react-native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createStackNavigator } from "@react-navigation/stack";
+} from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 // import Home from "../product/Home/Main";
-import { Profile } from "../product/Profile";
-import { PostStatus } from "./PostStatus";
-import { Camxuc } from "./Camxuc";
-import { ProfileFriend } from "./ProfileFriend";
-import Messenger from "./Messenger/Messenger";
-import Chat from "./Chat/Chat";
-import notifiCation from "./notifiCation";
-import Home from "../../../components/Home";
-import { AllUser } from "./AllUser";
-import Chinhsua from "./Chinhsua";
-import { CaiDat } from "./CaiDat";
-import Timkiem from "./Timkiem";
-import Binhluan from "./Binhluan";
-import Story from "../../layout/product/Story";
-import ChangePass from "./changePass";
-import { BanBe } from "./BanBe";
-import { AnhUser } from "./AnhUser";
-import { XemAnh } from "./XemAnh";
-import CallVideo from "./Call/screens/CallScreen";
-import LiveVideo from "./Call/screens/LiveScreen";
-import JoinLive from "./Call/screens/JoinLive";
-import RoomCall from "./Call/screens/RoomScreen";
-import JoinRoom from "./Call/screens/JoinRoom";
-import { AllRoomCall } from "./AllRoomCall";
-import { SayHello } from "../user/screens/SayHello";
-import hotro from "./hotro";
+import {Profile} from '../product/Profile';
+import {PostStatus} from './PostStatus';
+import {Camxuc} from './Camxuc';
+import {ProfileFriend} from './ProfileFriend';
+import Messenger from './Messenger/Messenger';
+import Chat from './Chat/Chat';
+import notifiCation from './notifiCation';
+import Home from '../../../components/Home';
+import {AllUser} from './AllUser';
+import Chinhsua from './Chinhsua';
+import {CaiDat} from './CaiDat';
+import Timkiem from './Timkiem';
+import Binhluan from './Binhluan';
+import Story from '../../layout/product/Story';
+import ChangePass from './changePass';
+import {BanBe} from './BanBe';
+import {AnhUser} from './AnhUser';
+import {XemAnh} from './XemAnh';
+import CallVideo from './Call/screens/CallScreen';
+import LiveVideo from './Call/screens/LiveScreen';
+import JoinLive from './Call/screens/JoinLive';
+import RoomCall from './Call/screens/RoomScreen';
+import JoinRoom from './Call/screens/JoinRoom';
+import {AllRoomCall} from './AllRoomCall';
+import {SayHello} from '../user/screens/SayHello';
+import hotro from './hotro';
+import BaoCao from './BaoCao';
+import {AllReport} from './AllReport';
+import {AllSuport} from './AllSuport';
 function HomeStack() {
   return (
     <Stack.Navigator
-      screenOptions={{ tabBarShowLabel: false, headerShown: false }}
-    >
+      screenOptions={{tabBarShowLabel: false, headerShown: false}}>
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="PostStatus" component={PostStatus} />
       <Stack.Screen name="Camxuc" component={Camxuc} />
@@ -68,14 +70,16 @@ function HomeStack() {
       <Stack.Screen name="AllRoomCall" component={AllRoomCall} />
       <Stack.Screen name="SayHello" component={SayHello} />
       <Stack.Screen name="hotro" component={hotro} />
+      <Stack.Screen name="BaoCao" component={BaoCao} />
+      <Stack.Screen name="AllReport" component={AllReport} />
+      <Stack.Screen name="AllSuport" component={AllSuport} />
     </Stack.Navigator>
   );
 }
 function ProfileStack() {
   return (
     <Stack.Navigator
-      screenOptions={{ tabBarShowLabel: false, headerShown: false }}
-    >
+      screenOptions={{tabBarShowLabel: false, headerShown: false}}>
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="PostStatus" component={PostStatus} />
@@ -101,14 +105,16 @@ function ProfileStack() {
       <Stack.Screen name="AllRoomCall" component={AllRoomCall} />
       <Stack.Screen name="SayHello" component={SayHello} />
       <Stack.Screen name="hotro" component={hotro} />
+      <Stack.Screen name="BaoCao" component={BaoCao} />
+      <Stack.Screen name="AllReport" component={AllReport} />
+      <Stack.Screen name="AllSuport" component={AllSuport} />
     </Stack.Navigator>
   );
 }
 function AllUserStack() {
   return (
     <Stack.Navigator
-      screenOptions={{ tabBarShowLabel: false, headerShown: false }}
-    >
+      screenOptions={{tabBarShowLabel: false, headerShown: false}}>
       <Stack.Screen name="AllUser" component={AllUser} />
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Home" component={Home} />
@@ -135,14 +141,16 @@ function AllUserStack() {
       <Stack.Screen name="AllRoomCall" component={AllRoomCall} />
       <Stack.Screen name="SayHello" component={SayHello} />
       <Stack.Screen name="hotro" component={hotro} />
+      <Stack.Screen name="BaoCao" component={BaoCao} />
+      <Stack.Screen name="AllReport" component={AllReport} />
+      <Stack.Screen name="AllSuport" component={AllSuport} />
     </Stack.Navigator>
   );
 }
 function ChatStack() {
   return (
     <Stack.Navigator
-      screenOptions={{ tabBarShowLabel: false, headerShown: false }}
-    >
+      screenOptions={{tabBarShowLabel: false, headerShown: false}}>
       <Stack.Screen name="Chat" component={Chat} />
       {/* <Stack.Screen name=Chinhsua"Home" component={Home} /> */}
       <Stack.Screen name="PostStatus" component={PostStatus} />
@@ -169,14 +177,16 @@ function ChatStack() {
       <Stack.Screen name="AllRoomCall" component={AllRoomCall} />
       <Stack.Screen name="SayHello" component={SayHello} />
       <Stack.Screen name="hotro" component={hotro} />
+      <Stack.Screen name="BaoCao" component={BaoCao} />
+      <Stack.Screen name="AllReport" component={AllReport} />
+      <Stack.Screen name="AllSuport" component={AllSuport} />
     </Stack.Navigator>
   );
 }
 function NotiStack() {
   return (
     <Stack.Navigator
-      screenOptions={{ tabBarShowLabel: false, headerShown: false }}
-    >
+      screenOptions={{tabBarShowLabel: false, headerShown: false}}>
       <Stack.Screen name="notifiCation" component={notifiCation} />
       {/* <Stack.Screen name="Home" component={Home} /> */}
       <Stack.Screen name="PostStatus" component={PostStatus} />
@@ -203,10 +213,13 @@ function NotiStack() {
       <Stack.Screen name="AllRoomCall" component={AllRoomCall} />
       <Stack.Screen name="SayHello" component={SayHello} />
       <Stack.Screen name="hotro" component={hotro} />
+      <Stack.Screen name="BaoCao" component={BaoCao} />
+      <Stack.Screen name="AllReport" component={AllReport} />
+      <Stack.Screen name="AllSuport" component={AllSuport} />
     </Stack.Navigator>
   );
 }
-export default ProductNavigation = (props) => {
+export default ProductNavigation = props => {
   // const CustomBar = ({ children, onPress }) => (
   //   <TouchableOpacity
   //     style={{
@@ -229,86 +242,85 @@ export default ProductNavigation = (props) => {
   //   </TouchableOpacity>
   // );
   return (
-    <View style={{ width: "100%", height: "100%" }}>
+    <View style={{width: '100%', height: '100%'}}>
       <Tab.Navigator
-        screenOptions={({ route }) => ({
+        screenOptions={({route}) => ({
           tabBarStyle: {
-            position: "absolute",
-            backgroundColor: "#FFFFFF",
+            position: 'absolute',
+            backgroundColor: '#FFFFFF',
             height: 50,
-            alignItems: "center",
+            alignItems: 'center',
           },
-          tabBarIcon: ({ focused }) => {
-            if (route.name == "Home") {
+          tabBarIcon: ({focused}) => {
+            if (route.name == 'Home') {
               return (
                 <Image
                   style={{
-                    resizeMode: "cover",
+                    resizeMode: 'cover',
 
                     width: 30,
                     height: 30,
                   }}
-                  source={require("../../image/home.png")}
+                  source={require('../../image/home.png')}
                 />
               );
             }
-            if (route.name == "Chat") {
+            if (route.name == 'Chat') {
               return (
                 <Image
                   style={{
-                    resizeMode: "cover",
+                    resizeMode: 'cover',
 
                     width: 30,
                     height: 30,
                   }}
-                  source={require("../../image/chat.png")}
+                  source={require('../../image/chat.png')}
                 />
               );
             }
-            if (route.name == "Profile") {
+            if (route.name == 'Profile') {
               return (
                 <Image
                   style={{
-                    resizeMode: "cover",
+                    resizeMode: 'cover',
 
                     width: 30,
                     height: 30,
                   }}
-                  source={require("../../image/woman.png")}
+                  source={require('../../image/woman.png')}
                 />
               );
             }
-            if (route.name == "notifiCation") {
+            if (route.name == 'notifiCation') {
               return (
                 <Image
                   style={{
-                    resizeMode: "cover",
+                    resizeMode: 'cover',
 
                     width: 30,
                     height: 30,
                   }}
-                  source={require("../../image/notify.png")}
+                  source={require('../../image/notify.png')}
                 />
               );
             }
-            if (route.name == "AllUser") {
+            if (route.name == 'AllUser') {
               return (
                 <Image
                   style={{
-                    resizeMode: "cover",
+                    resizeMode: 'cover',
 
                     width: 30,
                     height: 30,
                   }}
-                  source={require("../../assets/friends.png")}
+                  source={require('../../assets/friends.png')}
                 />
               );
             }
           },
           headerShown: false,
           //tabBarShowLabel:false,
-        })}
-      >
+        })}>
         <Tab.Screen name="Home" component={HomeStack} />
         <Tab.Screen name="AllUser" component={AllUserStack} />
         <Tab.Screen name="Chat" component={ChatStack} />
