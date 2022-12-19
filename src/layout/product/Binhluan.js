@@ -370,7 +370,7 @@ const Binhluan = ({navigation, route}) => {
               onPress={() => navigation.navigate('XemAnh', {linkAnh: image})}>
               <Image
                 style={{
-                  width: '90%',
+                  width: '95%',
                   height: 160,
                   alignItems: 'center',
                   alignSelf: 'center',

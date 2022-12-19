@@ -1,19 +1,13 @@
 /** @format */
 
-import "expo-dev-client";
-import React, { useState, useEffect } from "react";
-import AgoraUIKit from "agora-rn-uikit";
-import {
-  View,
-  Image,
-  Text,
-  TouchableOpacity,
-  ToastAndroid,
-} from "react-native";
-import { ongetTokenAgora } from "../utilities/getTokenAgora.context";
-import { initializeApp } from "firebase/app";
-import { auth, firebaseConfig } from "../../../../../config";
-import { v4 as uuid } from "uuid";
+import 'expo-dev-client';
+import React, {useState, useEffect} from 'react';
+import AgoraUIKit from 'agora-rn-uikit';
+import {View, Image, Text, TouchableOpacity, ToastAndroid} from 'react-native';
+import {ongetTokenAgora} from '../utilities/getTokenAgora.context';
+import {initializeApp} from 'firebase/app';
+import {auth, firebaseConfig} from '../../../../../config';
+import {v4 as uuid} from 'uuid';
 import {
   getDatabase,
   ref,
@@ -23,8 +17,8 @@ import {
   update,
   remove,
   serverTimestamp,
-} from "firebase/database";
-const LiveVideo = ({ navigation, route }) => {
+} from 'firebase/database';
+const LiveVideo = ({navigation, route}) => {
   initializeApp(firebaseConfig);
   const user = auth.currentUser.uid;
   const db = getDatabase();
@@ -32,8 +26,8 @@ const LiveVideo = ({ navigation, route }) => {
   const [channel, setChannel] = useState(user);
   const [role, setRole] = useState(1); //role = 2 people follow
   const [uid, setUid] = useState(1);
-  const [expiry, setexpiry] = useState("9999999999999999999");
-  const [token, setToken] = useState("");
+  const [expiry, setexpiry] = useState('9999999999999999999');
+  const [token, setToken] = useState('');
   const [name, setname] = useState();
   const [avt, setavt] = useState();
   const [ngay, setNgay] = useState();
@@ -41,36 +35,40 @@ const LiveVideo = ({ navigation, route }) => {
   const [visible, setVisible] = useState(true);
   useEffect(() => {
     async function fetchData() {
-      const referencek = ref(db, "users/" + user);
-      onValue(referencek, (childSnapshot) => {
-        const namepr = childSnapshot.child("name").val();
-        const avtpr = childSnapshot.child("avt").val();
+      const referencek = ref(db, 'users/' + user);
+      onValue(referencek, childSnapshot => {
+        const namepr = childSnapshot.child('name').val();
+        const avtpr = childSnapshot.child('avt').val();
         setname(namepr);
         setavt(avtpr);
       });
 
-      const res = await ongetTokenAgora(channel, role, "uid", uid, expiry);
+      const res = await ongetTokenAgora(channel, role, 'uid', uid, expiry);
       setToken(res);
     }
     fetchData();
   }, []);
+  const d = new Date();
+  const ngayht = d.getDate();
+  const thang = d.getMonth() + 1;
+  const nam = d.getFullYear();
   const Livestream = () => {
-    const referencera = ref(db, "livestream/" + user);
+    const referencera = ref(db, 'livestream/' + user);
     set(referencera, {
       id: user,
       avt: avt,
       name: name,
       luotxem: 0,
-      ngaytao: serverTimestamp(),
+      ngaytao: ngayht + ' Tháng ' + thang + ' Năm ' + nam,
       token: token,
       channel: channel,
       uid: 1,
     });
-    ToastAndroid.show("Đã tạo phòng phát trực tiếp", ToastAndroid.BOTTOM);
-    const reference = ref(db, "livestream/" + user);
-    onValue(reference, (childSnapshot) => {
-      const namepr = childSnapshot.child("ngaytao").val();
-      const vi = childSnapshot.child("luotxem").val();
+    ToastAndroid.show('Đã tạo phòng phát trực tiếp', ToastAndroid.BOTTOM);
+    const reference = ref(db, 'livestream/' + user);
+    onValue(reference, childSnapshot => {
+      const namepr = childSnapshot.child('ngaytao').val();
+      const vi = childSnapshot.child('luotxem').val();
       setNgay(namepr);
       setView(vi);
     });
@@ -78,7 +76,7 @@ const LiveVideo = ({ navigation, route }) => {
   };
   const props = {
     connectionData: {
-      appId: "e63496cfe00f42d8be5c498370e6fa27",
+      appId: 'e63496cfe00f42d8be5c498370e6fa27',
       channel: channel,
       uid: uid,
       token: token,
@@ -88,9 +86,9 @@ const LiveVideo = ({ navigation, route }) => {
       EndCall: () => {
         setVideoCall(false);
         navigation.goBack();
-        const referencer = ref(db, "livestream/" + user);
+        const referencer = ref(db, 'livestream/' + user);
         remove(referencer).then(() => {
-          ToastAndroid.show("Bạn đã tắt phòng live", ToastAndroid.BOTTOM);
+          ToastAndroid.show('Bạn đã tắt phòng live', ToastAndroid.BOTTOM);
         });
       },
     },
@@ -99,20 +97,18 @@ const LiveVideo = ({ navigation, route }) => {
   return videoCall ? (
     <View
       style={{
-        width: "100%",
-        height: "95%",
+        width: '100%',
+        height: '95%',
         paddingTop: 50,
-        backgroundColor: "black",
-      }}
-    >
+        backgroundColor: 'black',
+      }}>
       <TouchableOpacity
-        onPress={() => navigation.navigate("ProfileFriend", { id: user })}
+        onPress={() => navigation.navigate('ProfileFriend', {id: user})}
         style={{
           width: 55,
           height: 55,
-          position: "absolute",
-        }}
-      >
+          position: 'absolute',
+        }}>
         <Image
           style={{
             width: 45,
@@ -121,7 +117,7 @@ const LiveVideo = ({ navigation, route }) => {
             top: 5,
             borderRadius: 25,
           }}
-          source={{ uri: avt }}
+          source={{uri: avt}}
         />
       </TouchableOpacity>
 
@@ -131,47 +127,43 @@ const LiveVideo = ({ navigation, route }) => {
       />
       <Text
         style={{
-          position: "absolute",
+          position: 'absolute',
           left: 70,
-          color: "white",
+          color: 'white',
           fontSize: 20,
           top: 5,
-        }}
-      >
+        }}>
         {name}
       </Text>
       {visible == true ? (
         <TouchableOpacity
-          style={{ position: "absolute", right: 10 }}
-          onPress={Livestream}
-        >
-          <Text style={{ color: "white", fontSize: 20, top: 10 }}>Bắt đầu</Text>
+          style={{position: 'absolute', right: 10}}
+          onPress={Livestream}>
+          <Text style={{color: 'white', fontSize: 20, top: 10}}>Bắt đầu</Text>
         </TouchableOpacity>
       ) : (
         <></>
       )}
       <Text
         style={{
-          position: "absolute",
+          position: 'absolute',
           left: 70,
-          color: "white",
+          color: 'white',
           fontSize: 15,
           top: 30,
           opacity: 0.7,
-        }}
-      >
+        }}>
         {ngay}
       </Text>
       <Text
         style={{
-          position: "absolute",
+          position: 'absolute',
           right: 20,
-          color: "white",
+          color: 'white',
           fontSize: 20,
           top: 10,
           opacity: 0.7,
-        }}
-      >
+        }}>
         {view}
       </Text>
     </View>

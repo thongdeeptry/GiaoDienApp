@@ -8,16 +8,16 @@ import {
   Pressable,
   Image,
   RefreshControl,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import { initializeApp } from "firebase/app";
-import { firebaseConfig } from "../../../config";
-import { getAuth } from "firebase/auth";
-import { getDatabase, ref, onValue, set, push } from "firebase/database";
-const wait = (timeout) => {
-  return new Promise((resolve) => setTimeout(resolve, timeout));
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {initializeApp} from 'firebase/app';
+import {firebaseConfig} from '../../../config';
+import {getAuth} from 'firebase/auth';
+import {getDatabase, ref, onValue, set, push} from 'firebase/database';
+const wait = timeout => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
 };
-export default notifiCation = ({ route, navigation }) => {
+export default notifiCation = ({route, navigation}) => {
   const app = initializeApp(firebaseConfig);
   if (!app.length) {
   }
@@ -41,15 +41,15 @@ export default notifiCation = ({ route, navigation }) => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
   }, []);
-  const reference = ref(db, "notification/" + user);
-  onValue(reference, (childSnapshot) => {
-    childSnapshot.forEach((snapshot) => {
-      const id = snapshot.child("id").val();
-      const noidung = snapshot.child("noidung").val();
-      const thoigian = snapshot.child("thoigian").val();
-      const users = snapshot.child("user").val();
-      const avt = snapshot.child("avt").val();
-      const name = snapshot.child("name").val();
+  const reference = ref(db, 'notification/' + user);
+  onValue(reference, childSnapshot => {
+    childSnapshot.forEach(snapshot => {
+      const id = snapshot.child('id').val();
+      const noidung = snapshot.child('noidung').val();
+      const thoigian = snapshot.child('thoigian').val();
+      const users = snapshot.child('user').val();
+      const avt = snapshot.child('avt').val();
+      const name = snapshot.child('name').val();
       dataTB.push({
         id: id,
         noidung: noidung,
@@ -63,90 +63,81 @@ export default notifiCation = ({ route, navigation }) => {
   return (
     <View
       style={{
-        width: "100%",
-        flexDirection: "column",
-      }}
-    >
+        width: '100%',
+        flexDirection: 'column',
+      }}>
       <View
         style={{
-          width: "100%",
-          flexDirection: "row",
-          justifyContent: "space-between",
+          width: '100%',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
           paddingHorizontal: 20,
-        }}
-      >
+        }}>
         <Text
-          style={{ fontSize: 20, color: "#E94057", letterSpacing: 1, top: 10 }}
-        >
+          style={{fontSize: 20, color: '#E94057', letterSpacing: 1, top: 10}}>
           Thông báo
         </Text>
       </View>
       <ScrollView
-        style={{ marginBottom: 70 }}
+        style={{marginBottom: 70}}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
+        }>
         <View style={styles.dataMap}>
-          <Text style={{ fontSize: 16, textAlign: "center", top: 5 }}>
-            {dataTB.length == 0 ? "Không có thông báo" : ""}
+          <Text style={{fontSize: 16, textAlign: 'center', top: 5}}>
+            {dataTB.length == 0 ? 'Không có thông báo' : ''}
           </Text>
           {dataTB.map((item, index) => (
             <Pressable
               key={index}
               style={{
-                borderBottomColor: "#ABABAB",
-                borderLeftColor: "#ABABAB",
+                borderBottomColor: '#ABABAB',
+                borderLeftColor: '#ABABAB',
                 borderLeftWidth: 0.5,
                 borderBottomWidth: 0.5,
-                borderRightColor: "#ABABAB",
-                borderTopColor: "#ABABAB",
+                borderRightColor: '#ABABAB',
+                borderTopColor: '#ABABAB',
                 borderRightWidth: 0.5,
                 borderTopWidth: 0.5,
                 borderRadius: 15,
                 paddingVertical: 5,
                 marginTop: 10,
-              }}
-            >
+              }}>
               <View style={styles.info}>
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.navigate("ProfileFriend", {
+                    navigation.navigate('ProfileFriend', {
                       id: item.user,
                     })
-                  }
-                >
+                  }>
                   <Image
-                    style={{ width: 40, height: 40, borderRadius: 20 }}
-                    source={{ uri: item.avt }}
+                    style={{width: 40, height: 40, borderRadius: 20}}
+                    source={{uri: item.avt}}
                   />
                 </TouchableOpacity>
                 <View style={styles.tenmain}>
                   <View
                     style={{
-                      flexDirection: "row",
-                      width: "100%",
+                      flexDirection: 'row',
+                      width: '100%',
                       paddingRight: 5,
-                    }}
-                  >
+                    }}>
                     <View
                       style={{
-                        flexDirection: "column",
-                        justifyContent: "space-between",
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
                         height: 35,
-                        width: "100%",
-                      }}
-                    >
+                        width: '100%',
+                      }}>
                       <Text
                         style={{
                           fontSize: 14,
-                          fontWeight: "500",
-                          width: "85%",
-                        }}
-                      >
+                          fontWeight: '500',
+                          width: '85%',
+                        }}>
                         {item.name} {item.noidung}
                       </Text>
-                      <Text style={{ fontSize: 11 }}>{item.thoigian}</Text>
+                      <Text style={{fontSize: 11}}>{item.thoigian}</Text>
                     </View>
                   </View>
                 </View>
@@ -161,21 +152,21 @@ export default notifiCation = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   dataMap: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
     paddingHorizontal: 20,
     paddingVertical: 5,
   },
   tenmain: {
-    width: "100%",
+    width: '100%',
     height: 50,
     left: 10,
   },
   info: {
-    width: "100%",
+    width: '100%',
     height: 50,
     left: 10,
     top: 5,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
 });

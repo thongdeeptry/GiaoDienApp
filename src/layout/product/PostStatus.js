@@ -13,20 +13,26 @@ import {
   Easing,
   Alert,
   Modal,
-} from "react-native";
-import React, { useState, useEffect } from "react";
-import { initializeApp } from "firebase/app";
-import firebase from "firebase/compat";
-import { firebaseConfig, firebaseDatabaseRef } from "../../../config";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { getDatabase, onValue, set, push } from "firebase/database";
-import * as Permission from "expo-permissions";
-import * as Location from "expo-location";
-import * as ImagePicker from "expo-image-picker";
-import Checkbox from "expo-checkbox";
-import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
-import { v4 as uuid } from "uuid";
-export const PostStatus = ({ route, navigation }) => {
+} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {initializeApp} from 'firebase/app';
+import firebase from 'firebase/compat';
+import {firebaseConfig, firebaseDatabaseRef} from '../../../config';
+import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
+import {
+  getDatabase,
+  onValue,
+  set,
+  push,
+  serverTimestamp,
+} from 'firebase/database';
+import * as Permission from 'expo-permissions';
+import * as Location from 'expo-location';
+import * as ImagePicker from 'expo-image-picker';
+import Checkbox from 'expo-checkbox';
+import {getStorage, ref, uploadBytes, uploadString} from 'firebase/storage';
+import {v4 as uuid} from 'uuid';
+export const PostStatus = ({route, navigation}) => {
   const app = initializeApp(firebaseConfig);
   const data = [];
   const [name, setname] = useState();
@@ -37,9 +43,9 @@ export const PostStatus = ({ route, navigation }) => {
   const [gioitinh, setgioitinh] = useState();
   const [sothich, setsothich] = useState();
   const [location, setlocation] = useState();
-  const [noidung, setnoidung] = useState("");
+  const [noidung, setnoidung] = useState('');
   const [image, setImage] = useState(null);
-  const [upload, setupload] = useState("");
+  const [upload, setupload] = useState('');
   const [uplink, setuplink] = useState();
   const [tinh, settinh] = useState();
   const [modalVisible, setModalVisible] = useState(false);
@@ -52,22 +58,22 @@ export const PostStatus = ({ route, navigation }) => {
   const [noidung1, setnoidung1] = useState();
   useEffect(() => {
     try {
-      const { hoatdong } = route.params;
+      const {hoatdong} = route.params;
       setnoidung1(hoatdong);
     } catch (error) {}
-    const reference = firebaseDatabaseRef(db, "users/" + user);
-    onValue(reference, (childSnapshot) => {
-      const namepr = childSnapshot.child("name").val();
-      const avtpr = childSnapshot.child("avt").val();
+    const reference = firebaseDatabaseRef(db, 'users/' + user);
+    onValue(reference, childSnapshot => {
+      const namepr = childSnapshot.child('name').val();
+      const avtpr = childSnapshot.child('avt').val();
 
       setname(namepr);
       setavt(avtpr);
     });
   });
   function makeid(length) {
-    var text = "";
+    var text = '';
     var possible =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 
     for (var i = 0; i < length; i++)
       text += possible.charAt(Math.floor(Math.random() * possible.length));
@@ -86,7 +92,7 @@ export const PostStatus = ({ route, navigation }) => {
       setImage(result.uri);
       let idk = makeid(60);
       uploadImageToBucket(result.uri, idk);
-      setuplink(idk + ".png?alt=media");
+      setuplink(idk + '.png?alt=media');
       console.log(uplink);
     }
   };
@@ -95,19 +101,19 @@ export const PostStatus = ({ route, navigation }) => {
     const blob = await res.blob();
     const storageRef = ref(
       storage,
-      "images/album/" + user + "/" + imageName + ".png"
+      'images/album/' + user + '/' + imageName + '.png',
     );
-    setuplink(imageName + ".png?alt=media");
-    uploadBytes(storageRef, blob).then((snapshot) => {
-      console.log("Uploaded a blob or file!" + snapshot.metadata.name);
+    setuplink(imageName + '.png?alt=media');
+    uploadBytes(storageRef, blob).then(snapshot => {
+      console.log('Uploaded a blob or file!' + snapshot.metadata.name);
       return snapshot.metadata.name;
     });
   };
 
   const getLocation = async () => {
-    const { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      setlocation("Không có quyền truy cập vị trí");
+    const {status} = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      setlocation('Không có quyền truy cập vị trí');
     }
     const vitri = await Location.getCurrentPositionAsync({});
     const diachi = await Location.reverseGeocodeAsync({
@@ -115,22 +121,22 @@ export const PostStatus = ({ route, navigation }) => {
       longitude: vitri.coords.longitude,
     });
     console.log(
-      "Vị Trí : " + vitri.coords.latitude + ":" + vitri.coords.longitude
+      'Vị Trí : ' + vitri.coords.latitude + ':' + vitri.coords.longitude,
     );
     let city;
     let country;
     let duong;
-    diachi.find((p) => {
+    diachi.find(p => {
       country = p.country;
       city =
         p.streetNumber +
-        " " +
+        ' ' +
         p.street +
-        ", " +
+        ', ' +
         p.subregion +
-        ", " +
+        ', ' +
         p.region +
-        ", " +
+        ', ' +
         p.country;
       settinh(p.region);
       setlocation(city);
@@ -140,54 +146,60 @@ export const PostStatus = ({ route, navigation }) => {
     setModalVisible(true);
   };
   const AddPost = () => {
-    const id = uuid();
+    const id = new Date().getTime();
     setModalVisible(false);
     const d = new Date();
     const ngay = d.getDate();
     const thang = d.getMonth() + 1;
     const nam = d.getFullYear();
     if (
-      noidung == "" ||
+      noidung == '' ||
       (noidung == null && image == null && location == undefined)
     ) {
-      ToastAndroid.show("Chưa có nội dung", ToastAndroid.BOTTOM);
+      ToastAndroid.show('Chưa có nội dung', ToastAndroid.BOTTOM);
     } else {
       if (isCheckedStatus == true) {
-        const reference13 = firebaseDatabaseRef(db, "post/" + user + "/" + id);
+        const reference13 = firebaseDatabaseRef(db, 'post/' + user + '/' + id);
         set(reference13, {
           name: name,
           avt: avt,
           id: id,
           noidung: noidung,
-          checkin: location == undefined ? "" : location,
+          checkin: location == undefined ? '' : location,
           image:
-            "https://firebasestorage.googleapis.com/v0/b/duantotnghiepreact.appspot.com/o/images%2Falbum%2F" +
-            user +
-            "%2F" +
-            uplink,
-          thoigian: ngay + " Tháng " + thang + " Năm " + nam,
+            uplink != undefined
+              ? 'https://firebasestorage.googleapis.com/v0/b/duantotnghiepreact.appspot.com/o/images%2Falbum%2F' +
+                user +
+                '%2F' +
+                uplink
+              : '',
+          thoigian: ngay + ' Tháng ' + thang + ' Năm ' + nam,
           user: user,
+          hoatdong: noidung1 != undefined ? noidung1 : '',
         });
       }
       if (isCheckedStory == true) {
-        const reference13 = firebaseDatabaseRef(db, "story/" + user + "/" + id);
+        const reference13 = firebaseDatabaseRef(db, 'story/' + user + '/' + id);
         set(reference13, {
           name: name,
           avt: avt,
           id: id,
           noidung: noidung,
-          checkin: location == undefined ? "" : location,
+          checkin: location == undefined ? '' : location,
           image:
-            "https://firebasestorage.googleapis.com/v0/b/duantotnghiepreact.appspot.com/o/images%2Falbum%2F" +
-            user +
-            "%2F" +
-            uplink,
-          thoigian: ngay + " Tháng " + thang + " Năm " + nam,
+            uplink != undefined
+              ? 'https://firebasestorage.googleapis.com/v0/b/duantotnghiepreact.appspot.com/o/images%2Falbum%2F' +
+                user +
+                '%2F' +
+                uplink
+              : '',
+          thoigian: ngay + ' Tháng ' + thang + ' Năm ' + nam,
           user: user,
+          hoatdong: noidung1 != undefined ? noidung1 : '',
         });
       }
-      ToastAndroid.show("Đã chia sẻ bài viết", ToastAndroid.BOTTOM);
-      navigation.navigate("Profile");
+      ToastAndroid.show('Đã chia sẻ bài viết', ToastAndroid.BOTTOM);
+      navigation.navigate('Profile');
     }
   };
 
@@ -200,10 +212,9 @@ export const PostStatus = ({ route, navigation }) => {
           transparent={true}
           visible={modalVisible}
           onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
+            Alert.alert('Modal has been closed.');
             setModalVisible(!modalVisible);
-          }}
-        >
+          }}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={styles.modalText}>
@@ -213,22 +224,21 @@ export const PostStatus = ({ route, navigation }) => {
                 <Checkbox
                   value={isCheckedStatus}
                   onValueChange={setCheckedStatus}
-                  color={isCheckedStatus ? "#E94057" : undefined}
+                  color={isCheckedStatus ? '#E94057' : undefined}
                 />
-                <Text style={{ left: 5 }}>Dòng thời gian</Text>
+                <Text style={{left: 5}}>Dòng thời gian</Text>
               </View>
               <View style={styles.checkbox}>
                 <Checkbox
                   value={isCheckedStory}
                   onValueChange={setCheckedStory}
-                  color={isCheckedStory ? "#E94057" : undefined}
+                  color={isCheckedStory ? '#E94057' : undefined}
                 />
-                <Text style={{ left: 5 }}>Khoảnh khắc mới</Text>
+                <Text style={{left: 5}}>Khoảnh khắc mới</Text>
               </View>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
-                onPress={AddPost}
-              >
+                onPress={AddPost}>
                 <Text style={styles.textStyle}>Chia Sẻ</Text>
               </Pressable>
             </View>
@@ -241,45 +251,40 @@ export const PostStatus = ({ route, navigation }) => {
       <View style={styles.e}>
         <View
           style={{
-            width: "100%",
+            width: '100%',
             height: 70,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            borderBottomColor: "#ABABAB",
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            borderBottomColor: '#ABABAB',
             borderBottomWidth: 0.6,
-          }}
-        >
-          <View
-            style={{ flexDirection: "row", alignItems: "center", left: 20 }}
-          >
+          }}>
+          <View style={{flexDirection: 'row', alignItems: 'center', left: 20}}>
             <TouchableOpacity
               onPress={() => navigation.goBack()}
-              style={{ flexDirection: "row", alignItems: "center" }}
-            >
+              style={{flexDirection: 'row', alignItems: 'center'}}>
               <Image
-                style={{ width: 25, height: 25 }}
-                source={require("../../image/back.png")}
+                style={{width: 25, height: 25}}
+                source={require('../../image/back.png')}
               />
             </TouchableOpacity>
-            <Text style={{ fontSize: 23, left: 10, opacity: 0.7 }}>
+            <Text style={{fontSize: 23, left: 10, opacity: 0.7}}>
               Tạo bài viết
             </Text>
           </View>
-          <View style={{ width: 75, height: 45, opacity: 0.4 }}>
+          <View style={{width: 75, height: 45, opacity: 0.4}}>
             <TouchableOpacity
               onPress={openModal}
               style={{
-                width: "100%",
-                height: "100%",
+                width: '100%',
+                height: '100%',
                 right: 20,
-                backgroundColor: "#DCDCDC",
+                backgroundColor: '#DCDCDC',
                 borderRadius: 8,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Text style={{ fontSize: 16 }}>ĐĂNG</Text>
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text style={{fontSize: 16}}>ĐĂNG</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -287,20 +292,18 @@ export const PostStatus = ({ route, navigation }) => {
       <View style={styles.infomain}>
         <View style={styles.info}>
           <Image
-            style={{ width: 60, height: 60, borderRadius: 35 }}
-            source={{ uri: avt }}
+            style={{width: 60, height: 60, borderRadius: 35}}
+            source={{uri: avt}}
           />
           <View style={styles.tenmain}>
-            <View
-              style={{ flexDirection: "row", width: "90%", paddingRight: 5 }}
-            >
-              <Text style={{ fontSize: 16, fontWeight: "500" }}>
-                {name + " "} {noidung1}
-                <Text style={{ fontSize: 16 }}>
-                  {tinh != "" && tinh != null ? " tại " : null}
+            <View style={{flexDirection: 'row', width: '90%', paddingRight: 5}}>
+              <Text style={{fontSize: 18, fontWeight: '500'}}>
+                {name + ' '} {noidung1}
+                <Text style={{fontSize: 16}}>
+                  {tinh != '' && tinh != null ? ' tại ' : null}
                 </Text>
-                <Text style={{ fontSize: 16, fontWeight: "500" }}>
-                  {tinh != "" ? tinh : null}{" "}
+                <Text style={{fontSize: 16, fontWeight: '500'}}>
+                  {tinh != '' ? tinh : null}{' '}
                 </Text>
               </Text>
             </View>
@@ -309,164 +312,149 @@ export const PostStatus = ({ route, navigation }) => {
         <View style={styles.mainnhap}>
           <View
             style={{
-              width: "90%",
+              width: '90%',
               height: 100,
-              borderBottomColor: "#ABABAB",
+              borderBottomColor: '#ABABAB',
               borderBottomWidth: 0.5,
-              borderRightColor: "#ABABAB",
+              borderRightColor: '#ABABAB',
               borderRightWidth: 0.5,
-              borderLeftColor: "#ABABAB",
+              borderLeftColor: '#ABABAB',
               borderLeftWidth: 0.5,
-              borderTopColor: "#ABABAB",
+              borderTopColor: '#ABABAB',
               borderTopWidth: 0.5,
-              left: "5%",
+              left: '5%',
               borderRadius: 10,
-            }}
-          >
+            }}>
             <TextInput
               value={noidung}
               onChangeText={setnoidung}
-              style={{ left: 20, width: "90%", top: 5 }}
+              style={{left: 20, width: '90%', top: 5}}
               multiline={true}
-              placeholder="Bạn đang nghĩ gì?"
-            ></TextInput>
+              placeholder="Bạn đang nghĩ gì?"></TextInput>
           </View>
           {image == null ? (
-            <Image style={{ width: 0, height: 0 }} resizeMethod="auto" />
+            <Image style={{width: 0, height: 0}} resizeMethod="auto" />
           ) : (
             image && (
               <Image
                 style={styles.image}
                 resizeMethod="auto"
-                source={{ uri: image }}
+                source={{uri: image}}
               />
             )
           )}
           <View
             style={{
-              width: "90%",
+              width: '90%',
               height: 35,
 
               right: 0,
-              left: "5%",
+              left: '5%',
               top: 20,
-            }}
-          >
+            }}>
             <TouchableOpacity
               onPress={pickImage}
-              style={{ flexDirection: "row", alignItems: "center", left: 5 }}
-            >
+              style={{flexDirection: 'row', alignItems: 'center', left: 5}}>
               <Image
-                style={{ width: 30, height: 30, right: 10 }}
-                source={require("../../image/image.png")}
+                style={{width: 30, height: 30, right: 10}}
+                source={require('../../image/image.png')}
               />
-              <Text style={{ fontSize: 16, width: 100 }}>Ảnh/video</Text>
+              <Text style={{fontSize: 16, width: 100}}>Ảnh/video</Text>
             </TouchableOpacity>
           </View>
           <View
             style={{
-              width: "90%",
+              width: '90%',
               height: 35,
 
               right: 0,
-              justifyContent: "center",
-              left: "5%",
+              justifyContent: 'center',
+              left: '5%',
               top: 20,
-            }}
-          >
+            }}>
             <TouchableOpacity
-              style={{ flexDirection: "row", alignItems: "center", left: 5 }}
-              onPress={() => navigation.navigate("RoomCall")}
-            >
+              style={{flexDirection: 'row', alignItems: 'center', left: 5}}
+              onPress={() => navigation.navigate('RoomCall')}>
               <Image
-                style={{ width: 30, height: 30, right: 10 }}
-                source={require("../../image/friend.png")}
+                style={{width: 30, height: 30, right: 10}}
+                source={require('../../image/friend.png')}
               />
-              <Text style={{ fontSize: 16, width: 200 }}>Gắn thẻ bạn bè</Text>
+              <Text style={{fontSize: 16, width: 200}}>Phòng họp mặt</Text>
             </TouchableOpacity>
           </View>
           <View
             style={{
-              width: "90%",
+              width: '90%',
               height: 35,
 
               right: 0,
-              justifyContent: "center",
-              left: "5%",
+              justifyContent: 'center',
+              left: '5%',
               top: 20,
-            }}
-          >
+            }}>
             <TouchableOpacity
-              onPress={() => navigation.navigate("Camxuc")}
-              style={{ flexDirection: "row", alignItems: "center", left: 5 }}
-            >
+              onPress={() => navigation.navigate('Camxuc')}
+              style={{flexDirection: 'row', alignItems: 'center', left: 5}}>
               <Image
-                style={{ width: 30, height: 30, right: 10 }}
-                source={require("../../image/camxúc.png")}
+                style={{width: 30, height: 30, right: 10}}
+                source={require('../../image/camxúc.png')}
               />
-              <Text style={{ fontSize: 16, width: 200 }}>
-                Cảm xúc/hoạt động
-              </Text>
+              <Text style={{fontSize: 16, width: 200}}>Cảm xúc/hoạt động</Text>
             </TouchableOpacity>
           </View>
           <View
             style={{
-              width: "90%",
+              width: '90%',
               height: 35,
 
               right: 0,
-              justifyContent: "center",
-              left: "5%",
+              justifyContent: 'center',
+              left: '5%',
               top: 20,
-            }}
-          >
+            }}>
             <TouchableOpacity
-              style={{ flexDirection: "row", alignItems: "center", left: 5 }}
-              onPress={() => navigation.navigate("LiveVideo")}
-            >
+              style={{flexDirection: 'row', alignItems: 'center', left: 5}}
+              onPress={() => navigation.navigate('LiveVideo')}>
               <Image
-                style={{ width: 30, height: 30, right: 10 }}
-                source={require("../../image/live.png")}
+                style={{width: 30, height: 30, right: 10}}
+                source={require('../../image/live.png')}
               />
-              <Text style={{ fontSize: 16, width: 100 }}>Phát trực tiếp</Text>
+              <Text style={{fontSize: 16, width: 100}}>Phát trực tiếp</Text>
             </TouchableOpacity>
           </View>
           <View
             style={{
-              width: "90%",
+              width: '90%',
               height: 35,
 
               right: 0,
-              justifyContent: "center",
-              left: "5%",
+              justifyContent: 'center',
+              left: '5%',
               top: 20,
-            }}
-          >
+            }}>
             <TouchableOpacity
               onPress={getLocation}
-              style={{ flexDirection: "row", alignItems: "center", left: 5 }}
-            >
+              style={{flexDirection: 'row', alignItems: 'center', left: 5}}>
               <Image
-                style={{ width: 30, height: 30, right: 10 }}
-                source={require("../../image/map.png")}
+                style={{width: 30, height: 30, right: 10}}
+                source={require('../../image/map.png')}
               />
-              <Text style={{ fontSize: 16, width: 100 }}>Vị trí hiện tại</Text>
+              <Text style={{fontSize: 16, width: 100}}>Vị trí hiện tại</Text>
             </TouchableOpacity>
           </View>
           <TouchableOpacity
             onPress={openModal}
             style={{
-              width: "90%",
+              width: '90%',
               height: 50,
               top: 40,
-              alignItems: "center",
-              left: "5%",
-              backgroundColor: "#E94057",
-              justifyContent: "center",
+              alignItems: 'center',
+              left: '5%',
+              backgroundColor: '#E94057',
+              justifyContent: 'center',
               borderRadius: 15,
-            }}
-          >
-            <Text style={{ fontSize: 18, color: "white" }}>ĐĂNG</Text>
+            }}>
+            <Text style={{fontSize: 18, color: 'white'}}>ĐĂNG</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -477,23 +465,23 @@ export const PostStatus = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   checkbox: {
     marginBottom: 8,
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    alignSelf: "flex-start",
-    flexDirection: "row",
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
   },
   centeredView: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 10,
     padding: 15,
-    alignItems: "center",
-    shadowColor: "#000",
+    alignItems: 'center',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -509,19 +497,19 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   buttonOpen: {
-    backgroundColor: "#F194FF",
+    backgroundColor: '#F194FF',
   },
   buttonClose: {
-    backgroundColor: "#E94057",
+    backgroundColor: '#E94057',
   },
   textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center",
+    textAlign: 'center',
   },
   image: {
     left: 20,
@@ -531,46 +519,46 @@ const styles = StyleSheet.create({
     top: 10,
   },
   mainnhap: {
-    flexDirection: "column",
-    width: "100%",
+    flexDirection: 'column',
+    width: '100%',
     top: 20,
-    height: "100%",
+    height: '100%',
   },
   infomain: {
     top: 75,
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
   },
   tenmain: {
-    width: "100%",
+    width: '100%',
     height: 60,
     left: 10,
   },
   info: {
-    width: "90%",
+    width: '90%',
     height: 60,
     left: 20,
     paddingRight: 20,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   r: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
     fontSize: 20,
   },
   e: {
-    position: "absolute",
-    width: "100%",
+    position: 'absolute',
+    width: '100%',
     height: 40,
 
     top: 10,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   w: {
-    position: "absolute",
-    width: "100%",
+    position: 'absolute',
+    width: '100%',
     height: 100,
     left: 20,
     top: 90,
@@ -578,13 +566,13 @@ const styles = StyleSheet.create({
     opacity: 0.3,
   },
   q: {
-    position: "absolute",
-    width: "100%",
+    position: 'absolute',
+    width: '100%',
     height: 100,
   },
   tong: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "white",
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'white',
   },
 });

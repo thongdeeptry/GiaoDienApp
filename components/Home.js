@@ -32,6 +32,7 @@ import {
 import {UserContext} from '../src/layout/user/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {sendMess} from '../src/constants/sendMess';
+import SelectDropdown from 'react-native-select-dropdown';
 const wait = timeout => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
@@ -45,11 +46,14 @@ const Home = ({route, navigation}) => {
   const [id, setid] = useState();
   const [daco, setdaco] = useState();
   const [dacod, setdacod] = useState(false);
+  const [loc, setloc] = useState(1);
   const datapost = [];
   const dataStory = [];
   const dataLive = [];
+  const dataFriend = [];
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
+  const countries = ['Hôm Nay', 'Tất Cả'];
   useEffect(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
@@ -77,36 +81,72 @@ const Home = ({route, navigation}) => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
   }, []);
-  const referencer = ref(db, 'post');
-  onValue(referencer, snapshot => {
-    snapshot.forEach(childSnapshot => {
-      childSnapshot.forEach(childSnapshotq => {
-        const id = childSnapshotq.child('id').exportVal();
-        const name = childSnapshotq.child('name').exportVal();
-        const avt = childSnapshotq.child('avt').exportVal();
-        const noidung = childSnapshotq.child('noidung').exportVal();
-        const trangthai = childSnapshotq.child('checkin').exportVal();
-        const thoigian = childSnapshotq.child('thoigian').exportVal();
-        const image = childSnapshotq.child('image').exportVal();
-        const user = childSnapshotq.child('user').exportVal();
-
-        datapost.push({
-          id: id,
-          name: name,
-          avt: avt,
-          noidung: noidung,
-          checkin: trangthai,
-          thoigian: thoigian,
-          image: image,
-          user: user,
-        });
-      });
-    });
-  });
   const d = new Date();
   const ngay = d.getDate();
   const thang = d.getMonth() + 1;
   const nam = d.getFullYear();
+  const referencebanbe = ref(db, 'banbe/' + user);
+  onValue(referencebanbe, childSnapshot1 => {
+    childSnapshot1.forEach(snapshot1 => {
+      const id = snapshot1.child('id').val();
+      dataFriend.push(id);
+    });
+  });
+
+  const referencer = ref(db, 'post');
+  onValue(referencer, snapshot => {
+    snapshot.forEach(childSnapshot => {
+      childSnapshot.forEach(childSnapshotq => {
+        if (loc == 1) {
+          const id = childSnapshotq.child('id').exportVal();
+          const name = childSnapshotq.child('name').exportVal();
+          const avt = childSnapshotq.child('avt').exportVal();
+          const noidung = childSnapshotq.child('noidung').exportVal();
+          const trangthai = childSnapshotq.child('checkin').exportVal();
+          const thoigian = childSnapshotq.child('thoigian').exportVal();
+          const image = childSnapshotq.child('image').exportVal();
+          const user = childSnapshotq.child('user').exportVal();
+
+          datapost.push({
+            id: id,
+            name: name,
+            avt: avt,
+            noidung: noidung,
+            checkin: trangthai,
+            thoigian: thoigian,
+            image: image,
+            user: user,
+          });
+        } else {
+          if (
+            childSnapshotq.child('thoigian').exportVal() ==
+            ngay + ' Tháng ' + thang + ' Năm ' + nam
+          ) {
+            const id = childSnapshotq.child('id').exportVal();
+            const name = childSnapshotq.child('name').exportVal();
+            const avt = childSnapshotq.child('avt').exportVal();
+            const noidung = childSnapshotq.child('noidung').exportVal();
+            const trangthai = childSnapshotq.child('checkin').exportVal();
+            const thoigian = childSnapshotq.child('thoigian').exportVal();
+            const image = childSnapshotq.child('image').exportVal();
+            const user = childSnapshotq.child('user').exportVal();
+
+            datapost.push({
+              id: id,
+              name: name,
+              avt: avt,
+              noidung: noidung,
+              checkin: trangthai,
+              thoigian: thoigian,
+              image: image,
+              user: user,
+            });
+          }
+        }
+      });
+    });
+  });
+
   const referencerr = ref(db, 'story');
   onValue(referencerr, snapshot => {
     snapshot.forEach(childSnapshot => {
@@ -138,22 +178,27 @@ const Home = ({route, navigation}) => {
   const referencerrs = ref(db, 'livestream');
   onValue(referencerrs, snapshot => {
     snapshot.forEach(childSnapshotq => {
-      const id = childSnapshotq.child('id').exportVal();
-      const name = childSnapshotq.child('name').exportVal();
-      const avt = childSnapshotq.child('avt').exportVal();
-      const token = childSnapshotq.child('token').exportVal();
-      const channel = childSnapshotq.child('channel').exportVal();
-      const thoigian = childSnapshotq.child('ngaytao').exportVal();
-      const luotxem = childSnapshotq.child('luotxem').exportVal();
-      dataLive.push({
-        id: id,
-        name: name,
-        avt: avt,
-        token: token,
-        channel: channel,
-        thoigian: thoigian,
-        luotxem: luotxem,
-      });
+      if (
+        childSnapshotq.child('ngaytao').exportVal() ==
+        ngay + ' Tháng ' + thang + ' Năm ' + nam
+      ) {
+        const id = childSnapshotq.child('id').exportVal();
+        const name = childSnapshotq.child('name').exportVal();
+        const avt = childSnapshotq.child('avt').exportVal();
+        const token = childSnapshotq.child('token').exportVal();
+        const channel = childSnapshotq.child('channel').exportVal();
+        const thoigian = childSnapshotq.child('ngaytao').exportVal();
+        const luotxem = childSnapshotq.child('luotxem').exportVal();
+        dataLive.push({
+          id: id,
+          name: name,
+          avt: avt,
+          token: token,
+          channel: channel,
+          thoigian: thoigian,
+          luotxem: luotxem,
+        });
+      }
     });
   });
 
@@ -231,7 +276,7 @@ const Home = ({route, navigation}) => {
             borderRightWidth: 0.5,
             borderTopWidth: 0.5,
             borderRadius: 15,
-            marginTop: 20,
+            marginTop: 10,
           },
           item == '' ? {width: 0, height: 0, display: 'none'} : null,
         ]}>
@@ -318,13 +363,12 @@ const Home = ({route, navigation}) => {
           {item.image != '' ? (
             <Image
               style={{
-                width: '90%',
-                height: 160,
+                width: '100%',
+                height: 330,
                 alignItems: 'center',
                 alignSelf: 'center',
                 alignContent: 'center',
                 justifyContent: 'center',
-                borderRadius: 15,
                 marginBottom: 10,
               }}
               source={{uri: item.image}}
@@ -530,11 +574,47 @@ const Home = ({route, navigation}) => {
         {/* <View style={styles.addContainer}>
                 </View> */}
 
-        <View style={{}}>
-          <Text style={{fontSize: 19, paddingHorizontal: 20}}>
-            Bài viết và hoạt động
-          </Text>
+        <View>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <Text style={{fontSize: 19, paddingHorizontal: 20}}>
+              Bài viết và hoạt động
+            </Text>
+            <SelectDropdown
+              data={countries}
+              buttonStyle={{
+                width: 100,
+                height: 20,
+                right: 0,
+                backgroundColor: 'white',
+              }}
+              buttonTextStyle={{fontSize: 12, color: 'blue'}}
+              rowTextStyle={{fontSize: 12}}
+              rowStyle={{height: 40}}
+              defaultButtonText={'Lọc bài viết'}
+              onSelect={(selectedItem, index) => {
+                setloc(index);
+                console.log(selectedItem, loc);
+              }}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                // text represented after item is selected
+                // if data array is an array of objects then return selectedItem.property to render after item is selected
+                return selectedItem;
+              }}
+              rowTextForSelection={(item, index) => {
+                // text represented for each item in dropdown
+                // if data array is an array of objects then return item.property to represent item in dropdown
+                return item;
+              }}
+            />
+          </View>
           <View>
+            <Text
+              style={[
+                {textAlign: 'center', top: 0},
+                datapost == [] ? {top: 0} : null,
+              ]}>
+              {datapost.length == 0 ? 'Không có bài viết nào' : ''}
+            </Text>
             <FlatList
               horizontal
               style={[{}, dataLive.length > 0 ? styles.addContainerlive : null]}
@@ -578,6 +658,7 @@ const Home = ({route, navigation}) => {
             <FlatList
               data={datapost}
               renderItem={renderItem}
+              inverted
               keyExtractor={item => Math.random()}
             />
           </View>

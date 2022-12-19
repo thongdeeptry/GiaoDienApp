@@ -635,6 +635,7 @@ export const ProfileFriend = ({route, navigation}) => {
 
             <View style={{width: '90%', paddingBottom: 110}}>
               <FlatList
+                inverted
                 contentContainerStyle={{
                   flexDirection: 'column',
                 }}
@@ -712,13 +713,12 @@ export const ProfileFriend = ({route, navigation}) => {
                       {item.image != '' ? (
                         <Image
                           style={{
-                            width: '90%',
-                            height: 160,
+                            width: '100%',
+                            height: 330,
                             alignItems: 'center',
                             alignSelf: 'center',
                             alignContent: 'center',
                             justifyContent: 'center',
-                            borderRadius: 15,
                             marginBottom: 10,
                           }}
                           source={{uri: item.image}}

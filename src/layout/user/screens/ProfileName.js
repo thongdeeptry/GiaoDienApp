@@ -60,11 +60,12 @@ export const ProfileName = ({route, navigation}) => {
     if (upload != '') {
       const avt = upload;
       const name = ho + ' ' + ten;
+      console.log('name + ' + name);
       const ngaysinh = moment(selectedDate).format('DD/MM/YYYY');
       var year = new Date().getFullYear();
       const nam = moment(selectedDate).format('YYYY');
       const tuoi = year - nam;
-      if (name == '' || ngaysinh == '') {
+      if (ten == '' || ngaysinh == '' || ho == '') {
         ToastAndroid.show('Chưa Đầy Đủ Thông Tin', ToastAndroid.CENTER);
       } else {
         if (sdt != undefined && tuoi > 12) {

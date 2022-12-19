@@ -80,25 +80,26 @@ export const Profile = props => {
     });
     setisLoading(true);
     const reference = ref(db, 'users/' + user);
-    onValue(reference, childSnapshot => {
-      const namepr = childSnapshot.child('name').val();
-      const avtpr = childSnapshot.child('avt').val();
-      const tuoipr = childSnapshot.child('tuoi').val();
-      const diachipr = childSnapshot.child('diachi').val();
-      const ngaysinhpr = childSnapshot.child('ngaysinh').val();
-      const gioitinhpr = childSnapshot.child('gioitinh').val();
-      const nghenghiep = childSnapshot.child('nghenghiep').val();
-      setname(namepr);
-      setavt(avtpr);
-      settick(childSnapshot.child('tick').val());
-      setdiachi(diachipr);
-      settuoi(tuoipr);
-      setgioitinh(gioitinhpr);
-      setngaysinh(ngaysinhpr);
-      setnghenghiep(nghenghiep);
-      settieusum(childSnapshot.child('tieusu').val());
-      setisLoading(false);
-    });
+    reference,
+      childSnapshot => {
+        const namepr = childSnapshot.child('name').val();
+        const avtpr = childSnapshot.child('avt').val();
+        const tuoipr = childSnapshot.child('tuoi').val();
+        const diachipr = childSnapshot.child('diachi').val();
+        const ngaysinhpr = childSnapshot.child('ngaysinh').val();
+        const gioitinhpr = childSnapshot.child('gioitinh').val();
+        const nghenghiep = childSnapshot.child('nghenghiep').val();
+        setname(namepr);
+        setavt(avtpr);
+        settick(childSnapshot.child('tick').val());
+        setdiachi(diachipr);
+        settuoi(tuoipr);
+        setgioitinh(gioitinhpr);
+        setngaysinh(ngaysinhpr);
+        setnghenghiep(nghenghiep);
+        settieusum(childSnapshot.child('tieusu').val());
+        setisLoading(false);
+      };
   }, []);
   const referencer = ref(db, 'post/' + user);
   onValue(referencer, snapshot => {
@@ -777,6 +778,7 @@ export const Profile = props => {
                 contentContainerStyle={{
                   flexDirection: 'column',
                 }}
+                inverted
                 data={datas}
                 renderItem={({item, index}) => (
                   <Pressable
@@ -870,13 +872,12 @@ export const Profile = props => {
                       {item.image != '' ? (
                         <Image
                           style={{
-                            width: '90%',
-                            height: 160,
+                            width: '100%',
+                            height: 330,
                             alignItems: 'center',
                             alignSelf: 'center',
                             alignContent: 'center',
                             justifyContent: 'center',
-                            borderRadius: 15,
                             marginBottom: 10,
                           }}
                           source={{uri: item.image}}
