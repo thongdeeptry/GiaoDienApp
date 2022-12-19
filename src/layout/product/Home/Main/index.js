@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   Animated,
   PanResponder,
@@ -7,15 +7,15 @@ import {
   Image,
   Text,
   TouchableOpacity,
-} from "react-native";
+} from 'react-native';
 
-import Card from "../Card";
-import Footer from "../Footer";
-import { ACTION_OFFSET, CARD } from "../utils/constants";
-import { pets as petsArray } from "./data";
-import { styles } from "./styles";
+import Card from '../Card';
+import Footer from '../Footer';
+import {ACTION_OFFSET, CARD} from '../utils/constants';
+import {pets as petsArray} from './data';
+import {styles} from './styles';
 
-export default function Main({ route, navigation }) {
+export default function Main({route, navigation}) {
   const [pets, setPets] = useState(petsArray);
   const swipe = useRef(new Animated.ValueXY()).current;
   const tiltSign = useRef(new Animated.Value(1)).current;
@@ -28,11 +28,11 @@ export default function Main({ route, navigation }) {
 
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: () => true,
-    onPanResponderMove: (_, { dx, dy, y0 }) => {
-      swipe.setValue({ x: dx, y: dy });
+    onPanResponderMove: (_, {dx, dy, y0}) => {
+      swipe.setValue({x: dx, y: dy});
       tiltSign.setValue(y0 > CARD.HEIGHT / 2 ? 1 : -1);
     },
-    onPanResponderRelease: (_, { dx, dy }) => {
+    onPanResponderRelease: (_, {dx, dy}) => {
       const direction = Math.sign(dx);
       const isActionActive = Math.abs(dx) > ACTION_OFFSET;
 
@@ -59,43 +59,42 @@ export default function Main({ route, navigation }) {
   });
 
   const removeTopCard = useCallback(() => {
-    setPets((prevState) => prevState.slice(1));
-    swipe.setValue({ x: 0, y: 0 });
+    setPets(prevState => prevState.slice(1));
+    swipe.setValue({x: 0, y: 0});
   }, [swipe]);
 
   const handleChoice = useCallback(
-    (direction) => {
+    direction => {
       Animated.timing(swipe.x, {
         toValue: direction * CARD.OUT_OF_SCREEN,
         duration: 400,
         useNativeDriver: true,
       }).start(removeTopCard);
     },
-    [removeTopCard, swipe.x]
+    [removeTopCard, swipe.x],
   );
 
   return (
     <View style={styles.container}>
       {pets
-        .map(({ id, name, source, tuoi, diachi }, index) => {
+        .map(({id, name, source, tuoi, diachi, tick}, index) => {
           const isFirst = index === 0;
           const dragHandlers = isFirst ? panResponder.panHandlers : {};
           return (
             <Pressable
-              onPress={() => navigation.navigate("ProfileFriend", { id })}
-              style={{ width: "90%", height: "100%", position: "absolute" }}
-            >
+              onPress={() => navigation.navigate('ProfileFriend', {id})}
+              style={{width: '90%', height: '100%', position: 'absolute'}}>
               <Card
                 key={id}
                 name={name}
                 source={source}
                 tuoi={tuoi}
                 diachi={diachi}
+                tick={tick}
                 isFirst={isFirst}
                 swipe={swipe}
                 tiltSign={tiltSign}
-                {...dragHandlers}
-              ></Card>
+                {...dragHandlers}></Card>
             </Pressable>
           );
         })

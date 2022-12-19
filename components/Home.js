@@ -116,6 +116,7 @@ const Home = ({route, navigation}) => {
             thoigian: thoigian,
             image: image,
             user: user,
+            tick: childSnapshotq.child('tick').exportVal(),
           });
         } else {
           if (
@@ -140,6 +141,7 @@ const Home = ({route, navigation}) => {
               thoigian: thoigian,
               image: image,
               user: user,
+              tick: childSnapshotq.child('tick').exportVal(),
             });
           }
         }
@@ -170,6 +172,7 @@ const Home = ({route, navigation}) => {
             checkin: trangthai,
             thoigian: thoigian,
             image: image,
+            tick: childSnapshotq.child('tick').exportVal(),
           });
         }
       });
@@ -328,9 +331,19 @@ const Home = ({route, navigation}) => {
                   justifyContent: 'space-between',
                   height: 35,
                 }}>
-                <Text style={{fontSize: 16, fontWeight: '500'}}>
-                  {item.name}
-                </Text>
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={{fontSize: 16, fontWeight: '500'}}>
+                    {item.name}
+                  </Text>
+                  {item.tick == 'true' ? (
+                    <Image
+                      style={{width: 20, height: 20, bottom: 2, left: 2}}
+                      source={require('../src/image/verify.png')}
+                    />
+                  ) : (
+                    <></>
+                  )}
+                </View>
                 <Text style={{fontSize: 14}}>{item.thoigian}</Text>
               </View>
             </View>

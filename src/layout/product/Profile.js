@@ -80,26 +80,25 @@ export const Profile = props => {
     });
     setisLoading(true);
     const reference = ref(db, 'users/' + user);
-    reference,
-      childSnapshot => {
-        const namepr = childSnapshot.child('name').val();
-        const avtpr = childSnapshot.child('avt').val();
-        const tuoipr = childSnapshot.child('tuoi').val();
-        const diachipr = childSnapshot.child('diachi').val();
-        const ngaysinhpr = childSnapshot.child('ngaysinh').val();
-        const gioitinhpr = childSnapshot.child('gioitinh').val();
-        const nghenghiep = childSnapshot.child('nghenghiep').val();
-        setname(namepr);
-        setavt(avtpr);
-        settick(childSnapshot.child('tick').val());
-        setdiachi(diachipr);
-        settuoi(tuoipr);
-        setgioitinh(gioitinhpr);
-        setngaysinh(ngaysinhpr);
-        setnghenghiep(nghenghiep);
-        settieusum(childSnapshot.child('tieusu').val());
-        setisLoading(false);
-      };
+    onValue(reference, childSnapshot => {
+      const namepr = childSnapshot.child('name').val();
+      const avtpr = childSnapshot.child('avt').val();
+      const tuoipr = childSnapshot.child('tuoi').val();
+      const diachipr = childSnapshot.child('diachi').val();
+      const ngaysinhpr = childSnapshot.child('ngaysinh').val();
+      const gioitinhpr = childSnapshot.child('gioitinh').val();
+      const nghenghiep = childSnapshot.child('nghenghiep').val();
+      setname(namepr);
+      setavt(avtpr);
+      settick(childSnapshot.child('tick').val());
+      setdiachi(diachipr);
+      settuoi(tuoipr);
+      setgioitinh(gioitinhpr);
+      setngaysinh(ngaysinhpr);
+      setnghenghiep(nghenghiep);
+      settieusum(childSnapshot.child('tieusu').val());
+      setisLoading(false);
+    });
   }, []);
   const referencer = ref(db, 'post/' + user);
   onValue(referencer, snapshot => {
@@ -121,6 +120,7 @@ export const Profile = props => {
         thoigian: thoigian,
         image: image,
         user: user,
+        tick: childSnapshot.child('tick').exportVal(),
       });
     });
   });
@@ -432,7 +432,7 @@ export const Profile = props => {
                 <Text style={styles.ten}>{name}</Text>
                 {tick == 'true' ? (
                   <Image
-                    style={{width: 25, height: 25, top: 31, left: 20}}
+                    style={{width: 20, height: 20, top: 33, left: 20}}
                     source={require('../../image/verify.png')}
                   />
                 ) : (
@@ -837,9 +837,24 @@ export const Profile = props => {
                               justifyContent: 'space-between',
                               height: 35,
                             }}>
-                            <Text style={{fontSize: 16, fontWeight: '500'}}>
-                              {name}
-                            </Text>
+                            <View style={{flexDirection: 'row'}}>
+                              <Text style={{fontSize: 16, fontWeight: '500'}}>
+                                {name}
+                              </Text>
+                              {item.tick == 'true' ? (
+                                <Image
+                                  style={{
+                                    width: 20,
+                                    height: 20,
+                                    bottom: 2,
+                                    left: 2,
+                                  }}
+                                  source={require('../../image/verify.png')}
+                                />
+                              ) : (
+                                <></>
+                              )}
+                            </View>
                             <Text style={{fontSize: 14}}>{item.thoigian}</Text>
                           </View>
                         </View>

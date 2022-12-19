@@ -124,6 +124,7 @@ export const ProfileFriend = ({route, navigation}) => {
         thoigian: thoigian,
         image: image,
         user: user,
+        tick: childSnapshot.child('tick').exportVal(),
       });
     });
   });
@@ -678,9 +679,24 @@ export const ProfileFriend = ({route, navigation}) => {
                               justifyContent: 'space-between',
                               height: 35,
                             }}>
-                            <Text style={{fontSize: 16, fontWeight: '500'}}>
-                              {name}
-                            </Text>
+                            <View style={{flexDirection: 'row'}}>
+                              <Text style={{fontSize: 16, fontWeight: '500'}}>
+                                {name}
+                              </Text>
+                              {item.tick == 'true' ? (
+                                <Image
+                                  style={{
+                                    width: 25,
+                                    height: 25,
+                                    bottom: 5,
+                                    left: 5,
+                                  }}
+                                  source={require('../../image/verify.png')}
+                                />
+                              ) : (
+                                <></>
+                              )}
+                            </View>
                             <Text style={{fontSize: 14}}>{item.thoigian}</Text>
                           </View>
                         </View>

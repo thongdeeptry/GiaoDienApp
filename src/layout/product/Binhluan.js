@@ -59,6 +59,8 @@ const Binhluan = ({navigation, route}) => {
   const db = getDatabase();
   const [refreshing, setRefreshing] = React.useState(false);
   const [daco, setdaco] = useState(false);
+  const [tick, settick] = useState();
+  const [tickpo, settickpo] = useState();
   const [dacod, setdacod] = useState(false);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -73,14 +75,15 @@ const Binhluan = ({navigation, route}) => {
       const avtpr = childSnapshot.child('avt').val();
       setname(namepr);
       setavt(avtpr);
+      settick(childSnapshot.child('tick').exportVal());
     });
     const references = ref(db, 'users/' + userID);
     onValue(references, childSnapshot => {
       const tokenpr = childSnapshot.child('token').val();
       settokendvCr(tokenpr);
     });
-    const referencer = ref(db, 'post/' + userID + '/' + idPost);
-    onValue(referencer, snapshot => {
+    const referencerd = ref(db, 'post/' + userID + '/' + idPost);
+    onValue(referencerd, snapshot => {
       const id = snapshot.child('id').exportVal();
       const name = snapshot.child('name').exportVal();
       const avt = snapshot.child('avt').exportVal();
@@ -96,6 +99,7 @@ const Binhluan = ({navigation, route}) => {
       setthoigian(thoigian);
       setimage(image);
       setcheckin(snapshot.child('checkin').val());
+      settickpo(snapshot.child('tick').exportVal());
     });
   }, []);
   const referencer = ref(db, 'binhluan/' + userID + '/' + idPost);
@@ -116,6 +120,7 @@ const Binhluan = ({navigation, route}) => {
         thoigian: thoigian,
         userID: userIDk,
         idCmt: idCmt,
+        tick: tick,
       });
     });
   });
@@ -142,6 +147,7 @@ const Binhluan = ({navigation, route}) => {
       thoigian: ngay + ' Tháng ' + thang + ' Năm ' + nam,
       name: name,
       avt: avt,
+      tick: tick,
     });
     ToastAndroid.show('Đã đăng bình luận', ToastAndroid.BOTTOM);
     sendMess(
@@ -343,7 +349,24 @@ const Binhluan = ({navigation, route}) => {
                     justifyContent: 'space-between',
                     height: 35,
                   }}>
-                  <Text style={{fontSize: 16, fontWeight: '500'}}>{nameP}</Text>
+                  <View style={{flexDirection: 'row'}}>
+                    <Text style={{fontSize: 16, fontWeight: '500'}}>
+                      {nameP}
+                    </Text>
+                    {tickpo == 'true' ? (
+                      <Image
+                        style={{
+                          width: 20,
+                          height: 20,
+                          bottom: 2,
+                          left: 2,
+                        }}
+                        source={require('../../image/verify.png')}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                  </View>
                   <Text style={{fontSize: 14}}>{thoigian}</Text>
                 </View>
               </View>
@@ -493,6 +516,18 @@ const Binhluan = ({navigation, route}) => {
                     }}>
                     {item.name}
                   </Text>
+                  {item.tick == 'true' ? (
+                    <Image
+                      style={{
+                        width: 15,
+                        height: 15,
+                        left: 2,
+                      }}
+                      source={require('../../image/verify.png')}
+                    />
+                  ) : (
+                    <></>
+                  )}
                   {item.userID == user ? (
                     <TouchableOpacity
                       style={{

@@ -38,6 +38,7 @@ export const PostStatus = ({route, navigation}) => {
   const [name, setname] = useState();
   const [avt, setavt] = useState();
   const [tuoi, settuoi] = useState();
+  const [tick, settick] = useState();
   const [diachi, setdiachi] = useState();
   const [ngaysinh, setngaysinh] = useState();
   const [gioitinh, setgioitinh] = useState();
@@ -65,7 +66,7 @@ export const PostStatus = ({route, navigation}) => {
     onValue(reference, childSnapshot => {
       const namepr = childSnapshot.child('name').val();
       const avtpr = childSnapshot.child('avt').val();
-
+      settick(childSnapshot.child('tick').val());
       setname(namepr);
       setavt(avtpr);
     });
@@ -176,6 +177,7 @@ export const PostStatus = ({route, navigation}) => {
           thoigian: ngay + ' Tháng ' + thang + ' Năm ' + nam,
           user: user,
           hoatdong: noidung1 != undefined ? noidung1 : '',
+          tick: tick,
         });
       }
       if (isCheckedStory == true) {
@@ -196,6 +198,7 @@ export const PostStatus = ({route, navigation}) => {
           thoigian: ngay + ' Tháng ' + thang + ' Năm ' + nam,
           user: user,
           hoatdong: noidung1 != undefined ? noidung1 : '',
+          tick: tick,
         });
       }
       ToastAndroid.show('Đã chia sẻ bài viết', ToastAndroid.BOTTOM);

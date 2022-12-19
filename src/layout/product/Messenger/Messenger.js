@@ -197,7 +197,7 @@ function Messenger(props) {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         inverted
-        keyExtractor={(item, index) => index}
+        // keyExtractor={(item, index) => index}
         data={DataHis == [] ? [] : DataHis.reverse()} //chatHistory.reverse()
         renderItem={({item}) => (
           <MessengerItem
