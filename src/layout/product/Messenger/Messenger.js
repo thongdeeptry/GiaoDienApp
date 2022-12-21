@@ -175,6 +175,7 @@ function Messenger(props) {
         flexDirection: 'column',
         flex: 1,
         paddingBottom: 100,
+        backgroundColor: 'white',
       }}>
       <UIHeader
         title={nameu}
@@ -192,6 +193,7 @@ function Messenger(props) {
         style={{
           flex: 1,
           marginBottom: 20,
+          backgroundColor: 'white',
         }}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

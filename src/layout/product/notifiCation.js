@@ -65,6 +65,7 @@ export default notifiCation = ({route, navigation}) => {
       style={{
         width: '100%',
         flexDirection: 'column',
+        backgroundColor: 'white',
       }}>
       <View
         style={{
@@ -74,12 +75,12 @@ export default notifiCation = ({route, navigation}) => {
           paddingHorizontal: 20,
         }}>
         <Text
-          style={{fontSize: 20, color: '#E94057', letterSpacing: 1, top: 10}}>
+          style={{fontSize: 22, color: '#E94057', letterSpacing: 1, top: 5}}>
           Thông báo
         </Text>
       </View>
       <ScrollView
-        style={{marginBottom: 70}}
+        style={{marginBottom: 70, top: 10}}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
@@ -101,7 +102,7 @@ export default notifiCation = ({route, navigation}) => {
                 borderTopWidth: 0.5,
                 borderRadius: 15,
                 paddingVertical: 5,
-                marginTop: 10,
+                marginBottom: 10,
               }}>
               <View style={styles.info}>
                 <TouchableOpacity

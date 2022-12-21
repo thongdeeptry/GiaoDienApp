@@ -90,8 +90,7 @@ const styles = StyleSheet.create({
     bottom: 50,
     textAlign: 'center',
     width: '100%',
-
-    height: 57,
+    height: 20,
     justifyContent: 'space-around',
     flexDirection: 'row',
   },
@@ -139,11 +138,11 @@ const styles = StyleSheet.create({
   },
 
   khacText: {
-    position: 'absolute',
     textAlign: 'center',
     fontSize: 13,
     fontStyle: 'normal',
     fontWeight: '400',
+    bottom: 50,
   },
   khac: {
     position: 'absolute',

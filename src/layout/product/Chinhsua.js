@@ -11,6 +11,7 @@ import {
   ToastAndroid,
   Modal,
   Alert,
+  KeyboardAvoidingView,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import React, {useEffect, useState} from 'react';
@@ -140,7 +141,10 @@ const Chinhsua = ({navigation, route}) => {
     }
   };
   return (
-    <View style={{height: '100%', width: '100%'}}>
+    <ScrollView
+      contentContainerStyle={{flexGrow: 1}}
+      showsVerticalScrollIndicator={false}
+      style={{width: '100%', height: '100%'}}>
       <View style={styles.centeredView}>
         <Modal
           animationType="slide"
@@ -216,6 +220,7 @@ const Chinhsua = ({navigation, route}) => {
           <Text style={styles.id}>{id}</Text>
         </View>
       </View>
+
       <View style={styles.lon}>
         <View>
           <View style={styles.con}>
@@ -300,25 +305,13 @@ const Chinhsua = ({navigation, route}) => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{top: 50}}>
-          <View style={styles.con1}>
-            <Text style={styles.q1}>Đổi mật khẩu</Text>
-
-            <TouchableOpacity onPress={() => navigation.navigate('ChangePass')}>
-              <Image
-                style={styles.edit1}
-                source={require('../../image/edit-4.png')}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={{top: 50}}>
+        <View style={{width: '100%', top: 40}}>
           <TouchableOpacity style={styles.saveBtn} onPress={openModal}>
             <Text style={styles.save}>Lưu</Text>
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -352,7 +345,7 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     position: 'absolute',
-    top: 250,
+    top: 230,
   },
 
   edit: {

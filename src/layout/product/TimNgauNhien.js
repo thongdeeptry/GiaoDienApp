@@ -66,7 +66,7 @@ export const TimNgauNhien = ({route, navigation}) => {
   const GhepDoi = () => {
     dataghep.splice(0, dataghep.length);
     dataghep = [];
-    let ids = uuid();
+    let ids = user;
     ToastAndroid.show(
       'Đang kết nối những người xung quanh',
       ToastAndroid.BOTTOM,
@@ -95,7 +95,12 @@ export const TimNgauNhien = ({route, navigation}) => {
       const randomID = Math.floor(Math.random() * dataghep.length);
       setrandomidd(dataghep[randomID]);
       console.log('randomid = ' + randomidd);
-      if (randomid != '') {
+      if (
+        randomid != '' &&
+        randomid != null &&
+        randomid != undefined &&
+        dataghep.length != 0
+      ) {
         const reference = ref(db, 'hangcho/' + randomidd + '/' + user);
         update(reference, {
           id: user,
@@ -147,17 +152,15 @@ export const TimNgauNhien = ({route, navigation}) => {
         resizeMode="cover"></Image>
 
       <View style={styles.custominfo}>
-        <TouchableOpacity onPress={() => navigation.navigate('SayHello', {id})}>
-          <Image
-            style={{
-              width: 70,
-              height: 70,
-              borderTopLeftRadius: 15,
-              borderBottomLeftRadius: 15,
-            }}
-            source={{uri: avt}}
-          />
-        </TouchableOpacity>
+        <Image
+          style={{
+            width: 70,
+            height: 70,
+            borderTopLeftRadius: 15,
+            borderBottomLeftRadius: 15,
+          }}
+          source={{uri: avt}}
+        />
         <View style={{flexDirection: 'column'}}>
           <View style={{flexDirection: 'row'}}>
             <Text style={{fontSize: 20, fontWeight: '500', top: 5, left: 10}}>
@@ -182,14 +185,29 @@ export const TimNgauNhien = ({route, navigation}) => {
             {diachi}
           </Text>
         </View>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('SayHello', {id})}
+          style={{position: 'absolute', right: 5}}>
+          <Image
+            style={{
+              width: 30,
+              height: 30,
+              borderTopLeftRadius: 15,
+              borderBottomLeftRadius: 15,
+              top: 20,
+            }}
+            source={require('../../image/next.png')}
+          />
+        </TouchableOpacity>
       </View>
+
       <View
         style={{
           width: '100%',
           flexDirection: 'row',
           justifyContent: 'space-around',
           height: 40,
-          bottom: 80,
+          bottom: 70,
           position: 'absolute',
         }}>
         <TouchableOpacity
@@ -236,7 +254,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     opacity: 0.9,
     position: 'absolute',
-    top: 40,
+    top: 20,
     flexDirection: 'row',
   },
   hinh: {

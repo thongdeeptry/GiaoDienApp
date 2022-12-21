@@ -78,12 +78,12 @@ export const Register = props => {
         handleChange,
         setFieldTouched,
       }) => (
-        <KeyboardAvoidingView
-          style={{width: '100%', height: '100%', backgroundColor: 'white'}}>
-          <ScrollView
-            contentContainerStyle={{flexGrow: 1}}
-            showsVerticalScrollIndicator={false}
-            style={{width: '100%', height: '100%'}}>
+        <ScrollView
+          contentContainerStyle={{flexGrow: 1}}
+          showsVerticalScrollIndicator={false}
+          style={{width: '100%', height: '100%'}}>
+          <KeyboardAvoidingView
+            style={{width: '100%', height: '100%', backgroundColor: 'white'}}>
             <View style={styles.container}>
               <View style={styles.mainplanta}>
                 <Text style={styles.textplanta}>GenzLove</Text>
@@ -149,9 +149,7 @@ export const Register = props => {
                       placeholder="Mật khẩu"
                       value={values.password}
                       onChangeText={handleChange('password')}
-                      multiline={true}
                       maxLength={100}
-                      setFieldTouched={password}
                       textContentType="password"
                       secureTextEntry={true}></TextInput>
                   </View>
@@ -204,15 +202,15 @@ export const Register = props => {
                 </View>
               </View>
             </View>
-            <View style={styles.mailnut1}>
-              <TouchableOpacity
-                style={styles.nut1}
-                onPress={() => navigation.navigate('Login')}>
-                <Text style={styles.nutText1}>Đăng Nhập</Text>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
+          </KeyboardAvoidingView>
+          <View style={styles.mailnut1}>
+            <TouchableOpacity
+              style={styles.nut1}
+              onPress={() => navigation.navigate('Login')}>
+              <Text style={styles.nutText1}>Đăng Nhập</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       )}
     </Formik>
   );
@@ -256,10 +254,10 @@ const styles = StyleSheet.create({
   },
 
   mailnut1: {
-    position: 'absolute',
     width: '100%',
     paddingHorizontal: 30,
     bottom: 20,
+    position: 'absolute',
   },
   nut1: {
     width: '100%',

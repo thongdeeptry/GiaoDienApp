@@ -159,6 +159,7 @@ function Chat(props) {
     <View
       style={{
         flexDirection: 'column',
+        backgroundColor: 'white',
       }}>
       <UIHeader
         title={'Tin Nhắn'}
@@ -174,6 +175,7 @@ function Chat(props) {
           width: '100%',
           paddingHorizontal: 20,
           height: 60,
+          backgroundColor: 'white',
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -185,7 +187,7 @@ function Chat(props) {
             flexDirection: 'column',
             alignItems: 'center',
             width: '30%',
-            elevation: 10,
+            elevation: 5,
             backgroundColor: 'white',
             borderRadius: 10,
           }}
@@ -202,7 +204,7 @@ function Chat(props) {
             flexDirection: 'column',
             alignItems: 'center',
             width: '30%',
-            elevation: 10,
+            elevation: 5,
             backgroundColor: 'white',
             borderRadius: 10,
           }}>
@@ -218,10 +220,11 @@ function Chat(props) {
             flexDirection: 'column',
             alignItems: 'center',
             width: '30%',
-            elevation: 10,
+            elevation: 5,
             backgroundColor: 'white',
             borderRadius: 10,
-          }}>
+          }}
+          onPress={() => navigate('AllRoomCall')}>
           <Image
             style={{width: 30, height: 30, top: 5}}
             source={require('../../../image/joinroom.png')}
@@ -244,7 +247,12 @@ function Chat(props) {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        style={{height: '75%'}}
+        style={{
+          backgroundColor: 'white',
+          position: 'relative',
+          width: '100%',
+          height: '77.5%',
+        }}
         data={users}
         renderItem={({item}) => (
           <ChatItem

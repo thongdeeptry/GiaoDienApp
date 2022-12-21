@@ -163,7 +163,6 @@ export const Login = props => {
                       value={values.password}
                       onChangeText={handleChange('password')}
                       placeholder="Mật khẩu"
-                      multiline={true}
                       textContentType="password"
                       secureTextEntry={true}
                       maxLength={100}></TextInput>
@@ -211,14 +210,14 @@ export const Login = props => {
                 </View>
               </View>
             </View>
-            <View style={styles.mailnut1}>
-              <TouchableOpacity
-                style={styles.nut1}
-                onPress={() => navigation.navigate('Landing4')}>
-                <Text style={styles.nutText1}>Đăng Ký</Text>
-              </TouchableOpacity>
-            </View>
           </KeyboardAvoidingView>
+          <View style={styles.mailnut1}>
+            <TouchableOpacity
+              style={styles.nut1}
+              onPress={() => navigation.navigate('Landing4')}>
+              <Text style={styles.nutText1}>Đăng Ký</Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
       )}
     </Formik>
@@ -264,10 +263,10 @@ const styles = StyleSheet.create({
   },
 
   mailnut1: {
-    position: 'absolute',
     width: '100%',
     paddingHorizontal: 30,
     bottom: 20,
+    position: 'absolute',
   },
   nut1: {
     width: '100%',

@@ -35,7 +35,7 @@ function ChatItem(props) {
     <TouchableOpacity
       onPress={onPress}
       style={{
-        height: 80,
+        height: 70,
         paddingTop: 20,
         paddingStart: 10,
         flexDirection: 'row',
@@ -55,12 +55,12 @@ function ChatItem(props) {
           }}></Image>
         {id == 'Hoạt Động' ? (
           <Image
-            style={{left: 5, bottom: 50, width: 15, height: 15}}
+            style={{left: 10, bottom: 50, width: 15, height: 15}}
             source={require('../../../image/activeIcon.png')}
           />
         ) : (
           <Image
-            style={{left: 5, bottom: 50, width: 15, height: 15}}
+            style={{left: 10, bottom: 50, width: 15, height: 15}}
             source={require('../../../image/new-moon.png')}
           />
         )}

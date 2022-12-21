@@ -730,7 +730,7 @@ export const ProfileFriend = ({route, navigation}) => {
                         <Image
                           style={{
                             width: '100%',
-                            height: 330,
+                            height: 250,
                             alignItems: 'center',
                             alignSelf: 'center',
                             alignContent: 'center',

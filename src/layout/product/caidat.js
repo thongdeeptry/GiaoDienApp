@@ -72,38 +72,47 @@ export const CaiDat = ({route, navigation}) => {
         <View style={styles.khung}>
           <TouchableOpacity onPress={() => navigation.navigate('Chinhsua')}>
             <Text style={styles.chu}>Chỉnh sửa thông tin</Text>
-
             <Image
               style={styles.edit1}
               source={require('../../image/edit.png')}
             />
+            <Image
+              style={styles.tiep}
+              source={require('../../image/next.png')}
+            />
           </TouchableOpacity>
         </View>
-        <View style={{top: 70}}>
+        <View style={{top: 60}}>
           <View style={styles.khung}>
             <TouchableOpacity onPress={() => navigation.navigate('Chinhsua')}>
               <Text style={styles.chu}>Mời bạn bè</Text>
-
               <Image
                 style={styles.edit1}
                 source={require('../../image/add-group.png')}
+              />
+              <Image
+                style={styles.tiep}
+                source={require('../../image/next.png')}
               />
             </TouchableOpacity>
           </View>
         </View>
       </View>
-      <View style={{top: 215}}>
+      <View style={{top: 191}}>
         <View style={styles.khung}>
-          <TouchableOpacity onPress={() => navigation.navigate('TimNgauNhien')}>
+          <TouchableOpacity onPress={() => navigation.navigate('ChangePass')}>
             <Text style={styles.chu}>Bảo vệ</Text>
-
             <Image
               style={styles.edit1}
               source={require('../../image/bv.png')}
             />
+            <Image
+              style={styles.tiep}
+              source={require('../../image/next.png')}
+            />
           </TouchableOpacity>
         </View>
-        <View style={{top: 70}}>
+        <View style={{top: 60}}>
           <View style={styles.khung}>
             <TouchableOpacity onPress={() => navigation.navigate('AllSuport')}>
               <Text style={styles.chu}>Đơn gửi hỗ trợ của bạn</Text>
@@ -111,10 +120,14 @@ export const CaiDat = ({route, navigation}) => {
                 style={styles.edit1}
                 source={require('../../image/support.png')}
               />
+              <Image
+                style={styles.tiep}
+                source={require('../../image/next.png')}
+              />
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{top: 140}}>
+        <View style={{top: 120}}>
           <View style={styles.khung}>
             <TouchableOpacity onPress={() => navigation.navigate('AllReport')}>
               <Text style={styles.chu}>Đơn báo cáo của bạn</Text>
@@ -122,16 +135,24 @@ export const CaiDat = ({route, navigation}) => {
                 style={styles.edit1}
                 source={require('../../image/document.png')}
               />
+              <Image
+                style={styles.tiep}
+                source={require('../../image/next.png')}
+              />
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{top: 210}}>
+        <View style={{top: 180}}>
           <View style={styles.khung}>
             <TouchableOpacity onPress={logOut}>
               <Text style={styles.chu}>Đăng xuất</Text>
               <Image
                 style={styles.edit1}
                 source={require('../../image/log-out.png')}
+              />
+              <Image
+                style={styles.tiep}
+                source={require('../../image/next.png')}
               />
             </TouchableOpacity>
           </View>
@@ -142,12 +163,19 @@ export const CaiDat = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  tiep: {
+    width: 20,
+    height: 20,
+    position: 'absolute',
+    right: 10,
+    top: 15,
+  },
   edit1: {
     width: 20,
     height: 20,
     position: 'absolute',
     left: 20,
-    top: 20,
+    top: 15,
   },
   a: {
     flexDirection: 'column',
@@ -160,7 +188,7 @@ const styles = StyleSheet.create({
   khung: {
     position: 'absolute',
     width: '90%',
-    height: 60,
+    height: 50,
     marginHorizontal: 20,
     top: 20,
     backgroundColor: 'white',
@@ -199,10 +227,9 @@ const styles = StyleSheet.create({
   chu: {
     width: '100%',
     position: 'absolute',
-
     left: 50,
     fontSize: 20,
-    top: 16,
+    top: 13,
   },
   chuu: {
     width: '100%',

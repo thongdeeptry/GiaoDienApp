@@ -402,7 +402,7 @@ const Home = ({route, navigation}) => {
             <Image
               style={{
                 width: '100%',
-                height: 330,
+                height: 250,
                 alignItems: 'center',
                 alignSelf: 'center',
                 alignContent: 'center',
@@ -649,7 +649,7 @@ const Home = ({route, navigation}) => {
             <Text
               style={[
                 {textAlign: 'center', top: 0},
-                datapost == [] ? {top: 0} : null,
+                datapost.length == 0 ? {top: 0} : null,
               ]}>
               {datapost.length == 0 ? 'Không có bài viết nào' : ''}
             </Text>
@@ -850,7 +850,6 @@ const styles = StyleSheet.create({
   },
   addContainerlive: {
     height: 135,
-    top: 10,
     marginHorizontal: 20,
   },
   avtContainer: {
