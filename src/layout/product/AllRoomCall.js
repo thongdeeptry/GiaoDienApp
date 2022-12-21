@@ -31,25 +31,34 @@ export const AllRoomCall = ({route, navigation}) => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
   }, []);
+  const d = new Date();
+  const ngay = d.getDate();
+  const thang = d.getMonth() + 1;
+  const nam = d.getFullYear();
   const referencerrs = ref(db, 'roomCall');
   onValue(referencerrs, snapshot => {
     snapshot.forEach(childSnapshotq => {
-      const id = childSnapshotq.child('id').exportVal();
-      const name = childSnapshotq.child('name').exportVal();
-      const avt = childSnapshotq.child('avt').exportVal();
-      const token = childSnapshotq.child('token').exportVal();
-      const channel = childSnapshotq.child('channel').exportVal();
-      const thoigian = childSnapshotq.child('ngaytao').exportVal();
-      const songuoi = childSnapshotq.child('songuoi').exportVal();
-      dataRoom.push({
-        id: id,
-        name: name,
-        avt: avt,
-        token: token,
-        channel: channel,
-        thoigian: thoigian,
-        songuoi: songuoi,
-      });
+      if (
+        childSnapshotq.child('ngaytao').exportVal() ==
+        ngay + ' Tháng ' + thang + ' Năm ' + nam
+      ) {
+        const id = childSnapshotq.child('id').exportVal();
+        const name = childSnapshotq.child('name').exportVal();
+        const avt = childSnapshotq.child('avt').exportVal();
+        const token = childSnapshotq.child('token').exportVal();
+        const channel = childSnapshotq.child('channel').exportVal();
+        const thoigian = childSnapshotq.child('ngaytao').exportVal();
+        const songuoi = childSnapshotq.child('songuoi').exportVal();
+        dataRoom.push({
+          id: id,
+          name: name,
+          avt: avt,
+          token: token,
+          channel: channel,
+          thoigian: thoigian,
+          songuoi: songuoi,
+        });
+      }
     });
   });
   return (
@@ -92,6 +101,13 @@ export const AllRoomCall = ({route, navigation}) => {
           borderTopWidth: 0.3,
         }}>
         <View>
+          <Text
+            style={[
+              {textAlign: 'center', top: 0},
+              dataRoom.length == 0 ? {top: 5} : null,
+            ]}>
+            {dataRoom.length == 0 ? 'Không có phòng trò chuyện nào' : ''}
+          </Text>
           <FlatList
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

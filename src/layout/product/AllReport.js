@@ -98,6 +98,13 @@ export const AllReport = ({route, navigation}) => {
           borderTopWidth: 0.3,
         }}>
         <View>
+          <Text
+            style={[
+              {textAlign: 'center', top: 0},
+              dataRoom.length == 0 ? {top: 5} : null,
+            ]}>
+            {dataRoom.length == 0 ? 'Không có đơn báo cáo nào' : ''}
+          </Text>
           <FlatList
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
