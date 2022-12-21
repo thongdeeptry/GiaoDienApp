@@ -580,7 +580,7 @@ const Binhluan = ({navigation, route}) => {
           backgroundColor: 'white',
         }}>
         <TextInput
-          style={{opacity: 0.9}}
+          style={{opacity: 0.9, width: '90%', height: 45}}
           placeholder="Viết bình luận của bạn..."
           value={binhluan}
           onChangeText={setbinhluan}

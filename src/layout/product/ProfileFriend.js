@@ -686,10 +686,10 @@ export const ProfileFriend = ({route, navigation}) => {
                               {item.tick == 'true' ? (
                                 <Image
                                   style={{
-                                    width: 25,
-                                    height: 25,
-                                    bottom: 5,
-                                    left: 5,
+                                    width: 20,
+                                    height: 20,
+                                    bottom: 2,
+                                    left: 2,
                                   }}
                                   source={require('../../image/verify.png')}
                                 />
@@ -813,7 +813,11 @@ export const ProfileFriend = ({route, navigation}) => {
           </View>
           <View>
             <TouchableOpacity
-              onPress={() => navigation.navigate('BaoCao', {id})}
+              onPress={() => {
+                id != idCurrent
+                  ? navigation.navigate('BaoCao', {id})
+                  : navigation.navigate('hotro');
+              }}
               style={{width: 100, height: 50, left: 60}}>
               <Image
                 style={[styles.containerrrrr, {borderRadius: 12}]}
@@ -822,33 +826,37 @@ export const ProfileFriend = ({route, navigation}) => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.mainnut}>
-          <TouchableOpacity
-            style={styles.nut1}
-            onPress={() => navigation.navigate('SayHello', {id})}>
-            <Image
-              style={{width: '60%', height: '60%', left: 10, top: 6}}
-              source={require('../../image/close-cro.png')}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.nut2} onPress={Love}>
-            <Image
-              style={[
-                {width: '100%', height: '100%', top: 5},
-                daco == false
-                  ? {width: '100%', height: '100%', top: 5, opacity: 0.5}
-                  : null,
-              ]}
-              source={require('../../image/tim.png')}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.nut1}>
-            <Image
-              style={{width: '60%', height: '60%', left: 10, top: 6}}
-              source={require('../../image/star.png')}
-            />
-          </TouchableOpacity>
-        </View>
+        {id != idCurrent ? (
+          <View style={styles.mainnut}>
+            <TouchableOpacity
+              style={styles.nut1}
+              onPress={() => navigation.navigate('SayHello', {id})}>
+              <Image
+                style={{width: '60%', height: '60%', left: 10, top: 6}}
+                source={require('../../image/close-cro.png')}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.nut2} onPress={Love}>
+              <Image
+                style={[
+                  {width: '100%', height: '100%', top: 5},
+                  daco == false
+                    ? {width: '100%', height: '100%', top: 5, opacity: 0.5}
+                    : null,
+                ]}
+                source={require('../../image/tim.png')}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.nut1}>
+              <Image
+                style={{width: '60%', height: '60%', left: 10, top: 6}}
+                source={require('../../image/star.png')}
+              />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <></>
+        )}
       </View>
     </ScrollView>
   );

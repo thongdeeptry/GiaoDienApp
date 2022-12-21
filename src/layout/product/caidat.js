@@ -94,7 +94,7 @@ export const CaiDat = ({route, navigation}) => {
       </View>
       <View style={{top: 215}}>
         <View style={styles.khung}>
-          <TouchableOpacity onPress={() => navigation.navigate('AllRoomCall')}>
+          <TouchableOpacity onPress={() => navigation.navigate('TimNgauNhien')}>
             <Text style={styles.chu}>Bảo vệ</Text>
 
             <Image

@@ -7,7 +7,9 @@ import {
   TouchableOpacity,
   FlatList,
   RefreshControl,
+  ToastAndroid,
 } from 'react-native';
+import {getDatabase, ref, set, push, update, remove} from 'firebase/database';
 import {images, colors, icons, fontSizes} from '../../../constants';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {UIHeader} from '../../../components';
@@ -17,20 +19,24 @@ import {
   firebaseDatabaseRef,
   firebaseDatabase,
   auth,
-  db,
   onValue,
 } from '../../../../config';
 import {setDoc, doc, getDoc} from 'firebase/firestore';
+import {v4 as uuid} from 'uuid';
 const wait = timeout => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
 function Chat(props) {
+  const db = getDatabase();
   const user = auth.currentUser.uid;
   const [users, setUsers] = useState([]);
   const {navigation, route} = props;
   const {navigate, goBack} = navigation;
   const [refreshing, setRefreshing] = React.useState(false);
-
+  let dataghep = [];
+  const dataghepq = [];
+  const [hienthi, sethienthi] = useState(0);
+  const [randomid, setrandomid] = useState('');
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
@@ -74,6 +80,81 @@ function Chat(props) {
       },
     );
   }, []);
+  const GhepDoi = () => {
+    dataghep.splice(0, dataghep.length);
+    dataghep = [];
+    let ids = uuid();
+    ToastAndroid.show(
+      'Đang kết nối những người xung quanh',
+      ToastAndroid.BOTTOM,
+    );
+    const referencer = ref(db, 'hangcho');
+    onValue(referencer, snapshot => {
+      snapshot.forEach(childSnapshot => {
+        const id = childSnapshot.key;
+        dataghep.push(id);
+      });
+      console.log(dataghep.length);
+    });
+
+    if (dataghep.length == 0) {
+      dataghep.splice(0, dataghep.length);
+      dataghep = [];
+      const reference = ref(db, 'hangcho/' + ids + '/' + user);
+      update(reference, {
+        id: user,
+        hienthi: hienthi,
+      });
+    }
+    console.log('dataghep' + dataghep);
+
+    if (dataghep.length > 0) {
+      const randomID = Math.floor(Math.random() * dataghep.length);
+      setrandomid(dataghep[randomID]);
+      console.log('randomid = ' + randomid);
+      if (randomid != '') {
+        const reference = ref(db, 'hangcho/' + randomid + '/' + user);
+        update(reference, {
+          id: user,
+          hienthi: hienthi,
+        });
+        const referencerd = ref(db, 'hangcho/' + randomid);
+        onValue(referencerd, snapshot => {
+          snapshot.forEach(childSnapshot => {
+            if (childSnapshot.size == 2) {
+              dataghepq.push(childSnapshot.key);
+            }
+            // const combinedId =
+            //   dataghepq[0] > dataghepq[1]
+            //     ? dataghepq[0] + dataghepq[1]
+            //     : dataghepq[1] + dataghepq[0];
+          });
+          if (dataghepq.length == 2) {
+            const referencerd = ref(db, 'hangcho/' + randomid);
+            remove(referencerd).then(() => {
+              ToastAndroid.show(
+                'Đã kết nối với 1 người lạ',
+                ToastAndroid.BOTTOM,
+              );
+            });
+            navigation.navigate('Messenger', {
+              url: '',
+              name: '',
+              userId: dataghepq[0] == user ? dataghepq[1] : dataghepq[0],
+            });
+          } else {
+            ToastAndroid.show(
+              'Chưa tìm thấy, vui lòng tìm lại',
+              ToastAndroid.BOTTOM,
+            );
+          }
+        });
+      }
+    }
+
+    dataghepq.splice(0, dataghepq.length);
+    // const randomid = uuid();
+  };
   return (
     <View
       style={{
@@ -86,10 +167,68 @@ function Chat(props) {
         onPressLeftIcon={() => {
           goBack();
         }}
-        onPressRightIcon={() => {
-          alert('press right icon');
-        }}
+        onPressRightIcon={() => navigate('Timkiem')}
       />
+      <View
+        style={{
+          width: '100%',
+          paddingHorizontal: 20,
+          height: 60,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          top: 10,
+        }}>
+        <TouchableOpacity
+          style={{
+            height: 60,
+            flexDirection: 'column',
+            alignItems: 'center',
+            width: '30%',
+            elevation: 10,
+            backgroundColor: 'white',
+            borderRadius: 10,
+          }}
+          onPress={() => navigate('TimNgauNhien')}>
+          <Image
+            style={{width: 30, height: 30, top: 5}}
+            source={require('../../../image/chat.png')}
+          />
+          <Text style={{top: 10}}>Nhắn Tin</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            height: 60,
+            flexDirection: 'column',
+            alignItems: 'center',
+            width: '30%',
+            elevation: 10,
+            backgroundColor: 'white',
+            borderRadius: 10,
+          }}>
+          <Image
+            style={{width: 30, height: 30, top: 5}}
+            source={require('../../../image/call.png')}
+          />
+          <Text style={{top: 10}}>Gọi Điện</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            height: 60,
+            flexDirection: 'column',
+            alignItems: 'center',
+            width: '30%',
+            elevation: 10,
+            backgroundColor: 'white',
+            borderRadius: 10,
+          }}>
+          <Image
+            style={{width: 30, height: 30, top: 5}}
+            source={require('../../../image/joinroom.png')}
+          />
+          <Text style={{top: 10}}>Phòng Chat</Text>
+        </TouchableOpacity>
+      </View>
       <View
         style={{
           flexDirection: 'row',

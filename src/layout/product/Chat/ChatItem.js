@@ -21,7 +21,7 @@ function ChatItem(props) {
   const db = getDatabase();
   let {name, url, message, numberOfUnreadMessages, userId} = props.user; //destructuring an object
   const {onPress} = props;
-  console.log('DATA CHAT ===> ' + props.user.message);
+
   const [id, setid] = useState();
   useEffect(() => {
     const reference = ref(db, 'users/' + userId);

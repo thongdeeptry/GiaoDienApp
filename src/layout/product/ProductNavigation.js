@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   View,
   Image,
@@ -40,6 +40,11 @@ import hotro from './hotro';
 import BaoCao from './BaoCao';
 import {AllReport} from './AllReport';
 import {AllSuport} from './AllSuport';
+import {TimNgauNhien} from './TimNgauNhien';
+import {initializeApp} from 'firebase/app';
+import {firebaseConfig} from '../../../config';
+import {getAuth, signOut} from 'firebase/auth';
+import {getDatabase, ref, onValue} from 'firebase/database';
 function HomeStack() {
   return (
     <Stack.Navigator
@@ -47,9 +52,6 @@ function HomeStack() {
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="PostStatus" component={PostStatus} />
       <Stack.Screen name="Camxuc" component={Camxuc} />
-      {/* <Stack.Screen name="Chat" component={Chat} />
-      <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="IndexCall" component={IndexCall} /> */}
       <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
       <Stack.Screen name="Messenger" component={Messenger} />
       <Stack.Screen name="Timkiem" component={Timkiem} />
@@ -73,6 +75,7 @@ function HomeStack() {
       <Stack.Screen name="BaoCao" component={BaoCao} />
       <Stack.Screen name="AllReport" component={AllReport} />
       <Stack.Screen name="AllSuport" component={AllSuport} />
+      <Stack.Screen name="TimNgauNhien" component={TimNgauNhien} />
     </Stack.Navigator>
   );
 }
@@ -108,6 +111,7 @@ function ProfileStack() {
       <Stack.Screen name="BaoCao" component={BaoCao} />
       <Stack.Screen name="AllReport" component={AllReport} />
       <Stack.Screen name="AllSuport" component={AllSuport} />
+      <Stack.Screen name="TimNgauNhien" component={TimNgauNhien} />
     </Stack.Navigator>
   );
 }
@@ -144,6 +148,7 @@ function AllUserStack() {
       <Stack.Screen name="BaoCao" component={BaoCao} />
       <Stack.Screen name="AllReport" component={AllReport} />
       <Stack.Screen name="AllSuport" component={AllSuport} />
+      <Stack.Screen name="TimNgauNhien" component={TimNgauNhien} />
     </Stack.Navigator>
   );
 }
@@ -180,6 +185,7 @@ function ChatStack() {
       <Stack.Screen name="BaoCao" component={BaoCao} />
       <Stack.Screen name="AllReport" component={AllReport} />
       <Stack.Screen name="AllSuport" component={AllSuport} />
+      <Stack.Screen name="TimNgauNhien" component={TimNgauNhien} />
     </Stack.Navigator>
   );
 }
@@ -216,10 +222,22 @@ function NotiStack() {
       <Stack.Screen name="BaoCao" component={BaoCao} />
       <Stack.Screen name="AllReport" component={AllReport} />
       <Stack.Screen name="AllSuport" component={AllSuport} />
+      <Stack.Screen name="TimNgauNhien" component={TimNgauNhien} />
     </Stack.Navigator>
   );
 }
 export default ProductNavigation = props => {
+  initializeApp(firebaseConfig);
+  const [avt, setavt] = useState();
+  const user = getAuth().currentUser.uid;
+  const db = getDatabase();
+  useEffect(() => {
+    const reference = ref(db, 'users/' + user);
+    onValue(reference, childSnapshot => {
+      const avtpr = childSnapshot.child('avt').val();
+      setavt(avtpr);
+    });
+  }, []);
   // const CustomBar = ({ children, onPress }) => (
   //   <TouchableOpacity
   //     style={{
@@ -250,6 +268,8 @@ export default ProductNavigation = props => {
             backgroundColor: '#FFFFFF',
             height: 50,
             alignItems: 'center',
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
           },
           tabBarIcon: ({focused}) => {
             if (route.name == 'Home') {
@@ -257,9 +277,8 @@ export default ProductNavigation = props => {
                 <Image
                   style={{
                     resizeMode: 'cover',
-
-                    width: 30,
-                    height: 30,
+                    width: 35,
+                    height: 35,
                   }}
                   source={require('../../image/home.png')}
                 />
@@ -270,9 +289,8 @@ export default ProductNavigation = props => {
                 <Image
                   style={{
                     resizeMode: 'cover',
-
-                    width: 30,
-                    height: 30,
+                    width: 35,
+                    height: 35,
                   }}
                   source={require('../../image/chat.png')}
                 />
@@ -283,11 +301,11 @@ export default ProductNavigation = props => {
                 <Image
                   style={{
                     resizeMode: 'cover',
-
-                    width: 30,
-                    height: 30,
+                    width: 35,
+                    height: 35,
+                    borderRadius: 20,
                   }}
-                  source={require('../../image/woman.png')}
+                  source={{uri: avt}}
                 />
               );
             }
@@ -296,9 +314,8 @@ export default ProductNavigation = props => {
                 <Image
                   style={{
                     resizeMode: 'cover',
-
-                    width: 30,
-                    height: 30,
+                    width: 35,
+                    height: 35,
                   }}
                   source={require('../../image/notify.png')}
                 />
@@ -309,9 +326,8 @@ export default ProductNavigation = props => {
                 <Image
                   style={{
                     resizeMode: 'cover',
-
-                    width: 30,
-                    height: 30,
+                    width: 35,
+                    height: 35,
                   }}
                   source={require('../../assets/friends.png')}
                 />
@@ -319,7 +335,7 @@ export default ProductNavigation = props => {
             }
           },
           headerShown: false,
-          //tabBarShowLabel:false,
+          tabBarShowLabel: false,
         })}>
         <Tab.Screen name="Home" component={HomeStack} />
         <Tab.Screen name="AllUser" component={AllUserStack} />

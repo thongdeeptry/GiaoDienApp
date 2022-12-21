@@ -18,6 +18,7 @@ import {getAuth} from 'firebase/auth';
 import {getDatabase, ref, onValue, set, push, update} from 'firebase/database';
 import {sendMess} from '../../constants/sendMess';
 import {UserContext} from '../user/UserContext';
+import SelectDropdown from 'react-native-select-dropdown';
 const wait = timeout => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
@@ -34,6 +35,9 @@ export const AllUser = ({route, navigation}) => {
   const [daco, setdaco] = useState(false);
   const [dacod, setdacod] = useState(false);
   const [tokendvCr, settokendvCr] = useState();
+  const countries = ['Bạn bè', 'Tất Cả'];
+  const dataFriend = [];
+  const [loc, setloc] = useState(1);
   const dataFl = [];
   const [refreshing, setRefreshing] = React.useState(false);
   useEffect(() => {
@@ -52,29 +56,65 @@ export const AllUser = ({route, navigation}) => {
     wait(1000).then(() => setRefreshing(false));
   }, []);
   const logOut = () => {};
+  const referencebanbe = ref(db, 'banbe/' + idCurrent);
+  onValue(referencebanbe, childSnapshot1 => {
+    childSnapshot1.forEach(snapshot1 => {
+      const id = snapshot1.child('user').val();
+      dataFriend.push(id);
+    });
+  });
   const referencer = ref(db, 'users');
   onValue(referencer, snapshot => {
     snapshot.forEach(childSnapshot => {
       if (
-        childSnapshot.child('trangthai').exportVal() == 'Hoạt Động' ||
-        childSnapshot.child('trangthai').exportVal() == 'Chưa Hoạt Động'
+        loc == 0 &&
+        dataFriend.includes(childSnapshot.child('id').exportVal()) == true &&
+        childSnapshot.child('id').exportVal() != idCurrent
       ) {
-        const id = childSnapshot.child('id').exportVal();
-        const name = childSnapshot.child('name').exportVal();
-        const avt = childSnapshot.child('avt').exportVal();
-        const trangthai = childSnapshot.child('trangthai').exportVal();
-        const follow = childSnapshot.child('follow').exportVal();
-        dataFl.push({
-          id: id,
-          name: name,
-          avt: avt,
-          trangthai: trangthai,
-          fl: follow,
-          tick: childSnapshot.child('tick').exportVal(),
-        });
+        if (
+          childSnapshot.child('trangthai').exportVal() == 'Hoạt Động' ||
+          childSnapshot.child('trangthai').exportVal() == 'Chưa Hoạt Động'
+        ) {
+          const id = childSnapshot.child('id').exportVal();
+          const name = childSnapshot.child('name').exportVal();
+          const avt = childSnapshot.child('avt').exportVal();
+          const trangthai = childSnapshot.child('trangthai').exportVal();
+          const follow = childSnapshot.child('follow').exportVal();
+          dataFl.push({
+            id: id,
+            name: name,
+            avt: avt,
+            trangthai: trangthai,
+            fl: follow,
+            tick: childSnapshot.child('tick').exportVal(),
+          });
+        }
+      } else if (
+        loc == 1 &&
+        childSnapshot.child('id').exportVal() != idCurrent
+      ) {
+        if (
+          childSnapshot.child('trangthai').exportVal() == 'Hoạt Động' ||
+          childSnapshot.child('trangthai').exportVal() == 'Chưa Hoạt Động'
+        ) {
+          const id = childSnapshot.child('id').exportVal();
+          const name = childSnapshot.child('name').exportVal();
+          const avt = childSnapshot.child('avt').exportVal();
+          const trangthai = childSnapshot.child('trangthai').exportVal();
+          const follow = childSnapshot.child('follow').exportVal();
+          dataFl.push({
+            id: id,
+            name: name,
+            avt: avt,
+            trangthai: trangthai,
+            fl: follow,
+            tick: childSnapshot.child('tick').exportVal(),
+          });
+        }
       }
     });
   });
+
   const date = new Date();
   let thang = date.getMonth() + 1;
   const Love = (id, tickfr) => {
@@ -241,21 +281,34 @@ export const AllUser = ({route, navigation}) => {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'flex-end',
-            paddingHorizontal: 20,
+            paddingHorizontal: 0,
           }}>
-          <Text
-            style={{
-              fontSize: 15,
-              letterSpacing: 1,
-              textAlign: 'right',
-              paddingVertical: 5,
-              opacity: 0.8,
-            }}>
-            Đang hoạt động
-          </Text>
-          <Image
-            style={{top: 2, left: 3}}
-            source={require('../../image/activeIcon.png')}
+          <SelectDropdown
+            data={countries}
+            buttonStyle={{
+              width: 100,
+              height: 20,
+              right: 0,
+              backgroundColor: 'white',
+            }}
+            buttonTextStyle={{fontSize: 15, color: 'blue'}}
+            rowTextStyle={{fontSize: 15}}
+            rowStyle={{height: 40}}
+            defaultButtonText={'Chọn lọc'}
+            onSelect={(selectedItem, index) => {
+              setloc(index);
+              console.log(selectedItem, loc);
+            }}
+            buttonTextAfterSelection={(selectedItem, index) => {
+              // text represented after item is selected
+              // if data array is an array of objects then return selectedItem.property to render after item is selected
+              return selectedItem;
+            }}
+            rowTextForSelection={(item, index) => {
+              // text represented for each item in dropdown
+              // if data array is an array of objects then return item.property to represent item in dropdown
+              return item;
+            }}
           />
         </View>
         <View>
@@ -329,7 +382,7 @@ export const AllUser = ({route, navigation}) => {
                         </Text>
                         {item.tick == 'true' ? (
                           <Image
-                            style={{width: 25, height: 25, bottom: 5, left: 5}}
+                            style={{width: 20, height: 20, bottom: 2, left: 2}}
                             source={require('../../image/verify.png')}
                           />
                         ) : (

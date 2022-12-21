@@ -53,7 +53,7 @@ const Home = ({route, navigation}) => {
   const dataFriend = [];
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
-  const countries = ['Hôm Nay', 'Tất Cả'];
+  const countries = ['Mới Nhất', 'Bạn Bè', 'Tất Cả'];
   useEffect(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
@@ -61,6 +61,7 @@ const Home = ({route, navigation}) => {
     onValue(reference, childSnapshot => {
       const namepr = childSnapshot.child('name').val();
       const avtpr = childSnapshot.child('avt').val();
+      const diachi = childSnapshot.child('diachi').val();
       setname(namepr);
       setavt(avtpr);
     });
@@ -88,7 +89,7 @@ const Home = ({route, navigation}) => {
   const referencebanbe = ref(db, 'banbe/' + user);
   onValue(referencebanbe, childSnapshot1 => {
     childSnapshot1.forEach(snapshot1 => {
-      const id = snapshot1.child('id').val();
+      const id = snapshot1.child('user').exportVal();
       dataFriend.push(id);
     });
   });
@@ -97,7 +98,7 @@ const Home = ({route, navigation}) => {
   onValue(referencer, snapshot => {
     snapshot.forEach(childSnapshot => {
       childSnapshot.forEach(childSnapshotq => {
-        if (loc == 1) {
+        if (loc == 2) {
           const id = childSnapshotq.child('id').exportVal();
           const name = childSnapshotq.child('name').exportVal();
           const avt = childSnapshotq.child('avt').exportVal();
@@ -118,7 +119,7 @@ const Home = ({route, navigation}) => {
             user: user,
             tick: childSnapshotq.child('tick').exportVal(),
           });
-        } else {
+        } else if (loc == 0) {
           if (
             childSnapshotq.child('thoigian').exportVal() ==
             ngay + ' Tháng ' + thang + ' Năm ' + nam
@@ -144,6 +145,30 @@ const Home = ({route, navigation}) => {
               tick: childSnapshotq.child('tick').exportVal(),
             });
           }
+        } else if (
+          loc == 1 &&
+          dataFriend.includes(childSnapshotq.child('user').exportVal()) == true
+        ) {
+          const id = childSnapshotq.child('id').exportVal();
+          const name = childSnapshotq.child('name').exportVal();
+          const avt = childSnapshotq.child('avt').exportVal();
+          const noidung = childSnapshotq.child('noidung').exportVal();
+          const trangthai = childSnapshotq.child('checkin').exportVal();
+          const thoigian = childSnapshotq.child('thoigian').exportVal();
+          const image = childSnapshotq.child('image').exportVal();
+          const user = childSnapshotq.child('user').exportVal();
+
+          datapost.push({
+            id: id,
+            name: name,
+            avt: avt,
+            noidung: noidung,
+            checkin: trangthai,
+            thoigian: thoigian,
+            image: image,
+            user: user,
+            tick: childSnapshotq.child('tick').exportVal(),
+          });
         }
       });
     });

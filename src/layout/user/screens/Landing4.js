@@ -7,9 +7,29 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
-
+import {GoogleAuthProvider, signInWithPopup, getAuth} from 'firebase/auth';
+import {initializeApp} from 'firebase/app';
+import {firebaseConfig} from '../../../../config';
 export const Landing4 = props => {
   const {navigation} = props;
+  initializeApp(firebaseConfig);
+  async function loginWithGoogle() {
+    try {
+      const provider = new GoogleAuthProvider();
+      const auth = getAuth();
+
+      const {user} = await signInWithPopup(auth, provider);
+      console.error(user.email);
+      return {uid: user.uid, displayName: user.displayName};
+    } catch (error) {
+      if (error.code !== 'auth/cancelled-popup-request') {
+        console.error(error);
+      }
+
+      return null;
+    }
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -44,7 +64,7 @@ export const Landing4 = props => {
           <TouchableOpacity style={styles.gg}>
             <Image source={require('../../../image/fbvippng.png')} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.fb}>
+          <TouchableOpacity style={styles.fb} onPress={loginWithGoogle}>
             <Image source={require('../../../image/ggvip.png')} />
           </TouchableOpacity>
         </View>
@@ -67,7 +87,7 @@ export const Landing4 = props => {
 const styles = StyleSheet.create({
   maindieukhoan: {
     position: 'absolute',
-    top: 770,
+    bottom: 50,
     textAlign: 'center',
     width: '100%',
 
@@ -77,10 +97,10 @@ const styles = StyleSheet.create({
   },
 
   mainkhac: {
-    top: 30,
+    position: 'absolute',
     width: '40%',
     height: 57,
-
+    bottom: 80,
     justifyContent: 'space-around',
     alignItems: 'center',
     flexDirection: 'row',
@@ -89,7 +109,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-
     width: 50,
     height: 50,
     borderBottomColor: '#ABABAB',

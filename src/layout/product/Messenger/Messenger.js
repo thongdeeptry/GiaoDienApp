@@ -166,8 +166,8 @@ function Messenger(props) {
       sendMess(tokendv, namee + ' vừa gửi cho bạn 1 tin nhắn', typedText);
     });
     setTypedText('');
-    //setRefreshing(true);
-    //wait(1000).then(() => setRefreshing(false));
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
   };
   return (
     <View
@@ -179,7 +179,7 @@ function Messenger(props) {
       <UIHeader
         title={nameu}
         leftIconName={'arrow-left'}
-        rightIconName={'ellipsis-v'}
+        rightIconName={'phone'}
         onPressLeftIcon={() => {
           goBack();
         }}
@@ -197,7 +197,7 @@ function Messenger(props) {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         inverted
-        // keyExtractor={(item, index) => index}
+        keyExtractor={(item, index) => index}
         data={DataHis == [] ? [] : DataHis.reverse()} //chatHistory.reverse()
         renderItem={({item}) => (
           <MessengerItem

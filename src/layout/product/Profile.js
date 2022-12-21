@@ -432,7 +432,7 @@ export const Profile = props => {
                 <Text style={styles.ten}>{name}</Text>
                 {tick == 'true' ? (
                   <Image
-                    style={{width: 20, height: 20, top: 33, left: 20}}
+                    style={{width: 25, height: 25, top: 31, left: 20}}
                     source={require('../../image/verify.png')}
                   />
                 ) : (
