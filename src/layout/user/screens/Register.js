@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
+import React, {useState, useContext, useEffect, useRef} from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,22 +10,22 @@ import {
   ScrollView,
   ToastAndroid,
   TouchableOpacity,
-} from "react-native";
-import { UserContext } from "../UserContext";
-import { initializeApp } from "firebase/app";
-import firebase from "firebase/compat";
-import Checkbox from "expo-checkbox";
-import { firebaseConfig } from "../../../../config";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { Formik } from "formik";
-import * as Yup from "yup";
+} from 'react-native';
+import {UserContext} from '../UserContext';
+import {initializeApp} from 'firebase/app';
+import firebase from 'firebase/compat';
+import Checkbox from 'expo-checkbox';
+import {firebaseConfig} from '../../../../config';
+import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
+import {Formik} from 'formik';
+import * as Yup from 'yup';
 const RegisterSchema = Yup.object().shape({
-  email: Yup.string().email("Email không đúng định dạng").required("nhap"),
-  password: Yup.string().min(6).required("nhap"),
+  email: Yup.string().email('Email không đúng định dạng').required('nhap'),
+  password: Yup.string().min(6).required('nhap'),
 });
-export const Register = (props) => {
-  const { navigation } = props;
-  const { onLogin } = useContext(UserContext);
+export const Register = props => {
+  const {navigation} = props;
+  const {onLogin} = useContext(UserContext);
   const formikRef = useRef(null);
   const [email, setemail] = useState();
   const [password, setpassword] = useState();
@@ -38,25 +38,25 @@ export const Register = (props) => {
     if (isCheckedStatus == true) {
       await createUserWithEmailAndPassword(auth, email, password)
         .then(() => {
-          console.log("Tạo tài khoản thành công");
+          console.log('Tạo tài khoản thành công');
           const user = getAuth().currentUser.uid;
-          console.log("UID - " + user);
-          navigation.navigate("ProfileName", {
+          console.log('UID - ' + user);
+          navigation.navigate('ProfileName', {
             email,
             user,
             password,
           });
         })
-        .catch((error) => {
+        .catch(error => {
           ToastAndroid.show(
-            "Email và mật khẩu không được để trống",
-            ToastAndroid.BOTTOM
+            'Email và mật khẩu không được để trống',
+            ToastAndroid.BOTTOM,
           );
         });
     } else {
       ToastAndroid.show(
-        "Vui lòng xác nhận đồng ý điều khoản dịch vụ",
-        ToastAndroid.BOTTOM
+        'Vui lòng xác nhận đồng ý điều khoản dịch vụ',
+        ToastAndroid.BOTTOM,
       );
     }
   };
@@ -65,11 +65,10 @@ export const Register = (props) => {
     <Formik
       innerRef={formikRef}
       initialValues={{
-        email: "",
-        password: "",
+        email: '',
+        password: '',
       }}
-      validationSchema={RegisterSchema}
-    >
+      validationSchema={RegisterSchema}>
       {({
         values,
         errors,
@@ -80,13 +79,11 @@ export const Register = (props) => {
         setFieldTouched,
       }) => (
         <KeyboardAvoidingView
-          style={{ width: "100%", height: "100%", backgroundColor: "white" }}
-        >
+          style={{width: '100%', height: '100%', backgroundColor: 'white'}}>
           <ScrollView
-            contentContainerStyle={{ flexGrow: 1 }}
+            contentContainerStyle={{flexGrow: 1}}
             showsVerticalScrollIndicator={false}
-            style={{ width: "100%", height: "100%" }}
-          >
+            style={{width: '100%', height: '100%'}}>
             <View style={styles.container}>
               <View style={styles.mainplanta}>
                 <Text style={styles.textplanta}>GenzLove</Text>
@@ -97,25 +94,23 @@ export const Register = (props) => {
 
               <View
                 style={{
-                  position: "relative",
-                  width: "100%",
-                  height: "75%",
-                  marginTop: "10%",
-                  backgroundColor: "#ffffff",
+                  position: 'relative',
+                  width: '100%',
+                  height: '75%',
+                  marginTop: '10%',
+                  backgroundColor: '#ffffff',
                   borderTopEndRadius: 30,
                   borderTopLeftRadius: 30,
-                }}
-              >
-                <View style={{ flexDirection: "column" }}>
+                }}>
+                <View style={{flexDirection: 'column'}}>
                   <Text
                     style={{
                       top: 28,
                       left: 28,
                       fontSize: 28,
-                      fontWeight: "700",
-                      fontStyle: "normal",
-                    }}
-                  >
+                      fontWeight: '700',
+                      fontStyle: 'normal',
+                    }}>
                     Chào mừng trở lại
                   </Text>
                   <Text
@@ -123,10 +118,9 @@ export const Register = (props) => {
                       top: 28,
                       left: 28,
                       fontSize: 16,
-                      color: "#898A8D",
-                      fontWeight: "400",
-                    }}
-                  >
+                      color: '#898A8D',
+                      fontWeight: '400',
+                    }}>
                     Đăng ký để tiếp tục
                   </Text>
                 </View>
@@ -135,52 +129,47 @@ export const Register = (props) => {
                     style={[
                       styles.khung,
                       errors.email ? styles.khungerr : null,
-                    ]}
-                  >
+                    ]}>
                     <TextInput
-                      style={{ fontSize: 20 }}
+                      style={{fontSize: 20, width: '95%', height: '100%'}}
                       placeholder="Email"
                       value={values.email}
-                      onChangeText={handleChange("email")}
+                      onChangeText={handleChange('email')}
                       multiline={true}
                       maxLength={100}
-                      setFieldTouched={email}
-                    ></TextInput>
+                      setFieldTouched={email}></TextInput>
                   </View>
                   <View
                     style={[
                       styles.khung1,
                       errors.password ? styles.khung1err : null,
-                    ]}
-                  >
+                    ]}>
                     <TextInput
-                      style={{ fontSize: 20 }}
+                      style={{fontSize: 20, width: '95%', height: '100%'}}
                       placeholder="Mật khẩu"
                       value={values.password}
-                      onChangeText={handleChange("password")}
+                      onChangeText={handleChange('password')}
                       multiline={true}
                       maxLength={100}
                       setFieldTouched={password}
-                      textContentType={"password"}
-                      secureTextEntry={true}
-                    ></TextInput>
+                      textContentType="password"
+                      secureTextEntry={true}></TextInput>
                   </View>
 
                   <View
                     style={{
                       paddingTop: 15,
-                      width: "100%",
+                      width: '100%',
                       height: 50,
-                      flexDirection: "row",
-                    }}
-                  >
+                      flexDirection: 'row',
+                    }}>
                     <View style={styles.checkbox}>
                       <Checkbox
                         value={isCheckedStatus}
                         onValueChange={setCheckedStatus}
-                        color={isCheckedStatus ? "#E94057" : undefined}
+                        color={isCheckedStatus ? '#E94057' : undefined}
                       />
-                      <Text style={{ left: 5 }}>
+                      <Text style={{left: 5}}>
                         Xác nhận đồng ý điều khoản dịch vụ
                       </Text>
                     </View>
@@ -191,25 +180,23 @@ export const Register = (props) => {
                       onPress={() =>
                         createUser(
                           formikRef.current?.values?.email,
-                          formikRef.current?.values?.password
+                          formikRef.current?.values?.password,
                         )
-                      }
-                    >
+                      }>
                       <Text style={styles.nutText}>Đăng Ký</Text>
                     </TouchableOpacity>
-                    <View style={{ paddingTop: 10 }}>
+                    <View style={{paddingTop: 10}}>
                       <Text
                         style={{
                           fontSize: 15,
-                          color: "#1F1F1F",
-                          fontWeight: "400",
-                        }}
-                      >
+                          color: '#1F1F1F',
+                          fontWeight: '400',
+                        }}>
                         Bạn đã quên mật khẩu?
                       </Text>
                     </View>
-                    <View style={{ paddingTop: 5 }}>
-                      <Text style={{ color: "#FD397F", fontWeight: "400" }}>
+                    <View style={{paddingTop: 5}}>
+                      <Text style={{color: '#FD397F', fontWeight: '400'}}>
                         Lấy ngay
                       </Text>
                     </View>
@@ -220,8 +207,7 @@ export const Register = (props) => {
             <View style={styles.mailnut1}>
               <TouchableOpacity
                 style={styles.nut1}
-                onPress={() => navigation.navigate("Login")}
-              >
+                onPress={() => navigation.navigate('Login')}>
                 <Text style={styles.nutText1}>Đăng Nhập</Text>
               </TouchableOpacity>
             </View>
@@ -234,81 +220,81 @@ export const Register = (props) => {
 const styles = StyleSheet.create({
   checkbox: {
     marginBottom: 8,
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    alignSelf: "flex-start",
-    flexDirection: "row",
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
   },
   mailnut: {
-    position: "absolute",
-    width: "100%",
+    position: 'absolute',
+    width: '100%',
     top: 135,
     height: 56,
 
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "column",
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
   },
   nut: {
-    width: "100%",
+    width: '100%',
     height: 56,
-    backgroundColor: "#E94057",
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
+    backgroundColor: '#E94057',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
     marginTop: 20,
     borderRadius: 15,
   },
   nutText: {
-    justifyContent: "center",
-    alignItems: "center",
-    textAlign: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
     fontSize: 22,
-    fontWeight: "700",
-    fontStyle: "normal",
-    color: "white",
+    fontWeight: '700',
+    fontStyle: 'normal',
+    color: 'white',
   },
 
   mailnut1: {
-    position: "absolute",
-    width: "100%",
+    position: 'absolute',
+    width: '100%',
     paddingHorizontal: 30,
     bottom: 20,
   },
   nut1: {
-    width: "100%",
+    width: '100%',
     height: 50,
-    backgroundColor: "#ffffff",
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
+    backgroundColor: '#ffffff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
     borderRadius: 15,
-    borderBottomColor: "#ABABAB",
-    borderLeftColor: "#ABABAB",
+    borderBottomColor: '#ABABAB',
+    borderLeftColor: '#ABABAB',
     borderLeftWidth: 0.5,
     borderBottomWidth: 0.5,
-    borderRightColor: "#ABABAB",
-    borderTopColor: "#ABABAB",
+    borderRightColor: '#ABABAB',
+    borderTopColor: '#ABABAB',
     borderRightWidth: 0.5,
     borderTopWidth: 0.5,
   },
   nutText1: {
-    justifyContent: "center",
-    alignItems: "center",
-    textAlign: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
     fontSize: 22,
-    fontWeight: "700",
-    fontStyle: "normal",
-    color: "#E94057",
+    fontWeight: '700',
+    fontStyle: 'normal',
+    color: '#E94057',
   },
 
   khunghinh: {
-    position: "absolute",
-    justifyContent: "center",
+    position: 'absolute',
+    justifyContent: 'center',
     fontSize: 35,
-    alignItems: "center",
-    flexDirection: "column",
-    width: "85%",
+    alignItems: 'center',
+    flexDirection: 'column',
+    width: '85%',
     marginLeft: 30,
     marginRight: 30,
     height: 50,
@@ -319,17 +305,17 @@ const styles = StyleSheet.create({
     margin: 20,
 
     paddingLeft: 20,
-    flexDirection: "row",
-    alignItems: "center",
-    position: "relative",
-    width: "100%",
-    height: "100%",
-    borderBottomColor: "#ABABAB",
-    borderLeftColor: "#ABABAB",
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+    borderBottomColor: '#ABABAB',
+    borderLeftColor: '#ABABAB',
     borderLeftWidth: 0.5,
     borderBottomWidth: 0.5,
-    borderRightColor: "#ABABAB",
-    borderTopColor: "#ABABAB",
+    borderRightColor: '#ABABAB',
+    borderTopColor: '#ABABAB',
     borderRightWidth: 0.5,
     borderTopWidth: 0.5,
     borderRadius: 8,
@@ -337,90 +323,90 @@ const styles = StyleSheet.create({
   khungerr: {
     margin: 20,
     paddingLeft: 20,
-    flexDirection: "row",
-    alignItems: "center",
-    position: "relative",
-    width: "100%",
-    height: "100%",
-    borderBottomColor: "#E94057",
-    borderLeftColor: "#E94057",
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+    borderBottomColor: '#E94057',
+    borderLeftColor: '#E94057',
     borderLeftWidth: 0.5,
     borderBottomWidth: 0.5,
-    borderRightColor: "#E94057",
-    borderTopColor: "#E94057",
+    borderRightColor: '#E94057',
+    borderTopColor: '#E94057',
     borderRightWidth: 0.5,
     borderTopWidth: 0.5,
     borderRadius: 8,
   },
   khung1err: {
     paddingLeft: 20,
-    flexDirection: "row",
-    alignItems: "center",
-    position: "relative",
-    width: "100%",
-    height: "100%",
-    borderBottomColor: "#E94057",
-    borderLeftColor: "#E94057",
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+    borderBottomColor: '#E94057',
+    borderLeftColor: '#E94057',
     borderLeftWidth: 0.5,
     borderBottomWidth: 0.5,
-    borderRightColor: "#E94057",
-    borderTopColor: "#E94057",
+    borderRightColor: '#E94057',
+    borderTopColor: '#E94057',
     borderRightWidth: 0.5,
     borderTopWidth: 0.5,
     borderRadius: 8,
   },
   khung1: {
     paddingLeft: 20,
-    flexDirection: "row",
-    alignItems: "center",
-    position: "relative",
-    width: "100%",
-    height: "100%",
-    borderBottomColor: "#ABABAB",
-    borderLeftColor: "#ABABAB",
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+    borderBottomColor: '#ABABAB',
+    borderLeftColor: '#ABABAB',
     borderLeftWidth: 0.5,
     borderBottomWidth: 0.5,
-    borderRightColor: "#ABABAB",
-    borderTopColor: "#ABABAB",
+    borderRightColor: '#ABABAB',
+    borderTopColor: '#ABABAB',
     borderRightWidth: 0.5,
     borderTopWidth: 0.5,
     borderRadius: 8,
   },
   khung12: {
     paddingLeft: 20,
-    flexDirection: "row",
-    alignItems: "center",
-    position: "relative",
-    width: "0%",
-    height: "0%",
-    borderBottomColor: "#ABABAB",
-    borderLeftColor: "#ABABAB",
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'relative',
+    width: '0%',
+    height: '0%',
+    borderBottomColor: '#ABABAB',
+    borderLeftColor: '#ABABAB',
     borderLeftWidth: 0.5,
     borderBottomWidth: 0.5,
-    borderRightColor: "#ABABAB",
-    borderTopColor: "#ABABAB",
+    borderRightColor: '#ABABAB',
+    borderTopColor: '#ABABAB',
     borderRightWidth: 0.5,
     borderTopWidth: 0.5,
     borderRadius: 8,
     opacity: 0,
   },
   mainplanta: {
-    justifyContent: "space-around",
-    alignItems: "center",
-    flexDirection: "row",
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    flexDirection: 'row',
     marginTop: 100,
   },
   textplanta: {
-    fontWeight: "700",
+    fontWeight: '700',
     fontSize: 50,
-    textAlign: "center",
-    color: "#ffffff",
+    textAlign: 'center',
+    color: '#ffffff',
   },
 
   mainchitiet: {
-    justifyContent: "space-around",
-    alignItems: "center",
-    flexDirection: "row",
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    flexDirection: 'row',
     marginTop: 0,
 
     marginLeft: 52,
@@ -428,15 +414,15 @@ const styles = StyleSheet.create({
   },
   chitiet: {
     fontSize: 16,
-    textAlign: "center",
+    textAlign: 'center',
     opacity: 0.7,
-    color: "#ffffff",
+    color: '#ffffff',
   },
 
   container: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    backgroundColor: "#E94057",
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#E94057',
   },
 });

@@ -331,7 +331,7 @@ export const PostStatus = ({route, navigation}) => {
             <TextInput
               value={noidung}
               onChangeText={setnoidung}
-              style={{left: 20, width: '90%', top: 5}}
+              style={{left: 20, width: '90%', top: 5, height: 100}}
               multiline={true}
               placeholder="Bạn đang nghĩ gì?"></TextInput>
           </View>

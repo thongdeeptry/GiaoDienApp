@@ -18,12 +18,13 @@ import {ProductConTextProvider} from './src/layout/product/ProductContext';
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Audio} from 'expo-av';
-
+import {useNetInfo, NetInfoState} from '@react-native-community/netinfo';
 export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisibleCall, setModalVisibleCall] = useState(false);
   const [title, setTitle] = useState();
   const [body, setBody] = useState();
-
+  const internetState: NetInfoState = useNetInfo();
   const [sound, setSound] = React.useState();
   const requestPermision = async () => {
     const authStatus = await messaging().requestPermission();
@@ -34,6 +35,13 @@ export default function App() {
       console.log('AuthorizationStatus' + authStatus);
     }
   };
+  if (internetState.isConnected === false) {
+    Alert.alert(
+      'Không có kết nối mạng! ❌',
+      'Xin lỗi, Bạn vui lòng kiểm tra lại kết nối mạng để sử dụng các tính năng của GenzLove.',
+      [{text: 'Được'}],
+    );
+  }
   useEffect(() => {
     if (requestPermision()) {
       messaging()
@@ -50,62 +58,17 @@ export default function App() {
       .getInitialNotification()
       .then(async remotemess => {
         if (remotemess) {
-          // console.log("Message handled in the background!", remotemess);
-          // setTitle(remotemess.notification.title);
-          // setBody(remotemess.notification.body);
-          // if (remotemess.notification.title == "Bạn có cuộc gọi đến") {
-          // } else {
-          //   setModalVisible(true);
-          //   console.log("Loading Sound");
-          //   const { sound } = await Audio.Sound.createAsync(
-          //     require("./nhac.mp3")
-          //   );
-          //   setSound(sound);
-          //   console.log("Playing Sound");
-          //   await sound.playAsync();
-          //   setTimeout(() => {
-          //     setModalVisible(false);
-          //   }, 3000);
-          // }
         }
       });
 
     ///sss
     messaging().onNotificationOpenedApp(async remotemess => {
       console.log('Message handled in the background!', remotemess);
-      // setTitle(remotemess.notification.title);
-      // setBody(remotemess.notification.body);
-      // if (remotemess.notification.title == "Bạn có cuộc gọi đến") {
-      // } else {
-      //   setModalVisible(true);
-      //   console.log("Loading Sound");
-      //   const { sound } = await Audio.Sound.createAsync(require("./nhac.mp3"));
-      //   setSound(sound);
-      //   console.log("Playing Sound");
-      //   await sound.playAsync();
-      //   setTimeout(() => {
-      //     setModalVisible(false);
-      //   }, 3000);
-      // }
     });
 
     //backgroubnd
     messaging().setBackgroundMessageHandler(async remoteMessage => {
       console.log('Message handled in the background!', remoteMessage);
-      // setTitle(remoteMessage.notification.title);
-      // setBody(remoteMessage.notification.body);
-      // if (remoteMessage.notification.title == "Bạn có cuộc gọi đến") {
-      // } else {
-      //   setModalVisible(true);
-      //   console.log("Loading Sound");
-      //   const { sound } = await Audio.Sound.createAsync(require("./nhac.mp3"));
-      //   setSound(sound);
-      //   console.log("Playing Sound");
-      //   await sound.playAsync();
-      //   setTimeout(() => {
-      //     setModalVisible(false);
-      //   }, 1000);
-      // }
     });
 
     //alert
@@ -158,12 +121,46 @@ export default function App() {
             </View>
           </Modal>
         </View>
-        <Navigation />
+        {internetState.isConnected === false ? (
+          <View style={styles.centered}>
+            <Text style={styles.title}>GenzLove</Text>
+            <Text style={styles.title1}>
+              Tìm những người xung quanh phù hợp với bạn, kết bạn và theo dõi
+              trò chuyện cùng họ.
+            </Text>
+          </View>
+        ) : (
+          <Navigation />
+        )}
       </ProductConTextProvider>
     </UserContextProvider>
   );
 }
 const styles = StyleSheet.create({
+  centered: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#E94057',
+    opacity: 0.95,
+  },
+  title: {
+    fontSize: 50,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: 'white',
+    letterSpacing: 1,
+    bottom: 20,
+  },
+  title1: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: 'white',
+    letterSpacing: 1,
+    bottom: 10,
+    paddingHorizontal: 10,
+  },
   centeredView: {
     flex: 1,
     justifyContent: 'center',

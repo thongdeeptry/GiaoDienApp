@@ -205,7 +205,7 @@ export const ProfileName = ({route, navigation}) => {
         <View style={styles.khunghinh}>
           <View style={styles.khung}>
             <TextInput
-              style={{fontSize: 20}}
+              style={{fontSize: 20, width: '95%', height: '100%'}}
               placeholder="Họ"
               multiline={true}
               maxLength={100}
@@ -216,7 +216,7 @@ export const ProfileName = ({route, navigation}) => {
 
           <View style={styles.khung4}>
             <TextInput
-              style={{fontSize: 20}}
+              style={{fontSize: 20, width: '95%', height: '100%'}}
               placeholder="Tên"
               multiline={true}
               maxLength={100}

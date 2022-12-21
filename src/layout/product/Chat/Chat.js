@@ -244,7 +244,7 @@ function Chat(props) {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        style={{height: '85%'}}
+        style={{height: '75%'}}
         data={users}
         renderItem={({item}) => (
           <ChatItem

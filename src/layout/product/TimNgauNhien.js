@@ -5,12 +5,22 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  ToastAndroid,
 } from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import {initializeApp} from 'firebase/app';
 import {firebaseConfig} from '../../../config';
 import {getAuth, signOut} from 'firebase/auth';
-import {getDatabase, ref, onValue, set, push, update} from 'firebase/database';
+import {
+  getDatabase,
+  ref,
+  onValue,
+  set,
+  push,
+  update,
+  remove,
+} from 'firebase/database';
+import {v4 as uuid} from 'uuid';
 export const TimNgauNhien = ({route, navigation}) => {
   initializeApp(firebaseConfig);
   const user = getAuth().currentUser.uid;
@@ -103,6 +113,7 @@ export const TimNgauNhien = ({route, navigation}) => {
             //     : dataghepq[1] + dataghepq[0];
           });
           if (dataghepq.length == 2) {
+            setrandomid(dataghepq[0] == user ? dataghepq[1] : dataghepq[0]);
             const referencerd = ref(db, 'hangcho/' + randomidd);
             remove(referencerd).then(() => {
               ToastAndroid.show(

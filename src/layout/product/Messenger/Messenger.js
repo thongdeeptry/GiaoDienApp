@@ -237,6 +237,7 @@ function Messenger(props) {
           style={{
             color: 'black',
             paddingStart: 10,
+            height: 50,
           }}
           placeholder="Nhập nội dung tin nhắn"
           value={typedText}

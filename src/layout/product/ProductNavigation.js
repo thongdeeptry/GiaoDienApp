@@ -268,8 +268,8 @@ export default ProductNavigation = props => {
             backgroundColor: '#FFFFFF',
             height: 50,
             alignItems: 'center',
-            borderTopLeftRadius: 10,
-            borderTopRightRadius: 10,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
           },
           tabBarIcon: ({focused}) => {
             if (route.name == 'Home') {
