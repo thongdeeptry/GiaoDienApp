@@ -31,6 +31,7 @@ const JoinLive = ({navigation, route}) => {
   const [token1, setToken] = useState();
 
   useEffect(() => {
+    console.log(uid);
     async function fetchData() {
       const res = await ongetTokenAgora(channel, role, 'uid', uid, expiry);
       setToken(res);

@@ -408,7 +408,8 @@ export const Profile = props => {
                         }}
                         onPress={() =>
                           clipboard(
-                            'http://localhost:3000/#/admin/profile/' + user,
+                            'https://genzlove.onrender.com/#/admin/profile/' +
+                              user,
                           )
                         }>
                         <Text

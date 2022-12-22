@@ -58,7 +58,7 @@ const LiveVideo = ({navigation, route}) => {
       id: user,
       avt: avt,
       name: name,
-      luotxem: 0,
+      luotxem: 1,
       ngaytao: ngayht + ' Tháng ' + thang + ' Năm ' + nam,
       token: token,
       channel: channel,

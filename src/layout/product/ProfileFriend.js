@@ -16,6 +16,7 @@ import {initializeApp} from 'firebase/app';
 import {firebaseConfig} from '../../../config';
 import {getAuth} from 'firebase/auth';
 import {getDatabase, ref, onValue, set, push, update} from 'firebase/database';
+import Clipboard from '@react-native-community/clipboard';
 import {sendMess} from '../../constants/sendMess';
 const wait = timeout => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -128,6 +129,10 @@ export const ProfileFriend = ({route, navigation}) => {
       });
     });
   });
+  const clipboard = async text => {
+    Clipboard.setString(text);
+    ToastAndroid.show('Sao chép liên kết thành công', ToastAndroid.BOTTOM);
+  };
   const openModal = id => {
     setidPost(id);
     setCheckedStatus(true);

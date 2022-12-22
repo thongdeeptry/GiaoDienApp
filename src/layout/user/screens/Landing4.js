@@ -58,12 +58,10 @@ export const Landing4 = props => {
       </View>
       <View style={styles.khac}>
         <Text style={styles.khacText}>hoặc đăng ký bằng</Text>
-        <View
-          style={styles.mainkhac}
-          onPress={() => navigation.navigate('Landing4')}>
-          <TouchableOpacity style={styles.gg}>
+        <View style={styles.mainkhac}>
+          {/* <TouchableOpacity style={styles.gg}>
             <Image source={require('../../../image/fbvippng.png')} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity style={styles.fb} onPress={loginWithGoogle}>
             <Image source={require('../../../image/ggvip.png')} />
           </TouchableOpacity>
