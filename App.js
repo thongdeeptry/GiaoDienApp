@@ -10,6 +10,7 @@ import {
   TextInput,
   ToastAndroid,
   Modal,
+  StatusBar,
 } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import Navigation from './src/layout/user/Navigation';
@@ -19,6 +20,7 @@ import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Audio} from 'expo-av';
 import {useNetInfo, NetInfoState} from '@react-native-community/netinfo';
+import Loading from './src/components/Loading';
 export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleCall, setModalVisibleCall] = useState(false);
@@ -43,6 +45,7 @@ export default function App() {
     );
   }
   useEffect(() => {
+    setTimeout(() => setShow(true), 3000);
     if (requestPermision()) {
       messaging()
         .getToken()
@@ -91,9 +94,11 @@ export default function App() {
 
     return unsubscribe;
   }, []);
-  return (
+  const [show, setShow] = useState(false);
+  return show == true ? (
     <UserContextProvider>
       <ProductConTextProvider>
+        <StatusBar style="auto" />
         <View style={styles.centeredView}>
           <Modal
             animationType="slide"
@@ -134,6 +139,8 @@ export default function App() {
         )}
       </ProductConTextProvider>
     </UserContextProvider>
+  ) : (
+    <Loading />
   );
 }
 const styles = StyleSheet.create({

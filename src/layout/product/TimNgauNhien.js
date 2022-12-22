@@ -149,9 +149,6 @@ export const TimNgauNhien = ({route, navigation}) => {
         resizeMode="cover"></Image>
 
       <View style={styles.custominfo}>
-        <Text style={{textAlign: 'center'}}>
-          {randomid == '' || randomid == undefined ? '' : 'Chưa có dữ liệu'}
-        </Text>
         <Image
           style={{
             width: 70,

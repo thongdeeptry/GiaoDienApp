@@ -56,7 +56,7 @@ export const ProfileFriend = ({route, navigation}) => {
   const [dacod, setdacod] = useState(false);
   const sothich2 = [];
   const [refreshing, setRefreshing] = React.useState(false);
-
+  const [isCheckedStatusmore, setCheckedStatusmore] = useState(false);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
@@ -132,6 +132,7 @@ export const ProfileFriend = ({route, navigation}) => {
   const clipboard = async text => {
     Clipboard.setString(text);
     ToastAndroid.show('Sao chép liên kết thành công', ToastAndroid.BOTTOM);
+    closeModalmore();
   };
   const openModal = id => {
     setidPost(id);
@@ -337,7 +338,12 @@ export const ProfileFriend = ({route, navigation}) => {
       );
     }
   };
-
+  const openModalmore = () => {
+    setCheckedStatusmore(true);
+  };
+  const closeModalmore = () => {
+    setCheckedStatusmore(false);
+  };
   return (
     <ScrollView
       contentContainerStyle={{flexGrow: 1}}
@@ -397,6 +403,76 @@ export const ProfileFriend = ({route, navigation}) => {
         </View>
 
         <View style={styles.mailchitiet}>
+          <View style={styles.centeredView}>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={isCheckedStatusmore}
+              onRequestClose={() => {
+                setCheckedStatusmore(!isCheckedStatusmore);
+              }}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <TouchableOpacity
+                    style={{width: '115%', position: 'absolute'}}
+                    onPress={closeModalmore}>
+                    <Image
+                      style={{width: 20, height: 20}}
+                      source={require('./../../image/remove.png')}
+                    />
+                  </TouchableOpacity>
+
+                  <View
+                    style={{
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      width: '100%',
+                    }}>
+                    <TouchableOpacity
+                      style={{
+                        paddingVertical: 8,
+                        borderColor: '#ABABAB',
+                        borderWidth: 0.4,
+                      }}
+                      onPress={() => navigation.navigate('BaoCao')}>
+                      <Text
+                        style={{
+                          color: 'black',
+                          fontSize: 15,
+                          textAlign: 'center',
+                        }}>
+                        Báo cáo tài khoản này
+                      </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      style={{
+                        paddingVertical: 8,
+                        borderColor: '#ABABAB',
+                        borderWidth: 0.4,
+                        top: 10,
+                      }}
+                      onPress={() =>
+                        clipboard(
+                          'https://genzlove.onrender.com/#/admin/profile/' +
+                            user,
+                        )
+                      }>
+                      <Text
+                        style={{
+                          color: 'black',
+                          fontSize: 15,
+                          textAlign: 'center',
+                        }}>
+                        Sao chép liên kết trang cá nhân
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </Modal>
+          </View>
+
           <View style={styles.mainten}>
             <View style={styles.phuten}>
               <View style={{flexDirection: 'row', top: 5}}>
@@ -818,11 +894,7 @@ export const ProfileFriend = ({route, navigation}) => {
           </View>
           <View>
             <TouchableOpacity
-              onPress={() => {
-                id != idCurrent
-                  ? navigation.navigate('BaoCao', {id})
-                  : navigation.navigate('hotro');
-              }}
+              onPress={openModalmore}
               style={{width: 100, height: 50, left: 60}}>
               <Image
                 style={[styles.containerrrrr, {borderRadius: 12}]}
