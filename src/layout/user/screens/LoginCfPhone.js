@@ -133,6 +133,7 @@ export const LoginCfPhone = ({route, navigation}) => {
               maxLength={1}
               value={Code1}
               onChangeText={setCode1}
+              keyboardType="number-pad"
               returnKeyType="next"
               onSubmitEditing={() => ref_input2.current.focus()}></TextInput>
           </View>
@@ -143,6 +144,7 @@ export const LoginCfPhone = ({route, navigation}) => {
               maxLength={1}
               value={Code2}
               onChangeText={setCode2}
+              keyboardType="number-pad"
               returnKeyType="next"
               onSubmitEditing={() => ref_input3.current.focus()}
               ref={ref_input2}></TextInput>
@@ -155,6 +157,7 @@ export const LoginCfPhone = ({route, navigation}) => {
               value={Code3}
               onChangeText={setCode3}
               ref={ref_input3}
+              keyboardType="number-pad"
               returnKeyType="next"
               onSubmitEditing={() => ref_input4.current.focus()}></TextInput>
           </View>
@@ -166,6 +169,7 @@ export const LoginCfPhone = ({route, navigation}) => {
               value={Code4}
               onChangeText={setCode4}
               ref={ref_input4}
+              keyboardType="number-pad"
               returnKeyType="next"
               onSubmitEditing={() => ref_input5.current.focus()}></TextInput>
           </View>
@@ -176,6 +180,7 @@ export const LoginCfPhone = ({route, navigation}) => {
               maxLength={1}
               value={Code5}
               onChangeText={setCode5}
+              keyboardType="number-pad"
               ref={ref_input5}
               returnKeyType="next"
               onSubmitEditing={() => ref_input6.current.focus()}></TextInput>

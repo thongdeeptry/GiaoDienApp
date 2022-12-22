@@ -16,6 +16,7 @@ import {LoginCfPhone} from './screens/LoginCfPhone';
 import {Profile} from '../product/Profile';
 import {PostStatus} from '../product/PostStatus';
 import VoHieuHoa from './screens/VoHieuHoa';
+import QuenPass from './screens/QuenPass';
 export default UserNavigationn = () => {
   return (
     <Stack.Navigator screenOptions={({route}) => ({headerShown: false})}>
@@ -31,6 +32,7 @@ export default UserNavigationn = () => {
       <Stack.Screen name="LoginPhone" component={LoginPhone} />
       <Stack.Screen name="LoginCfPhone" component={LoginCfPhone} />
       <Stack.Screen name="VoHieuHoa" component={VoHieuHoa} />
+      <Stack.Screen name="QuenPass" component={QuenPass} />
     </Stack.Navigator>
   );
 };

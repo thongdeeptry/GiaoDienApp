@@ -8,6 +8,7 @@ import {
   FlatList,
   RefreshControl,
   ToastAndroid,
+  Pressable,
 } from 'react-native';
 import {getDatabase, ref, set, push, update, remove} from 'firebase/database';
 import {images, colors, icons, fontSizes} from '../../../constants';
@@ -198,24 +199,22 @@ function Chat(props) {
           />
           <Text style={{top: 10}}>Nhắn Tin</Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        <Pressable
           style={{
             height: 60,
             flexDirection: 'column',
             alignItems: 'center',
             width: '30%',
-            elevation: 5,
+            elevation: 1,
             backgroundColor: 'white',
             borderRadius: 10,
-            opacity: 0.5,
-          }}
-          disabled>
+          }}>
           <Image
             style={{width: 30, height: 30, top: 5}}
             source={require('../../../image/call.png')}
           />
           <Text style={{top: 10}}>Gọi Điện</Text>
-        </TouchableOpacity>
+        </Pressable>
         <TouchableOpacity
           style={{
             height: 60,

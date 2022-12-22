@@ -47,10 +47,10 @@ export const CaiDat = ({route, navigation}) => {
     const auth = getAuth();
     signOut(auth)
       .then(async () => {
-        alert('Đăng xuất thành công');
         await AsyncStorage.setItem('email', '');
         await AsyncStorage.setItem('password', '');
         onLogout();
+        ToastAndroid.show('Đăng xuất thành công', ToastAndroid.BOTTOM);
       })
       .catch(error => {
         // An error happened.

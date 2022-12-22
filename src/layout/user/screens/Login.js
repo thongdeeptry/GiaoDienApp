@@ -209,7 +209,9 @@ export const Login = props => {
                     <TouchableOpacity style={styles.nut} onPress={Click}>
                       <Text style={styles.nutText}>Đăng Nhập</Text>
                     </TouchableOpacity>
-                    <View style={{paddingTop: 10}}>
+                    <TouchableOpacity
+                      style={{paddingTop: 10}}
+                      onPress={() => navigation.navigate('QuenPass')}>
                       <Text
                         style={{
                           fontSize: 15,
@@ -218,7 +220,7 @@ export const Login = props => {
                         }}>
                         Bạn đã quên mật khẩu?
                       </Text>
-                    </View>
+                    </TouchableOpacity>
                     <View style={{paddingTop: 5}}>
                       <Text
                         onPress={() => navigation.navigate('LoginPhone')}

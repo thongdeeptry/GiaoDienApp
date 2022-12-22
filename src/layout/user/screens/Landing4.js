@@ -36,7 +36,7 @@ export const Landing4 = props => {
         <Image
           style={styles.image}
           resizeMethod="auto"
-          source={require('../../../image/logo.png')}
+          source={require('../../../image/logoappxin.png')}
         />
       </View>
       <View style={styles.textContainer}>

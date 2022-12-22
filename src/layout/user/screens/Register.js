@@ -193,11 +193,13 @@ export const Register = props => {
                         Bạn đã quên mật khẩu?
                       </Text>
                     </View>
-                    <View style={{paddingTop: 5}}>
+                    <TouchableOpacity
+                      style={{paddingTop: 5}}
+                      onPress={() => navigation.navigate('QuenPass')}>
                       <Text style={{color: '#FD397F', fontWeight: '400'}}>
                         Lấy ngay
                       </Text>
-                    </View>
+                    </TouchableOpacity>
                   </View>
                 </View>
               </View>
