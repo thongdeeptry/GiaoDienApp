@@ -39,7 +39,7 @@ function Messenger(props) {
   const app = initializeApp(firebaseConfig);
   if (!app.length) {
   }
-  const DataHis = [];
+  let DataHis = [];
   const db1 = getDatabase();
   const user = auth.currentUser.uid;
   const [namee, setname] = useState();
@@ -94,6 +94,8 @@ function Messenger(props) {
 
   const unSub = ref(db1, 'chats/' + combinedId + '/messages');
   onValue(unSub, datasnap => {
+    DataHis.splice(0, DataHis.length);
+    DataHis = [];
     datasnap.forEach(datasnapP => {
       DataHis.push({
         id: datasnapP.child('id').exportVal(),
@@ -166,8 +168,8 @@ function Messenger(props) {
       sendMess(tokendv, namee + ' vừa gửi cho bạn 1 tin nhắn', typedText);
     });
     setTypedText('');
-    setRefreshing(true);
-    wait(1000).then(() => setRefreshing(false));
+    // setRefreshing(true);
+    // wait(1000).then(() => setRefreshing(false));
   };
   return (
     <View
@@ -199,7 +201,6 @@ function Messenger(props) {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         inverted
-        keyExtractor={(item, index) => index}
         data={DataHis == [] ? [] : DataHis.reverse()} //chatHistory.reverse()
         renderItem={({item}) => (
           <MessengerItem

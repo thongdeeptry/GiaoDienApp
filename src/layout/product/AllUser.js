@@ -207,24 +207,22 @@ export const AllUser = ({route, navigation}) => {
             name: name,
           });
           ToastAndroid.show('Đã gửi lượt thích', ToastAndroid.BOTTOM);
-          const referencecrd = ref(db, 'users/' + id);
-          onValue(referencecrd, childSnapshot => {
-            const tokendv = childSnapshot.child('token').val();
-            sendMess(
-              tokendv,
-              'Thông báo mới từ ' + name,
-              name + ' vừa yêu thích bạn',
-            );
-          });
+          if (id != idCurrent) {
+            const referencecrd = ref(db, 'users/' + id);
+            onValue(referencecrd, childSnapshot => {
+              const tokendv = childSnapshot.child('token').val();
+              sendMess(
+                tokendv,
+                'Thông báo mới từ ' + name,
+                name + ' vừa yêu thích bạn',
+              );
+            });
+          }
         } else {
           const reference = ref(db, 'users/' + id);
           update(reference, {
             follow: co,
           });
-          ToastAndroid.show(
-            'Bạn đã yêu thích tài khoản này rồi!',
-            ToastAndroid.BOTTOM,
-          );
         }
       });
     } else {

@@ -14,6 +14,17 @@ import {
   FirebaseRecaptchaVerifierModal,
   FirebaseRecaptchaBanner,
 } from 'expo-firebase-recaptcha';
+import {
+  getDatabase,
+  ref,
+  onValue,
+  set,
+  push,
+  update,
+  query,
+  limitToLast,
+  remove,
+} from 'firebase/database';
 import {firebaseConfig} from '../../../../config';
 import firebase from 'firebase/compat/app';
 import {UserContext} from '../UserContext';
@@ -42,6 +53,7 @@ export const LoginCfPhone = ({route, navigation}) => {
   const ref_input6 = useRef();
   initializeApp(firebaseConfig);
   firebase.initializeApp(firebaseConfig);
+  const db = getDatabase();
   useEffect(() => {
     let myInterval = setInterval(() => {
       if (seconds > 0) {
@@ -80,7 +92,16 @@ export const LoginCfPhone = ({route, navigation}) => {
         ToastAndroid.show('Đã xác nhận mã', ToastAndroid.BOTTOM);
         await AsyncStorage.setItem('phone', sdt);
         console.log((await getAuth().currentUser.getIdTokenResult()).token);
-        onLogin();
+        const reference = ref(db, 'users/' + getAuth().currentUser.uid);
+        onValue(reference, childSnapshot => {
+          const trangthai = childSnapshot.child('trangthai').val();
+          console.log(trangthai);
+          if (trangthai == 'Khóa') {
+            navigation.navigate('VoHieuHoa');
+          } else {
+            onLogin();
+          }
+        });
       })
       .catch(error => {
         ToastAndroid.show('Mã sai', ToastAndroid.BOTTOM);

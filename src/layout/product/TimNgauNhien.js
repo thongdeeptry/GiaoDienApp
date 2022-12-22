@@ -67,10 +67,7 @@ export const TimNgauNhien = ({route, navigation}) => {
     dataghep.splice(0, dataghep.length);
     dataghep = [];
     let ids = user;
-    ToastAndroid.show(
-      'Đang kết nối những người xung quanh',
-      ToastAndroid.BOTTOM,
-    );
+
     const referencer = ref(db, 'hangcho');
     onValue(referencer, snapshot => {
       snapshot.forEach(childSnapshot => {
@@ -96,9 +93,9 @@ export const TimNgauNhien = ({route, navigation}) => {
       setrandomidd(dataghep[randomID]);
       console.log('randomid = ' + randomidd);
       if (
-        randomid != '' &&
-        randomid != null &&
-        randomid != undefined &&
+        randomidd != '' &&
+        randomidd != null &&
+        randomidd != undefined &&
         dataghep.length != 0
       ) {
         const reference = ref(db, 'hangcho/' + randomidd + '/' + user);
@@ -152,6 +149,9 @@ export const TimNgauNhien = ({route, navigation}) => {
         resizeMode="cover"></Image>
 
       <View style={styles.custominfo}>
+        <Text style={{textAlign: 'center'}}>
+          {randomid == '' || randomid == undefined ? '' : 'Chưa có dữ liệu'}
+        </Text>
         <Image
           style={{
             width: 70,

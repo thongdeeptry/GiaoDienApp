@@ -263,16 +263,18 @@ const Home = ({route, navigation}) => {
             like: like,
           });
           ToastAndroid.show('Đã gửi lượt thích bài viết', ToastAndroid.BOTTOM);
-          const referencecr = ref(db, 'users/' + id);
-          onValue(referencecr, childSnapshot => {
-            const tokendv = childSnapshot.child('token').val();
-            console.log(tokendv);
-            sendMess(
-              tokendv,
-              'Thông báo mới từ ' + name,
-              name + ' đã thích bài viết của bạn',
-            );
-          });
+          if (id != user) {
+            const referencecr = ref(db, 'users/' + id);
+            onValue(referencecr, childSnapshot => {
+              const tokendv = childSnapshot.child('token').val();
+              console.log(tokendv);
+              sendMess(
+                tokendv,
+                'Thông báo mới từ ' + name,
+                name + ' đã thích bài viết của bạn',
+              );
+            });
+          }
         } else {
           ToastAndroid.show(
             'Bạn đã thích bài viết này rồi',

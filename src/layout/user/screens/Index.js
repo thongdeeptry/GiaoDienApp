@@ -18,6 +18,17 @@ import {
   signInWithCustomToken,
   signInWithCredential,
 } from 'firebase/auth';
+import {
+  getDatabase,
+  ref,
+  onValue,
+  set,
+  push,
+  update,
+  query,
+  limitToLast,
+  remove,
+} from 'firebase/database';
 import {UserContext} from '../UserContext';
 import {initializeApp} from 'firebase/app';
 import {firebaseConfig} from '../../../../config';
@@ -28,6 +39,7 @@ export const Index = props => {
   const {onLogin} = useContext(UserContext);
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const db = getDatabase();
   const Click = async () => {
     const email = await AsyncStorage.getItem('email');
     const password = await AsyncStorage.getItem('password');
@@ -36,7 +48,15 @@ export const Index = props => {
         console.log('Đăng nhập thành công');
         const user = getAuth().currentUser.uid;
         console.log('UID - ' + user);
-        onLogin();
+        const reference = ref(db, 'users/' + user);
+        onValue(reference, childSnapshot => {
+          const trangthai = childSnapshot.child('trangthai').val();
+          if (trangthai == 'Khóa') {
+            navigation.navigate('VoHieuHoa');
+          } else {
+            onLogin();
+          }
+        });
       });
     }
   };

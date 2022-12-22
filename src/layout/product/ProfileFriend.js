@@ -208,15 +208,17 @@ export const ProfileFriend = ({route, navigation}) => {
             like: like,
           });
           ToastAndroid.show('Đã gửi lượt thích bài viết', ToastAndroid.BOTTOM);
-          const referencecrd = ref(db, 'users/' + id);
-          onValue(referencecrd, childSnapshot => {
-            const tokendv = childSnapshot.child('token').val();
-            sendMess(
-              tokendv,
-              'Thông báo mới từ ' + nameCr,
-              nameCr + ' đã thích bài viết của bạn',
-            );
-          });
+          if (id != idCurrent) {
+            const referencecrd = ref(db, 'users/' + id);
+            onValue(referencecrd, childSnapshot => {
+              const tokendv = childSnapshot.child('token').val();
+              sendMess(
+                tokendv,
+                'Thông báo mới từ ' + nameCr,
+                nameCr + ' đã thích bài viết của bạn',
+              );
+            });
+          }
         } else {
           ToastAndroid.show(
             'Bạn đã thích bài viết này rồi',
@@ -308,20 +310,18 @@ export const ProfileFriend = ({route, navigation}) => {
             name: nameCr,
           });
           ToastAndroid.show('Đã gửi lượt thích', ToastAndroid.BOTTOM);
-          const referencecrd = ref(db, 'users/' + id);
-          onValue(referencecrd, childSnapshot => {
-            const tokendv = childSnapshot.child('token').val();
-            sendMess(
-              tokendv,
-              'Thông báo mới từ ' + nameCr,
-              nameCr + ' vừa gửi lượt thích đến bạn',
-            );
-          });
+          if (id != idCurrent) {
+            const referencecrd = ref(db, 'users/' + id);
+            onValue(referencecrd, childSnapshot => {
+              const tokendv = childSnapshot.child('token').val();
+              sendMess(
+                tokendv,
+                'Thông báo mới từ ' + nameCr,
+                nameCr + ' vừa gửi lượt thích đến bạn',
+              );
+            });
+          }
         } else {
-          ToastAndroid.show(
-            'Bạn đã yêu thích tài khoản này rồi!',
-            ToastAndroid.BOTTOM,
-          );
         }
       });
     }

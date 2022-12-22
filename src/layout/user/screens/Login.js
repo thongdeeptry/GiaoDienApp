@@ -16,6 +16,17 @@ import {initializeApp} from 'firebase/app';
 import Checkbox from 'expo-checkbox';
 import {firebaseConfig} from '../../../../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  getDatabase,
+  ref,
+  onValue,
+  set,
+  push,
+  update,
+  query,
+  limitToLast,
+  remove,
+} from 'firebase/database';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/messaging';
 import {Formik} from 'formik';
@@ -44,7 +55,7 @@ export const Login = props => {
     if (!app.length) {
     }
   }, []);
-
+  const db = getDatabase();
   const auth = getAuth(app);
   const Click = async () => {
     await signInWithEmailAndPassword(
@@ -67,7 +78,16 @@ export const Login = props => {
           await AsyncStorage.setItem('email', '');
           await AsyncStorage.setItem('password', '');
         }
-        onLogin();
+        const reference = ref(db, 'users/' + user);
+        onValue(reference, childSnapshot => {
+          const trangthai = childSnapshot.child('trangthai').val();
+          console.log(trangthai);
+          if (trangthai == 'Khóa') {
+            navigation.navigate('VoHieuHoa');
+          } else {
+            onLogin();
+          }
+        });
       })
       .catch(error => {
         ToastAndroid.show(

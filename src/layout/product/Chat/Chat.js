@@ -207,7 +207,9 @@ function Chat(props) {
             elevation: 5,
             backgroundColor: 'white',
             borderRadius: 10,
-          }}>
+            opacity: 0.5,
+          }}
+          disabled>
           <Image
             style={{width: 30, height: 30, top: 5}}
             source={require('../../../image/call.png')}
@@ -239,7 +241,11 @@ function Chat(props) {
           alignItems: 'center',
           paddingStart: 10,
         }}>
-        <Text style={{textAlign: 'center', top: 10}}>
+        <Text
+          style={[
+            {textAlign: 'center', top: 10},
+            user.length == 0 ? {width: 0, height: 0} : null,
+          ]}>
           {user.length == 0 ? 'Không có tin nhắn nào' : ''}
         </Text>
       </View>
