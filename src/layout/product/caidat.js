@@ -49,6 +49,7 @@ export const CaiDat = ({route, navigation}) => {
       .then(async () => {
         await AsyncStorage.setItem('email', '');
         await AsyncStorage.setItem('password', '');
+        await AsyncStorage.setItem('tokenLogin', '');
         onLogout();
         ToastAndroid.show('Đăng xuất thành công', ToastAndroid.BOTTOM);
       })

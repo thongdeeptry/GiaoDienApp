@@ -111,6 +111,7 @@ export const CfPhone = ({route, navigation}) => {
               value={Code1}
               onChangeText={setCode1}
               keyboardType="number-pad"
+              returnKeyType="next"
               autoFocus={true}></TextInput>
           </View>
           <View style={styles.khung2}>

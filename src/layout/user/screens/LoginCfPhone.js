@@ -92,6 +92,7 @@ export const LoginCfPhone = ({route, navigation}) => {
         ToastAndroid.show('Đã xác nhận mã', ToastAndroid.BOTTOM);
         await AsyncStorage.setItem('phone', sdt);
         console.log((await getAuth().currentUser.getIdTokenResult()).token);
+
         const reference = ref(db, 'users/' + getAuth().currentUser.uid);
         onValue(reference, childSnapshot => {
           const trangthai = childSnapshot.child('trangthai').val();

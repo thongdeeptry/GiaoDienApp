@@ -32,21 +32,24 @@ import {
 import {UserContext} from '../UserContext';
 import {initializeApp} from 'firebase/app';
 import {firebaseConfig} from '../../../../config';
+import firebase from 'firebase/compat/app';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const Index = props => {
   const {navigation} = props;
+  firebase.initializeApp(firebaseConfig);
   const {onLogin} = useContext(UserContext);
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getDatabase();
   const Click = async () => {
-    const email = await AsyncStorage.getItem('email');
-    const password = await AsyncStorage.getItem('password');
-    if (email != '' && (password != '') | (email != null) && password != null) {
-      await signInWithEmailAndPassword(auth, email, password).then(async () => {
-        console.log('Đăng nhập thành công');
-        const user = getAuth().currentUser.uid;
+    const token = await AsyncStorage.getItem('tokenLogin');
+
+    if (token != '' && token != null) {
+      const googleCredential =
+        firebase.auth.GoogleAuthProvider.credential(token);
+      signInWithCredential(auth, googleCredential).then(async () => {
+        const user = auth.currentUser.uid;
         console.log('UID - ' + user);
         const reference = ref(db, 'users/' + user);
         onValue(reference, childSnapshot => {
@@ -58,6 +61,31 @@ export const Index = props => {
           }
         });
       });
+    } else {
+      const email = await AsyncStorage.getItem('email');
+      const password = await AsyncStorage.getItem('password');
+      if (
+        email != '' &&
+        (password != '') | (email != null) &&
+        password != null
+      ) {
+        await signInWithEmailAndPassword(auth, email, password).then(
+          async () => {
+            console.log('Đăng nhập thành công');
+            const user = getAuth().currentUser.uid;
+            console.log('UID - ' + user);
+            const reference = ref(db, 'users/' + user);
+            onValue(reference, childSnapshot => {
+              const trangthai = childSnapshot.child('trangthai').val();
+              if (trangthai == 'Khóa') {
+                navigation.navigate('VoHieuHoa');
+              } else {
+                onLogin();
+              }
+            });
+          },
+        );
+      }
     }
   };
   Click();

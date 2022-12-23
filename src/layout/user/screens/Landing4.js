@@ -7,28 +7,53 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
-import {GoogleAuthProvider, signInWithPopup, getAuth} from 'firebase/auth';
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  getAuth,
+  signInWithCredential,
+  signInWithCustomToken,
+} from 'firebase/auth';
+
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {initializeApp} from 'firebase/app';
 import {firebaseConfig} from '../../../../config';
+import firebase from 'firebase/compat/app';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export const Landing4 = props => {
   const {navigation} = props;
+  firebase.initializeApp(firebaseConfig);
+  GoogleSignin.configure({
+    webClientId:
+      '850540325665-qiil45ckdr106jv8d0804fgdhtcokrht.apps.googleusercontent.com',
+  });
   initializeApp(firebaseConfig);
-  async function loginWithGoogle() {
-    try {
-      const provider = new GoogleAuthProvider();
-      const auth = getAuth();
-
-      const {user} = await signInWithPopup(auth, provider);
-      console.error(user.email);
-      return {uid: user.uid, displayName: user.displayName};
-    } catch (error) {
-      if (error.code !== 'auth/cancelled-popup-request') {
-        console.error(error);
-      }
-
-      return null;
-    }
-  }
+  const loginWithGoogle = async () => {
+    // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+    // Get the users ID token
+    const {idToken, user} = await GoogleSignin.signIn();
+    console.log(user.email + user.id + idToken);
+    // Create a Google credential with the token
+    const googleCredential =
+      firebase.auth.GoogleAuthProvider.credential(idToken);
+    // Sign-in the user with the credential
+    signInWithCredential(getAuth(), googleCredential).then(async () => {
+      const users = getAuth().currentUser.uid;
+      console.log('UID - ' + users);
+      navigation.navigate('ProfileName', {
+        email: user.email,
+        user: users,
+        password: user.id,
+      });
+      await AsyncStorage.setItem(
+        'tokenLogin',
+        (
+          await getAuth().currentUser.getIdTokenResult()
+        ).token,
+      );
+    });
+  };
 
   return (
     <View style={styles.container}>

@@ -27,7 +27,7 @@ import {
   limitToLast,
   remove,
 } from 'firebase/database';
-import firebase from '@react-native-firebase/app';
+
 import '@react-native-firebase/messaging';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
@@ -40,7 +40,10 @@ import {
   signInWithEmailAndPassword,
   signInWithPhoneNumber,
   signInWithCustomToken,
+  signInWithCredential,
 } from 'firebase/auth';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import firebase from 'firebase/compat/app';
 export const Login = props => {
   const formikRef = useRef(null);
   const {navigation} = props;
@@ -55,6 +58,11 @@ export const Login = props => {
     if (!app.length) {
     }
   }, []);
+  GoogleSignin.configure({
+    webClientId:
+      '850540325665-qiil45ckdr106jv8d0804fgdhtcokrht.apps.googleusercontent.com',
+  });
+  firebase.initializeApp(firebaseConfig);
   const db = getDatabase();
   const auth = getAuth(app);
   const Click = async () => {
@@ -77,9 +85,16 @@ export const Login = props => {
             'password',
             formikRef.current?.values?.password,
           );
+          getAuth()
+            .currentUser.getIdToken(true)
+            .then(async kkk => {
+              // await AsyncStorage.setItem('tokenLogin', kkk);
+              await AsyncStorage.setItem('tokenLogin', '');
+            });
         } else {
           await AsyncStorage.setItem('email', '');
           await AsyncStorage.setItem('password', '');
+          await AsyncStorage.setItem('tokenLogin', '');
         }
         const reference = ref(db, 'users/' + user);
         onValue(reference, childSnapshot => {
@@ -98,6 +113,23 @@ export const Login = props => {
           ToastAndroid.BOTTOM,
         );
       });
+  };
+  const loginWithGoogle = async () => {
+    // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+    // Get the users ID token
+    const {idToken, user} = await GoogleSignin.signIn();
+    console.log(user.email + user.id + idToken);
+    // Create a Google credential with the token
+    const googleCredential =
+      firebase.auth.GoogleAuthProvider.credential(idToken);
+    // Sign-in the user with the credential
+    signInWithCredential(getAuth(), googleCredential).then(async () => {
+      const users = getAuth().currentUser.uid;
+      console.log('UID - ' + users);
+      await AsyncStorage.setItem('tokenLogin', idToken);
+      onLogin();
+    });
   };
   return (
     <Formik
@@ -227,9 +259,27 @@ export const Login = props => {
                     <View style={{paddingTop: 5}}>
                       <Text
                         onPress={() => navigation.navigate('LoginPhone')}
-                        style={{color: '#FD397F', fontWeight: '400'}}>
+                        style={{
+                          color: '#FD397F',
+                          fontWeight: '400',
+                          textAlign: 'center',
+                        }}>
                         Đăng nhập bằng số điện thoại
                       </Text>
+                      <View style={styles.khac}>
+                        <Text style={{textAlign: 'center', top: 5}}>
+                          hoặc đăng nhập bằng
+                        </Text>
+                        <View style={styles.mainkhac}>
+                          <TouchableOpacity
+                            style={styles.fb}
+                            onPress={loginWithGoogle}>
+                            <Image
+                              source={require('../../../image/ggvip.png')}
+                            />
+                          </TouchableOpacity>
+                        </View>
+                      </View>
                     </View>
                   </View>
                 </View>
@@ -250,6 +300,31 @@ export const Login = props => {
 };
 
 const styles = StyleSheet.create({
+  fb: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    width: 50,
+    height: 50,
+    borderBottomColor: '#ABABAB',
+    borderLeftColor: '#ABABAB',
+    borderLeftWidth: 0.5,
+    borderBottomWidth: 0.5,
+    borderRightColor: '#ABABAB',
+    borderTopColor: '#ABABAB',
+    borderRightWidth: 0.5,
+    borderTopWidth: 0.5,
+    borderRadius: 8,
+    alignSelf: 'center',
+  },
+  mainkhac: {
+    width: '100%',
+    height: 57,
+    top: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
   checkbox: {
     marginBottom: 8,
     justifyContent: 'flex-start',
@@ -260,9 +335,8 @@ const styles = StyleSheet.create({
   mailnut: {
     position: 'absolute',
     width: '100%',
-    top: 145,
+    top: 165,
     height: 56,
-
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
