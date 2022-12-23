@@ -128,13 +128,7 @@ export default function App() {
         </View>
         {show == true ? (
           internetState.isConnected === false ? (
-            <View style={styles.centered}>
-              <Text style={styles.title}>GenzLove</Text>
-              <Text style={styles.title1}>
-                Tìm những người xung quanh phù hợp với bạn, kết bạn và theo dõi
-                trò chuyện cùng họ.
-              </Text>
-            </View>
+            <Loading />
           ) : (
             <Navigation />
           )
