@@ -12,9 +12,10 @@ import {
   Modal,
   Alert,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {initializeApp} from 'firebase/app';
 import {firebaseConfig} from '../../../config';
+import {UserContext} from '../user/UserContext';
 import {getAuth, updatePassword, onAuthStateChanged} from 'firebase/auth';
 import {getDatabase, ref, onValue, set, push, update} from 'firebase/database';
 const ChangePass = ({navigation, route}) => {
@@ -22,6 +23,7 @@ const ChangePass = ({navigation, route}) => {
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
   const [id, setid] = useState();
+  const {onLogout} = useContext(UserContext);
   const [password, setpassword] = useState('');
   const [newpassword, setnewpassword] = useState('');
   const [repassword, setrepassword] = useState('');
@@ -76,6 +78,9 @@ const ChangePass = ({navigation, route}) => {
         ToastAndroid.show('Mật khẩu cũ không đúng', ToastAndroid.BOTTOM);
       }
     }
+  };
+  const QuenPassRoi = () => {
+    navigation.navigate('QuenPass');
   };
   return (
     <View style={{height: '100%', width: '100%'}}>
@@ -205,6 +210,13 @@ const ChangePass = ({navigation, route}) => {
           <TouchableOpacity style={styles.saveBtn} onPress={openModal}>
             <Text style={styles.save}>Lưu</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={{top: 35, alignItems: 'center', justifyContent: 'center'}}
+            onPress={QuenPassRoi}>
+            <Text style={{color: '#FD397F', fontWeight: '500'}}>
+              Quên mật khẩu?
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -325,7 +337,7 @@ const styles = StyleSheet.create({
   khung: {
     position: 'absolute',
     width: '90%',
-    height: 380,
+    height: 410,
     marginHorizontal: 20,
     top: 70,
     backgroundColor: 'white',

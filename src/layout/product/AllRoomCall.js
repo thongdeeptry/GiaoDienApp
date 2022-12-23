@@ -204,7 +204,7 @@ export const AllRoomCall = ({route, navigation}) => {
                       songuoi: item.songuoi,
                     })
                   }>
-                  <Text style={{color: 'blue', fontSize: 18}}>Vào phòng</Text>
+                  <Text style={{color: 'blue', fontSize: 18}}>Vào</Text>
                 </TouchableOpacity>
               </View>
             )}

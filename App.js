@@ -95,7 +95,7 @@ export default function App() {
     return unsubscribe;
   }, []);
   const [show, setShow] = useState(false);
-  return show == true ? (
+  return (
     <UserContextProvider>
       <ProductConTextProvider>
         <StatusBar style="auto" />
@@ -126,21 +126,23 @@ export default function App() {
             </View>
           </Modal>
         </View>
-        {internetState.isConnected === false ? (
-          <View style={styles.centered}>
-            <Text style={styles.title}>GenzLove</Text>
-            <Text style={styles.title1}>
-              Tìm những người xung quanh phù hợp với bạn, kết bạn và theo dõi
-              trò chuyện cùng họ.
-            </Text>
-          </View>
+        {show == true ? (
+          internetState.isConnected === false ? (
+            <View style={styles.centered}>
+              <Text style={styles.title}>GenzLove</Text>
+              <Text style={styles.title1}>
+                Tìm những người xung quanh phù hợp với bạn, kết bạn và theo dõi
+                trò chuyện cùng họ.
+              </Text>
+            </View>
+          ) : (
+            <Navigation />
+          )
         ) : (
-          <Navigation />
+          <Loading />
         )}
       </ProductConTextProvider>
     </UserContextProvider>
-  ) : (
-    <Loading />
   );
 }
 const styles = StyleSheet.create({
@@ -207,12 +209,12 @@ const styles = StyleSheet.create({
     color: '#E94057',
     width: '70%',
     height: 22,
-    left: 10,
+    left: 15,
   },
   modalText1: {
     width: '70%',
     fontSize: 15,
-    left: 10,
+    left: 15,
     opacity: 0.8,
     height: 17,
     top: 5,

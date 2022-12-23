@@ -27,6 +27,7 @@ const QuenPass = ({navigation, route}) => {
   const [nhap, setnhap] = useState('');
   const [name, setname] = useState();
   const [avt, setavt] = useState();
+  const [id, setid] = useState();
   const [sdt, setsdt] = useState();
   const [nghe, setnghe] = useState();
   const [email, setemail] = useState();
@@ -44,6 +45,7 @@ const QuenPass = ({navigation, route}) => {
           setemail(email);
           setsdt(sdt);
           setnghe(childSnapshot.child('nghenghiep').val());
+          setid(childSnapshot.child('id').val());
           console.log(name + email);
         }
       });
@@ -128,7 +130,8 @@ const QuenPass = ({navigation, route}) => {
               height: 60,
 
               borderRadius: 20,
-            }}>
+            }}
+            onPress={() => navigation.navigate('XacThuc', {id, email, sdt})}>
             <View style={{flex: 1, flexDirection: 'row'}}>
               <Image
                 style={{

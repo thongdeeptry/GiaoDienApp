@@ -13,7 +13,7 @@ export default function Loading() {
         backgroundColor: 'white',
       }}>
       <LottieView
-        source={require('../../load.json')}
+        source={require('../../chimnghenhac.json')}
         style={styles.animation}
         autoPlay
       />

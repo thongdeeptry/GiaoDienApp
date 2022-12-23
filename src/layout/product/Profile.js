@@ -559,7 +559,7 @@ export const Profile = props => {
                   item.image != '' ? (
                     <View
                       style={{
-                        width: 110,
+                        width: 100,
                         alignItems: 'center',
                         left: 5,
                         borderRadius: 15,
@@ -569,7 +569,7 @@ export const Profile = props => {
                       <Image
                         style={{
                           width: '100%',
-                          height: 105,
+                          height: 100,
                           borderRadius: 15,
                         }}
                         source={{uri: item.image}}
@@ -627,12 +627,13 @@ export const Profile = props => {
                   borderRadius: 15,
                   flexDirection: 'row',
                   flexWrap: 'wrap',
+                  justifyContent: 'space-around',
                 }}
                 data={dataFriend}
                 renderItem={({item, index}) => (
                   <View
                     style={{
-                      width: 110,
+                      width: 100,
                       alignItems: 'center',
                       left: 5,
                       borderRadius: 15,
@@ -642,7 +643,7 @@ export const Profile = props => {
                     <Image
                       style={{
                         width: '100%',
-                        height: 105,
+                        height: 100,
                         borderRadius: 15,
                         alignItems: 'center',
                       }}
@@ -656,6 +657,7 @@ export const Profile = props => {
                         fontSize: 12,
                         color: 'white',
                         bottom: 3,
+                        left: 5,
                       }}>
                       {item.name}
                     </Text>

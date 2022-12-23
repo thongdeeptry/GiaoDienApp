@@ -132,7 +132,7 @@ const JoinLive = ({navigation, route}) => {
           top: 10,
           opacity: 0.7,
         }}>
-        {view}
+        {uid}
       </Text>
     </View>
   ) : null;

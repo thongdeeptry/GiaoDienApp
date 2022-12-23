@@ -600,7 +600,7 @@ export const ProfileFriend = ({route, navigation}) => {
                 renderItem={({item, index}) => (
                   <View
                     style={{
-                      width: 110,
+                      width: 100,
                       alignItems: 'center',
                       left: 5,
                       borderRadius: 15,
@@ -611,7 +611,7 @@ export const ProfileFriend = ({route, navigation}) => {
                       <Image
                         style={{
                           width: '100%',
-                          height: 105,
+                          height: 100,
                           borderRadius: 15,
                         }}
                         source={{uri: item.image}}
@@ -673,7 +673,7 @@ export const ProfileFriend = ({route, navigation}) => {
                 renderItem={({item, index}) => (
                   <View
                     style={{
-                      width: 110,
+                      width: 100,
                       alignItems: 'center',
                       left: 5,
 
@@ -684,7 +684,7 @@ export const ProfileFriend = ({route, navigation}) => {
                     <Image
                       style={{
                         width: '100%',
-                        height: 105,
+                        height: 100,
                         borderRadius: 15,
                         alignItems: 'center',
                       }}
@@ -698,6 +698,7 @@ export const ProfileFriend = ({route, navigation}) => {
                         fontSize: 12,
                         color: 'white',
                         bottom: 3,
+                        left: 5,
                       }}>
                       {item.name}
                     </Text>

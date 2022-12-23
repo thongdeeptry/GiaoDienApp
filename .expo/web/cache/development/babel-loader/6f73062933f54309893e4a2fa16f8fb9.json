@@ -1,0 +1,1 @@
+{"ast":null,"code":"export { default as WebView } from \"react-native-web/dist/exports/View\";","map":{"version":3,"mappings":"","names":[],"sourceRoot":"","sources":[],"sourcesContent":["export { View as WebView } from 'react-native';\n//# sourceMappingURL=WebView.web.js.map"]},"metadata":{},"sourceType":"module"}

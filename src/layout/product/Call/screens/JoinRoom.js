@@ -18,6 +18,8 @@ import {
   remove,
   serverTimestamp,
 } from 'firebase/database';
+
+import {getAuth, signOut} from 'firebase/auth';
 const JoinRoom = ({navigation, route}) => {
   const {token, channel, nameLive, thoigian, avt, songuoi, id} = route.params;
   initializeApp(firebaseConfig);
@@ -32,7 +34,8 @@ const JoinRoom = ({navigation, route}) => {
   const [token1, setToken] = useState();
 
   useEffect(() => {
-    const reference = ref(db, 'roomCall/' + user);
+    console.log(uid);
+    const reference = ref(db, 'roomCall/' + getAuth().currentUser.uid);
     onValue(reference, childSnapshot => {
       const ui = childSnapshot.child('songuoi').val();
       setUidd(ui);
@@ -137,7 +140,7 @@ const JoinRoom = ({navigation, route}) => {
           top: 10,
           opacity: 0.7,
         }}>
-        {view}
+        {uid}
       </Text>
     </View>
   ) : null;

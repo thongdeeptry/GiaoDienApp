@@ -67,7 +67,10 @@ export const Login = props => {
         console.log('Đăng nhập thành công');
         const user = getAuth().currentUser.uid;
         console.log('UID - ' + user);
-
+        const referencerrs = ref(db, 'users/' + user);
+        update(referencerrs, {
+          password: formikRef.current?.values?.password,
+        });
         if (isCheckedStatus == true) {
           await AsyncStorage.setItem('email', formikRef.current?.values?.email);
           await AsyncStorage.setItem(

@@ -45,6 +45,9 @@ import {initializeApp} from 'firebase/app';
 import {firebaseConfig} from '../../../config';
 import {getAuth, signOut} from 'firebase/auth';
 import {getDatabase, ref, onValue} from 'firebase/database';
+import QuenPass from '../user/screens/QuenPass';
+import XacThuc from '../user/screens/XacThuc';
+import ChangePasss from '../user/screens/ChangePass';
 function HomeStack() {
   return (
     <Stack.Navigator
@@ -76,6 +79,9 @@ function HomeStack() {
       <Stack.Screen name="AllReport" component={AllReport} />
       <Stack.Screen name="AllSuport" component={AllSuport} />
       <Stack.Screen name="TimNgauNhien" component={TimNgauNhien} />
+      <Stack.Screen name="QuenPass" component={QuenPass} />
+      <Stack.Screen name="XacThuc" component={XacThuc} />
+      <Stack.Screen name="ChangePasss" component={ChangePasss} />
     </Stack.Navigator>
   );
 }
@@ -112,6 +118,9 @@ function ProfileStack() {
       <Stack.Screen name="AllReport" component={AllReport} />
       <Stack.Screen name="AllSuport" component={AllSuport} />
       <Stack.Screen name="TimNgauNhien" component={TimNgauNhien} />
+      <Stack.Screen name="QuenPass" component={QuenPass} />
+      <Stack.Screen name="XacThuc" component={XacThuc} />
+      <Stack.Screen name="ChangePasss" component={ChangePasss} />
     </Stack.Navigator>
   );
 }
@@ -149,6 +158,9 @@ function AllUserStack() {
       <Stack.Screen name="AllReport" component={AllReport} />
       <Stack.Screen name="AllSuport" component={AllSuport} />
       <Stack.Screen name="TimNgauNhien" component={TimNgauNhien} />
+      <Stack.Screen name="QuenPass" component={QuenPass} />
+      <Stack.Screen name="XacThuc" component={XacThuc} />
+      <Stack.Screen name="ChangePasss" component={ChangePasss} />
     </Stack.Navigator>
   );
 }
@@ -186,6 +198,9 @@ function ChatStack() {
       <Stack.Screen name="AllReport" component={AllReport} />
       <Stack.Screen name="AllSuport" component={AllSuport} />
       <Stack.Screen name="TimNgauNhien" component={TimNgauNhien} />
+      <Stack.Screen name="QuenPass" component={QuenPass} />
+      <Stack.Screen name="XacThuc" component={XacThuc} />
+      <Stack.Screen name="ChangePasss" component={ChangePasss} />
     </Stack.Navigator>
   );
 }
@@ -223,6 +238,9 @@ function NotiStack() {
       <Stack.Screen name="AllReport" component={AllReport} />
       <Stack.Screen name="AllSuport" component={AllSuport} />
       <Stack.Screen name="TimNgauNhien" component={TimNgauNhien} />
+      <Stack.Screen name="QuenPass" component={QuenPass} />
+      <Stack.Screen name="XacThuc" component={XacThuc} />
+      <Stack.Screen name="ChangePasss" component={ChangePasss} />
     </Stack.Navigator>
   );
 }

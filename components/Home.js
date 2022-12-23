@@ -65,6 +65,7 @@ const Home = ({route, navigation}) => {
       setname(namepr);
       setavt(avtpr);
     });
+
     const getTokenDv = async () => {
       const token = await AsyncStorage.getItem('token');
       console.log('Token Dv : ' + token);
@@ -648,13 +649,13 @@ const Home = ({route, navigation}) => {
             />
           </View>
           <View>
-            <Text
+            {/* <Text
               style={[
                 {textAlign: 'center', top: 0},
                 datapost.length == 0 ? {top: 0} : null,
               ]}>
               {datapost.length == 0 ? 'Không có bài viết nào' : ''}
-            </Text>
+            </Text> */}
             <FlatList
               horizontal
               style={[{}, dataLive.length > 0 ? styles.addContainerlive : null]}
