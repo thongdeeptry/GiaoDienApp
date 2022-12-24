@@ -91,7 +91,7 @@ const XacThuc = ({navigation, route}) => {
         setCode5('');
         setCode6('');
         ToastAndroid.show('Đã xác nhận mã', ToastAndroid.BOTTOM);
-        navigation.navigate('ChangePass');
+        navigation.navigate('ChangePasss');
       })
       .catch(error => {
         ToastAndroid.show('Mã sai', ToastAndroid.BOTTOM);
@@ -247,6 +247,7 @@ const XacThuc = ({navigation, route}) => {
                   value={Code1}
                   onChangeText={setCode1}
                   keyboardType="number-pad"
+                  returnKeyType="next"
                   autoFocus={true}></TextInput>
               </View>
               <View style={styles.khung2}>

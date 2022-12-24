@@ -78,8 +78,7 @@ export const ProfileName = ({route, navigation}) => {
             tuoi,
             location,
           });
-        }
-        if (email != undefined && tuoi > 12) {
+        } else if (email != undefined && tuoi > 12) {
           navigation.navigate('Selectsex', {
             email,
             password,

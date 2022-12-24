@@ -434,7 +434,7 @@ export const ProfileFriend = ({route, navigation}) => {
                         borderColor: '#ABABAB',
                         borderWidth: 0.4,
                       }}
-                      onPress={() => navigation.navigate('BaoCao')}>
+                      onPress={() => navigation.navigate('BaoCao', {id: id})}>
                       <Text
                         style={{
                           color: 'black',
@@ -668,6 +668,7 @@ export const ProfileFriend = ({route, navigation}) => {
                   borderRadius: 15,
                   flexDirection: 'row',
                   flexWrap: 'wrap',
+                  justifyContent: 'space-around',
                 }}
                 data={dataFriend}
                 renderItem={({item, index}) => (

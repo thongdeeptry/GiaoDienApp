@@ -192,6 +192,7 @@ const Home = ({route, navigation}) => {
           const image = childSnapshotq.child('image').exportVal();
           dataStory.push({
             id: id,
+            user: childSnapshotq.child('user').exportVal(),
             name: name,
             avt: avt,
             noidung: noidung,
@@ -259,6 +260,7 @@ const Home = ({route, navigation}) => {
           set(reference13, {
             like: true,
           });
+
           const reference = ref(db, 'post/' + id + '/' + idP);
           update(reference, {
             like: like,
@@ -584,7 +586,7 @@ const Home = ({route, navigation}) => {
                   <TouchableOpacity
                     onPress={() =>
                       navigation.navigate('Story', {
-                        id: item.id,
+                        id: item.user,
                         image: item.image,
                         avt: item.avt,
                         name: item.name,
@@ -838,6 +840,7 @@ const styles = StyleSheet.create({
     width: 90,
     height: 130,
     borderRadius: 15,
+    elevation: 10,
   },
   str1Container1: {
     width: 90,
@@ -845,6 +848,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderColor: '#E94057',
     borderWidth: 2,
+    elevation: 10,
   },
   addContainer: {
     maxHeight: 135,

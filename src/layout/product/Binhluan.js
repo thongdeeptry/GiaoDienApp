@@ -120,7 +120,7 @@ const Binhluan = ({navigation, route}) => {
         thoigian: thoigian,
         userID: userIDk,
         idCmt: idCmt,
-        tick: tick,
+        tick: childSnapshotq.child('tick').exportVal(),
       });
     });
   });
@@ -525,9 +525,7 @@ const Binhluan = ({navigation, route}) => {
                       }}
                       source={require('../../image/verify.png')}
                     />
-                  ) : (
-                    <></>
-                  )}
+                  ) : null}
                   {item.userID == user ? (
                     <TouchableOpacity
                       style={{
@@ -547,9 +545,8 @@ const Binhluan = ({navigation, route}) => {
                   ) : (
                     <></>
                   )}
-
-                  {/* <Text style={{ fontSize: 10, left: 5 }}>{item.thoigian}</Text> */}
                 </View>
+
                 <Text
                   style={{
                     fontSize: 14,
@@ -559,6 +556,7 @@ const Binhluan = ({navigation, route}) => {
                   }}>
                   {item.noidung}
                 </Text>
+                <Text style={{fontSize: 10, left: 5}}>{item.thoigian}</Text>
               </View>
             </View>
           </View>

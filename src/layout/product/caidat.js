@@ -13,6 +13,7 @@ import {
   ToastAndroid,
   Modal,
   Alert,
+  Share,
 } from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import {initializeApp} from 'firebase/app';
@@ -39,6 +40,27 @@ export const CaiDat = ({route, navigation}) => {
       setavt(avtpr);
     });
   });
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message:
+          'Bạn và tôi hãy cùng nhau trò chuyện và tìm người phù hợp ngay nào ❤ \n' +
+          'Tải GenzLove - Tìm bạn hẹn hò tại:\n' +
+          'https://play.google.com/store/apps/details?id=com.thanhthong0312.GiaoDienApp',
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
   const logOut = () => {
     const referencerrs = ref(db, 'users/' + user);
     update(referencerrs, {
@@ -85,7 +107,7 @@ export const CaiDat = ({route, navigation}) => {
         </View>
         <View style={{top: 60}}>
           <View style={styles.khung}>
-            <TouchableOpacity onPress={() => navigation.navigate('Chinhsua')}>
+            <TouchableOpacity onPress={onShare}>
               <Text style={styles.chu}>Mời bạn bè</Text>
               <Image
                 style={styles.edit1}

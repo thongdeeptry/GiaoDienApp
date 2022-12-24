@@ -22,10 +22,16 @@ export default Story = ({route, navigation}) => {
         resizeMode="contain"></Image>
       <View style={styles.con}>
         <View style={styles.ten}>
-          <View style={styles.maininfo}>
+          <TouchableOpacity
+            style={styles.maininfo}
+            onPress={() =>
+              navigation.navigate('ProfileFriend', {
+                id: id,
+              })
+            }>
             <Image style={styles.avt} source={{uri: avt}} />
             <Text style={styles.ten1}>{name}</Text>
-          </View>
+          </TouchableOpacity>
           <View style={styles.mainclose}>
             <TouchableOpacity onPress={() => navigation.navigate('Home')}>
               <Image
@@ -35,58 +41,7 @@ export default Story = ({route, navigation}) => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.nho}>
-          <View style={styles.nhantin}>
-            <TextInput
-              style={{
-                borderBottomColor: 'white',
-                borderLeftColor: 'white',
-                borderLeftWidth: 1,
-                borderBottomWidth: 1,
-                borderRightColor: 'white',
-                borderTopColor: 'white',
-                borderRightWidth: 1,
-                borderTopWidth: 1,
-                width: '100%',
-                height: '100%',
-                color: 'white',
-                borderRadius: 15,
-                alignItems: 'center',
-                flexDirection: 'row',
-                justifyContent: 'center',
-              }}
-              placeholder="  Gửi tin nhắn"></TextInput>
-            <Image
-              style={styles.sticker}
-              source={require('../../image/stickers.png')}
-            />
-          </View>
 
-          <View style={styles.gui}>
-            <TouchableOpacity
-              style={{
-                alignItems: 'center',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                width: '100%',
-                height: '100%',
-                borderBottomColor: 'white',
-                borderLeftColor: 'white',
-                borderLeftWidth: 1,
-                borderBottomWidth: 1,
-                borderRightColor: 'white',
-                borderTopColor: 'white',
-                borderRightWidth: 1,
-                borderTopWidth: 1,
-                borderRadius: 15,
-              }}>
-              <Image
-                style={styles.stickerr}
-                source={require('../../image/send.png')}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
         <View style={styles.tongts}>
           <Text style={styles.texttamsu}>{noidung}</Text>
         </View>
@@ -100,13 +55,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     height: '100%',
-    top: '90%',
+    top: '85%',
     alignItems: 'center',
   },
   texttamsu: {
     textAlign: 'center',
     width: '100%',
-    height: 45,
+    height: 100,
     left: 20,
     fontSize: 18,
 

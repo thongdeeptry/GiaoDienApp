@@ -36,6 +36,7 @@ function Chat(props) {
   const [refreshing, setRefreshing] = React.useState(false);
   let dataghep = [];
   const dataghepq = [];
+  const dataFriend = [];
   const [hienthi, sethienthi] = useState(0);
   const [randomid, setrandomid] = useState('');
   const onRefresh = React.useCallback(() => {
@@ -45,6 +46,19 @@ function Chat(props) {
   const handleSelect = async ite => {
     navigate('Messenger', {user: ite});
   };
+  const referencebanbe = ref(db, 'banbe/' + user);
+  onValue(referencebanbe, childSnapshot1 => {
+    childSnapshot1.forEach(snapshot1 => {
+      const id = snapshot1.child('user').exportVal();
+      const avt = snapshot1.child('avt').exportVal();
+      const name = snapshot1.child('name').exportVal();
+      dataFriend.push({
+        id: id,
+        avt: avt,
+        name: name,
+      });
+    });
+  });
   useEffect(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
@@ -233,6 +247,7 @@ function Chat(props) {
           <Text style={{top: 10}}>Phòng Chat</Text>
         </TouchableOpacity>
       </View>
+
       <View
         style={{
           flexDirection: 'row',
@@ -248,15 +263,55 @@ function Chat(props) {
           {user.length == 0 ? 'Không có tin nhắn nào' : ''}
         </Text>
       </View>
+      <View>
+        <FlatList
+          horizontal
+          style={{
+            width: '100%',
+            marginVertical: 10,
+            height: 50,
+            marginHorizontal: 10,
+          }}
+          showsHorizontalScrollIndicator={false}
+          data={dataFriend}
+          renderItem={({item, index}) => (
+            <View>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Messenger', {
+                    url: '',
+                    name: item.name,
+                    userId: item.id,
+                  })
+                }>
+                <View>
+                  <Image
+                    style={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: 25,
+                      marginHorizontal: 5,
+                      borderColor: '#E94057',
+                      borderWidth: 1,
+                    }}
+                    source={{uri: item.avt}}
+                  />
+                </View>
+              </TouchableOpacity>
+            </View>
+          )}
+        />
+      </View>
       <FlatList
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
+        showsVerticalScrollIndicator={false}
         style={{
           backgroundColor: 'white',
           position: 'relative',
           width: '100%',
-          height: '77.5%',
+          maxHeight: '70%',
         }}
         data={users}
         renderItem={({item}) => (

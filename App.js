@@ -98,7 +98,6 @@ export default function App() {
   return (
     <UserContextProvider>
       <ProductConTextProvider>
-        <StatusBar style="auto" />
         <View style={styles.centeredView}>
           <Modal
             animationType="slide"

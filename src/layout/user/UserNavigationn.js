@@ -37,7 +37,7 @@ export default UserNavigationn = () => {
       <Stack.Screen name="VoHieuHoa" component={VoHieuHoa} />
       <Stack.Screen name="QuenPass" component={QuenPass} />
       <Stack.Screen name="XacThuc" component={XacThuc} />
-      <Stack.Screen name="ChangePass" component={ChangePass} />
+      <Stack.Screen name="ChangePasss" component={ChangePass} />
     </Stack.Navigator>
   );
 };

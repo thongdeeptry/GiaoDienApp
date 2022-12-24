@@ -84,6 +84,7 @@ export const TimNgauNhien = ({route, navigation}) => {
       update(reference, {
         id: user,
         hienthi: hienthi,
+        name: name,
       });
     }
     console.log('dataghep' + dataghep);
@@ -102,6 +103,7 @@ export const TimNgauNhien = ({route, navigation}) => {
         update(reference, {
           id: user,
           hienthi: hienthi,
+          name: name,
         });
         const referencerd = ref(db, 'hangcho/' + randomidd);
         onValue(referencerd, snapshot => {
@@ -123,10 +125,13 @@ export const TimNgauNhien = ({route, navigation}) => {
                 ToastAndroid.BOTTOM,
               );
             });
-            navigation.navigate('Messenger', {
-              url: '',
-              name: '',
-              userId: dataghepq[0] == user ? dataghepq[1] : dataghepq[0],
+            const reference = ref(db, 'users/' + randomidd);
+            onValue(reference, childSnapshot => {
+              navigation.navigate('Messenger', {
+                url: '',
+                name: childSnapshot.child('name').exportVal(),
+                userId: dataghepq[0] == user ? dataghepq[1] : dataghepq[0],
+              });
             });
           } else {
             ToastAndroid.show(
@@ -182,20 +187,24 @@ export const TimNgauNhien = ({route, navigation}) => {
             {diachi}
           </Text>
         </View>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('SayHello', {id})}
-          style={{position: 'absolute', right: 5}}>
-          <Image
-            style={{
-              width: 30,
-              height: 30,
-              borderTopLeftRadius: 15,
-              borderBottomLeftRadius: 15,
-              top: 20,
-            }}
-            source={require('../../image/next.png')}
-          />
-        </TouchableOpacity>
+        {name != undefined ? (
+          <TouchableOpacity
+            onPress={() => navigation.navigate('SayHello', {id})}
+            style={{position: 'absolute', right: 5}}>
+            <Image
+              style={{
+                width: 30,
+                height: 30,
+                borderTopLeftRadius: 15,
+                borderBottomLeftRadius: 15,
+                top: 20,
+              }}
+              source={require('../../image/next.png')}
+            />
+          </TouchableOpacity>
+        ) : (
+          <></>
+        )}
       </View>
 
       <View

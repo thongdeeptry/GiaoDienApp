@@ -250,29 +250,28 @@ export const Login = props => {
                       <Text
                         style={{
                           fontSize: 15,
-                          color: '#1F1F1F',
+                          color: '#E94057',
                           fontWeight: '400',
                         }}>
                         Bạn đã quên mật khẩu?
                       </Text>
                     </TouchableOpacity>
-                    <View style={{paddingTop: 5}}>
-                      <Text
-                        onPress={() => navigation.navigate('LoginPhone')}
-                        style={{
-                          color: '#FD397F',
-                          fontWeight: '400',
-                          textAlign: 'center',
-                        }}>
-                        Đăng nhập bằng số điện thoại
-                      </Text>
+                    <View style={{paddingTop: 0}}>
                       <View style={styles.khac}>
                         <Text style={{textAlign: 'center', top: 5}}>
                           hoặc đăng nhập bằng
                         </Text>
                         <View style={styles.mainkhac}>
                           <TouchableOpacity
-                            style={styles.fb}
+                            style={[styles.fb, {right: 5}]}
+                            onPress={() => navigation.navigate('LoginPhone')}>
+                            <Image
+                              style={{width: 30, height: 30}}
+                              source={require('../../../image/call.png')}
+                            />
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            style={[styles.fb, {left: 5}]}
                             onPress={loginWithGoogle}>
                             <Image
                               source={require('../../../image/ggvip.png')}
@@ -320,7 +319,7 @@ const styles = StyleSheet.create({
   mainkhac: {
     width: '100%',
     height: 57,
-    top: 10,
+    top: 15,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
