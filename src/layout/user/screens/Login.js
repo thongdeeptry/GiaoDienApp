@@ -116,6 +116,7 @@ export const Login = props => {
   };
   const loginWithGoogle = async () => {
     // Check if your device supports Google Play
+
     await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
     // Get the users ID token
     const {idToken, user} = await GoogleSignin.signIn();
@@ -124,12 +125,22 @@ export const Login = props => {
     const googleCredential =
       firebase.auth.GoogleAuthProvider.credential(idToken);
     // Sign-in the user with the credential
-    signInWithCredential(getAuth(), googleCredential).then(async () => {
-      const users = getAuth().currentUser.uid;
-      console.log('UID - ' + users);
-      await AsyncStorage.setItem('tokenLogin', idToken);
-      onLogin();
-    });
+    try {
+      const usersd = getAuth().currentUser.uid;
+      console.log('UIDd - ' + usersd);
+      if (usersd > 8) {
+        signInWithCredential(getAuth(), googleCredential).then(async () => {
+          const users = getAuth().currentUser.uid;
+          console.log('UID - ' + users);
+          await AsyncStorage.setItem('tokenLogin', idToken);
+          onLogin();
+        });
+      } else {
+        ToastAndroid.show('Tài khoản chưa tồn tại', ToastAndroid.BOTTOM);
+      }
+    } catch (error) {
+      ToastAndroid.show('Tài khoản chưa tồn tại', ToastAndroid.BOTTOM);
+    }
   };
   return (
     <Formik
