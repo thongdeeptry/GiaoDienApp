@@ -172,6 +172,7 @@ const Chinhsua = ({navigation, route}) => {
                 textContentType="password"
                 secureTextEntry={true}
                 value={password}
+                returnKeyType="next"
                 onChangeText={setpassword}
               />
               <Pressable
@@ -213,6 +214,7 @@ const Chinhsua = ({navigation, route}) => {
           </TouchableOpacity>
           <TextInput
             style={styles.ten}
+            returnKeyType="next"
             placeholder="Nhập tên bạn muốn thay đổi"
             value={name}
             onChangeText={setname}
@@ -226,6 +228,7 @@ const Chinhsua = ({navigation, route}) => {
           <View style={styles.con}>
             <Text style={styles.q}>Email</Text>
             <TextInput
+              returnKeyType="next"
               style={styles.w}
               placeholder="abc@gmail.com"
               value={email}
@@ -245,6 +248,7 @@ const Chinhsua = ({navigation, route}) => {
             <TextInput
               style={styles.w}
               placeholder="Hồ chí minh"
+              returnKeyType="next"
               value={diachi}
               onChangeText={setdiachi}
               textContentType={'fullStreetAddress'}></TextInput>
@@ -263,6 +267,7 @@ const Chinhsua = ({navigation, route}) => {
               style={styles.w}
               placeholder="Lập trình viên"
               value={nghenghiep}
+              returnKeyType="next"
               onChangeText={setnghenghiep}></TextInput>
             <TouchableOpacity onPress={() => setnghenghiep('')}>
               <Image
@@ -279,6 +284,7 @@ const Chinhsua = ({navigation, route}) => {
               style={styles.w}
               placeholder="03/12/2002"
               value={ngaysinh}
+              returnKeyType="next"
               onChangeText={setngaysinh}></TextInput>
             <TouchableOpacity onPress={() => setngaysinh('')}>
               <Image
@@ -295,6 +301,7 @@ const Chinhsua = ({navigation, route}) => {
               style={styles.w}
               placeholder="Nam"
               value={gioitinh}
+              returnKeyType="done"
               onChangeText={setgioitinh}
               textContentType={'name'}></TextInput>
             <TouchableOpacity onPress={() => setgioitinh('')}>

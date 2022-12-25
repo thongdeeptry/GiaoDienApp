@@ -244,6 +244,7 @@ function Messenger(props) {
           }}
           placeholder="Nhập nội dung tin nhắn"
           value={typedText}
+          returnKeyType="done"
           placeholderTextColor={colors.placeholder}
         />
         <TouchableOpacity onPress={sendMessT}>

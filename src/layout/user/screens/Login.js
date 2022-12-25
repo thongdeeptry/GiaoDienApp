@@ -128,7 +128,7 @@ export const Login = props => {
     try {
       const usersd = getAuth().currentUser.uid;
       console.log('UIDd - ' + usersd);
-      if (usersd > 8) {
+      if (usersd.length > 8) {
         signInWithCredential(getAuth(), googleCredential).then(async () => {
           const users = getAuth().currentUser.uid;
           console.log('UID - ' + users);
@@ -217,6 +217,7 @@ export const Login = props => {
                       onChangeText={handleChange('email')}
                       placeholder="Email hoặc Số điện thoại"
                       multiline={true}
+                      returnKeyType="next"
                       maxLength={100}></TextInput>
                   </View>
                   <View
@@ -230,6 +231,7 @@ export const Login = props => {
                       onChangeText={handleChange('password')}
                       placeholder="Mật khẩu"
                       textContentType="password"
+                      returnKeyType="done"
                       secureTextEntry={true}
                       maxLength={100}></TextInput>
                   </View>

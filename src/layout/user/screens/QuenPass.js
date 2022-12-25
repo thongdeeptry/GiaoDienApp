@@ -109,6 +109,7 @@ const QuenPass = ({navigation, route}) => {
           value={nhap}
           onChangeText={setnhap}
           maxLength={255}
+          returnKeyType="done"
           placeholder="Nhập email hoặc số điện thoại"
           style={{
             width: '100%',

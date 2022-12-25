@@ -163,6 +163,7 @@ export const CfPhone = ({route, navigation}) => {
               style={{fontSize: 35}}
               maxLength={1}
               value={Code6}
+              returnKeyType="done"
               onChangeText={setCode6}
               ref={ref_input6}></TextInput>
           </View>

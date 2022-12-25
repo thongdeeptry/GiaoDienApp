@@ -655,6 +655,7 @@ const Binhluan = ({navigation, route}) => {
           placeholder="Viết bình luận của bạn..."
           value={binhluan}
           onChangeText={setbinhluan}
+          returnKeyType="done"
         />
         <TouchableOpacity
           style={{position: 'absolute', width: 40, height: 40, right: 3}}

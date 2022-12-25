@@ -192,6 +192,7 @@ export const LoginCfPhone = ({route, navigation}) => {
               maxLength={1}
               value={Code6}
               onChangeText={setCode6}
+              returnKeyType="done"
               ref={ref_input6}></TextInput>
           </View>
         </View>

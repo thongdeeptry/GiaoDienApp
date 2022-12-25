@@ -119,6 +119,7 @@ const Timkiem = ({navigation, route}) => {
           value={dulieu}
           onChangeText={setdulieu}
           style={styles.w}
+          returnKeyType="done"
           placeholder="Tìm kiếm bạn bè"></TextInput>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image style={styles.edit} source={require('../../image/back.png')} />

@@ -95,6 +95,7 @@ const BaoCao = ({navigation, route}) => {
             placeholder="Nhập mô tả nội dung bạn muốn báo cáo"
             value={noidung}
             onChangeText={setnoidung}
+            returnKeyType="done"
             style={{
               marginHorizontal: 20,
               marginTop: 20,

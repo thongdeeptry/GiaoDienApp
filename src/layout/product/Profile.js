@@ -370,6 +370,7 @@ export const Profile = props => {
                 placeholder="Nhập tiểu sử"
                 value={tieusu}
                 onChangeText={settieusu}
+                returnKeyType="done"
                 maxLength={222}
               />
               <TouchableOpacity

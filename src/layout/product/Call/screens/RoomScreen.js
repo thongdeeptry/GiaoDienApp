@@ -144,6 +144,7 @@ const RoomCall = ({navigation, route}) => {
         }}
         placeholder="Nhập tên phòng"
         value={nameRoom}
+        returnKeyType="done"
         onChangeText={setNameRoom}></TextInput>
 
       <TouchableOpacity

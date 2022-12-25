@@ -110,6 +110,7 @@ const ChangePass = ({navigation, route}) => {
           value={nhap}
           onChangeText={setnhap}
           maxLength={255}
+          returnKeyType="next"
           placeholder="Nhập mật khẩu mới"
           style={{
             width: '100%',
@@ -125,6 +126,7 @@ const ChangePass = ({navigation, route}) => {
           value={nhap1}
           onChangeText={setnhap1}
           maxLength={255}
+          returnKeyType="done"
           placeholder="Nhập lại mật khẩu"
           style={{
             width: '100%',

@@ -116,6 +116,7 @@ const hotro = ({navigation, route}) => {
             placeholder="Nhập lý do muốn hỗ trợ"
             value={lydo}
             onChangeText={setlydo}
+            returnKeyType="next"
             style={{
               marginHorizontal: 20,
               marginTop: 20,
@@ -129,6 +130,7 @@ const hotro = ({navigation, route}) => {
             placeholder="Nhập nội dung muốn hỗ trợ"
             value={noidung}
             onChangeText={setnoidung}
+            returnKeyType="done"
             style={{
               marginHorizontal: 20,
               marginTop: 20,

@@ -336,6 +336,7 @@ export const PostStatus = ({route, navigation}) => {
                 width: '90%',
                 top: 5,
               }}
+              returnKeyType="done"
               multiline={true}
               placeholder="Bạn đang nghĩ gì?"></TextInput>
           </View>

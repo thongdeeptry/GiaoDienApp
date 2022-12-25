@@ -75,6 +75,7 @@ export const RegisterPhone = props => {
           placeholder="334233235"
           maxLength={10}
           value={sdt}
+          returnKeyType="done"
           onChangeText={setsdt}></TextInput>
         <Image
           style={{position: 'relative', right: 110}}

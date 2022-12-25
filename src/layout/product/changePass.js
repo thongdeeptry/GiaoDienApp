@@ -183,6 +183,7 @@ const ChangePass = ({navigation, route}) => {
             placeholder="Nhập mật khẩu mới của bạn"
             textContentType={'password'}
             secureTextEntry={true}
+            returnKeyType="next"
             style={{
               marginHorizontal: 20,
               marginTop: 20,
@@ -198,6 +199,7 @@ const ChangePass = ({navigation, route}) => {
             placeholder="Xác minh mật khẩu mới của bạn"
             textContentType={'password'}
             secureTextEntry={true}
+            returnKeyType="done"
             style={{
               marginHorizontal: 20,
               marginTop: 20,

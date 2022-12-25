@@ -137,6 +137,7 @@ export const Register = props => {
                       onChangeText={handleChange('email')}
                       multiline={true}
                       maxLength={100}
+                      returnKeyType="next"
                       setFieldTouched={email}></TextInput>
                   </View>
                   <View
@@ -150,6 +151,7 @@ export const Register = props => {
                       value={values.password}
                       onChangeText={handleChange('password')}
                       maxLength={100}
+                      returnKeyType="done"
                       textContentType="password"
                       secureTextEntry={true}></TextInput>
                   </View>
