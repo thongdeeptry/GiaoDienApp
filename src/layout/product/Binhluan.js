@@ -47,6 +47,8 @@ const Binhluan = ({navigation, route}) => {
   const [id, setid] = useState();
   const [nameP, setnameP] = useState();
   const [avtP, setavtP] = useState();
+  const [like, setlike] = useState();
+  const [solike, setsolike] = useState();
   const [noidung, setnoidung] = useState();
   const [trangthai, settrangthai] = useState();
   const [thoigian, setthoigian] = useState();
@@ -82,6 +84,14 @@ const Binhluan = ({navigation, route}) => {
       const tokenpr = childSnapshot.child('token').val();
       settokendvCr(tokenpr);
     });
+    const referencetuongtac = ref(db, 'tuongtac/' + user + '/' + idPost);
+    onValue(referencetuongtac, childSnapshot1 => {
+      if (childSnapshot1.exists()) {
+        setlike(true);
+      } else {
+        setlike(false);
+      }
+    });
     const referencerd = ref(db, 'post/' + userID + '/' + idPost);
     onValue(referencerd, snapshot => {
       const id = snapshot.child('id').exportVal();
@@ -100,6 +110,7 @@ const Binhluan = ({navigation, route}) => {
       setimage(image);
       setcheckin(snapshot.child('checkin').val());
       settickpo(snapshot.child('tick').exportVal());
+      setsolike(snapshot.child('like').exportVal());
     });
   }, []);
   const referencer = ref(db, 'binhluan/' + userID + '/' + idPost);
@@ -131,11 +142,13 @@ const Binhluan = ({navigation, route}) => {
   const closeModal = () => {
     setCheckedStatus(false);
   };
+  const date = new Date();
+  const thang = date.getMonth() + 1;
   const AddComment = () => {
     const key = uuid();
     const d = new Date();
     const ngay = d.getDate();
-    const thang = d.getMonth() + 1;
+
     const nam = d.getFullYear();
     const referencer = ref(db, 'binhluan/' + userID + '/' + idPost + '/' + key);
     set(referencer, {
@@ -150,11 +163,13 @@ const Binhluan = ({navigation, route}) => {
       tick: tick,
     });
     ToastAndroid.show('Đã đăng bình luận', ToastAndroid.BOTTOM);
-    sendMess(
-      tokendvCr,
-      'Thông báo mới từ ' + name,
-      name + ' vừa bình luận bài viết',
-    );
+    if (user != userID) {
+      sendMess(
+        tokendvCr,
+        'Thông báo mới từ ' + name,
+        name + ' vừa bình luận bài viết',
+      );
+    }
     setbinhluan('');
     Keyboard.dismiss();
   };
@@ -168,53 +183,101 @@ const Binhluan = ({navigation, route}) => {
       setCheckedStatus(false);
     };
   };
-  const AddLike = idP => {
-    let like;
-    let co;
-    let dc = false;
 
-    const reference11 = ref(db, 'tuongtac/' + user + '/' + idP + '/' + user);
-    onValue(reference11, snapshot1 => {
-      const value = snapshot1.child('like').exportVal();
-      console.log(value);
-      if (value == true) {
-        setdacod(true);
-        //throw "break-loop";
-      } else {
-        setdacod(false);
-      }
-    });
-    const reference1 = ref(db, 'post/' + user + '/' + idP);
-    onValue(reference1, childSnapshot1 => {
-      co = childSnapshot1.child('like').exportVal();
-      like = co + 1;
-    });
-    if (dacod == false && dacod != null) {
-      const reference13 = ref(db, 'tuongtac/' + user + '/' + idP + '/' + user);
-      onValue(reference13, childSnapshot1 => {
-        if (!childSnapshot1.exists()) {
-          set(reference13, {
-            like: true,
-          });
-          const reference = ref(db, 'post/' + userID + '/' + idP);
-          update(reference, {
-            like: like,
-          });
-          ToastAndroid.show('Đã gửi lượt thích bài viết', ToastAndroid.BOTTOM);
-          sendMess(
-            tokendvCr,
-            'Thông báo mới từ ' + name,
-            name + ' đã thích bài viết của bạn',
-          );
+  const AddLike = idP => {
+    let co;
+    let solike;
+    let dc = false;
+    if (like != true) {
+      const reference11 = ref(
+        db,
+        'tuongtac/' + userID + '/' + idP + '/' + userID,
+      );
+      onValue(reference11, snapshot1 => {
+        const value = snapshot1.child('like').exportVal();
+        console.log(value);
+        if (value == true) {
+          setdacod(true);
+          //throw "break-loop";
         } else {
-          ToastAndroid.show(
-            'Bạn đã thích bài viết này rồi',
-            ToastAndroid.BOTTOM,
-          );
+          setdacod(false);
         }
       });
+
+      const reference13 = ref(
+        db,
+        'tuongtac/' + userID + '/' + idP + '/' + userID,
+      );
+      set(reference13, {
+        like: true,
+      });
+      let i = 0;
+      const referencelike = ref(db, 'tuongtac');
+      onValue(referencelike, childSnapshot1 => {
+        childSnapshot1.forEach(snapshot1 => {
+          snapshot1.forEach(snapshot21 => {
+            if (snapshot21.key == idP) {
+              i = i + 1;
+            }
+          });
+        });
+      });
+      console.log('Số Like ' + i);
+      const reference = ref(db, 'post/' + userID + '/' + idP);
+      update(reference, {
+        like: i,
+      });
+      const reference5 = ref(db, 'notification/' + userID);
+      push(reference5, {
+        user: user,
+        id: userID,
+        noidung: ' vừa thích bài viết của bạn',
+        thoigian:
+          date.getHours() +
+          ':' +
+          date.getMinutes() +
+          ' ngày ' +
+          date.getDate() +
+          '/' +
+          thang +
+          '/' +
+          date.getFullYear(),
+        avt: avt,
+        name: name,
+      });
+      if (user != userID) {
+        sendMess(
+          tokendvCr,
+          'Thông báo mới từ ' + name,
+          name + ' đã thích bài viết của bạn',
+        );
+      }
+      setlike(true);
     } else {
-      ToastAndroid.show('Bạn đã thích bài viết này rồi', ToastAndroid.BOTTOM);
+      const reference13f = ref(
+        db,
+        'tuongtac/' + userID + '/' + idP + '/' + userID,
+      );
+      remove(reference13f).then(() => {
+        console.log('Hủy Like');
+        let i = 0;
+        const referencelike = ref(db, 'tuongtac');
+        onValue(referencelike, childSnapshot1 => {
+          childSnapshot1.forEach(snapshot1 => {
+            snapshot1.forEach(snapshot21 => {
+              if (snapshot21.key == idP) {
+                i = i + 1;
+              }
+            });
+          });
+        });
+        console.log('Số Like ' + i);
+        const reference = ref(db, 'post/' + userID + '/' + idP);
+        update(reference, {
+          like: i,
+        });
+      });
+      setlike(false);
     }
   };
   const deletePost = () => {
@@ -437,9 +500,19 @@ const Binhluan = ({navigation, route}) => {
               onPress={() => AddLike(id)}>
               <Image
                 style={styles.iclikeContainer}
-                source={require('../../../assets/iclike.png')}
+                source={
+                  like == true
+                    ? require('../../../assets/iclike2.png')
+                    : require('../../../assets/iclike.png')
+                }
               />
-              <Text style={{fontSize: 17, color: 'black'}}>Thích</Text>
+              <Text
+                style={[
+                  {fontSize: 17, color: 'black'},
+                  like == true ? {fontSize: 17, color: '#E94057'} : null,
+                ]}>
+                {solike} {like == false ? 'Thích' : 'Bỏ Thích'}
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity style={{flexDirection: 'row'}}>
               <Image
@@ -618,7 +691,14 @@ const styles = StyleSheet.create({
   },
   cmtContainer: {
     right: 5,
-    top: 3,
+    top: 1,
+  },
+
+  iclikeContainer: {
+    right: 5,
+    bottom: 1,
+    width: 20,
+    height: 20,
   },
   thich: {
     width: 50,
@@ -626,10 +706,7 @@ const styles = StyleSheet.create({
     left: 60,
     fontSize: 15,
   },
-  iclikeContainer: {
-    right: 5,
-    top: 3,
-  },
+
   edit: {
     width: 20,
     height: 20,

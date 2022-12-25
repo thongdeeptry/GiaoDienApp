@@ -66,6 +66,7 @@ export default notifiCation = ({route, navigation}) => {
         width: '100%',
         flexDirection: 'column',
         backgroundColor: 'white',
+        flex: 1,
       }}>
       <View
         style={{
@@ -134,9 +135,10 @@ export default notifiCation = ({route, navigation}) => {
                         style={{
                           fontSize: 14,
                           fontWeight: '500',
-                          width: '85%',
+                          width: '80%',
                         }}>
-                        {item.name} {item.noidung}
+                        {item.name}
+                        {item.noidung}
                       </Text>
                       <Text style={{fontSize: 11}}>{item.thoigian}</Text>
                     </View>

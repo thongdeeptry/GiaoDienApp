@@ -15,7 +15,15 @@ import React, {useState, useEffect} from 'react';
 import {initializeApp} from 'firebase/app';
 import {firebaseConfig} from '../../../config';
 import {getAuth} from 'firebase/auth';
-import {getDatabase, ref, onValue, set, push, update} from 'firebase/database';
+import {
+  getDatabase,
+  ref,
+  onValue,
+  set,
+  push,
+  update,
+  remove,
+} from 'firebase/database';
 import Clipboard from '@react-native-community/clipboard';
 import {sendMess} from '../../constants/sendMess';
 const wait = timeout => {
@@ -28,6 +36,7 @@ export const ProfileFriend = ({route, navigation}) => {
   const dataImage = [];
   const datas = [];
   const dataFriend = [];
+  const dataLike = [];
   let noidung1 = '';
   const [nameCr, setnameCr] = useState();
   const [avtCr, setavtCr] = useState();
@@ -37,6 +46,7 @@ export const ProfileFriend = ({route, navigation}) => {
   const [tick, settick] = useState();
   const [tuoi, settuoi] = useState();
   const [diachi, setdiachi] = useState();
+  const [follow, setfl] = useState();
   const [ngaysinh, setngaysinh] = useState();
   const [gioitinh, setgioitinh] = useState();
   const [sothich, setsothich] = useState();
@@ -62,8 +72,6 @@ export const ProfileFriend = ({route, navigation}) => {
     wait(1000).then(() => setRefreshing(false));
   }, []);
   useEffect(() => {
-    setRefreshing(true);
-    wait(1000).then(() => setRefreshing(false));
     const reference1d1 = ref(db, 'favourite/' + id + '/' + idCurrent);
     onValue(reference1d1, snapshot1 => {
       if (snapshot1.exists()) {
@@ -93,6 +101,7 @@ export const ProfileFriend = ({route, navigation}) => {
       setisLoading(false);
       settick(childSnapshot.child('tick').val());
       settieusu(childSnapshot.child('tieusu').val());
+      setfl(childSnapshot.child('follow').exportVal());
     });
     const referencecr = ref(db, 'users/' + idCurrent);
     onValue(referencecr, childSnapshot => {
@@ -104,7 +113,14 @@ export const ProfileFriend = ({route, navigation}) => {
       setavtCr(avtpr);
       settickfr(childSnapshot.child('tick').val());
     });
-  }, []);
+  });
+  const referencetuongtac = ref(db, 'tuongtac/' + user);
+  onValue(referencetuongtac, childSnapshot1 => {
+    childSnapshot1.forEach(snapshot1 => {
+      const id = snapshot1.key;
+      dataLike.push(id);
+    });
+  });
   const referencer = ref(db, 'post/' + user);
   onValue(referencer, snapshot => {
     snapshot.forEach(childSnapshot => {
@@ -116,17 +132,37 @@ export const ProfileFriend = ({route, navigation}) => {
       const thoigian = childSnapshot.child('thoigian').exportVal();
       const image = childSnapshot.child('image').exportVal();
       const user = childSnapshot.child('user').exportVal();
-      datas.push({
-        id: id,
-        name: name,
-        avt: avt,
-        noidung: noidung,
-        checkin: trangthai,
-        thoigian: thoigian,
-        image: image,
-        user: user,
-        tick: childSnapshot.child('tick').exportVal(),
-      });
+      if (
+        dataLike.includes('' + childSnapshot.child('id').exportVal()) == true
+      ) {
+        datas.push({
+          id: id,
+          name: name,
+          avt: avt,
+          noidung: noidung,
+          checkin: trangthai,
+          thoigian: thoigian,
+          image: image,
+          user: user,
+          tick: childSnapshot.child('tick').exportVal(),
+          like: true,
+          solike: childSnapshot.child('like').exportVal(),
+        });
+      } else {
+        datas.push({
+          id: id,
+          name: name,
+          avt: avt,
+          noidung: noidung,
+          checkin: trangthai,
+          thoigian: thoigian,
+          image: image,
+          user: user,
+          tick: childSnapshot.child('tick').exportVal(),
+          like: false,
+          solike: childSnapshot.child('like').exportVal(),
+        });
+      }
     });
   });
   const clipboard = async text => {
@@ -148,6 +184,7 @@ export const ProfileFriend = ({route, navigation}) => {
       sothich2.push(key);
     });
   });
+
   const referenceImage = ref(db, 'post/' + user);
   onValue(referenceImage, snapshot => {
     snapshot.forEach(ImageSnapshot => {
@@ -175,65 +212,106 @@ export const ProfileFriend = ({route, navigation}) => {
       });
     });
   });
-  const AddLike = idP => {
+  const AddLike = (idP, li) => {
     let like;
     let co;
     let dc = false;
+    let solike;
+    if (li != true) {
+      const reference11 = ref(
+        db,
+        'tuongtac/' + idCurrent + '/' + idP + '/' + idCurrent,
+      );
+      onValue(reference11, snapshot1 => {
+        const value = snapshot1.child('like').exportVal();
+        console.log(value);
+        if (value == true) {
+          setdacod(true);
+          //throw "break-loop";
+        } else {
+          setdacod(false);
+        }
+      });
 
-    const reference11 = ref(
-      db,
-      'tuongtac/' + idCurrent + '/' + idP + '/' + idCurrent,
-    );
-    onValue(reference11, snapshot1 => {
-      const value = snapshot1.child('like').exportVal();
-      console.log(value);
-      if (value == true) {
-        setdacod(true);
-        //throw "break-loop";
-      } else {
-        setdacod(false);
-      }
-    });
-    const reference1 = ref(db, 'post/' + idCurrent + '/' + idP);
-    onValue(reference1, childSnapshot1 => {
-      co = childSnapshot1.child('like').exportVal();
-      like = co + 1;
-    });
-    if (dacod != null) {
       const reference13 = ref(
         db,
         'tuongtac/' + idCurrent + '/' + idP + '/' + idCurrent,
       );
-      onValue(reference13, childSnapshot1 => {
-        if (!childSnapshot1.exists()) {
-          set(reference13, {
-            like: true,
+      set(reference13, {
+        like: true,
+      });
+      let i = 0;
+      const referencelike = ref(db, 'tuongtac');
+      onValue(referencelike, childSnapshot1 => {
+        childSnapshot1.forEach(snapshot1 => {
+          snapshot1.forEach(snapshot21 => {
+            if (snapshot21.key == idP) {
+              i = i + 1;
+            }
           });
-          const reference = ref(db, 'post/' + id + '/' + idP);
-          update(reference, {
-            like: like,
-          });
-          ToastAndroid.show('Đã gửi lượt thích bài viết', ToastAndroid.BOTTOM);
-          if (id != idCurrent) {
-            const referencecrd = ref(db, 'users/' + id);
-            onValue(referencecrd, childSnapshot => {
-              const tokendv = childSnapshot.child('token').val();
-              sendMess(
-                tokendv,
-                'Thông báo mới từ ' + nameCr,
-                nameCr + ' đã thích bài viết của bạn',
-              );
-            });
-          }
-        } else {
-          ToastAndroid.show(
-            'Bạn đã thích bài viết này rồi',
-            ToastAndroid.BOTTOM,
+        });
+      });
+      console.log('Số Like ' + i);
+      const reference = ref(db, 'post/' + id + '/' + idP);
+      update(reference, {
+        like: i,
+      });
+      const reference5 = ref(db, 'notification/' + id);
+      push(reference5, {
+        user: idCurrent,
+        id: id,
+        noidung: ' vừa thích bài viết của bạn',
+        thoigian:
+          date.getHours() +
+          ':' +
+          date.getMinutes() +
+          ' ngày ' +
+          date.getDate() +
+          '/' +
+          thang +
+          '/' +
+          date.getFullYear(),
+        avt: avtCr,
+        name: nameCr,
+      });
+      if (id != idCurrent) {
+        const referencecrd = ref(db, 'users/' + id);
+        onValue(referencecrd, childSnapshot => {
+          const tokendv = childSnapshot.child('token').val();
+          sendMess(
+            tokendv,
+            'Thông báo mới từ ' + nameCr,
+            nameCr + ' đã thích bài viết của bạn',
           );
-        }
+        });
+      }
+    } else {
+      const reference13f = ref(
+        db,
+        'tuongtac/' + idCurrent + '/' + idP + '/' + idCurrent,
+      );
+      remove(reference13f).then(() => {
+        console.log('Hủy Like');
+        let i = 0;
+        const referencelike = ref(db, 'tuongtac');
+        onValue(referencelike, childSnapshot1 => {
+          childSnapshot1.forEach(snapshot1 => {
+            snapshot1.forEach(snapshot21 => {
+              if (snapshot21.key == idP) {
+                i = i + 1;
+              }
+            });
+          });
+        });
+        console.log('Số Like ' + i);
+        const reference = ref(db, 'post/' + id + '/' + idP);
+        update(reference, {
+          like: i,
+        });
       });
     }
   };
+
   const numColumns = 3;
   const deletePost = () => {
     const referencerm = ref(db, 'post/' + user + '/' + idPost);
@@ -249,13 +327,6 @@ export const ProfileFriend = ({route, navigation}) => {
     let fl;
     let co;
     let dc = false;
-
-    const reference1 = ref(db, 'users/' + id);
-    onValue(reference1, childSnapshot1 => {
-      co = childSnapshot1.child('follow').val();
-      fl = co + 1;
-    });
-    console.log('số fl : ' + fl);
     const reference112 = ref(db, 'favourite/' + idCurrent);
     onValue(reference112, childSnapshot1 => {
       childSnapshot1.forEach(snapshot1 => {
@@ -279,63 +350,90 @@ export const ProfileFriend = ({route, navigation}) => {
               name: nameCr,
               tick: tickfr,
             });
-            ToastAndroid.show('Đã là bạn bè của nhau', ToastAndroid.BOTTOM);
           }
         } catch (error) {
           console.log(error);
         }
       });
     });
-    if (daco == false && daco != null) {
-      const reference3 = ref(db, 'favourite/' + id + '/' + idCurrent);
-      onValue(reference3, childSnapshot => {
-        if (!childSnapshot.exists()) {
-          set(reference3, {
-            user: idCurrent,
-          });
-          const reference = ref(db, 'users/' + id);
-          update(reference, {
-            follow: fl,
-          });
-          const reference5 = ref(db, 'notification/' + id);
-          push(reference5, {
-            user: idCurrent,
-            id: id,
-            noidung: ' vừa gửi lượt thích đến bạn',
-            thoigian:
-              date.getHours() +
-              ':' +
-              date.getMinutes() +
-              ' ngày ' +
-              date.getDate() +
-              '/' +
-              thang +
-              '/' +
-              date.getFullYear(),
-            avt: avtCr,
-            name: nameCr,
-          });
-          ToastAndroid.show('Đã gửi lượt thích', ToastAndroid.BOTTOM);
-          if (id != idCurrent) {
-            const referencecrd = ref(db, 'users/' + id);
-            onValue(referencecrd, childSnapshot => {
-              const tokendv = childSnapshot.child('token').val();
-              sendMess(
-                tokendv,
-                'Thông báo mới từ ' + nameCr,
-                nameCr + ' vừa gửi lượt thích đến bạn',
-              );
-            });
-          }
-        } else {
-        }
+
+    if (daco == false) {
+      let i;
+      const referencelike = ref(db, 'users/' + id);
+      onValue(referencelike, childSnapshot1 => {
+        const sotim = childSnapshot1.child('follow').exportVal();
+        console.log('Số Tim ' + Number(sotim) + 1);
+        i = Number(sotim) + 1;
       });
-    }
-    if (daco == true) {
-      ToastAndroid.show(
-        'Bạn đã yêu thích tài khoản này rồi!',
-        ToastAndroid.BOTTOM,
-      );
+      const references = ref(db, 'users/' + id);
+      update(references, {
+        follow: i,
+      });
+      console.log('Số Tim ' + i);
+      const reference3 = ref(db, 'favourite/' + id + '/' + idCurrent);
+      set(reference3, {
+        user: idCurrent,
+      });
+
+      const reference5 = ref(db, 'notification/' + id);
+      push(reference5, {
+        user: idCurrent,
+        id: id,
+        noidung: ' vừa gửi lượt thích đến bạn',
+        thoigian:
+          date.getHours() +
+          ':' +
+          date.getMinutes() +
+          ' ngày ' +
+          date.getDate() +
+          '/' +
+          thang +
+          '/' +
+          date.getFullYear(),
+        avt: avtCr,
+        name: nameCr,
+      });
+      ToastAndroid.show('Đã gửi lượt thích', ToastAndroid.BOTTOM);
+      if (id != idCurrent) {
+        const referencecrd = ref(db, 'users/' + id);
+        onValue(referencecrd, childSnapshot => {
+          const tokendv = childSnapshot.child('token').val();
+          sendMess(
+            tokendv,
+            'Thông báo mới từ ' + nameCr,
+            nameCr + ' vừa gửi lượt thích đến bạn',
+          );
+        });
+      }
+      i = 0;
+    } else {
+      if (daco == true) {
+        let i = 0;
+        const referencelike = ref(db, 'users/' + id);
+        onValue(referencelike, childSnapshot1 => {
+          const sotim = childSnapshot1.child('follow').exportVal();
+          console.log('Số Tim ' + Number(sotim) - 1);
+          i = Number(sotim) - 1;
+        });
+        const references = ref(db, 'users/' + id);
+        update(references, {
+          follow: i,
+        });
+        const reference3 = ref(db, 'favourite/' + id + '/' + idCurrent);
+        remove(reference3).then(() => {
+          console.log('Hủy Tim');
+
+          const reference3 = ref(db, 'banbe/' + idCurrent + '/' + id);
+          remove(reference3).then(() => {
+            console.log('delete');
+          });
+          const reference3d = ref(db, 'banbe/' + id + '/' + idCurrent);
+          remove(reference3d).then(() => {
+            console.log('delete');
+          });
+        });
+      }
+      i = 0;
     }
   };
   const openModalmore = () => {
@@ -488,6 +586,9 @@ export const ProfileFriend = ({route, navigation}) => {
                 <Text style={styles.ten}>, {tuoi}</Text>
               </View>
               <Text style={styles.gioitinh}>{nghenghiep}</Text>
+              <Text style={{fontSize: 16, left: 20, top: 40, opacity: 0.7}}>
+                Có {follow} người yêu thích
+              </Text>
             </View>
           </View>
           <View style={[styles.mainten, {top: 15}]}>
@@ -668,7 +769,6 @@ export const ProfileFriend = ({route, navigation}) => {
                   borderRadius: 15,
                   flexDirection: 'row',
                   flexWrap: 'wrap',
-                  justifyContent: 'space-around',
                 }}
                 data={dataFriend}
                 renderItem={({item, index}) => (
@@ -850,17 +950,51 @@ export const ProfileFriend = ({route, navigation}) => {
                         borderTopWidth: 0.2,
                         paddingVertical: 10,
                       }}>
-                      <TouchableOpacity
-                        style={{flexDirection: 'row'}}
-                        onPress={() => AddLike(item.id)}>
-                        <Image
-                          style={styles.iclikeContainer}
-                          source={require('../../../assets/iclike.png')}
-                        />
-                        <Text style={{fontSize: 17, color: 'black'}}>
-                          Thích
-                        </Text>
-                      </TouchableOpacity>
+                      {item.like == true ? (
+                        <TouchableOpacity
+                          style={{flexDirection: 'row'}}
+                          onPress={() => AddLike(item.id, item.like)}>
+                          <Image
+                            style={styles.iclikeContainer}
+                            source={
+                              item.like == true
+                                ? require('../../../assets/iclike2.png')
+                                : require('../../../assets/iclike.png')
+                            }
+                          />
+                          <Text
+                            style={[
+                              {fontSize: 17, color: 'black'},
+                              item.like == true
+                                ? {fontSize: 17, color: '#E94057'}
+                                : null,
+                            ]}>
+                            {item.solike} Bỏ Thích
+                          </Text>
+                        </TouchableOpacity>
+                      ) : (
+                        <TouchableOpacity
+                          style={{flexDirection: 'row'}}
+                          onPress={() => AddLike(item.id, item.like)}>
+                          <Image
+                            style={styles.iclikeContainer}
+                            source={
+                              item.like == true
+                                ? require('../../../assets/iclike2.png')
+                                : require('../../../assets/iclike.png')
+                            }
+                          />
+                          <Text
+                            style={[
+                              {fontSize: 17, color: 'black'},
+                              item.like == true
+                                ? {fontSize: 17, color: '#E94057'}
+                                : null,
+                            ]}>
+                            {item.solike} Thích
+                          </Text>
+                        </TouchableOpacity>
+                      )}
                       <TouchableOpacity
                         style={{flexDirection: 'row'}}
                         onPress={() =>
@@ -944,12 +1078,14 @@ export const ProfileFriend = ({route, navigation}) => {
 const styles = StyleSheet.create({
   cmtContainer: {
     right: 5,
-    top: 3,
+    top: 1,
   },
 
   iclikeContainer: {
     right: 5,
-    top: 3,
+    bottom: 1,
+    width: 20,
+    height: 20,
   },
   tenmain: {
     width: '100%',

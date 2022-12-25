@@ -39,6 +39,7 @@ function Chat(props) {
   const dataFriend = [];
   const [hienthi, sethienthi] = useState(0);
   const [randomid, setrandomid] = useState('');
+  const [bb, setbb] = useState(false);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
@@ -170,21 +171,71 @@ function Chat(props) {
     dataghepq.splice(0, dataghepq.length);
     // const randomid = uuid();
   };
+  const checkIs = () => {
+    setbb(!bb);
+  };
   return (
     <View
       style={{
         flexDirection: 'column',
         backgroundColor: 'white',
+        flex: 1,
       }}>
       <UIHeader
-        title={'Tin Nhắn'}
+        title={'Trò chuyện'}
         leftIconName={'arrow-left'}
-        rightIconName={'search'}
+        rightIconName={'eye'}
         onPressLeftIcon={() => {
           goBack();
         }}
-        onPressRightIcon={() => navigate('Timkiem')}
+        onPressRightIcon={checkIs}
       />
+      {bb == true ? (
+        <View>
+          <FlatList
+            horizontal
+            style={[
+              {
+                width: '100%',
+                marginTop: 5,
+                height: 50,
+                marginHorizontal: 10,
+              },
+              dataFriend.length == 0 ? {height: 0} : null,
+            ]}
+            showsHorizontalScrollIndicator={false}
+            data={dataFriend}
+            renderItem={({item, index}) => (
+              <View>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('Messenger', {
+                      url: '',
+                      name: item.name,
+                      userId: item.id,
+                    })
+                  }>
+                  <View>
+                    <Image
+                      style={{
+                        width: 50,
+                        height: 50,
+                        borderRadius: 25,
+                        marginHorizontal: 5,
+                        borderColor: '#E94057',
+                        borderWidth: 1,
+                      }}
+                      source={{uri: item.avt}}
+                    />
+                  </View>
+                </TouchableOpacity>
+              </View>
+            )}
+          />
+        </View>
+      ) : (
+        <></>
+      )}
       <View
         style={{
           width: '100%',
@@ -263,45 +314,7 @@ function Chat(props) {
           {user.length == 0 ? 'Không có tin nhắn nào' : ''}
         </Text>
       </View>
-      <View>
-        <FlatList
-          horizontal
-          style={{
-            width: '100%',
-            marginVertical: 10,
-            height: 50,
-            marginHorizontal: 10,
-          }}
-          showsHorizontalScrollIndicator={false}
-          data={dataFriend}
-          renderItem={({item, index}) => (
-            <View>
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('Messenger', {
-                    url: '',
-                    name: item.name,
-                    userId: item.id,
-                  })
-                }>
-                <View>
-                  <Image
-                    style={{
-                      width: 50,
-                      height: 50,
-                      borderRadius: 25,
-                      marginHorizontal: 5,
-                      borderColor: '#E94057',
-                      borderWidth: 1,
-                    }}
-                    source={{uri: item.avt}}
-                  />
-                </View>
-              </TouchableOpacity>
-            </View>
-          )}
-        />
-      </View>
+
       <FlatList
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

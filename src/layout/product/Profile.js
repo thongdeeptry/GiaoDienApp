@@ -34,6 +34,7 @@ export const Profile = props => {
   const dataImage = [];
   const datas = [];
   const dataFriend = [];
+  const dataLike = [];
   let noidung1 = '';
   const [name, setname] = useState();
   const [avt, setavt] = useState();
@@ -43,6 +44,7 @@ export const Profile = props => {
   const [gioitinh, setgioitinh] = useState();
   const [sothich, setsothich] = useState();
   const [tieusu, settieusu] = useState();
+  const [follow, setfl] = useState();
   const [tick, settick] = useState();
   const [tieusum, settieusum] = useState();
   const [nghenghiep, setnghenghiep] = useState();
@@ -97,9 +99,17 @@ export const Profile = props => {
       setngaysinh(ngaysinhpr);
       setnghenghiep(nghenghiep);
       settieusum(childSnapshot.child('tieusu').val());
+      setfl(childSnapshot.child('follow').exportVal());
       setisLoading(false);
     });
   }, []);
+  const referencetuongtac = ref(db, 'tuongtac/' + user);
+  onValue(referencetuongtac, childSnapshot1 => {
+    childSnapshot1.forEach(snapshot1 => {
+      const id = snapshot1.key;
+      dataLike.push(id);
+    });
+  });
   const referencer = ref(db, 'post/' + user);
   onValue(referencer, snapshot => {
     snapshot.forEach(childSnapshot => {
@@ -111,17 +121,37 @@ export const Profile = props => {
       const thoigian = childSnapshot.child('thoigian').exportVal();
       const image = childSnapshot.child('image').exportVal();
       const user = childSnapshot.child('user').exportVal();
-      datas.push({
-        id: id,
-        name: name,
-        avt: avt,
-        noidung: noidung,
-        checkin: trangthai,
-        thoigian: thoigian,
-        image: image,
-        user: user,
-        tick: childSnapshot.child('tick').exportVal(),
-      });
+      if (
+        dataLike.includes('' + childSnapshot.child('id').exportVal()) == true
+      ) {
+        datas.push({
+          id: id,
+          name: name,
+          avt: avt,
+          noidung: noidung,
+          checkin: trangthai,
+          thoigian: thoigian,
+          image: image,
+          user: user,
+          tick: childSnapshot.child('tick').exportVal(),
+          like: true,
+          solike: childSnapshot.child('like').exportVal(),
+        });
+      } else {
+        datas.push({
+          id: id,
+          name: name,
+          avt: avt,
+          noidung: noidung,
+          checkin: trangthai,
+          thoigian: thoigian,
+          image: image,
+          user: user,
+          tick: childSnapshot.child('tick').exportVal(),
+          like: false,
+          solike: childSnapshot.child('like').exportVal(),
+        });
+      }
     });
   });
   const openModal = id => {
@@ -180,39 +210,65 @@ export const Profile = props => {
       });
     });
   });
-  const AddLike = idP => {
+  const AddLike = (idP, li) => {
     let like;
+    let solike;
     let co;
     let dc = false;
-
-    const reference11 = ref(db, 'tuongtac/' + user + '/' + idP + '/' + user);
-    onValue(reference11, snapshot1 => {
-      const value = snapshot1.child('like').exportVal();
-      console.log(value);
-      if (value == true) {
-        setdacod(true);
-        //throw "break-loop";
-      } else {
-        setdacod(false);
-      }
-    });
-    const reference1 = ref(db, 'post/' + user + '/' + idP);
-    onValue(reference1, childSnapshot1 => {
-      co = childSnapshot1.child('like').exportVal();
-      like = co + 1;
-    });
-    if (dacod == false && dacod != null) {
-      const reference = ref(db, 'post/' + user + '/' + idP);
-      update(reference, {
-        like: like,
+    if (li != true) {
+      const reference11 = ref(db, 'tuongtac/' + user + '/' + idP + '/' + user);
+      onValue(reference11, snapshot1 => {
+        const value = snapshot1.child('like').exportVal();
+        console.log(value);
+        if (value == true) {
+          setdacod(true);
+          //throw "break-loop";
+        } else {
+          setdacod(false);
+        }
       });
+
       const reference13 = ref(db, 'tuongtac/' + user + '/' + idP + '/' + user);
       set(reference13, {
         like: true,
       });
-      ToastAndroid.show('Đã gửi lượt thích bài viết', ToastAndroid.BOTTOM);
+      let i = 0;
+      const referencelike = ref(db, 'tuongtac');
+      onValue(referencelike, childSnapshot1 => {
+        childSnapshot1.forEach(snapshot1 => {
+          snapshot1.forEach(snapshot21 => {
+            if (snapshot21.key == idP) {
+              i = i + 1;
+            }
+          });
+        });
+      });
+      console.log('Số Like ' + i);
+      const reference = ref(db, 'post/' + user + '/' + idP);
+      update(reference, {
+        like: i,
+      });
     } else {
-      ToastAndroid.show('Bạn đã thích bài viết này rồi', ToastAndroid.BOTTOM);
+      const reference13f = ref(db, 'tuongtac/' + user + '/' + idP + '/' + user);
+      remove(reference13f).then(() => {
+        console.log('Hủy Like');
+        let i = 0;
+        const referencelike = ref(db, 'tuongtac');
+        onValue(referencelike, childSnapshot1 => {
+          childSnapshot1.forEach(snapshot1 => {
+            snapshot1.forEach(snapshot21 => {
+              if (snapshot21.key == idP) {
+                i = i + 1;
+              }
+            });
+          });
+        });
+        console.log('Số Like ' + i);
+        const reference = ref(db, 'post/' + user + '/' + idP);
+        update(reference, {
+          like: i,
+        });
+      });
     }
   };
   const numColumns = 3;
@@ -406,6 +462,23 @@ export const Profile = props => {
                           borderWidth: 0.4,
                           top: 10,
                         }}
+                        onPress={() => navigation.navigate('hotro')}>
+                        <Text
+                          style={{
+                            color: 'black',
+                            fontSize: 15,
+                            textAlign: 'center',
+                          }}>
+                          Hỗ trợ
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={{
+                          paddingVertical: 8,
+                          borderColor: '#ABABAB',
+                          borderWidth: 0.4,
+                          top: 15,
+                        }}
                         onPress={() =>
                           clipboard(
                             'https://genzlove.onrender.com/#/admin/profile/' +
@@ -444,9 +517,12 @@ export const Profile = props => {
               </View>
 
               <Text style={styles.gioitinh}>{nghenghiep}</Text>
+              <Text style={{fontSize: 16, left: 20, top: 35, opacity: 0.7}}>
+                Có {follow} người yêu thích
+              </Text>
             </View>
           </View>
-          <View style={[styles.mainten, {top: 15}]}>
+          <View style={[styles.mainten, {top: 10}]}>
             <View style={styles.phuten}>
               <Text style={styles.diachi}>Địa chỉ</Text>
               <Text style={styles.gioitinh}>{diachi}</Text>
@@ -627,7 +703,6 @@ export const Profile = props => {
                   borderRadius: 15,
                   flexDirection: 'row',
                   flexWrap: 'wrap',
-                  justifyContent: 'space-around',
                 }}
                 data={dataFriend}
                 renderItem={({item, index}) => (
@@ -930,13 +1005,24 @@ export const Profile = props => {
                       }}>
                       <TouchableOpacity
                         style={{flexDirection: 'row'}}
-                        onPress={() => AddLike(item.id)}>
+                        onPress={() => AddLike(item.id, item.like)}>
                         <Image
                           style={styles.iclikeContainer}
-                          source={require('../../../assets/iclike.png')}
+                          source={
+                            item.like == true
+                              ? require('../../../assets/iclike2.png')
+                              : require('../../../assets/iclike.png')
+                          }
                         />
-                        <Text style={{fontSize: 17, color: 'black'}}>
-                          Thích
+                        <Text
+                          style={[
+                            {fontSize: 17, color: 'black'},
+                            item.like == true
+                              ? {fontSize: 17, color: '#E94057'}
+                              : null,
+                          ]}>
+                          {item.solike}{' '}
+                          {item.like == false ? 'Thích' : 'Bỏ Thích'}
                         </Text>
                       </TouchableOpacity>
                       <TouchableOpacity
@@ -973,16 +1059,6 @@ export const Profile = props => {
               />
             </TouchableOpacity>
           </View>
-          <View>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('hotro')}
-              style={{width: 100, height: 50, left: 60}}>
-              <Image
-                style={[styles.containerrrrr, {borderRadius: 12}]}
-                source={require('../../image/more.png')}
-              />
-            </TouchableOpacity>
-          </View>
         </View>
       </View>
     </ScrollView>
@@ -992,12 +1068,14 @@ export const Profile = props => {
 const styles = StyleSheet.create({
   cmtContainer: {
     right: 5,
-    top: 3,
+    top: 1,
   },
 
   iclikeContainer: {
     right: 5,
-    top: 3,
+    bottom: 1,
+    width: 20,
+    height: 20,
   },
   tenmain: {
     width: '100%',

@@ -51,6 +51,7 @@ const Home = ({route, navigation}) => {
   const dataStory = [];
   const dataLive = [];
   const dataFriend = [];
+  const dataLike = [];
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
   const countries = ['Mới Nhất', 'Bạn Bè', 'Tất Cả'];
@@ -94,7 +95,15 @@ const Home = ({route, navigation}) => {
       dataFriend.push(id);
     });
   });
+  const referencetuongtac = ref(db, 'tuongtac/' + user);
+  onValue(referencetuongtac, childSnapshot1 => {
+    childSnapshot1.forEach(snapshot1 => {
+      const id = snapshot1.key;
+      dataLike.push(id);
+    });
+  });
 
+  console.log(dataLike);
   const referencer = ref(db, 'post');
   onValue(referencer, snapshot => {
     snapshot.forEach(childSnapshot => {
@@ -108,18 +117,42 @@ const Home = ({route, navigation}) => {
           const thoigian = childSnapshotq.child('thoigian').exportVal();
           const image = childSnapshotq.child('image').exportVal();
           const user = childSnapshotq.child('user').exportVal();
-
-          datapost.push({
-            id: id,
-            name: name,
-            avt: avt,
-            noidung: noidung,
-            checkin: trangthai,
-            thoigian: thoigian,
-            image: image,
-            user: user,
-            tick: childSnapshotq.child('tick').exportVal(),
-          });
+          console.log(
+            'ADU NHUC NACH : ' +
+              dataLike.includes('' + childSnapshotq.child('id').exportVal()),
+          );
+          if (
+            dataLike.includes('' + childSnapshotq.child('id').exportVal()) ==
+            true
+          ) {
+            datapost.push({
+              id: id,
+              name: name,
+              avt: avt,
+              noidung: noidung,
+              checkin: trangthai,
+              thoigian: thoigian,
+              image: image,
+              user: user,
+              tick: childSnapshotq.child('tick').exportVal(),
+              like: true,
+              solike: childSnapshotq.child('like').exportVal(),
+            });
+          } else {
+            datapost.push({
+              id: id,
+              name: name,
+              avt: avt,
+              noidung: noidung,
+              checkin: trangthai,
+              thoigian: thoigian,
+              image: image,
+              user: user,
+              tick: childSnapshotq.child('tick').exportVal(),
+              like: false,
+              solike: childSnapshotq.child('like').exportVal(),
+            });
+          }
         } else if (loc == 0) {
           if (
             childSnapshotq.child('thoigian').exportVal() ==
@@ -134,17 +167,38 @@ const Home = ({route, navigation}) => {
             const image = childSnapshotq.child('image').exportVal();
             const user = childSnapshotq.child('user').exportVal();
 
-            datapost.push({
-              id: id,
-              name: name,
-              avt: avt,
-              noidung: noidung,
-              checkin: trangthai,
-              thoigian: thoigian,
-              image: image,
-              user: user,
-              tick: childSnapshotq.child('tick').exportVal(),
-            });
+            if (
+              dataLike.includes('' + childSnapshotq.child('id').exportVal()) ==
+              true
+            ) {
+              datapost.push({
+                id: id,
+                name: name,
+                avt: avt,
+                noidung: noidung,
+                checkin: trangthai,
+                thoigian: thoigian,
+                image: image,
+                user: user,
+                tick: childSnapshotq.child('tick').exportVal(),
+                like: true,
+                solike: childSnapshotq.child('like').exportVal(),
+              });
+            } else {
+              datapost.push({
+                id: id,
+                name: name,
+                avt: avt,
+                noidung: noidung,
+                checkin: trangthai,
+                thoigian: thoigian,
+                image: image,
+                user: user,
+                tick: childSnapshotq.child('tick').exportVal(),
+                like: false,
+                solike: childSnapshotq.child('like').exportVal(),
+              });
+            }
           }
         } else if (
           loc == 1 &&
@@ -159,17 +213,38 @@ const Home = ({route, navigation}) => {
           const image = childSnapshotq.child('image').exportVal();
           const user = childSnapshotq.child('user').exportVal();
 
-          datapost.push({
-            id: id,
-            name: name,
-            avt: avt,
-            noidung: noidung,
-            checkin: trangthai,
-            thoigian: thoigian,
-            image: image,
-            user: user,
-            tick: childSnapshotq.child('tick').exportVal(),
-          });
+          if (
+            dataLike.includes('' + childSnapshotq.child('id').exportVal()) ==
+            true
+          ) {
+            datapost.push({
+              id: id,
+              name: name,
+              avt: avt,
+              noidung: noidung,
+              checkin: trangthai,
+              thoigian: thoigian,
+              image: image,
+              user: user,
+              tick: childSnapshotq.child('tick').exportVal(),
+              like: true,
+              solike: childSnapshotq.child('like').exportVal(),
+            });
+          } else {
+            datapost.push({
+              id: id,
+              name: name,
+              avt: avt,
+              noidung: noidung,
+              checkin: trangthai,
+              thoigian: thoigian,
+              image: image,
+              user: user,
+              tick: childSnapshotq.child('tick').exportVal(),
+              like: false,
+              solike: childSnapshotq.child('like').exportVal(),
+            });
+          }
         }
       });
     });
@@ -231,59 +306,96 @@ const Home = ({route, navigation}) => {
       }
     });
   });
+  const date = new Date();
 
-  const AddLike = (idP, id) => {
+  const AddLike = (idP, id, li) => {
     let like;
     let co;
     let dc = false;
-
-    const reference11 = ref(db, 'tuongtac/' + user + '/' + idP + '/' + user);
-    onValue(reference11, snapshot1 => {
-      const value = snapshot1.child('like').exportVal();
-      console.log(value);
-      if (value == true) {
-        setdacod(true);
-        //throw "break-loop";
-      } else {
-        setdacod(false);
-      }
-    });
-    const reference1 = ref(db, 'post/' + user + '/' + idP);
-    onValue(reference1, childSnapshot1 => {
-      co = childSnapshot1.child('like').exportVal();
-      like = co + 1;
-    });
-    if (dacod != null) {
-      const reference13 = ref(db, 'tuongtac/' + user + '/' + idP + '/' + user);
-      onValue(reference13, childSnapshot1 => {
-        if (!childSnapshot1.exists()) {
-          set(reference13, {
-            like: true,
-          });
-
-          const reference = ref(db, 'post/' + id + '/' + idP);
-          update(reference, {
-            like: like,
-          });
-          ToastAndroid.show('Đã gửi lượt thích bài viết', ToastAndroid.BOTTOM);
-          if (id != user) {
-            const referencecr = ref(db, 'users/' + id);
-            onValue(referencecr, childSnapshot => {
-              const tokendv = childSnapshot.child('token').val();
-              console.log(tokendv);
-              sendMess(
-                tokendv,
-                'Thông báo mới từ ' + name,
-                name + ' đã thích bài viết của bạn',
-              );
-            });
-          }
+    let solike;
+    if (li != true) {
+      const reference11 = ref(db, 'tuongtac/' + id + '/' + idP + '/' + id);
+      onValue(reference11, snapshot1 => {
+        const value = snapshot1.child('like').exportVal();
+        console.log(value);
+        if (value == true) {
+          setdacod(true);
+          //throw "break-loop";
         } else {
-          ToastAndroid.show(
-            'Bạn đã thích bài viết này rồi',
-            ToastAndroid.BOTTOM,
-          );
+          setdacod(false);
         }
+      });
+
+      const reference13 = ref(db, 'tuongtac/' + id + '/' + idP + '/' + id);
+      set(reference13, {
+        like: true,
+      });
+      let i = 0;
+      const referencelike = ref(db, 'tuongtac');
+      onValue(referencelike, childSnapshot1 => {
+        childSnapshot1.forEach(snapshot1 => {
+          snapshot1.forEach(snapshot21 => {
+            if (snapshot21.key == idP) {
+              i = i + 1;
+            }
+          });
+        });
+      });
+      console.log('Số Like ' + i);
+      const reference = ref(db, 'post/' + id + '/' + idP);
+      update(reference, {
+        like: i,
+      });
+      if (id != user) {
+        const referencecr = ref(db, 'users/' + id);
+        onValue(referencecr, childSnapshot => {
+          const tokendv = childSnapshot.child('token').val();
+          console.log(tokendv);
+          sendMess(
+            tokendv,
+            'Thông báo mới từ ' + name,
+            name + ' đã thích bài viết của bạn',
+          );
+        });
+      }
+      const reference5 = ref(db, 'notification/' + id);
+      push(reference5, {
+        user: user,
+        id: id,
+        noidung: ' vừa thích bài viết của bạn',
+        thoigian:
+          date.getHours() +
+          ':' +
+          date.getMinutes() +
+          ' ngày ' +
+          date.getDate() +
+          '/' +
+          thang +
+          '/' +
+          date.getFullYear(),
+        avt: avt,
+        name: name,
+      });
+    } else {
+      const reference13f = ref(db, 'tuongtac/' + id + '/' + idP + '/' + id);
+      remove(reference13f).then(() => {
+        console.log('Hủy Like');
+        let i = 0;
+        const referencelike = ref(db, 'tuongtac');
+        onValue(referencelike, childSnapshot1 => {
+          childSnapshot1.forEach(snapshot1 => {
+            snapshot1.forEach(snapshot21 => {
+              if (snapshot21.key == idP) {
+                i = i + 1;
+              }
+            });
+          });
+        });
+        console.log('Số Like ' + i);
+        const reference = ref(db, 'post/' + id + '/' + idP);
+        update(reference, {
+          like: i,
+        });
       });
     }
   };
@@ -446,12 +558,22 @@ const Home = ({route, navigation}) => {
           }}>
           <TouchableOpacity
             style={{flexDirection: 'row'}}
-            onPress={() => AddLike(item.id, item.user)}>
+            onPress={() => AddLike(item.id, item.user, item.like)}>
             <Image
               style={styles.iclikeContainer}
-              source={require('../assets/iclike.png')}
+              source={
+                item.like == true
+                  ? require('../assets/iclike2.png')
+                  : require('../assets/iclike.png')
+              }
             />
-            <Text style={{fontSize: 17, color: 'black'}}>Thích</Text>
+            <Text
+              style={[
+                {fontSize: 17, color: 'black'},
+                item.like == true ? {fontSize: 17, color: '#E94057'} : null,
+              ]}>
+              {item.solike} {item.like == false ? 'Thích' : 'Bỏ Thích'}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={{flexDirection: 'row'}}
@@ -746,7 +868,7 @@ const styles = StyleSheet.create({
   },
   cmtContainer: {
     right: 5,
-    top: 3,
+    top: 1,
   },
   thich: {
     width: 50,
@@ -756,7 +878,9 @@ const styles = StyleSheet.create({
   },
   iclikeContainer: {
     right: 5,
-    top: 3,
+    bottom: 1,
+    width: 20,
+    height: 20,
   },
   comment: {
     width: 60,

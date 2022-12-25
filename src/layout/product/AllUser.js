@@ -140,12 +140,6 @@ export const AllUser = ({route, navigation}) => {
       }
     });
 
-    const reference1 = ref(db, 'users/' + id);
-    onValue(reference1, childSnapshot1 => {
-      co = childSnapshot1.child('follow').val();
-      fl = co + 1;
-    });
-    console.log('số fl : ' + fl);
     const reference112 = ref(db, 'favourite/' + idCurrent);
     onValue(reference112, childSnapshot1 => {
       childSnapshot1.forEach(snapshot1 => {
@@ -254,7 +248,7 @@ export const AllUser = ({route, navigation}) => {
           </Text>
         </View>
         <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity onPress={logOut}>
+          <TouchableOpacity onPress={() => navigation.navigate('Timkiem')}>
             <Image
               style={{width: 35, height: 35, right: 5}}
               source={require('../../assets/search.png')}
@@ -432,10 +426,16 @@ export const AllUser = ({route, navigation}) => {
                         height: 40,
                         bottom: 5,
                       }}
-                      onPress={() => Love(item.id)}>
+                      onPress={() =>
+                        navigation.navigate('Messenger', {
+                          url: '',
+                          name: item.name,
+                          userId: item.id,
+                        })
+                      }>
                       <Image
-                        style={{width: 40, height: 40}}
-                        source={require('../../image/tim.png')}
+                        style={{width: 30, height: 30, left: 5}}
+                        source={require('../../image/chat.png')}
                       />
                     </TouchableOpacity>
                     <TouchableOpacity
