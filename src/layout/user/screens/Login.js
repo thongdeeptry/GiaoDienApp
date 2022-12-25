@@ -126,18 +126,12 @@ export const Login = props => {
       firebase.auth.GoogleAuthProvider.credential(idToken);
     // Sign-in the user with the credential
     try {
-      const usersd = getAuth().currentUser.uid;
-      console.log('UIDd - ' + usersd);
-      if (usersd.length > 8) {
-        signInWithCredential(getAuth(), googleCredential).then(async () => {
-          const users = getAuth().currentUser.uid;
-          console.log('UID - ' + users);
-          await AsyncStorage.setItem('tokenLogin', idToken);
-          onLogin();
-        });
-      } else {
-        ToastAndroid.show('Tài khoản chưa tồn tại', ToastAndroid.BOTTOM);
-      }
+      signInWithCredential(getAuth(), googleCredential).then(async () => {
+        const users = getAuth().currentUser.uid;
+        console.log('UID - ' + users);
+        await AsyncStorage.setItem('tokenLogin', idToken);
+        onLogin();
+      });
     } catch (error) {
       ToastAndroid.show('Tài khoản chưa tồn tại', ToastAndroid.BOTTOM);
     }
