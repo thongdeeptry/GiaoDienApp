@@ -70,6 +70,7 @@ const RoomCall = ({navigation, route}) => {
       token: token,
       channel: channel,
       uid: 1,
+      trangthai: 'Hoạt Động',
     });
     ToastAndroid.show('Đã tạo phòng trò chuyện', ToastAndroid.BOTTOM);
     const reference = ref(db, 'roomCall/' + user);

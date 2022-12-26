@@ -63,6 +63,7 @@ const LiveVideo = ({navigation, route}) => {
       token: token,
       channel: channel,
       uid: 1,
+      trangthai: 'Hoạt Động',
     });
     ToastAndroid.show('Đã tạo phòng phát trực tiếp', ToastAndroid.BOTTOM);
     const reference = ref(db, 'livestream/' + user);

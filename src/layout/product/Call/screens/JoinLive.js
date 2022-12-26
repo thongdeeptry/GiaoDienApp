@@ -22,9 +22,10 @@ const JoinLive = ({navigation, route}) => {
   const {token, channel, nameLive, thoigian, avt, luotxem, id} = route.params;
   initializeApp(firebaseConfig);
   const db = getDatabase();
+  const user = auth.currentUser.metadata;
   const [videoCall, setVideoCall] = useState(true);
   const [role, setRole] = useState(2); //role = 2 people follow
-  const [uid, setUid] = useState(Number(luotxem) + 1);
+  const [uid, setUid] = useState(Number(user.createdAt));
   const [expiry, setexpiry] = useState('9999999999999999999');
   const [ngay, setNgay] = useState();
   const [view, setView] = useState(1);
