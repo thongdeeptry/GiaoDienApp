@@ -61,19 +61,18 @@ export const CaiDat = ({route, navigation}) => {
       alert(error.message);
     }
   };
-  const logOut = () => {
+  const logOut = async () => {
     const referencerrs = ref(db, 'users/' + user);
     update(referencerrs, {
       trangthai: 'Chưa Hoạt Động',
     });
     const auth = getAuth();
-    signOut(auth)
+    await signOut(auth)
       .then(async () => {
         await AsyncStorage.setItem('email', '');
         await AsyncStorage.setItem('password', '');
         await AsyncStorage.setItem('tokenLogin', '');
         onLogout();
-        ToastAndroid.show('Đăng xuất thành công', ToastAndroid.BOTTOM);
       })
       .catch(error => {
         // An error happened.

@@ -103,7 +103,7 @@ const Chinhsua = ({navigation, route}) => {
           imageName +
           '.png?alt=media',
       });
-      ToastAndroid.show('Đổi ảnh đại diện thành công');
+      ToastAndroid.show('Đổi ảnh đại diện thành công', ToastAndroid.BOTTOM);
     });
   };
   const openModal = () => {
@@ -191,7 +191,7 @@ const Chinhsua = ({navigation, route}) => {
         <View style={styles.nen}></View>
         <TouchableOpacity
           style={styles.back}
-          onPress={() => navigation.navigate('Profile')}>
+          onPress={() => navigation.goBack()}>
           <Image
             style={{width: 25, height: 25, bottom: 5, tintColor: 'white'}}
             source={require('../../image/back.png')}
@@ -219,7 +219,18 @@ const Chinhsua = ({navigation, route}) => {
             value={name}
             onChangeText={setname}
             textContentType={'name'}></TextInput>
-          <Text style={styles.id}>{id}</Text>
+          <TouchableOpacity onPress={() => setname('')}>
+            <Image
+              style={{
+                width: 20,
+                height: 20,
+                position: 'absolute',
+                right: 10,
+                bottom: 5,
+              }}
+              source={require('../../image/edit-4.png')}
+            />
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -335,7 +346,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     top: 10,
-    fontSize: 17,
+    fontSize: 19,
     color: '#E94057',
   },
   saveBtn: {

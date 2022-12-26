@@ -130,15 +130,15 @@ export const PostStatus = ({route, navigation}) => {
     diachi.find(p => {
       country = p.country;
       city =
-        p.streetNumber +
-        ' ' +
-        p.street +
-        ', ' +
-        p.subregion +
-        ', ' +
-        p.region +
-        ', ' +
-        p.country;
+        p.streetNumber == null
+          ? ''
+          : p.streetNumber + ' ' + p.street == null
+          ? ''
+          : p.street + ', ' + p.subregion == null
+          ? ''
+          : p.subregion + ', ' + p.region == null
+          ? ''
+          : p.region + ', ' + p.country;
       settinh(p.region);
       setlocation(city);
     });
@@ -178,9 +178,10 @@ export const PostStatus = ({route, navigation}) => {
           user: user,
           hoatdong: noidung1 != undefined ? noidung1 : '',
           tick: tick,
+          like: 0,
         });
       }
-      if (isCheckedStory == true) {
+      if (isCheckedStory == true && uplink != undefined) {
         const reference13 = firebaseDatabaseRef(db, 'story/' + user + '/' + id);
         set(reference13, {
           name: name,
@@ -199,6 +200,7 @@ export const PostStatus = ({route, navigation}) => {
           user: user,
           hoatdong: noidung1 != undefined ? noidung1 : '',
           tick: tick,
+          like: 0,
         });
       }
       ToastAndroid.show('Đã chia sẻ bài viết', ToastAndroid.BOTTOM);

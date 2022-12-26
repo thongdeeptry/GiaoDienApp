@@ -176,7 +176,7 @@ export const ProfileName = ({route, navigation}) => {
             <Image
               style={styles.image}
               resizeMethod="auto"
-              source={require('../../../image/avt.jpg')}
+              source={require('../../../image/auth.png')}
             />
           ) : (
             image && (
@@ -245,15 +245,12 @@ export const ProfileName = ({route, navigation}) => {
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
           />
+          <TouchableOpacity
+            style={styles.nut}
+            onPress={() => uploadImageToBucket(image, makeid(60))}>
+            <Text style={styles.nutText}>Tiếp tục</Text>
+          </TouchableOpacity>
         </View>
-      </View>
-
-      <View style={styles.mailnut}>
-        <TouchableOpacity
-          style={styles.nut}
-          onPress={() => uploadImageToBucket(image, makeid(60))}>
-          <Text style={styles.nutText}>Tiếp tục</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -315,16 +312,15 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   mailnut: {
-    position: 'absolute',
     width: '100%',
-    bottom: 30,
+
     height: 56,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
   },
   nut: {
-    width: '80%',
+    width: '100%',
     height: 56,
     backgroundColor: '#E94057',
     justifyContent: 'center',

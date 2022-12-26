@@ -232,16 +232,11 @@ export const Profile = props => {
       set(reference13, {
         like: true,
       });
-      let i = 0;
-      const referencelike = ref(db, 'tuongtac');
+      let i;
+      const referencelike = ref(db, 'post/' + user + '/' + idP);
       onValue(referencelike, childSnapshot1 => {
-        childSnapshot1.forEach(snapshot1 => {
-          snapshot1.forEach(snapshot21 => {
-            if (snapshot21.key == idP) {
-              i = i + 1;
-            }
-          });
-        });
+        const lif = childSnapshot1.child('like').exportVal();
+        i = Number(lif) + 1;
       });
       console.log('Số Like ' + i);
       const reference = ref(db, 'post/' + user + '/' + idP);
@@ -252,16 +247,11 @@ export const Profile = props => {
       const reference13f = ref(db, 'tuongtac/' + user + '/' + idP + '/' + user);
       remove(reference13f).then(() => {
         console.log('Hủy Like');
-        let i = 0;
-        const referencelike = ref(db, 'tuongtac');
+        let i;
+        const referencelike = ref(db, 'post/' + user + '/' + idP);
         onValue(referencelike, childSnapshot1 => {
-          childSnapshot1.forEach(snapshot1 => {
-            snapshot1.forEach(snapshot21 => {
-              if (snapshot21.key == idP) {
-                i = i + 1;
-              }
-            });
-          });
+          const lif = childSnapshot1.child('like').exportVal();
+          i = Number(lif) - 1;
         });
         console.log('Số Like ' + i);
         const reference = ref(db, 'post/' + user + '/' + idP);
@@ -270,6 +260,8 @@ export const Profile = props => {
         });
       });
     }
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
   };
   const numColumns = 3;
   const deletePost = () => {
@@ -1022,8 +1014,7 @@ export const Profile = props => {
                               ? {fontSize: 17, color: '#E94057'}
                               : null,
                           ]}>
-                          {item.solike}{' '}
-                          {item.like == false ? 'Thích' : 'Bỏ Thích'}
+                          {item.solike} Thích
                         </Text>
                       </TouchableOpacity>
                       <TouchableOpacity

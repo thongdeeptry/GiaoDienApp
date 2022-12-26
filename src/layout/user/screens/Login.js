@@ -126,11 +126,18 @@ export const Login = props => {
       firebase.auth.GoogleAuthProvider.credential(idToken);
     // Sign-in the user with the credential
     try {
-      signInWithCredential(getAuth(), googleCredential).then(async () => {
-        const users = getAuth().currentUser.uid;
-        console.log('UID - ' + users);
-        await AsyncStorage.setItem('tokenLogin', idToken);
-        onLogin();
+      const reference = ref(db, 'users');
+      onValue(reference, childSnapshot => {
+        childSnapshot.forEach(snap => {
+          if (snap.child('email').exportVal() == user.email) {
+            signInWithCredential(getAuth(), googleCredential).then(async () => {
+              const users = getAuth().currentUser.uid;
+              console.log('UID - ' + users);
+              await AsyncStorage.setItem('tokenLogin', idToken);
+              onLogin();
+            });
+          }
+        });
       });
     } catch (error) {
       ToastAndroid.show('Tài khoản chưa tồn tại', ToastAndroid.BOTTOM);
@@ -291,14 +298,14 @@ export const Login = props => {
                 </View>
               </View>
             </View>
+            <View style={styles.mailnut1}>
+              <TouchableOpacity
+                style={styles.nut1}
+                onPress={() => navigation.navigate('Landing4')}>
+                <Text style={styles.nutText1}>Đăng Ký</Text>
+              </TouchableOpacity>
+            </View>
           </KeyboardAvoidingView>
-          <View style={styles.mailnut1}>
-            <TouchableOpacity
-              style={styles.nut1}
-              onPress={() => navigation.navigate('Landing4')}>
-              <Text style={styles.nutText1}>Đăng Ký</Text>
-            </TouchableOpacity>
-          </View>
         </ScrollView>
       )}
     </Formik>
@@ -372,6 +379,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     bottom: 20,
     position: 'absolute',
+    display: 'flex',
   },
   nut1: {
     width: '100%',

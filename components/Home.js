@@ -46,7 +46,7 @@ const Home = ({route, navigation}) => {
   const [id, setid] = useState();
   const [daco, setdaco] = useState();
   const [dacod, setdacod] = useState(false);
-  const [loc, setloc] = useState(1);
+  const [loc, setloc] = useState(2);
   const datapost = [];
   const dataStory = [];
   const dataLive = [];
@@ -326,20 +326,15 @@ const Home = ({route, navigation}) => {
         }
       });
 
-      const reference13 = ref(db, 'tuongtac/' + id + '/' + idP + '/' + id);
+      const reference13 = ref(db, 'tuongtac/' + user + '/' + idP + '/' + user);
       set(reference13, {
         like: true,
       });
-      let i = 0;
-      const referencelike = ref(db, 'tuongtac');
+      let i;
+      const referencelike = ref(db, 'post/' + id + '/' + idP);
       onValue(referencelike, childSnapshot1 => {
-        childSnapshot1.forEach(snapshot1 => {
-          snapshot1.forEach(snapshot21 => {
-            if (snapshot21.key == idP) {
-              i = i + 1;
-            }
-          });
-        });
+        const lif = childSnapshot1.child('like').exportVal();
+        i = Number(lif) + 1;
       });
       console.log('Số Like ' + i);
       const reference = ref(db, 'post/' + id + '/' + idP);
@@ -377,19 +372,14 @@ const Home = ({route, navigation}) => {
         name: name,
       });
     } else {
-      const reference13f = ref(db, 'tuongtac/' + id + '/' + idP + '/' + id);
+      const reference13f = ref(db, 'tuongtac/' + user + '/' + idP + '/' + user);
       remove(reference13f).then(() => {
         console.log('Hủy Like');
-        let i = 0;
-        const referencelike = ref(db, 'tuongtac');
+        let i;
+        const referencelike = ref(db, 'post/' + id + '/' + idP);
         onValue(referencelike, childSnapshot1 => {
-          childSnapshot1.forEach(snapshot1 => {
-            snapshot1.forEach(snapshot21 => {
-              if (snapshot21.key == idP) {
-                i = i + 1;
-              }
-            });
-          });
+          const lif = childSnapshot1.child('like').exportVal();
+          i = Number(lif) - 1;
         });
         console.log('Số Like ' + i);
         const reference = ref(db, 'post/' + id + '/' + idP);
@@ -398,6 +388,8 @@ const Home = ({route, navigation}) => {
         });
       });
     }
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
   };
   const deletePost = (id, idPost) => {
     const referencerm = ref(db, 'post/' + id + '/' + idPost);
@@ -572,7 +564,7 @@ const Home = ({route, navigation}) => {
                 {fontSize: 17, color: 'black'},
                 item.like == true ? {fontSize: 17, color: '#E94057'} : null,
               ]}>
-              {item.solike} {item.like == false ? 'Thích' : 'Bỏ Thích'}
+              {item.solike} Thích
             </Text>
           </TouchableOpacity>
           <TouchableOpacity

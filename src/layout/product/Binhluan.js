@@ -170,6 +170,24 @@ const Binhluan = ({navigation, route}) => {
         name + ' vừa bình luận bài viết',
       );
     }
+    const reference5 = ref(db, 'notification/' + userID);
+    push(reference5, {
+      user: user,
+      id: userID,
+      noidung: ' vừa bình luận bài viết của bạn',
+      thoigian:
+        date.getHours() +
+        ':' +
+        date.getMinutes() +
+        ' ngày ' +
+        date.getDate() +
+        '/' +
+        thang +
+        '/' +
+        date.getFullYear(),
+      avt: avt,
+      name: name,
+    });
     setbinhluan('');
     Keyboard.dismiss();
   };
@@ -204,23 +222,15 @@ const Binhluan = ({navigation, route}) => {
         }
       });
 
-      const reference13 = ref(
-        db,
-        'tuongtac/' + userID + '/' + idP + '/' + userID,
-      );
+      const reference13 = ref(db, 'tuongtac/' + user + '/' + idP + '/' + user);
       set(reference13, {
         like: true,
       });
-      let i = 0;
-      const referencelike = ref(db, 'tuongtac');
+      let i;
+      const referencelike = ref(db, 'post/' + userID + '/' + idP);
       onValue(referencelike, childSnapshot1 => {
-        childSnapshot1.forEach(snapshot1 => {
-          snapshot1.forEach(snapshot21 => {
-            if (snapshot21.key == idP) {
-              i = i + 1;
-            }
-          });
-        });
+        const lif = childSnapshot1.child('like').exportVal();
+        i = Number(lif) + 1;
       });
       console.log('Số Like ' + i);
       const reference = ref(db, 'post/' + userID + '/' + idP);
@@ -254,22 +264,14 @@ const Binhluan = ({navigation, route}) => {
       }
       setlike(true);
     } else {
-      const reference13f = ref(
-        db,
-        'tuongtac/' + userID + '/' + idP + '/' + userID,
-      );
+      const reference13f = ref(db, 'tuongtac/' + user + '/' + idP + '/' + user);
       remove(reference13f).then(() => {
         console.log('Hủy Like');
-        let i = 0;
-        const referencelike = ref(db, 'tuongtac');
+        let i;
+        const referencelike = ref(db, 'post/' + userID + '/' + idP);
         onValue(referencelike, childSnapshot1 => {
-          childSnapshot1.forEach(snapshot1 => {
-            snapshot1.forEach(snapshot21 => {
-              if (snapshot21.key == idP) {
-                i = i + 1;
-              }
-            });
-          });
+          const lif = childSnapshot1.child('like').exportVal();
+          i = Number(lif) - 1;
         });
         console.log('Số Like ' + i);
         const reference = ref(db, 'post/' + userID + '/' + idP);
@@ -279,6 +281,8 @@ const Binhluan = ({navigation, route}) => {
       });
       setlike(false);
     }
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
   };
   const deletePost = () => {
     const referencerm = ref(db, 'post/' + userID + '/' + idPost);
@@ -391,7 +395,7 @@ const Binhluan = ({navigation, route}) => {
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('ProfileFriend', {
-                  id: id,
+                  id: userID,
                 })
               }>
               <Image
@@ -511,7 +515,7 @@ const Binhluan = ({navigation, route}) => {
                   {fontSize: 17, color: 'black'},
                   like == true ? {fontSize: 17, color: '#E94057'} : null,
                 ]}>
-                {solike} {like == false ? 'Thích' : 'Bỏ Thích'}
+                {solike} Thích
               </Text>
             </TouchableOpacity>
             <TouchableOpacity style={{flexDirection: 'row'}}>
@@ -658,7 +662,7 @@ const Binhluan = ({navigation, route}) => {
           returnKeyType="done"
         />
         <TouchableOpacity
-          style={{position: 'absolute', width: 40, height: 40, right: 3}}
+          style={{width: 40, height: 40, right: 3, position: 'absolute'}}
           onPress={AddComment}>
           <Image
             style={{width: 40, height: 40}}
@@ -666,16 +670,6 @@ const Binhluan = ({navigation, route}) => {
           />
         </TouchableOpacity>
       </View>
-      <View
-        style={{
-          width: '100%',
-          height: 300,
-          position: 'absolute',
-          flexDirection: 'column',
-          alignItems: 'flex-end',
-          justifyContent: 'flex-end',
-          bottom: 0,
-        }}></View>
     </View>
   );
 };

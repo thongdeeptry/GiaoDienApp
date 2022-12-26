@@ -8,13 +8,22 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Keyboard,
+  ToastAndroid,
 } from 'react-native';
 import {images, colors, icons, fontSizes} from '../../../constants';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {initializeApp} from 'firebase/app';
 import {firebaseConfig} from '../../../../config';
 import {getAuth} from 'firebase/auth';
-import {getDatabase, ref, onValue, set, push, update} from 'firebase/database';
+import {
+  getDatabase,
+  ref,
+  onValue,
+  set,
+  push,
+  update,
+  remove,
+} from 'firebase/database';
 function ChatItem(props) {
   initializeApp(firebaseConfig);
   const user = getAuth().currentUser.uid;
@@ -30,6 +39,12 @@ function ChatItem(props) {
       setid(trangthai);
     });
   }, []);
+  const xoa = () => {
+    const referencerm = ref(db, 'listChat/' + user + '/' + userId);
+    remove(referencerm).then = () => {
+      ToastAndroid.show('Đã xoá đoạn chat thành công', ToastAndroid.BOTTOM);
+    };
+  };
   const combinedId = user > userId ? user + userId : userId + user;
   return id != 'Khoá' ? (
     <TouchableOpacity
@@ -115,6 +130,9 @@ function ChatItem(props) {
           justifyContent: 'center',
           alignItems: 'flex-end',
         }}>
+        <TouchableOpacity onPress={xoa}>
+          <Text style={{right: 10, fontSize: 18, color: 'red'}}>Xóa</Text>
+        </TouchableOpacity>
         <Text
           style={{
             color: 'black',

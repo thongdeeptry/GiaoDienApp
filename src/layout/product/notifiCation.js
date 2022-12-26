@@ -76,7 +76,13 @@ export default notifiCation = ({route, navigation}) => {
           paddingHorizontal: 20,
         }}>
         <Text
-          style={{fontSize: 22, color: '#E94057', letterSpacing: 1, top: 5}}>
+          style={{
+            fontSize: 22,
+            color: '#E94057',
+            letterSpacing: 1,
+            top: 5,
+            fontWeight: '500',
+          }}>
           Thông báo
         </Text>
       </View>

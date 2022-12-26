@@ -98,6 +98,7 @@ export default function App() {
   return (
     <UserContextProvider>
       <ProductConTextProvider>
+        <StatusBar barStyle={'dark-content'} />
         <View style={styles.centeredView}>
           <Modal
             animationType="slide"
@@ -117,7 +118,7 @@ export default function App() {
                     borderBottomLeftRadius: 10,
                     borderTopLeftRadius: 10,
                   }}
-                  source={require('./src/image/avt.jpg')}
+                  source={require('./src/image/auth.png')}
                 />
                 <Text style={styles.modalText}>{title}</Text>
                 <Text style={styles.modalText1}>{body}</Text>

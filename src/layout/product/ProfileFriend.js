@@ -114,13 +114,14 @@ export const ProfileFriend = ({route, navigation}) => {
       settickfr(childSnapshot.child('tick').val());
     });
   });
-  const referencetuongtac = ref(db, 'tuongtac/' + user);
+  const referencetuongtac = ref(db, 'tuongtac/' + idCurrent);
   onValue(referencetuongtac, childSnapshot1 => {
     childSnapshot1.forEach(snapshot1 => {
       const id = snapshot1.key;
       dataLike.push(id);
     });
   });
+  console.log(dataLike);
   const referencer = ref(db, 'post/' + user);
   onValue(referencer, snapshot => {
     snapshot.forEach(childSnapshot => {
@@ -240,16 +241,11 @@ export const ProfileFriend = ({route, navigation}) => {
       set(reference13, {
         like: true,
       });
-      let i = 0;
-      const referencelike = ref(db, 'tuongtac');
+      let i;
+      const referencelike = ref(db, 'post/' + id + '/' + idP);
       onValue(referencelike, childSnapshot1 => {
-        childSnapshot1.forEach(snapshot1 => {
-          snapshot1.forEach(snapshot21 => {
-            if (snapshot21.key == idP) {
-              i = i + 1;
-            }
-          });
-        });
+        const lif = childSnapshot1.child('like').exportVal();
+        i = Number(lif) + 1;
       });
       console.log('Số Like ' + i);
       const reference = ref(db, 'post/' + id + '/' + idP);
@@ -292,16 +288,11 @@ export const ProfileFriend = ({route, navigation}) => {
       );
       remove(reference13f).then(() => {
         console.log('Hủy Like');
-        let i = 0;
-        const referencelike = ref(db, 'tuongtac');
+        let i;
+        const referencelike = ref(db, 'post/' + id + '/' + idP);
         onValue(referencelike, childSnapshot1 => {
-          childSnapshot1.forEach(snapshot1 => {
-            snapshot1.forEach(snapshot21 => {
-              if (snapshot21.key == idP) {
-                i = i + 1;
-              }
-            });
-          });
+          const lif = childSnapshot1.child('like').exportVal();
+          i = Number(lif) - 1;
         });
         console.log('Số Like ' + i);
         const reference = ref(db, 'post/' + id + '/' + idP);
@@ -310,6 +301,8 @@ export const ProfileFriend = ({route, navigation}) => {
         });
       });
     }
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
   };
 
   const numColumns = 3;
@@ -969,7 +962,7 @@ export const ProfileFriend = ({route, navigation}) => {
                                 ? {fontSize: 17, color: '#E94057'}
                                 : null,
                             ]}>
-                            {item.solike} Bỏ Thích
+                            {item.solike} Thích
                           </Text>
                         </TouchableOpacity>
                       ) : (

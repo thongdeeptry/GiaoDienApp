@@ -3,13 +3,14 @@
     "name": "GenzLove",
     "icon": "icon.png",
     "slug": "GiaoDienApp",
-    "version": "1.8.0",
+    "version": "2.1.0",
 
     "assetBundlePatterns": ["**/*"],
     "android": {
-      "versionCode": 8,
+      "versionCode": 11,
       "googleServicesFile": "./google-services.json",
-      "package": "com.thanhthong0312.GiaoDienApp"
+      "package": "com.thanhthong0312.GiaoDienApp",
+      "softwareKeyboardLayoutMode": "pan"
     },
     "ios": {
       "bundleIdentifier": "org.name.GiaoDienApp"

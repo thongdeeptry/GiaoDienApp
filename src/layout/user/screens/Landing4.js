@@ -61,7 +61,7 @@ export const Landing4 = props => {
         <Image
           style={styles.image}
           resizeMethod="auto"
-          source={require('../../../image/logoappxin.png')}
+          source={require('../../../image/auth.png')}
         />
       </View>
       <View style={styles.textContainer}>
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
     top: 100,
   },
   image: {
-    width: 200,
-    height: 200,
+    width: 150,
+    height: 150,
   },
 });
