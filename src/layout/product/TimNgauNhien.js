@@ -20,6 +20,7 @@ import {
   update,
   remove,
 } from 'firebase/database';
+import LottieView from 'lottie-react-native';
 import {v4 as uuid} from 'uuid';
 export const TimNgauNhien = ({route, navigation}) => {
   initializeApp(firebaseConfig);
@@ -31,6 +32,7 @@ export const TimNgauNhien = ({route, navigation}) => {
   const [tick, settick] = useState();
   const [tuoi, settuoi] = useState();
   const [nghe, setnghe] = useState();
+  const [gioitinh, setgioitinh] = useState();
   const [diachi, setdiachi] = useState();
   const [randomid, setrandomid] = useState();
   const dataFl = [];
@@ -38,15 +40,28 @@ export const TimNgauNhien = ({route, navigation}) => {
   const dataghepq = [];
   const [hienthi, sethienthi] = useState(0);
   const [randomidd, setrandomidd] = useState('');
-  useEffect(() => {
-    const referencer = ref(db, 'users');
-    onValue(referencer, snapshot => {
-      snapshot.forEach(childSnapshot => {
+  const [nameh, setnameh] = useState();
+  const [idh, setuidh] = useState();
+  const [avth, setavth] = useState();
+  const [tickh, settickh] = useState();
+  const [tuoih, settuoih] = useState();
+  const [ngheh, setngheh] = useState();
+  const [gioitinhh, setgioitinhh] = useState();
+  const [diachih, setdiachih] = useState();
+  const [ghepdoi, setghepdoi] = useState(false);
+  const [show, setShow] = useState(false);
+  const referencer = ref(db, 'users');
+  onValue(referencer, snapshot => {
+    snapshot.forEach(childSnapshot => {
+      if (childSnapshot.child('gioitinh').val() != gioitinh) {
         const id = childSnapshot.child('id').val();
         dataFl.push(id);
-      });
+      }
+      dataghep.push(childSnapshot.child('id').val());
     });
-    const reference = ref(db, 'users/' + randomid);
+  });
+  useEffect(() => {
+    const reference = ref(db, 'users/' + user);
     onValue(reference, childSnapshot => {
       const namepr = childSnapshot.child('name').val();
       const avtpr = childSnapshot.child('avt').val();
@@ -57,102 +72,98 @@ export const TimNgauNhien = ({route, navigation}) => {
       settuoi(childSnapshot.child('tuoi').val());
       setdiachi(childSnapshot.child('diachi').val());
       setuid(childSnapshot.child('id').val());
+      setgioitinh(childSnapshot.child('gioitinh').val());
     });
-  });
-  const Timkiem = () => {
-    const randomID = Math.floor(Math.random() * dataFl.length);
-    setrandomid(dataFl[randomID]);
-  };
-  const GhepDoi = () => {
-    dataghep.splice(0, dataghep.length);
-    dataghep = [];
-    let ids = user;
-
-    const referencer = ref(db, 'hangcho');
-    onValue(referencer, snapshot => {
-      snapshot.forEach(childSnapshot => {
-        const id = childSnapshot.key;
-        dataghep.push(id);
-      });
-      console.log(dataghep.length);
-    });
-
-    if (dataghep.length == 0) {
-      dataghep.splice(0, dataghep.length);
-      dataghep = [];
-      const reference = ref(db, 'hangcho/' + ids + '/' + user);
-      update(reference, {
-        id: user,
-        hienthi: hienthi,
-        name: name,
-      });
-    }
-    console.log('dataghep' + dataghep);
-
-    if (dataghep.length > 0) {
-      const randomID = Math.floor(Math.random() * dataghep.length);
-      setrandomidd(dataghep[randomID]);
-      console.log('randomid = ' + randomidd);
-      if (
-        randomidd != '' &&
-        randomidd != null &&
-        randomidd != undefined &&
-        dataghep.length != 0
-      ) {
-        const reference = ref(db, 'hangcho/' + randomidd + '/' + user);
-        update(reference, {
-          id: user,
-          hienthi: hienthi,
-          name: name,
+    if (ghepdoi == true) {
+      setShow(true);
+      setTimeout(() => {
+        const randomID = Math.floor(Math.random() * dataFl.length);
+        setrandomid(dataFl[randomID]);
+        const referencea = ref(db, 'users/' + randomid);
+        onValue(referencea, childSnapshot => {
+          const namepr = childSnapshot.child('name').val();
+          const avtpr = childSnapshot.child('avt').val();
+          setnameh(namepr);
+          setavth(avtpr);
+          setgioitinhh(childSnapshot.child('gioitinh').val());
+          settickh(childSnapshot.child('tick').val());
+          settuoih(childSnapshot.child('tuoi').val());
+          setdiachih(childSnapshot.child('diachi').val());
+          setuidh(childSnapshot.child('id').val());
         });
-        const referencerd = ref(db, 'hangcho/' + randomidd);
-        onValue(referencerd, snapshot => {
-          snapshot.forEach(childSnapshot => {
-            if (childSnapshot.size == 2) {
-              dataghepq.push(childSnapshot.key);
-            }
-            // const combinedId =
-            //   dataghepq[0] > dataghepq[1]
-            //     ? dataghepq[0] + dataghepq[1]
-            //     : dataghepq[1] + dataghepq[0];
+        console.log('tuoi toi ' + tuoi);
+        console.log('tuoi bạn ' + tuoih + gioitinhh);
+
+        if (
+          gioitinhh != gioitinh &&
+          Number(tuoi) >= Number(tuoih) &&
+          gioitinhh != null &&
+          gioitinhh != undefined &&
+          tuoih != null &&
+          tuoih != undefined
+        ) {
+          setghepdoi(false);
+          setShow(false);
+          ToastAndroid.show('Đã kết nối với 1 người lạ', ToastAndroid.BOTTOM);
+          navigation.navigate('SayHello', {
+            id: idh,
           });
-          if (dataghepq.length == 2) {
-            setrandomid(dataghepq[0] == user ? dataghepq[1] : dataghepq[0]);
-            const referencerd = ref(db, 'hangcho/' + randomidd);
-            remove(referencerd).then(() => {
-              ToastAndroid.show(
-                'Đã kết nối với 1 người lạ',
-                ToastAndroid.BOTTOM,
-              );
-            });
-            const reference = ref(db, 'users/' + randomidd);
-            onValue(reference, childSnapshot => {
-              navigation.navigate('Messenger', {
-                url: '',
-                name: childSnapshot.child('name').exportVal(),
-                userId: dataghepq[0] == user ? dataghepq[1] : dataghepq[0],
-              });
-            });
-          } else {
-            ToastAndroid.show(
-              'Chưa tìm thấy, vui lòng tìm lại',
-              ToastAndroid.BOTTOM,
-            );
-          }
-        });
-      }
+        }
+      }, 3000);
     }
+  }, [ghepdoi]);
 
-    dataghepq.splice(0, dataghepq.length);
-    // const randomid = uuid();
+  const Timkiem = () => {
+    const randomID = Math.floor(Math.random() * dataghep.length);
+    setrandomid(dataghep[randomID]);
+    const reference = ref(db, 'users/' + randomid);
+    onValue(reference, childSnapshot => {
+      const namepr = childSnapshot.child('name').val();
+      const avtpr = childSnapshot.child('avt').val();
+      setnameh(namepr);
+      setavth(avtpr);
+      setgioitinhh(childSnapshot.child('gioitinh').val());
+      setngheh(childSnapshot.child('nghenghiep').val());
+      settickh(childSnapshot.child('tick').val());
+      settuoih(childSnapshot.child('tuoi').val());
+      setdiachih(childSnapshot.child('diachi').val());
+      setuidh(childSnapshot.child('id').val());
+    });
   };
+
+  const GhepCap = () => {
+    setghepdoi(true);
+  };
+
   return (
     <View style={styles.tong}>
       <Image
-        style={styles.hinh}
+        style={[
+          styles.hinh,
+          show == true ? {width: '100%', height: '100%', opacity: 0.2} : null,
+        ]}
         source={require('../../image/timkiemrd.png')}
         resizeMode="cover"></Image>
-
+      {show == true ? (
+        <View style={styles.tongx}>
+          <LottieView
+            source={require('../../../chimnghenhac.json')}
+            style={styles.animation}
+            autoPlay
+          />
+          <Text
+            style={{
+              textAlign: 'center',
+              fontSize: 18,
+              color: '#E94057',
+              fontWeight: '600',
+            }}>
+            Đang tìm người phù hợp với bạn...
+          </Text>
+        </View>
+      ) : (
+        <></>
+      )}
       <View style={styles.custominfo}>
         <Image
           style={{
@@ -161,14 +172,14 @@ export const TimNgauNhien = ({route, navigation}) => {
             borderTopLeftRadius: 15,
             borderBottomLeftRadius: 15,
           }}
-          source={{uri: avt}}
+          source={{uri: avth}}
         />
         <View style={{flexDirection: 'column'}}>
           <View style={{flexDirection: 'row'}}>
             <Text style={{fontSize: 20, fontWeight: '500', top: 5, left: 10}}>
-              {name}
+              {nameh}
             </Text>
-            {tick == 'true' ? (
+            {tickh == 'true' ? (
               <Image
                 style={{width: 20, height: 20, top: 6, left: 13}}
                 source={require('../..//image/verify.png')}
@@ -177,19 +188,19 @@ export const TimNgauNhien = ({route, navigation}) => {
               <></>
             )}
             <Text style={{fontSize: 20, fontWeight: '500', top: 5, left: 15}}>
-              {randomid != undefined ? ',' : ''} {tuoi}
+              {randomid != undefined ? ',' : ''} {tuoih}
             </Text>
           </View>
           <Text style={{fontSize: 15, fontWeight: '400', top: 5, left: 10}}>
-            {nghe}
+            {ngheh}
           </Text>
           <Text style={{fontSize: 15, fontWeight: '400', top: 5, left: 10}}>
-            {diachi}
+            {diachih}
           </Text>
         </View>
-        {name != undefined ? (
+        {nameh != undefined ? (
           <TouchableOpacity
-            onPress={() => navigation.navigate('SayHello', {id})}
+            onPress={() => navigation.navigate('SayHello', {idh})}
             style={{position: 'absolute', right: 5}}>
             <Image
               style={{
@@ -228,7 +239,7 @@ export const TimNgauNhien = ({route, navigation}) => {
           }}
           onPress={Timkiem}>
           <Text style={{fontSize: 18, color: '#E94057', fontWeight: '500'}}>
-            Tìm kiếm
+            Ngẫu Nhiên
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -241,7 +252,7 @@ export const TimNgauNhien = ({route, navigation}) => {
             justifyContent: 'center',
             alignSelf: 'center',
           }}
-          onPress={GhepDoi}>
+          onPress={GhepCap}>
           <Text style={{fontSize: 18, color: '#E94057', fontWeight: '500'}}>
             Ghép đôi
           </Text>
@@ -252,6 +263,17 @@ export const TimNgauNhien = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  tongx: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  animation: {
+    width: 200,
+    height: 200,
+  },
   custominfo: {
     width: '90%',
     marginHorizontal: 20,

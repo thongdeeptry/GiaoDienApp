@@ -136,6 +136,16 @@ export const Login = props => {
               await AsyncStorage.setItem('tokenLogin', idToken);
               onLogin();
             });
+          } else {
+            signInWithCredential(getAuth(), googleCredential).then(async () => {
+              const users = getAuth().currentUser.uid;
+              console.log('UID - ' + users);
+              navigation.navigate('ProfileName', {
+                email: user.email,
+                user: users,
+                password: user.id,
+              });
+            });
           }
         });
       });

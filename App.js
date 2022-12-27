@@ -65,13 +65,42 @@ export default function App() {
       });
 
     ///sss
-    messaging().onNotificationOpenedApp(async remotemess => {
-      console.log('Message handled in the background!', remotemess);
+    messaging().onNotificationOpenedApp(async remoteMessage => {
+      console.log('Message handled in the background!', remoteMessage);
+      setTitle(remoteMessage.notification.title);
+      setBody(remoteMessage.notification.body);
+      if (remoteMessage.notification.title == 'Bạn có cuộc gọi đến') {
+      } else {
+        setModalVisible(true);
+        console.log('Loading Sound');
+        const {sound} = await Audio.Sound.createAsync(require('./nhac.mp3'));
+        setSound(sound);
+        console.log('Playing Sound');
+        await sound.playAsync();
+        setTimeout(() => {
+          setModalVisible(false);
+        }, 1000);
+      }
     });
 
     //backgroubnd
     messaging().setBackgroundMessageHandler(async remoteMessage => {
       console.log('Message handled in the background!', remoteMessage);
+
+      setTitle(remoteMessage.notification.title);
+      setBody(remoteMessage.notification.body);
+      if (remoteMessage.notification.title == 'Bạn có cuộc gọi đến') {
+      } else {
+        setModalVisible(true);
+        console.log('Loading Sound');
+        const {sound} = await Audio.Sound.createAsync(require('./nhac.mp3'));
+        setSound(sound);
+        console.log('Playing Sound');
+        await sound.playAsync();
+        setTimeout(() => {
+          setModalVisible(false);
+        }, 1000);
+      }
     });
 
     //alert

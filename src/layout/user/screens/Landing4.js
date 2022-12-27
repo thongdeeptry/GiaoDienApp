@@ -46,13 +46,8 @@ export const Landing4 = props => {
         user: users,
         password: user.id,
       });
-      await AsyncStorage.setItem(
-        'tokenLogin',
-        (
-          await getAuth().currentUser.getIdTokenResult()
-        ).token,
-      );
     });
+    await AsyncStorage.setItem('tokenLogin', idToken);
   };
 
   return (

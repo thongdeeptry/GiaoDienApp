@@ -55,6 +55,7 @@ const Home = ({route, navigation}) => {
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
   const countries = ['Mới Nhất', 'Bạn Bè', 'Tất Cả'];
+  const [refreshing, setRefreshing] = React.useState(false);
   useEffect(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
@@ -78,7 +79,6 @@ const Home = ({route, navigation}) => {
     };
     getTokenDv();
   }, []);
-  const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -103,7 +103,6 @@ const Home = ({route, navigation}) => {
     });
   });
 
-  console.log(dataLike);
   const referencer = ref(db, 'post');
   onValue(referencer, snapshot => {
     snapshot.forEach(childSnapshot => {

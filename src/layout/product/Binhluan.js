@@ -294,8 +294,7 @@ const Binhluan = ({navigation, route}) => {
     <View
       style={{
         backgroundColor: 'white',
-        height: '100%',
-        width: '100%',
+        flex: 1,
         paddingHorizontal: 10,
       }}>
       <View style={styles.centeredView}>
