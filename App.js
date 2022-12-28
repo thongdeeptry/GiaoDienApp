@@ -70,6 +70,15 @@ export default function App() {
       setTitle(remoteMessage.notification.title);
       setBody(remoteMessage.notification.body);
       if (remoteMessage.notification.title == 'Bạn có cuộc gọi đến') {
+        setModalVisible(true);
+        console.log('Loading Sound');
+        const {sound} = await Audio.Sound.createAsync(require('./nhac.mp3'));
+        setSound(sound);
+        console.log('Playing Sound');
+        await sound.playAsync();
+        setTimeout(() => {
+          setModalVisible(false);
+        }, 1000);
       } else {
         setModalVisible(true);
         console.log('Loading Sound');
@@ -90,6 +99,15 @@ export default function App() {
       setTitle(remoteMessage.notification.title);
       setBody(remoteMessage.notification.body);
       if (remoteMessage.notification.title == 'Bạn có cuộc gọi đến') {
+        setModalVisible(true);
+        console.log('Loading Sound');
+        const {sound} = await Audio.Sound.createAsync(require('./nhac.mp3'));
+        setSound(sound);
+        console.log('Playing Sound');
+        await sound.playAsync();
+        setTimeout(() => {
+          setModalVisible(false);
+        }, 1000);
       } else {
         setModalVisible(true);
         console.log('Loading Sound');
@@ -108,6 +126,15 @@ export default function App() {
       setTitle(remoteMessage.notification.title);
       setBody(remoteMessage.notification.body);
       if (remoteMessage.notification.title == 'Bạn có cuộc gọi đến') {
+        setModalVisible(true);
+        console.log('Loading Sound');
+        const {sound} = await Audio.Sound.createAsync(require('./nhac.mp3'));
+        setSound(sound);
+        console.log('Playing Sound');
+        await sound.playAsync();
+        setTimeout(() => {
+          setModalVisible(false);
+        }, 1000);
       } else {
         setModalVisible(true);
         console.log('Loading Sound');

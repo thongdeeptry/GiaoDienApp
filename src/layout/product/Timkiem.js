@@ -54,7 +54,9 @@ const Timkiem = ({navigation, route}) => {
       if (
         childSnapshot.child('name').exportVal() == dulieu ||
         childSnapshot.child('nghenghiep').exportVal() == dulieu ||
-        childSnapshot.child('diachi').exportVal() == dulieu
+        childSnapshot.child('diachi').exportVal() == dulieu ||
+        childSnapshot.child('gioitinh').exportVal() == dulieu ||
+        childSnapshot.child('tuoi').exportVal() == dulieu
       ) {
         const id = childSnapshot.child('id').exportVal();
         const name = childSnapshot.child('name').exportVal();

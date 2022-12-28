@@ -85,6 +85,15 @@ export default notifiCation = ({route, navigation}) => {
           }}>
           Thông báo
         </Text>
+        <Text
+          style={{
+            fontSize: 17,
+            color: '#E94057',
+            top: 5,
+            fontWeight: '500',
+          }}>
+          Tất cả thông báo
+        </Text>
       </View>
       <ScrollView
         style={{marginBottom: 70, top: 10}}

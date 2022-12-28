@@ -47,6 +47,7 @@ const Home = ({route, navigation}) => {
   const [daco, setdaco] = useState();
   const [dacod, setdacod] = useState(false);
   const [loc, setloc] = useState(2);
+  const [rate, setrate] = useState('');
   const datapost = [];
   const dataStory = [];
   const dataLive = [];
@@ -65,6 +66,7 @@ const Home = ({route, navigation}) => {
       const avtpr = childSnapshot.child('avt').val();
       const diachi = childSnapshot.child('diachi').val();
       setname(namepr);
+      setrate(childSnapshot.child('rate').exportVal());
       setavt(avtpr);
     });
 

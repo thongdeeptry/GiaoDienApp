@@ -7,6 +7,7 @@ import {getDatabase, ref, onValue, set, push, update} from 'firebase/database';
 export const SayHello = ({navigation, route}) => {
   initializeApp(firebaseConfig);
   const {id} = route.params;
+  const {noidung} = route.params;
   const [name, setname] = useState();
   const [avt, setavt] = useState();
   const [email, setemail] = useState();
@@ -84,7 +85,7 @@ export const SayHello = ({navigation, route}) => {
       <View style={styles.MOBILE}>
         <Text style={styles.MOBILEText}>Kết nối bạn với {name}</Text>
         <Text style={styles.chitietsdt}>
-          Bắt đầu cuộc trò chuyện với nhau ngay bây giờ
+          Bắt đầu cuộc trò chuyện với nhau ngay bây giờ {noidung}
         </Text>
       </View>
       <View

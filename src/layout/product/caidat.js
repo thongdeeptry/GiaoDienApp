@@ -14,6 +14,7 @@ import {
   Modal,
   Alert,
   Share,
+  Linking,
 } from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import {initializeApp} from 'firebase/app';
@@ -22,7 +23,7 @@ import {getAuth, signOut} from 'firebase/auth';
 import {getDatabase, ref, onValue, set, push, update} from 'firebase/database';
 import {UserContext} from '../user/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import InAppReview from 'react-native-in-app-review';
 export const CaiDat = ({route, navigation}) => {
   initializeApp(firebaseConfig);
   let noidung1 = '';
@@ -31,6 +32,8 @@ export const CaiDat = ({route, navigation}) => {
   const db = getDatabase();
   const [name, setname] = useState();
   const [avt, setavt] = useState();
+  const [rate, setrate] = useState(true);
+
   useEffect(() => {
     const reference = ref(db, 'users/' + user);
     onValue(reference, childSnapshot => {
@@ -38,8 +41,36 @@ export const CaiDat = ({route, navigation}) => {
       const avtpr = childSnapshot.child('avt').val();
       setname(namepr);
       setavt(avtpr);
+      setrate(childSnapshot.child('rate').val());
+      console.log(rate);
+      if (rate != true) {
+        Alert.alert(
+          'Đánh giá',
+          'Bạn hãy đánh giá ứng dụng của chúng tôi để chúng tôi cho bạn một trải nghiệm tốt hơn.\nChân thành cảm ơn❤️🥰',
+          [
+            {
+              text: 'Bỏ qua',
+              onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel',
+            },
+            {
+              text: 'Đánh giá ngay',
+              onPress: () => {
+                const reference = ref(db, 'users/' + user);
+                update(reference, {
+                  rate: true,
+                });
+                Linking.openURL(
+                  'https://play.google.com/store/apps/details?id=com.thanhthong0312.GiaoDienApp',
+                );
+              },
+            },
+          ],
+        );
+      }
     });
   });
+
   const onShare = async () => {
     try {
       const result = await Share.share({

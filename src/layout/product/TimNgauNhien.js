@@ -37,7 +37,8 @@ export const TimNgauNhien = ({route, navigation}) => {
   const [randomid, setrandomid] = useState();
   const dataFl = [];
   let dataghep = [];
-  const dataghepq = [];
+  const datast = [];
+  const datastb = [];
   const [hienthi, sethienthi] = useState(0);
   const [randomidd, setrandomidd] = useState('');
   const [nameh, setnameh] = useState();
@@ -60,6 +61,25 @@ export const TimNgauNhien = ({route, navigation}) => {
       dataghep.push(childSnapshot.child('id').val());
     });
   });
+  const reference = ref(db, 'users/' + user + '/sothich');
+  onValue(reference, childSnapshot => {
+    datast.push(
+      childSnapshot.child('soThich').val(),
+      childSnapshot.child('soThich1').val(),
+      childSnapshot.child('soThich2').val(),
+      childSnapshot.child('soThich3').val(),
+      childSnapshot.child('soThich4').val(),
+      childSnapshot.child('soThich5').val(),
+      childSnapshot.child('soThich6').val(),
+      childSnapshot.child('soThich7').val(),
+      childSnapshot.child('soThich8').val(),
+      childSnapshot.child('soThich9').val(),
+      childSnapshot.child('soThich10').val(),
+      childSnapshot.child('soThich11').val(),
+      childSnapshot.child('soThich12').val(),
+      childSnapshot.child('soThich13').val(),
+    );
+  });
   useEffect(() => {
     const reference = ref(db, 'users/' + user);
     onValue(reference, childSnapshot => {
@@ -78,8 +98,11 @@ export const TimNgauNhien = ({route, navigation}) => {
       setShow(true);
       setTimeout(() => {
         const randomID = Math.floor(Math.random() * dataFl.length);
+        let rdiD = dataFl[randomID];
         setrandomid(dataFl[randomID]);
-        const referencea = ref(db, 'users/' + randomid);
+
+        console.log(rdiD + '/' + randomID);
+        const referencea = ref(db, 'users/' + rdiD);
         onValue(referencea, childSnapshot => {
           const namepr = childSnapshot.child('name').val();
           const avtpr = childSnapshot.child('avt').val();
@@ -87,31 +110,79 @@ export const TimNgauNhien = ({route, navigation}) => {
           setavth(avtpr);
           setgioitinhh(childSnapshot.child('gioitinh').val());
           settickh(childSnapshot.child('tick').val());
+          setngheh(childSnapshot.child('nghenghiep').val());
           settuoih(childSnapshot.child('tuoi').val());
           setdiachih(childSnapshot.child('diachi').val());
           setuidh(childSnapshot.child('id').val());
-        });
-        console.log('tuoi toi ' + tuoi);
-        console.log('tuoi bạn ' + tuoih + gioitinhh);
-
-        if (
-          gioitinhh != gioitinh &&
-          Number(tuoi) >= Number(tuoih) &&
-          gioitinhh != null &&
-          gioitinhh != undefined &&
-          tuoih != null &&
-          tuoih != undefined
-        ) {
-          setghepdoi(false);
-          setShow(false);
-          ToastAndroid.show('Đã kết nối với 1 người lạ', ToastAndroid.BOTTOM);
-          navigation.navigate('SayHello', {
-            id: idh,
+          console.log('tuoi toi ' + tuoi);
+          console.log(
+            'tuoi bạn ' +
+              childSnapshot.child('tuoi').val() +
+              childSnapshot.child('gioitinh').val(),
+          );
+          const references = ref(db, 'users/' + rdiD + '/sothich');
+          onValue(references, childSnapshot => {
+            datastb.push(
+              childSnapshot.child('soThich').val(),
+              childSnapshot.child('soThich1').val(),
+              childSnapshot.child('soThich2').val(),
+              childSnapshot.child('soThich3').val(),
+              childSnapshot.child('soThich4').val(),
+              childSnapshot.child('soThich5').val(),
+              childSnapshot.child('soThich6').val(),
+              childSnapshot.child('soThich7').val(),
+              childSnapshot.child('soThich8').val(),
+              childSnapshot.child('soThich9').val(),
+              childSnapshot.child('soThich10').val(),
+              childSnapshot.child('soThich11').val(),
+              childSnapshot.child('soThich12').val(),
+              childSnapshot.child('soThich13').val(),
+            );
           });
-        }
+
+          let tang = 0;
+          let sot = [];
+          datastb.forEach(value => {
+            if (value != '') {
+              if (datast.includes(value) == true) {
+                tang = tang + 1;
+                console.log(value + tang);
+                sot.push(value);
+                if (tang >= 2) {
+                  if (
+                    childSnapshot.child('gioitinh').val() != gioitinh &&
+                    Number(tuoi) >= Number(childSnapshot.child('tuoi').val()) &&
+                    childSnapshot.child('gioitinh').val() != null &&
+                    childSnapshot.child('gioitinh').val() != undefined &&
+                    childSnapshot.child('tuoi').val() != null &&
+                    childSnapshot.child('tuoi').val() != undefined
+                  ) {
+                    setghepdoi(false);
+                    setShow(false);
+                    ToastAndroid.show(
+                      'Đang kết nối đến một nửa còn lại của bạn❤️',
+                      ToastAndroid.BOTTOM,
+                    );
+                    setTimeout(() => {
+                      navigation.navigate('SayHello', {
+                        id: childSnapshot.child('id').val(),
+                        noidung:
+                          '\nBạn và cậu ấy có chung ' +
+                          tang +
+                          ' sở thích ' +
+                          sot,
+                      });
+                    }, 2000);
+                  }
+                }
+              }
+            }
+          });
+        });
       }, 3000);
+      setghepdoi(false);
     }
-  }, [ghepdoi]);
+  });
 
   const Timkiem = () => {
     const randomID = Math.floor(Math.random() * dataghep.length);
@@ -157,6 +228,7 @@ export const TimNgauNhien = ({route, navigation}) => {
               fontSize: 18,
               color: '#E94057',
               fontWeight: '600',
+              elevation: 5,
             }}>
             Đang tìm người phù hợp với bạn...
           </Text>
@@ -200,7 +272,7 @@ export const TimNgauNhien = ({route, navigation}) => {
         </View>
         {nameh != undefined ? (
           <TouchableOpacity
-            onPress={() => navigation.navigate('SayHello', {idh})}
+            onPress={() => navigation.navigate('SayHello', {idh, noidung: ''})}
             style={{position: 'absolute', right: 5}}>
             <Image
               style={{
