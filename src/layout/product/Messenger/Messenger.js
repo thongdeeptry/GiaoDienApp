@@ -58,6 +58,13 @@ function Messenger(props) {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
   }, []);
+  const [email, setemail] = useState();
+  const [nghenghiep, setnghenghiep] = useState();
+  const [emailCR, setemailCR] = useState();
+  const [nghenghiepCR, setnghenghiepCR] = useState();
+  const [nameCr, setnameCr] = useState();
+  const [avtCr, setavtCr] = useState();
+  const idCurrent = auth.currentUser.uid;
   useEffect(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
@@ -67,29 +74,51 @@ function Messenger(props) {
       const avtpr = childSnapshot.child('avt').val();
       setname(namepr);
       setavt(avtpr);
+      setemail(childSnapshot.child('email').val());
+      setnghenghiep(childSnapshot.child('nghenghiep').val());
     });
+
     try {
       const {url, name, userId} = props.route.params.user;
       console.log(name);
       setnameu(name);
       setavtu(url);
       setuserId(userId);
+      const referencew = ref(db1, 'users/' + userId);
+      onValue(referencew, childSnapshot => {
+        const namepr = childSnapshot.child('name').val();
+        const avtpr = childSnapshot.child('avt').val();
+        setnameCr(namepr);
+        setavtCr(avtpr);
+        setemailCR(childSnapshot.child('email').val());
+        setnghenghiepCR(childSnapshot.child('nghenghiep').val());
+      });
       const reference3w = ref(db1, 'listChat/' + userId + '/' + user);
       update(reference3w, {
         trangthai: 'Đã xem',
       });
     } catch (error) {
       const {url, name, userId} = props.route.params;
-      console.log(name + 'pppp');
+
       setnameu(name);
       setavtu(url);
       setuserId(userId);
+      const referencew = ref(db1, 'users/' + userId);
+      onValue(referencew, childSnapshot => {
+        const namepr = childSnapshot.child('name').val();
+        const avtpr = childSnapshot.child('avt').val();
+        setnameCr(namepr);
+        setavtCr(avtpr);
+        setemailCR(childSnapshot.child('email').val());
+        setnghenghiepCR(childSnapshot.child('nghenghiep').val());
+      });
       const reference3w = ref(db1, 'listChat/' + userId + '/' + user);
       update(reference3w, {
         trangthai: 'Đã xem',
       });
     }
   }, []);
+  console.log(nameCr + 'pppp');
   const combinedId = user > userId ? user + userId : userId + user;
 
   const unSub = ref(db1, 'chats/' + combinedId + '/messages');
@@ -115,6 +144,28 @@ function Messenger(props) {
       return;
     }
     let myFriendUserId = userId;
+    const reference3 = ref(db1, 'listChat/' + idCurrent + '/' + userId);
+    onValue(reference3, childSnapshot => {
+      if (!childSnapshot.exists()) {
+        set(reference3, {
+          id: userId,
+          name: nameCr,
+          avt: avtCr,
+          email: emailCR,
+          nghenghiep: nghenghiepCR,
+          trangthai: 'Chưa có tin nhắn nào được gửi',
+        });
+        const reference3s = ref(db1, 'listChat/' + userId + '/' + idCurrent);
+        set(reference3s, {
+          id: idCurrent,
+          name: namee,
+          avt: avt,
+          email: email,
+          nghenghiep: nghenghiep,
+          trangthai: 'Chưa có tin nhắn nào được gửi',
+        });
+      }
+    });
     Keyboard.dismiss();
     let key = new Date().getTime();
     const reference3w = ref(db1, 'listChat/' + user + '/' + userId);

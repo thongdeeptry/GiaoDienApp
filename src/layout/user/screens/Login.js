@@ -99,9 +99,25 @@ export const Login = props => {
         const reference = ref(db, 'users/' + user);
         onValue(reference, childSnapshot => {
           const trangthai = childSnapshot.child('trangthai').val();
-          console.log(trangthai);
+          const ten = childSnapshot.child('name').val();
+          const ngaysinh = childSnapshot.child('trangthai').val();
+          const nghenghiep = childSnapshot.child('trangthai').val();
+          const diachi = childSnapshot.child('trangthai').val();
+          const tuoi = childSnapshot.child('trangthai').val();
+          console.log(ten);
           if (trangthai == 'Khóa') {
             navigation.navigate('VoHieuHoa');
+          } else if (
+            ten != '' ||
+            ngaysinh != '' ||
+            nghenghiep != '' ||
+            diachi != '' ||
+            tuoi != ''
+          ) {
+            ToastAndroid.show(
+              'Tài khoản này chưa có đầy đủ thông tin, vui lòng đăng ký lại.',
+              ToastAndroid.BOTTOM,
+            );
           } else {
             onLogin();
           }
@@ -134,7 +150,32 @@ export const Login = props => {
               const users = getAuth().currentUser.uid;
               console.log('UID - ' + users);
               await AsyncStorage.setItem('tokenLogin', idToken);
-              onLogin();
+              const referencef = ref(db, 'users/' + users);
+              onValue(referencef, childSnapshot => {
+                const trangthai = childSnapshot.child('trangthai').val();
+                const ten = childSnapshot.child('name').val();
+                const ngaysinh = childSnapshot.child('trangthai').val();
+                const nghenghiep = childSnapshot.child('trangthai').val();
+                const diachi = childSnapshot.child('trangthai').val();
+                const tuoi = childSnapshot.child('trangthai').val();
+                console.log(ten);
+                if (trangthai == 'Khóa') {
+                  navigation.navigate('VoHieuHoa');
+                } else if (
+                  ten != '' ||
+                  ngaysinh != '' ||
+                  nghenghiep != '' ||
+                  diachi != '' ||
+                  tuoi != ''
+                ) {
+                  ToastAndroid.show(
+                    'Tài khoản này chưa có đầy đủ thông tin, vui lòng đăng ký lại.',
+                    ToastAndroid.BOTTOM,
+                  );
+                } else {
+                  onLogin();
+                }
+              });
             });
           } else {
             signInWithCredential(getAuth(), googleCredential).then(async () => {

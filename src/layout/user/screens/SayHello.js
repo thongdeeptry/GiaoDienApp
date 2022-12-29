@@ -39,28 +39,28 @@ export const SayHello = ({navigation, route}) => {
     });
   });
   const AddListChat = () => {
-    const reference3 = ref(db, 'listChat/' + idCurrent + '/' + id);
-    onValue(reference3, childSnapshot => {
-      if (!childSnapshot.exists()) {
-        set(reference3, {
-          id: id,
-          name: name,
-          avt: avt,
-          email: email,
-          nghenghiep: nghenghiep,
-          trangthai: 'Chưa có tin nhắn nào được gửi',
-        });
-        const reference3s = ref(db, 'listChat/' + id + '/' + idCurrent);
-        set(reference3s, {
-          id: idCurrent,
-          name: nameCr,
-          avt: avtCr,
-          email: emailCR,
-          nghenghiep: nghenghiepCR,
-          trangthai: 'Chưa có tin nhắn nào được gửi',
-        });
-      }
-    });
+    // const reference3 = ref(db, 'listChat/' + idCurrent + '/' + id);
+    // onValue(reference3, childSnapshot => {
+    //   if (!childSnapshot.exists()) {
+    //     set(reference3, {
+    //       id: id,
+    //       name: name,
+    //       avt: avt,
+    //       email: email,
+    //       nghenghiep: nghenghiep,
+    //       trangthai: 'Chưa có tin nhắn nào được gửi',
+    //     });
+    //     const reference3s = ref(db, 'listChat/' + id + '/' + idCurrent);
+    //     set(reference3s, {
+    //       id: idCurrent,
+    //       name: nameCr,
+    //       avt: avtCr,
+    //       email: emailCR,
+    //       nghenghiep: nghenghiepCR,
+    //       trangthai: 'Chưa có tin nhắn nào được gửi',
+    //     });
+    //   }
+    // });
 
     navigation.navigate('Messenger', {
       url: '',

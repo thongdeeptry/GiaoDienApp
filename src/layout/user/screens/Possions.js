@@ -25,20 +25,20 @@ export const Possions = ({route, navigation}) => {
   const {location} = route.params;
   const data = [];
   const [Datan, setDatan] = useState([]);
-  const [number, setnumber] = useState(0);
-  const [number1, setnumber1] = useState(0);
-  const [number2, setnumber2] = useState(0);
-  const [number3, setnumber3] = useState(0);
-  const [number4, setnumber4] = useState(0);
-  const [number5, setnumber5] = useState(0);
-  const [number6, setnumber6] = useState(0);
-  const [number7, setnumber7] = useState(0);
-  const [number8, setnumber8] = useState(0);
-  const [number9, setnumber9] = useState(0);
-  const [number10, setnumber10] = useState(0);
-  const [number11, setnumber11] = useState(0);
-  const [number12, setnumber12] = useState(0);
-  const [number13, setnumber13] = useState(0);
+  const [number, setnumber] = useState(false);
+  const [number1, setnumber1] = useState(false);
+  const [number2, setnumber2] = useState(false);
+  const [number3, setnumber3] = useState(false);
+  const [number4, setnumber4] = useState(false);
+  const [number5, setnumber5] = useState(false);
+  const [number6, setnumber6] = useState(false);
+  const [number7, setnumber7] = useState(false);
+  const [number8, setnumber8] = useState(false);
+  const [number9, setnumber9] = useState(false);
+  const [number10, setnumber10] = useState(false);
+  const [number11, setnumber11] = useState(false);
+  const [number12, setnumber12] = useState(false);
+  const [number13, setnumber13] = useState(false);
   const [tong, setTong] = useState(0);
   const [soThich, setsoThich] = useState('');
   const [soThich1, setsoThich1] = useState('');
@@ -78,7 +78,7 @@ export const Possions = ({route, navigation}) => {
       soThich12,
       soThich13,
     );
-    if (soThich.length == 0) {
+    if (soThichAll.length == 0) {
       ToastAndroid.show(
         'Vui lòng chọn ít nhất 1 sở thích',
         ToastAndroid.CENTER,
@@ -171,60 +171,116 @@ export const Possions = ({route, navigation}) => {
     }
   };
   const SetNum = () => {
-    setnumber(1);
-    setsoThich('Chụp hình');
+    setnumber(!number);
+    if (number == true) {
+      setsoThich('Chụp hình');
+    } else {
+      setsoThich('');
+    }
   };
   const SetNum1 = () => {
-    setnumber1(1);
-    setsoThich1('Mua sắm');
+    setnumber1(!number1);
+    if (number1 == true) {
+      setsoThich1('Mua sắm');
+    } else {
+      setsoThich1('');
+    }
   };
   const SetNum2 = () => {
-    setnumber2(1);
-    setsoThich2('Hát hò');
+    setnumber2(!number2);
+    if (number2 == true) {
+      setsoThich2('Hát hò');
+    } else {
+      setsoThich2('');
+    }
   };
   const SetNum3 = () => {
-    setnumber3(1);
-    setsoThich3('Tập yoga');
+    setnumber3(!number3);
+    if (number3 == true) {
+      setsoThich3('Tập yoga');
+    } else {
+      setsoThich3('');
+    }
   };
   const SetNum4 = () => {
-    setnumber4(1);
-    setsoThich4('Nấu ăn');
+    setnumber4(!number4);
+    if (number4 == true) {
+      setsoThich4('Nấu ăn');
+    } else {
+      setsoThich4('');
+    }
   };
   const SetNum5 = () => {
-    setnumber5(1);
-    setsoThich5('Quần vợt');
+    setnumber5(!number5);
+    if (number5 == true) {
+      setsoThich5('Quần vợt');
+    } else {
+      setsoThich5('');
+    }
   };
   const SetNum6 = () => {
-    setnumber6(1);
-    setsoThich6('Chạy bộ');
+    setnumber6(!number6);
+    if (number6 == true) {
+      setsoThich6('Chạy bộ');
+    } else {
+      setsoThich6('');
+    }
   };
   const SetNum7 = () => {
-    setnumber7(1);
-    setsoThich7('Bơi lội');
+    setnumber7(!number7);
+    if (number7 == true) {
+      setsoThich7('Bơi lội');
+    } else {
+      setsoThich7('');
+    }
   };
   const SetNum8 = () => {
-    setnumber8(1);
-    setsoThich8('Vẽ tranh');
+    setnumber8(!number8);
+    if (number8 == true) {
+      setsoThich8('Vẽ tranh');
+    } else {
+      setsoThich8('');
+    }
   };
   const SetNum9 = () => {
-    setnumber9(1);
-    setsoThich9('Leo núi');
+    setnumber9(!number9);
+    if (number9 == true) {
+      setsoThich9('Leo núi');
+    } else {
+      setsoThich9('');
+    }
   };
   const SetNum10 = () => {
-    setnumber10(1);
-    setsoThich10('Nhảy dù');
+    setnumber10(!number10);
+    if (number10 == true) {
+      setsoThich10('Nhảy dù');
+    } else {
+      setsoThich10('');
+    }
   };
   const SetNum11 = () => {
-    setnumber11(1);
-    setsoThich11('Nghe nhạc');
+    setnumber11(!number11);
+    if (number11 == true) {
+      setsoThich11('Nghe nhạc');
+    } else {
+      setsoThich11('');
+    }
   };
   const SetNum12 = () => {
-    setnumber12(1);
-    setsoThich12('Uống nước');
+    setnumber12(!number12);
+    if (number12 == true) {
+      setsoThich12('Uống nước');
+    } else {
+      setsoThich12('');
+    }
   };
   const SetNum13 = () => {
-    setnumber13(1);
-    setsoThich13('Chơi game');
+    setnumber13(!number13);
+    if (number13 == true) {
+      setsoThich13('Chơi game');
+    } else {
+      setsoThich13('');
+    }
   };
 
   return (
@@ -262,7 +318,7 @@ export const Possions = ({route, navigation}) => {
             top: 220,
           }}>
           <TouchableOpacity
-            style={[styles.khung, number > 0 ? styles.khungmau : null]}
+            style={[styles.khung, number == true ? styles.khungmau : null]}
             onPress={SetNum}>
             <Image
               style={{position: 'relative', right: 10}}
@@ -288,7 +344,7 @@ export const Possions = ({route, navigation}) => {
                     fontWeight: '400',
                     alignItems: 'center',
                   },
-                  number > 0
+                  number == true
                     ? {
                         fontSize: 19,
                         fontStyle: 'normal',
@@ -303,7 +359,7 @@ export const Possions = ({route, navigation}) => {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.khung, number1 > 0 ? styles.khungmau : null]}
+            style={[styles.khung, number1 == true ? styles.khungmau : null]}
             onPress={SetNum1}>
             <Image
               style={{position: 'relative', right: 10}}
@@ -328,7 +384,7 @@ export const Possions = ({route, navigation}) => {
                     fontWeight: '400',
                     alignItems: 'center',
                   },
-                  number1 > 0
+                  number1 == true
                     ? {
                         fontSize: 19,
                         fontStyle: 'normal',
@@ -362,7 +418,7 @@ export const Possions = ({route, navigation}) => {
             top: 280,
           }}>
           <TouchableOpacity
-            style={[styles.khung, number2 > 0 ? styles.khungmau : null]}
+            style={[styles.khung, number2 == true ? styles.khungmau : null]}
             onPress={SetNum2}>
             <Image
               style={{position: 'relative', right: 10, width: 30, height: 30}}
@@ -388,7 +444,7 @@ export const Possions = ({route, navigation}) => {
                     fontWeight: '400',
                     alignItems: 'center',
                   },
-                  number2 > 0
+                  number2 == true
                     ? {
                         fontSize: 19,
                         fontStyle: 'normal',
@@ -403,7 +459,7 @@ export const Possions = ({route, navigation}) => {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.khung, number3 > 0 ? styles.khungmau : null]}
+            style={[styles.khung, number3 == true ? styles.khungmau : null]}
             onPress={SetNum3}>
             <Image
               style={{position: 'relative', right: 10}}
@@ -428,7 +484,7 @@ export const Possions = ({route, navigation}) => {
                     fontWeight: '400',
                     alignItems: 'center',
                   },
-                  number3 > 0
+                  number3 == true
                     ? {
                         fontSize: 19,
                         fontStyle: 'normal',
@@ -462,7 +518,7 @@ export const Possions = ({route, navigation}) => {
             top: 340,
           }}>
           <TouchableOpacity
-            style={[styles.khung, number4 > 0 ? styles.khungmau : null]}
+            style={[styles.khung, number4 == true ? styles.khungmau : null]}
             onPress={SetNum4}>
             <Image
               style={{position: 'relative', right: 10}}
@@ -488,7 +544,7 @@ export const Possions = ({route, navigation}) => {
                     fontWeight: '400',
                     alignItems: 'center',
                   },
-                  number4 > 0
+                  number4 == true
                     ? {
                         fontSize: 19,
                         fontStyle: 'normal',
@@ -503,7 +559,7 @@ export const Possions = ({route, navigation}) => {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.khung, number5 > 0 ? styles.khungmau : null]}
+            style={[styles.khung, number5 == true ? styles.khungmau : null]}
             onPress={SetNum5}>
             <Image
               style={{position: 'relative', right: 10}}
@@ -528,7 +584,7 @@ export const Possions = ({route, navigation}) => {
                     fontWeight: '400',
                     alignItems: 'center',
                   },
-                  number5 > 0
+                  number5 == true
                     ? {
                         fontSize: 19,
                         fontStyle: 'normal',
@@ -562,7 +618,7 @@ export const Possions = ({route, navigation}) => {
             top: 400,
           }}>
           <TouchableOpacity
-            style={[styles.khung, number6 > 0 ? styles.khungmau : null]}
+            style={[styles.khung, number6 == true ? styles.khungmau : null]}
             onPress={SetNum6}>
             <Image
               style={{position: 'relative', right: 10}}
@@ -588,7 +644,7 @@ export const Possions = ({route, navigation}) => {
                     fontWeight: '400',
                     alignItems: 'center',
                   },
-                  number6 > 0
+                  number6 == true
                     ? {
                         fontSize: 19,
                         fontStyle: 'normal',
@@ -603,7 +659,7 @@ export const Possions = ({route, navigation}) => {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.khung, number7 > 0 ? styles.khungmau : null]}
+            style={[styles.khung, number7 == true ? styles.khungmau : null]}
             onPress={SetNum7}>
             <Image
               style={{position: 'relative', right: 10}}
@@ -628,7 +684,7 @@ export const Possions = ({route, navigation}) => {
                     fontWeight: '400',
                     alignItems: 'center',
                   },
-                  number7 > 0
+                  number7 == true
                     ? {
                         fontSize: 19,
                         fontStyle: 'normal',
@@ -662,7 +718,7 @@ export const Possions = ({route, navigation}) => {
             top: 460,
           }}>
           <TouchableOpacity
-            style={[styles.khung, number8 > 0 ? styles.khungmau : null]}
+            style={[styles.khung, number8 == true ? styles.khungmau : null]}
             onPress={SetNum8}>
             <Image
               style={{position: 'relative', right: 10}}
@@ -688,7 +744,7 @@ export const Possions = ({route, navigation}) => {
                     fontWeight: '400',
                     alignItems: 'center',
                   },
-                  number8 > 0
+                  number8 == true
                     ? {
                         fontSize: 19,
                         fontStyle: 'normal',
@@ -703,7 +759,7 @@ export const Possions = ({route, navigation}) => {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.khung, number9 > 0 ? styles.khungmau : null]}
+            style={[styles.khung, number9 == true ? styles.khungmau : null]}
             onPress={SetNum9}>
             <Image
               style={{position: 'relative', right: 10}}
@@ -728,7 +784,7 @@ export const Possions = ({route, navigation}) => {
                     fontWeight: '400',
                     alignItems: 'center',
                   },
-                  number9 > 0
+                  number9 == true
                     ? {
                         fontSize: 19,
                         fontStyle: 'normal',
@@ -762,7 +818,7 @@ export const Possions = ({route, navigation}) => {
             top: 520,
           }}>
           <TouchableOpacity
-            style={[styles.khung, number10 > 0 ? styles.khungmau : null]}
+            style={[styles.khung, number10 == true ? styles.khungmau : null]}
             onPress={SetNum10}>
             <Image
               style={{position: 'relative', right: 10}}
@@ -788,7 +844,7 @@ export const Possions = ({route, navigation}) => {
                     fontWeight: '400',
                     alignItems: 'center',
                   },
-                  number10 > 0
+                  number10 == true
                     ? {
                         fontSize: 19,
                         fontStyle: 'normal',
@@ -803,7 +859,7 @@ export const Possions = ({route, navigation}) => {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.khung, number11 > 0 ? styles.khungmau : null]}
+            style={[styles.khung, number11 == true ? styles.khungmau : null]}
             onPress={SetNum11}>
             <Image
               style={{position: 'relative', right: 10}}
@@ -828,7 +884,7 @@ export const Possions = ({route, navigation}) => {
                     fontWeight: '400',
                     alignItems: 'center',
                   },
-                  number11 > 0
+                  number11 == true
                     ? {
                         fontSize: 19,
                         fontStyle: 'normal',
@@ -862,7 +918,7 @@ export const Possions = ({route, navigation}) => {
             top: 580,
           }}>
           <TouchableOpacity
-            style={[styles.khung, number12 > 0 ? styles.khungmau : null]}
+            style={[styles.khung, number12 == true ? styles.khungmau : null]}
             onPress={SetNum12}>
             <Image
               style={{position: 'relative', right: 10}}
@@ -888,7 +944,7 @@ export const Possions = ({route, navigation}) => {
                     fontWeight: '400',
                     alignItems: 'center',
                   },
-                  number12 > 0
+                  number12 == true
                     ? {
                         fontSize: 19,
                         fontStyle: 'normal',
@@ -903,7 +959,7 @@ export const Possions = ({route, navigation}) => {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.khung, number13 > 0 ? styles.khungmau : null]}
+            style={[styles.khung, number13 == true ? styles.khungmau : null]}
             onPress={SetNum13}>
             <Image
               style={{position: 'relative', right: 10}}
@@ -928,7 +984,7 @@ export const Possions = ({route, navigation}) => {
                     fontWeight: '400',
                     alignItems: 'center',
                   },
-                  number13 > 0
+                  number13 == true
                     ? {
                         fontSize: 19,
                         fontStyle: 'normal',

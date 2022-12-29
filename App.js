@@ -28,6 +28,7 @@ export default function App() {
   const [body, setBody] = useState();
   const internetState: NetInfoState = useNetInfo();
   const [sound, setSound] = React.useState();
+  const [show, setShow] = useState(false);
   const requestPermision = async () => {
     const authStatus = await messaging().requestPermission();
     const enabled =
@@ -45,7 +46,6 @@ export default function App() {
     );
   }
   useEffect(() => {
-    setTimeout(() => setShow(true), 3000);
     if (requestPermision()) {
       messaging()
         .getToken()
@@ -126,15 +126,6 @@ export default function App() {
       setTitle(remoteMessage.notification.title);
       setBody(remoteMessage.notification.body);
       if (remoteMessage.notification.title == 'Bạn có cuộc gọi đến') {
-        setModalVisible(true);
-        console.log('Loading Sound');
-        const {sound} = await Audio.Sound.createAsync(require('./nhac.mp3'));
-        setSound(sound);
-        console.log('Playing Sound');
-        await sound.playAsync();
-        setTimeout(() => {
-          setModalVisible(false);
-        }, 1000);
       } else {
         setModalVisible(true);
         console.log('Loading Sound');
@@ -147,10 +138,10 @@ export default function App() {
         }, 1000);
       }
     });
-
+    setTimeout(() => setShow(true), 3000);
     return unsubscribe;
   }, []);
-  const [show, setShow] = useState(false);
+
   return (
     <UserContextProvider>
       <ProductConTextProvider>

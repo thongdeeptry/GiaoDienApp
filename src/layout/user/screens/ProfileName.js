@@ -222,7 +222,7 @@ export const ProfileName = ({route, navigation}) => {
               maxLength={100}
               value={ten}
               onChangeText={setten}
-              returnKeyType="done"
+              returnKeyType="send"
               textContentType={'name'}></TextInput>
           </View>
           <View style={styles.mailnut1}>

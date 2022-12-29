@@ -112,7 +112,8 @@ export const CfPhone = ({route, navigation}) => {
               onChangeText={setCode1}
               keyboardType="number-pad"
               returnKeyType="next"
-              autoFocus={true}></TextInput>
+              autoFocus={true}
+              onSubmitEditing={() => ref_input2.current.focus()}></TextInput>
           </View>
           <View style={styles.khung2}>
             <TextInput
@@ -121,6 +122,7 @@ export const CfPhone = ({route, navigation}) => {
               value={Code2}
               onChangeText={setCode2}
               keyboardType="number-pad"
+              ref={ref_input2}
               returnKeyType="next"
               onSubmitEditing={() => ref_input3.current.focus()}></TextInput>
           </View>
@@ -163,7 +165,7 @@ export const CfPhone = ({route, navigation}) => {
               style={{fontSize: 35}}
               maxLength={1}
               value={Code6}
-              returnKeyType="done"
+              returnKeyType="send"
               onChangeText={setCode6}
               ref={ref_input6}></TextInput>
           </View>

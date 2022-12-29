@@ -100,7 +100,6 @@ export const TimNgauNhien = ({route, navigation}) => {
         const randomID = Math.floor(Math.random() * dataFl.length);
         let rdiD = dataFl[randomID];
         setrandomid(dataFl[randomID]);
-
         console.log(rdiD + '/' + randomID);
         const referencea = ref(db, 'users/' + rdiD);
         onValue(referencea, childSnapshot => {
@@ -174,6 +173,12 @@ export const TimNgauNhien = ({route, navigation}) => {
                       });
                     }, 2000);
                   }
+                } else {
+                  setShow(false);
+                  ToastAndroid.show(
+                    'Chưa tìm thấy vui lòng thử lại...',
+                    ToastAndroid.BOTTOM,
+                  );
                 }
               }
             }
