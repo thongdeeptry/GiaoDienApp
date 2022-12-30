@@ -172,21 +172,21 @@ export const TimNgauNhien = ({route, navigation}) => {
                           sot,
                       });
                     }, 2000);
+                  } else {
+                    // setShow(true);
+                    // setghepdoi(true);
                   }
                 } else {
-                  setShow(false);
-                  ToastAndroid.show(
-                    'Chưa tìm thấy vui lòng thử lại...',
-                    ToastAndroid.BOTTOM,
-                  );
+                  setShow(true);
+                  setghepdoi(true);
                 }
               }
             }
           });
         });
       }, 3000);
-      setghepdoi(false);
     }
+    setghepdoi(false);
   });
 
   const Timkiem = () => {

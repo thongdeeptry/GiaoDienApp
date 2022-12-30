@@ -162,11 +162,11 @@ export const Login = props => {
                 if (trangthai == 'Khóa') {
                   navigation.navigate('VoHieuHoa');
                 } else if (
-                  ten != '' ||
-                  ngaysinh != '' ||
-                  nghenghiep != '' ||
-                  diachi != '' ||
-                  tuoi != ''
+                  ten == '' ||
+                  ngaysinh == '' ||
+                  nghenghiep == '' ||
+                  diachi == '' ||
+                  tuoi == ''
                 ) {
                   ToastAndroid.show(
                     'Tài khoản này chưa có đầy đủ thông tin, vui lòng đăng ký lại.',

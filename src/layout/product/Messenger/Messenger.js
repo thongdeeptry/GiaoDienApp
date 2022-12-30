@@ -11,6 +11,7 @@ import {
   Keyboard,
   TextInput,
   RefreshControl,
+  KeyboardAvoidingView,
 } from 'react-native';
 import {sendMess} from '../../../constants/sendMess';
 import {images, colors, icons, fontSizes} from '../../../constants';
@@ -223,46 +224,49 @@ function Messenger(props) {
     // wait(1000).then(() => setRefreshing(false));
   };
   return (
-    <View
-      style={{
-        flexDirection: 'column',
-        flex: 1,
-        paddingBottom: 100,
-        backgroundColor: 'white',
-      }}>
-      <UIHeader
-        title={nameu}
-        leftIconName={'arrow-left'}
-        rightIconName={'phone'}
-        onPressLeftIcon={() => {
-          goBack();
-        }}
-        onPressRightIcon={() => {
-          navigate('CallVideo', {combinedId, userId});
-        }}
-      />
-
-      <FlatList
+    <KeyboardAvoidingView style={{width: '100%', height: '100%'}}>
+      <View
         style={{
-          flex: 1,
-          marginBottom: 20,
+          width: '100%',
+          height: '100%',
           backgroundColor: 'white',
-        }}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        inverted
-        data={DataHis == [] ? [] : DataHis.reverse()} //chatHistory.reverse()
-        renderItem={({item}) => (
-          <MessengerItem
-            onPress={() => {
-              navigate('ProfileFriend', {id: item.senderId});
-            }}
-            item={item}
-            key={`${item.timestamp}`}
-          />
-        )}
-      />
+          paddingBottom: 100,
+        }}>
+        <UIHeader
+          title={nameu}
+          leftIconName={'arrow-left'}
+          rightIconName={'phone'}
+          onPressLeftIcon={() => {
+            goBack();
+          }}
+          onPressRightIcon={() => {
+            navigate('CallVideo', {combinedId, userId});
+          }}
+        />
+
+        <FlatList
+          style={{
+            width: '100%',
+            height: '100%',
+            marginBottom: 20,
+            backgroundColor: 'white',
+          }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          inverted
+          data={DataHis == [] ? [] : DataHis.reverse()} //chatHistory.reverse()
+          renderItem={({item}) => (
+            <MessengerItem
+              onPress={() => {
+                navigate('ProfileFriend', {id: item.senderId});
+              }}
+              item={item}
+              key={`${item.timestamp}`}
+            />
+          )}
+        />
+      </View>
       <View
         style={{
           height: 50,
@@ -285,9 +289,7 @@ function Messenger(props) {
           borderRadius: 8,
         }}>
         <TextInput
-          onChangeText={typedText => {
-            setTypedText(typedText);
-          }}
+          onChangeText={setTypedText}
           style={{
             color: 'black',
             paddingStart: 10,
@@ -295,7 +297,6 @@ function Messenger(props) {
           }}
           placeholder="Nhập nội dung tin nhắn"
           value={typedText}
-          returnKeyType="done"
           placeholderTextColor={colors.placeholder}
         />
         <TouchableOpacity onPress={sendMessT}>
@@ -309,7 +310,7 @@ function Messenger(props) {
           />
         </TouchableOpacity>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 export default Messenger;

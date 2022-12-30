@@ -2,7 +2,7 @@
 
 import 'expo-dev-client';
 import React, {useState, useEffect} from 'react';
-import AgoraUIKit from 'agora-rn-uikit';
+import AgoraUIKit, {VideoRenderMode} from 'agora-rn-uikit';
 import {View, Image, Text, TouchableOpacity, ToastAndroid} from 'react-native';
 import {ongetTokenAgora} from '../utilities/getTokenAgora.context';
 import {initializeApp} from 'firebase/app';
@@ -58,6 +58,10 @@ const JoinLive = ({navigation, route}) => {
       role: role,
     },
     rtcCallbacks: {
+      videoMode: () => {
+        max: VideoRenderMode.Hidden;
+        min: VideoRenderMode.Hidden;
+      },
       EndCall: () => {
         setVideoCall(false);
         navigation.goBack();
