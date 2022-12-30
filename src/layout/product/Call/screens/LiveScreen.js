@@ -26,7 +26,7 @@ const LiveVideo = ({navigation, route}) => {
   const [channel, setChannel] = useState(user);
   const [role, setRole] = useState(1); //role = 2 people follow
   const [uid, setUid] = useState(1);
-  const [expiry, setexpiry] = useState('9999999999999999999');
+  const [expiry, setexpiry] = useState('99999999999999999');
   const [token, setToken] = useState('');
   const [name, setname] = useState();
   const [avt, setavt] = useState();
