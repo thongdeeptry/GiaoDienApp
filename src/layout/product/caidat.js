@@ -116,8 +116,7 @@ export const CaiDat = ({route, navigation}) => {
       <View>
         <Image style={styles.avt} source={{uri: avt}} />
         <Text style={styles.ten}>{name}</Text>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('ProfileFriend', {id: user})}>
+        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
           <Text style={styles.ten1}>Xem trang cá nhân</Text>
         </TouchableOpacity>
       </View>

@@ -48,6 +48,7 @@ import {getDatabase, ref, onValue} from 'firebase/database';
 import QuenPass from '../user/screens/QuenPass';
 import XacThuc from '../user/screens/XacThuc';
 import ChangePasss from '../user/screens/ChangePass';
+import {Friend} from './Friend';
 function HomeStack() {
   return (
     <Stack.Navigator
@@ -82,6 +83,7 @@ function HomeStack() {
       <Stack.Screen name="QuenPass" component={QuenPass} />
       <Stack.Screen name="XacThuc" component={XacThuc} />
       <Stack.Screen name="ChangePasss" component={ChangePasss} />
+      <Stack.Screen name="Friend" component={Friend} />
     </Stack.Navigator>
   );
 }
@@ -121,6 +123,7 @@ function ProfileStack() {
       <Stack.Screen name="QuenPass" component={QuenPass} />
       <Stack.Screen name="XacThuc" component={XacThuc} />
       <Stack.Screen name="ChangePasss" component={ChangePasss} />
+      <Stack.Screen name="Friend" component={Friend} />
     </Stack.Navigator>
   );
 }
@@ -161,6 +164,7 @@ function AllUserStack() {
       <Stack.Screen name="QuenPass" component={QuenPass} />
       <Stack.Screen name="XacThuc" component={XacThuc} />
       <Stack.Screen name="ChangePasss" component={ChangePasss} />
+      <Stack.Screen name="Friend" component={Friend} />
     </Stack.Navigator>
   );
 }
@@ -201,6 +205,7 @@ function ChatStack() {
       <Stack.Screen name="QuenPass" component={QuenPass} />
       <Stack.Screen name="XacThuc" component={XacThuc} />
       <Stack.Screen name="ChangePasss" component={ChangePasss} />
+      <Stack.Screen name="Friend" component={Friend} />
     </Stack.Navigator>
   );
 }
@@ -241,6 +246,7 @@ function NotiStack() {
       <Stack.Screen name="QuenPass" component={QuenPass} />
       <Stack.Screen name="XacThuc" component={XacThuc} />
       <Stack.Screen name="ChangePasss" component={ChangePasss} />
+      <Stack.Screen name="Friend" component={Friend} />
     </Stack.Navigator>
   );
 }

@@ -262,7 +262,7 @@ function Chat(props) {
             style={{width: 30, height: 30, top: 5}}
             source={require('../../../image/chat.png')}
           />
-          <Text style={{top: 10}}>Nhắn Tin</Text>
+          <Text style={{top: 10}}>Ghép Đôi</Text>
         </TouchableOpacity>
         <Pressable
           style={{

@@ -396,7 +396,6 @@ export const PostStatus = ({route, navigation}) => {
             style={{
               width: '90%',
               height: 35,
-
               right: 0,
               justifyContent: 'center',
               left: '5%',
