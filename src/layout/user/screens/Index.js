@@ -44,7 +44,7 @@ export const Index = props => {
   const db = getDatabase();
   const Click = async () => {
     const token = await AsyncStorage.getItem('tokenLogin');
-
+    console.log('token:' + token);
     if (token != '' && token != null) {
       const googleCredential =
         firebase.auth.GoogleAuthProvider.credential(token);
@@ -64,11 +64,7 @@ export const Index = props => {
     } else {
       const email = await AsyncStorage.getItem('email');
       const password = await AsyncStorage.getItem('password');
-      if (
-        email != '' &&
-        (password != '') | (email != null) &&
-        password != null
-      ) {
+      if (email != '' && password != '' && email != null && password != null) {
         await signInWithEmailAndPassword(auth, email, password).then(
           async () => {
             console.log('Đăng nhập thành công');

@@ -100,19 +100,19 @@ export const Login = props => {
         onValue(reference, childSnapshot => {
           const trangthai = childSnapshot.child('trangthai').val();
           const ten = childSnapshot.child('name').val();
-          const ngaysinh = childSnapshot.child('trangthai').val();
-          const nghenghiep = childSnapshot.child('trangthai').val();
-          const diachi = childSnapshot.child('trangthai').val();
-          const tuoi = childSnapshot.child('trangthai').val();
+          const ngaysinh = childSnapshot.child('ngaysinh').val();
+          const nghenghiep = childSnapshot.child('nghenghiep').val();
+          const diachi = childSnapshot.child('diachi').val();
+          const tuoi = childSnapshot.child('tuoi').val();
           console.log(ten);
           if (trangthai == 'Khóa') {
             navigation.navigate('VoHieuHoa');
           } else if (
-            ten != '' ||
-            ngaysinh != '' ||
-            nghenghiep != '' ||
-            diachi != '' ||
-            tuoi != ''
+            ten == '' ||
+            ngaysinh == '' ||
+            nghenghiep == '' ||
+            diachi == '' ||
+            tuoi == ''
           ) {
             ToastAndroid.show(
               'Tài khoản này chưa có đầy đủ thông tin, vui lòng đăng ký lại.',
@@ -154,10 +154,10 @@ export const Login = props => {
               onValue(referencef, childSnapshot => {
                 const trangthai = childSnapshot.child('trangthai').val();
                 const ten = childSnapshot.child('name').val();
-                const ngaysinh = childSnapshot.child('trangthai').val();
-                const nghenghiep = childSnapshot.child('trangthai').val();
-                const diachi = childSnapshot.child('trangthai').val();
-                const tuoi = childSnapshot.child('trangthai').val();
+                const ngaysinh = childSnapshot.child('ngaysinh').val();
+                const nghenghiep = childSnapshot.child('nghenghiep').val();
+                const diachi = childSnapshot.child('diachi').val();
+                const tuoi = childSnapshot.child('tuoi').val();
                 console.log(ten);
                 if (trangthai == 'Khóa') {
                   navigation.navigate('VoHieuHoa');
@@ -172,19 +172,14 @@ export const Login = props => {
                     'Tài khoản này chưa có đầy đủ thông tin, vui lòng đăng ký lại.',
                     ToastAndroid.BOTTOM,
                   );
+                  navigation.navigate('ProfileName', {
+                    email: user.email,
+                    user: users,
+                    password: user.id,
+                  });
                 } else {
                   onLogin();
                 }
-              });
-            });
-          } else {
-            signInWithCredential(getAuth(), googleCredential).then(async () => {
-              const users = getAuth().currentUser.uid;
-              console.log('UID - ' + users);
-              navigation.navigate('ProfileName', {
-                email: user.email,
-                user: users,
-                password: user.id,
               });
             });
           }

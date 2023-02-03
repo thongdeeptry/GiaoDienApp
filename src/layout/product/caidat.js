@@ -103,6 +103,8 @@ export const CaiDat = ({route, navigation}) => {
         await AsyncStorage.setItem('email', '');
         await AsyncStorage.setItem('password', '');
         await AsyncStorage.setItem('tokenLogin', '');
+        await AsyncStorage.setItem('token', '');
+        console.log('LOG' + (await AsyncStorage.getItem('tokenLogin')));
         onLogout();
       })
       .catch(error => {
