@@ -81,71 +81,55 @@ export const LoginCfPhone = ({route, navigation}) => {
     const reference = ref(db, 'users');
     onValue(reference, childSnapshot => {
       childSnapshot.forEach(snap => {
-        if (snap.child('sdt').exportVal() == sdt) {
-          firebase
-            .auth()
-            .signInWithCredential(credential)
-            .then(async () => {
-              setCode1('');
-              setCode2('');
-              setCode3('');
-              setCode4('');
-              setCode5('');
-              setCode6('');
-              ToastAndroid.show('Đã xác nhận mã', ToastAndroid.BOTTOM);
-              await AsyncStorage.setItem('phone', sdt);
+        firebase
+          .auth()
+          .signInWithCredential(credential)
+          .then(async () => {
+            setCode1('');
+            setCode2('');
+            setCode3('');
+            setCode4('');
+            setCode5('');
+            setCode6('');
+            ToastAndroid.show('Đã xác nhận mã', ToastAndroid.BOTTOM);
+            await AsyncStorage.setItem('phone', sdt);
 
-              const reference = ref(
-                db,
-                'users/' + firebase.auth().currentUser.uid,
-              );
-              onValue(reference, childSnapshot => {
-                const trangthai = childSnapshot.child('trangthai').val();
-                const ten = childSnapshot.child('name').val();
-                const ngaysinh = childSnapshot.child('ngaysinh').val();
-                const nghenghiep = childSnapshot.child('nghenghiep').val();
-                const diachi = childSnapshot.child('diachi').val();
-                const tuoi = childSnapshot.child('tuoi').val();
-                console.log(ten);
-                if (trangthai == 'Khóa') {
-                  navigation.navigate('VoHieuHoa');
-                } else if (
-                  ten == '' ||
-                  ngaysinh == '' ||
-                  nghenghiep == '' ||
-                  diachi == '' ||
-                  tuoi == ''
-                ) {
-                  ToastAndroid.show(
-                    'Tài khoản này chưa có đầy đủ thông tin, vui lòng đăng ký lại.',
-                    ToastAndroid.BOTTOM,
-                  );
-                } else {
-                  onLogin();
-                }
-              });
+            const reference = ref(
+              db,
+              'users/' + firebase.auth().currentUser.uid,
+            );
+            onValue(reference, childSnapshot => {
+              const trangthai = childSnapshot.child('trangthai').val();
+              const ten = childSnapshot.child('name').val();
+              const ngaysinh = childSnapshot.child('ngaysinh').val();
+              const nghenghiep = childSnapshot.child('nghenghiep').val();
+              const diachi = childSnapshot.child('diachi').val();
+              const tuoi = childSnapshot.child('tuoi').val();
+              console.log(ten);
+              if (trangthai == 'Khóa') {
+                navigation.navigate('VoHieuHoa');
+              } else if (
+                ten == '' ||
+                ngaysinh == '' ||
+                nghenghiep == '' ||
+                diachi == '' ||
+                tuoi == ''
+              ) {
+                ToastAndroid.show(
+                  'Tài khoản này chưa có đầy đủ thông tin, vui lòng đăng ký lại.',
+                  ToastAndroid.BOTTOM,
+                );
+                const user = firebase.auth().currentUser.uid;
+                navigation.navigate('ProfileName', {
+                  verificationId,
+                  sdt,
+                  user,
+                });
+              } else {
+                onLogin();
+              }
             });
-        } else {
-          firebase
-            .auth()
-            .signInWithCredential(credential)
-            .then(async () => {
-              setCode1('');
-              setCode2('');
-              setCode3('');
-              setCode4('');
-              setCode5('');
-              setCode6('');
-              ToastAndroid.show('Đã xác nhận mã', ToastAndroid.BOTTOM);
-              await AsyncStorage.setItem('phone', sdt);
-              const user = firebase.auth().currentUser.uid;
-              navigation.navigate('ProfileName', {
-                verificationId,
-                sdt,
-                user,
-              });
-            });
-        }
+          });
       });
     });
   };

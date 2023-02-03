@@ -1037,7 +1037,7 @@ export const ProfileFriend = ({route, navigation}) => {
             <TouchableOpacity
               style={styles.nut1}
               onPress={() =>
-                navigation.navigate('SayHello', {id, noidung: ''})
+                navigation.navigate('SayHello', {id: id, noidung: ''})
               }>
               <Image
                 style={{width: '60%', height: '60%', left: 10, top: 6}}
