@@ -121,6 +121,22 @@ export const TimNgauNhien = ({route, navigation}) => {
           );
           const references = ref(db, 'users/' + rdiD + '/sothich');
           onValue(references, childSnapshot => {
+            console.log(
+              childSnapshot.child('soThich').val(),
+              childSnapshot.child('soThich1').val(),
+              childSnapshot.child('soThich2').val(),
+              childSnapshot.child('soThich3').val(),
+              childSnapshot.child('soThich4').val(),
+              childSnapshot.child('soThich5').val(),
+              childSnapshot.child('soThich6').val(),
+              childSnapshot.child('soThich7').val(),
+              childSnapshot.child('soThich8').val(),
+              childSnapshot.child('soThich9').val(),
+              childSnapshot.child('soThich10').val(),
+              childSnapshot.child('soThich11').val(),
+              childSnapshot.child('soThich12').val(),
+              childSnapshot.child('soThich13').val(),
+            );
             datastb.push(
               childSnapshot.child('soThich').val(),
               childSnapshot.child('soThich1').val(),
@@ -137,25 +153,19 @@ export const TimNgauNhien = ({route, navigation}) => {
               childSnapshot.child('soThich12').val(),
               childSnapshot.child('soThich13').val(),
             );
-          });
 
-          let tang = 0;
-          let sot = [];
-          datastb.forEach(value => {
-            if (value != '') {
-              if (datast.includes(value) == true) {
-                tang = tang + 1;
-                console.log(value + tang);
-                sot.push(value);
-                if (tang >= 2) {
-                  if (
-                    childSnapshot.child('gioitinh').val() != gioitinh &&
-                    Number(tuoi) >= Number(childSnapshot.child('tuoi').val()) &&
-                    childSnapshot.child('gioitinh').val() != null &&
-                    childSnapshot.child('gioitinh').val() != undefined &&
-                    childSnapshot.child('tuoi').val() != null &&
-                    childSnapshot.child('tuoi').val() != undefined
-                  ) {
+            let tang = 1;
+            let sot = [];
+
+            datastb.forEach(value => {
+              if (value != '') {
+                console.log(datast.includes(value));
+                if (datast.includes(value) == true) {
+                  tang = tang + 1;
+
+                  sot.push(value);
+                  if (tang > 1) {
+                    console.log(value + tang);
                     setghepdoi(false);
                     setShow(false);
                     ToastAndroid.show(
@@ -164,7 +174,7 @@ export const TimNgauNhien = ({route, navigation}) => {
                     );
                     setTimeout(() => {
                       navigation.navigate('SayHello', {
-                        id: childSnapshot.child('id').val(),
+                        id: rdiD,
                         noidung:
                           '\nBạn và cậu ấy có chung ' +
                           tang +
@@ -173,15 +183,30 @@ export const TimNgauNhien = ({route, navigation}) => {
                       });
                     }, 2000);
                   } else {
-                    // setShow(true);
-                    // setghepdoi(true);
+                    ToastAndroid.show(
+                      'Chưa tìm thấy, Hãy tìm lại',
+                      ToastAndroid.BOTTOM,
+                    );
+                    setShow(false);
+                    setghepdoi(false);
                   }
                 } else {
-                  setShow(true);
-                  setghepdoi(true);
+                  ToastAndroid.show(
+                    'Chưa tìm thấy, Hãy tìm lại lần nữa',
+                    ToastAndroid.BOTTOM,
+                  );
+                  setShow(false);
+                  setghepdoi(false);
                 }
+              } else {
+                ToastAndroid.show(
+                  'Chưa tìm thấy, Hãy tìm lại lần nữa',
+                  ToastAndroid.BOTTOM,
+                );
+                setShow(false);
+                setghepdoi(false);
               }
-            }
+            });
           });
         });
       }, 3000);

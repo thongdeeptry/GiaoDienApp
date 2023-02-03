@@ -60,7 +60,95 @@ export const Possions = ({route, navigation}) => {
 
   if (!app.length) {
   }
-
+  useEffect(() => {
+    if (number == true) {
+      console.log('vo');
+      setsoThich('Chụp hình');
+    } else {
+      console.log('vo1');
+      setsoThich('');
+    }
+    if (number1 == true) {
+      setsoThich1('Mua sắm');
+    } else {
+      setsoThich1('');
+    }
+    if (number2 == true) {
+      setsoThich2('Hát hò');
+    } else {
+      setsoThich2('');
+    }
+    if (number3 == true) {
+      setsoThich3('Tập yoga');
+    } else {
+      setsoThich3('');
+    }
+    if (number4 == true) {
+      setsoThich4('Nấu ăn');
+    } else {
+      setsoThich4('');
+    }
+    if (number5 == true) {
+      setsoThich5('Quần vợt');
+    } else {
+      setsoThich5('');
+    }
+    if (number6 == true) {
+      setsoThich6('Chạy bộ');
+    } else {
+      setsoThich6('');
+    }
+    if (number7 == true) {
+      setsoThich7('Bơi lội');
+    } else {
+      setsoThich7('');
+    }
+    if (number8 == true) {
+      setsoThich8('Vẽ tranh');
+    } else {
+      setsoThich8('');
+    }
+    if (number9 == true) {
+      setsoThich9('Leo núi');
+    } else {
+      setsoThich9('');
+    }
+    if (number10 == true) {
+      setsoThich10('Nhảy dù');
+    } else {
+      setsoThich10('');
+    }
+    if (number11 == true) {
+      setsoThich11('Nghe nhạc');
+    } else {
+      setsoThich11('');
+    }
+    if (number12 == true) {
+      setsoThich12('Uống nước');
+    } else {
+      setsoThich12('');
+    }
+    if (number13 == true) {
+      setsoThich13('Chơi game');
+    } else {
+      setsoThich13('');
+    }
+  }, [
+    number,
+    number1,
+    number2,
+    number3,
+    number4,
+    number5,
+    number6,
+    number7,
+    number8,
+    number9,
+    number10,
+    number11,
+    number12,
+    number13,
+  ]);
   const AddData = () => {
     soThichAll.push(
       soThich,
@@ -78,9 +166,26 @@ export const Possions = ({route, navigation}) => {
       soThich12,
       soThich13,
     );
-    if (soThichAll.length == 0) {
+    console.log(
+      soThich,
+      soThich1,
+      soThich2,
+      soThich3,
+      soThich4,
+      soThich5,
+      soThich6,
+      soThich7,
+      soThich8,
+      soThich9,
+      soThich10,
+      soThich11,
+      soThich12,
+      soThich13,
+    );
+
+    if (soThichAll.length < 2) {
       ToastAndroid.show(
-        'Vui lòng chọn ít nhất 1 sở thích',
+        'Vui lòng chọn ít nhất 2 sở thích',
         ToastAndroid.CENTER,
       );
     } else {
@@ -172,115 +277,46 @@ export const Possions = ({route, navigation}) => {
   };
   const SetNum = () => {
     setnumber(!number);
-    if (number == true) {
-      setsoThich('Chụp hình');
-    } else {
-      setsoThich('');
-    }
   };
   const SetNum1 = () => {
     setnumber1(!number1);
-    if (number1 == true) {
-      setsoThich1('Mua sắm');
-    } else {
-      setsoThich1('');
-    }
+    console.log(number, number1, number2, number3);
   };
   const SetNum2 = () => {
     setnumber2(!number2);
-    if (number2 == true) {
-      setsoThich2('Hát hò');
-    } else {
-      setsoThich2('');
-    }
   };
   const SetNum3 = () => {
     setnumber3(!number3);
-    if (number3 == true) {
-      setsoThich3('Tập yoga');
-    } else {
-      setsoThich3('');
-    }
   };
   const SetNum4 = () => {
     setnumber4(!number4);
-    if (number4 == true) {
-      setsoThich4('Nấu ăn');
-    } else {
-      setsoThich4('');
-    }
   };
   const SetNum5 = () => {
     setnumber5(!number5);
-    if (number5 == true) {
-      setsoThich5('Quần vợt');
-    } else {
-      setsoThich5('');
-    }
   };
   const SetNum6 = () => {
     setnumber6(!number6);
-    if (number6 == true) {
-      setsoThich6('Chạy bộ');
-    } else {
-      setsoThich6('');
-    }
   };
   const SetNum7 = () => {
     setnumber7(!number7);
-    if (number7 == true) {
-      setsoThich7('Bơi lội');
-    } else {
-      setsoThich7('');
-    }
   };
   const SetNum8 = () => {
     setnumber8(!number8);
-    if (number8 == true) {
-      setsoThich8('Vẽ tranh');
-    } else {
-      setsoThich8('');
-    }
   };
   const SetNum9 = () => {
     setnumber9(!number9);
-    if (number9 == true) {
-      setsoThich9('Leo núi');
-    } else {
-      setsoThich9('');
-    }
   };
   const SetNum10 = () => {
     setnumber10(!number10);
-    if (number10 == true) {
-      setsoThich10('Nhảy dù');
-    } else {
-      setsoThich10('');
-    }
   };
   const SetNum11 = () => {
     setnumber11(!number11);
-    if (number11 == true) {
-      setsoThich11('Nghe nhạc');
-    } else {
-      setsoThich11('');
-    }
   };
   const SetNum12 = () => {
     setnumber12(!number12);
-    if (number12 == true) {
-      setsoThich12('Uống nước');
-    } else {
-      setsoThich12('');
-    }
   };
   const SetNum13 = () => {
     setnumber13(!number13);
-    if (number13 == true) {
-      setsoThich13('Chơi game');
-    } else {
-      setsoThich13('');
-    }
   };
 
   return (
