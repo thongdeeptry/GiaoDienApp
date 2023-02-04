@@ -69,13 +69,13 @@ export const Landing4 = props => {
           <Text style={styles.dangkyText}>Tiếp tục với email</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.textContainer1}>
+      {/* <View style={styles.textContainer1}>
         <Text
           style={styles.textTitle1}
           onPress={() => navigation.navigate('RegisterPhone')}>
           Sử dụng số điện thoại
         </Text>
-      </View>
+      </View> */}
       <View style={styles.khac}>
         <Text style={styles.khacText}>hoặc đăng ký bằng</Text>
         <View style={styles.mainkhac}>

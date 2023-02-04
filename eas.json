@@ -6,11 +6,11 @@
     "development": {
       "distribution": "internal",
       "android": {
-        "gradleCommand": ":app:assembleDebug",
+        "gradleCommand": ":app:assembleRelease",
         "buildType": "apk"
       },
       "ios": {
-        "buildConfiguration": "Debug"
+        "buildConfiguration": "Release"
       }
     },
     "preview": {

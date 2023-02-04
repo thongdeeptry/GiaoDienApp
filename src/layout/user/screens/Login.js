@@ -262,7 +262,7 @@ export const Login = props => {
                       style={{fontSize: 20, width: '95%', height: '100%'}}
                       value={values.email}
                       onChangeText={handleChange('email')}
-                      placeholder="Email hoặc Số điện thoại"
+                      placeholder="Email"
                       multiline={true}
                       returnKeyType="next"
                       maxLength={100}></TextInput>
@@ -322,16 +322,21 @@ export const Login = props => {
                           hoặc đăng nhập bằng
                         </Text>
                         <View style={styles.mainkhac}>
-                          <TouchableOpacity
+                          {/* <TouchableOpacity
                             style={[styles.fb, {right: 5}]}
-                            onPress={() => navigation.navigate('LoginPhone')}>
+                            onPress={() => {
+                              ToastAndroid.show(
+                                'Tính năng này đang phát triển, bạn vui lòng đăng ký bằng email..',
+                                ToastAndroid.BOTTOM,
+                              );
+                            }}>
                             <Image
                               style={{width: 30, height: 30}}
                               source={require('../../../image/call.png')}
                             />
-                          </TouchableOpacity>
+                          </TouchableOpacity> */}
                           <TouchableOpacity
-                            style={[styles.fb, {left: 5}]}
+                            style={[styles.fb]}
                             onPress={loginWithGoogle}>
                             <Image
                               source={require('../../../image/ggvip.png')}

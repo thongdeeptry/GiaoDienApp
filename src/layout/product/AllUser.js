@@ -37,6 +37,7 @@ export const AllUser = ({route, navigation}) => {
   const [tokendvCr, settokendvCr] = useState();
   const countries = ['Bạn bè', 'Tất Cả'];
   const dataFriend = [];
+  const [dataFrien2d, setdataFriend] = useState([]);
   const [loc, setloc] = useState(1);
   const dataFl = [];
   const [refreshing, setRefreshing] = React.useState(false);
@@ -50,6 +51,58 @@ export const AllUser = ({route, navigation}) => {
       setavt(avtCrư);
       setname(nameCrư);
     });
+    const referencer = ref(db, 'users');
+    onValue(referencer, snapshot => {
+      snapshot.forEach(childSnapshot => {
+        if (
+          loc == 0 &&
+          dataFriend.includes(childSnapshot.child('id').exportVal()) == true &&
+          childSnapshot.child('id').exportVal() != idCurrent
+        ) {
+          if (
+            childSnapshot.child('trangthai').exportVal() == 'Hoạt Động' ||
+            childSnapshot.child('trangthai').exportVal() == 'Chưa Hoạt Động'
+          ) {
+            const id = childSnapshot.child('id').exportVal();
+            const name = childSnapshot.child('name').exportVal();
+            const avt = childSnapshot.child('avt').exportVal();
+            const trangthai = childSnapshot.child('trangthai').exportVal();
+            const follow = childSnapshot.child('follow').exportVal();
+            dataFl.push({
+              id: id,
+              name: name,
+              avt: avt,
+              trangthai: trangthai,
+              fl: follow,
+              tick: childSnapshot.child('tick').exportVal(),
+            });
+          }
+        } else if (
+          loc == 1 &&
+          childSnapshot.child('id').exportVal() != idCurrent
+        ) {
+          if (
+            childSnapshot.child('trangthai').exportVal() == 'Hoạt Động' ||
+            childSnapshot.child('trangthai').exportVal() == 'Chưa Hoạt Động'
+          ) {
+            const id = childSnapshot.child('id').exportVal();
+            const name = childSnapshot.child('name').exportVal();
+            const avt = childSnapshot.child('avt').exportVal();
+            const trangthai = childSnapshot.child('trangthai').exportVal();
+            const follow = childSnapshot.child('follow').exportVal();
+            dataFl.push({
+              id: id,
+              name: name,
+              avt: avt,
+              trangthai: trangthai,
+              fl: follow,
+              tick: childSnapshot.child('tick').exportVal(),
+            });
+          }
+        }
+      });
+      setdataFriend(dataFl);
+    });
   }, []);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -61,57 +114,6 @@ export const AllUser = ({route, navigation}) => {
     childSnapshot1.forEach(snapshot1 => {
       const id = snapshot1.child('user').val();
       dataFriend.push(id);
-    });
-  });
-  const referencer = ref(db, 'users');
-  onValue(referencer, snapshot => {
-    snapshot.forEach(childSnapshot => {
-      if (
-        loc == 0 &&
-        dataFriend.includes(childSnapshot.child('id').exportVal()) == true &&
-        childSnapshot.child('id').exportVal() != idCurrent
-      ) {
-        if (
-          childSnapshot.child('trangthai').exportVal() == 'Hoạt Động' ||
-          childSnapshot.child('trangthai').exportVal() == 'Chưa Hoạt Động'
-        ) {
-          const id = childSnapshot.child('id').exportVal();
-          const name = childSnapshot.child('name').exportVal();
-          const avt = childSnapshot.child('avt').exportVal();
-          const trangthai = childSnapshot.child('trangthai').exportVal();
-          const follow = childSnapshot.child('follow').exportVal();
-          dataFl.push({
-            id: id,
-            name: name,
-            avt: avt,
-            trangthai: trangthai,
-            fl: follow,
-            tick: childSnapshot.child('tick').exportVal(),
-          });
-        }
-      } else if (
-        loc == 1 &&
-        childSnapshot.child('id').exportVal() != idCurrent
-      ) {
-        if (
-          childSnapshot.child('trangthai').exportVal() == 'Hoạt Động' ||
-          childSnapshot.child('trangthai').exportVal() == 'Chưa Hoạt Động'
-        ) {
-          const id = childSnapshot.child('id').exportVal();
-          const name = childSnapshot.child('name').exportVal();
-          const avt = childSnapshot.child('avt').exportVal();
-          const trangthai = childSnapshot.child('trangthai').exportVal();
-          const follow = childSnapshot.child('follow').exportVal();
-          dataFl.push({
-            id: id,
-            name: name,
-            avt: avt,
-            trangthai: trangthai,
-            fl: follow,
-            tick: childSnapshot.child('tick').exportVal(),
-          });
-        }
-      }
     });
   });
 
@@ -307,7 +309,7 @@ export const AllUser = ({route, navigation}) => {
           <FlatList
             style={{marginBottom: 130}}
             showsVerticalScrollIndicator={false}
-            data={dataFl}
+            data={dataFrien2d}
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
@@ -324,9 +326,10 @@ export const AllUser = ({route, navigation}) => {
                   }}>
                   <View style={{flexDirection: 'row'}}>
                     <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate('XemAnh', {linkAnh: item.avt})
-                      }>
+                      onPress={() => {
+                        navigation.navigate('XemAnh', {linkAnh: item.avt});
+                        onRefresh();
+                      }}>
                       <Image
                         style={{
                           width: 60,
@@ -444,9 +447,10 @@ export const AllUser = ({route, navigation}) => {
                         height: 30,
                         bottom: 10,
                       }}
-                      onPress={() =>
-                        navigation.navigate('ProfileFriend', {id: item.id})
-                      }>
+                      onPress={() => {
+                        navigation.navigate('ProfileFriend', {id: item.id});
+                        onRefresh();
+                      }}>
                       <Image
                         style={{width: 30, height: 30}}
                         source={require('../../image/info.png')}
