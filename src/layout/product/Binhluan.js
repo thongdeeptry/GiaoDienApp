@@ -56,6 +56,8 @@ const Binhluan = ({navigation, route}) => {
   const [checkin, setcheckin] = useState();
   const [isCheckedStatus, setCheckedStatus] = useState(false);
   const [idCmtCr, setIdCmtCr] = useState();
+  const [idCmtC, setIdCmtC] = useState('');
+  const [idUsC, setIdUsC] = useState('');
   const dataCmt = [];
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
@@ -142,6 +144,12 @@ const Binhluan = ({navigation, route}) => {
   const closeModal = () => {
     setCheckedStatus(false);
   };
+  const closeModal1 = (noidungs, idcmt, iduser) => {
+    setCheckedStatus(false);
+    setbinhluan(noidungs);
+    setIdUsC(iduser);
+    setIdCmtC(idcmt);
+  };
   const date = new Date();
   const thang = date.getMonth() + 1;
   const AddComment = () => {
@@ -190,6 +198,34 @@ const Binhluan = ({navigation, route}) => {
     });
     setbinhluan('');
     Keyboard.dismiss();
+  };
+  const UPComment = () => {
+    const key = idCmtC;
+    const d = new Date();
+    const ngay = d.getDate();
+
+    const nam = d.getFullYear();
+    const referencer = ref(
+      db,
+      'binhluan/' + userID + '/' + idPost + '/' + idCmtC,
+    );
+    update(referencer, {
+      idPost: idPost,
+      idCmt: key,
+      id: userID,
+      userID: user,
+      noidung: binhluan,
+      thoigian: ngay + ' Tháng ' + thang + ' Năm ' + nam,
+      name: name,
+      avt: avt,
+      tick: tick,
+    });
+    ToastAndroid.show('Đã cập nhật bình luận', ToastAndroid.BOTTOM);
+
+    setbinhluan('');
+    Keyboard.dismiss();
+    onRefresh();
+    setIdCmtC('');
   };
   const RemoveComment = () => {
     const referencer = ref(
@@ -297,51 +333,6 @@ const Binhluan = ({navigation, route}) => {
         flex: 1,
         paddingHorizontal: 10,
       }}>
-      <View style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={isCheckedStatus}
-          onRequestClose={() => {
-            setCheckedStatus(!isCheckedStatus);
-          }}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <TouchableOpacity
-                style={{width: '115%', position: 'absolute'}}
-                onPress={closeModal}>
-                <Image
-                  style={{width: 20, height: 20}}
-                  source={require('./../../image/remove.png')}
-                />
-              </TouchableOpacity>
-              <Text style={styles.modalText}>
-                Bạn có thể chỉnh sửa và xoá bình luận?
-              </Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  width: '90%',
-                }}>
-                <TouchableOpacity
-                  style={[styles.button1, styles.buttonClose]}
-                  onPress={closeModal}>
-                  <Text style={styles.textStyle}>Sửa</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={RemoveComment}>
-                  <Text style={styles.textStyle}>Xoá</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </Modal>
-        {/* <Pressable style={[styles.button, styles.buttonOpen]} onPress={() => setModalVisible(true)}>
-          <Text style={styles.textStyle}>Show Modal</Text>
-        </Pressable> */}
-      </View>
       <View>
         <Text style={styles.chu}>Bài viết </Text>
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -556,6 +547,53 @@ const Binhluan = ({navigation, route}) => {
               marginVertical: 5,
               borderBottomColor: '#ABABAB',
             }}>
+            <View style={styles.centeredView}>
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={isCheckedStatus}
+                onRequestClose={() => {
+                  setCheckedStatus(!isCheckedStatus);
+                }}>
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <TouchableOpacity
+                      style={{width: '115%', position: 'absolute'}}
+                      onPress={closeModal}>
+                      <Image
+                        style={{width: 20, height: 20}}
+                        source={require('./../../image/remove.png')}
+                      />
+                    </TouchableOpacity>
+                    <Text style={styles.modalText}>
+                      Bạn có thể chỉnh sửa và xoá bình luận?
+                    </Text>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        width: '90%',
+                      }}>
+                      <TouchableOpacity
+                        style={[styles.button1, styles.buttonClose]}
+                        onPress={() => {
+                          closeModal1(item.noidung, item.idCmt, item.userID);
+                        }}>
+                        <Text style={styles.textStyle}>Sửa</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={[styles.button, styles.buttonClose]}
+                        onPress={RemoveComment}>
+                        <Text style={styles.textStyle}>Xoá</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              </Modal>
+              {/* <Pressable style={[styles.button, styles.buttonOpen]} onPress={() => setModalVisible(true)}>
+          <Text style={styles.textStyle}>Show Modal</Text>
+        </Pressable> */}
+            </View>
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('ProfileFriend', {
@@ -662,7 +700,7 @@ const Binhluan = ({navigation, route}) => {
         />
         <TouchableOpacity
           style={{width: 40, height: 40, right: 3, position: 'absolute'}}
-          onPress={AddComment}>
+          onPress={idCmtC != '' ? UPComment : AddComment}>
           <Image
             style={{width: 40, height: 40}}
             source={require('../../image/send.png')}

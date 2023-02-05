@@ -49,12 +49,14 @@ import QuenPass from '../user/screens/QuenPass';
 import XacThuc from '../user/screens/XacThuc';
 import ChangePasss from '../user/screens/ChangePass';
 import {Friend} from './Friend';
+import {EditPost} from './EditPost';
 function HomeStack() {
   return (
     <Stack.Navigator
       screenOptions={{tabBarShowLabel: false, headerShown: false}}>
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="PostStatus" component={PostStatus} />
+      <Stack.Screen name="EditPost" component={EditPost} />
       <Stack.Screen name="Camxuc" component={Camxuc} />
       <Stack.Screen name="ProfileFriend" component={ProfileFriend} />
       <Stack.Screen name="Messenger" component={Messenger} />
@@ -124,6 +126,7 @@ function ProfileStack() {
       <Stack.Screen name="XacThuc" component={XacThuc} />
       <Stack.Screen name="ChangePasss" component={ChangePasss} />
       <Stack.Screen name="Friend" component={Friend} />
+      <Stack.Screen name="EditPost" component={EditPost} />
     </Stack.Navigator>
   );
 }
@@ -165,6 +168,7 @@ function AllUserStack() {
       <Stack.Screen name="XacThuc" component={XacThuc} />
       <Stack.Screen name="ChangePasss" component={ChangePasss} />
       <Stack.Screen name="Friend" component={Friend} />
+      <Stack.Screen name="EditPost" component={EditPost} />
     </Stack.Navigator>
   );
 }
@@ -206,6 +210,7 @@ function ChatStack() {
       <Stack.Screen name="XacThuc" component={XacThuc} />
       <Stack.Screen name="ChangePasss" component={ChangePasss} />
       <Stack.Screen name="Friend" component={Friend} />
+      <Stack.Screen name="EditPost" component={EditPost} />
     </Stack.Navigator>
   );
 }
@@ -247,6 +252,7 @@ function NotiStack() {
       <Stack.Screen name="XacThuc" component={XacThuc} />
       <Stack.Screen name="ChangePasss" component={ChangePasss} />
       <Stack.Screen name="Friend" component={Friend} />
+      <Stack.Screen name="EditPost" component={EditPost} />
     </Stack.Navigator>
   );
 }

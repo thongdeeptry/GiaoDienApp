@@ -872,25 +872,60 @@ export const Profile = props => {
                         : null,
                     ]}>
                     <View style={styles.info}>
-                      <TouchableOpacity
+                      <View
                         style={{
-                          width: 20,
-                          height: 20,
-                          borderRadius: 10,
+                          flexDirection: 'row',
                           position: 'absolute',
                           right: 13,
                           top: -3,
-                        }}
-                        onPress={() => openModal(item.id)}>
-                        <Image
+                        }}>
+                        <TouchableOpacity
+                          style={{
+                            width: 20,
+                            height: 20,
+                            borderRadius: 10,
+                            right: 3,
+                          }}
+                          onPress={() =>
+                            navigation.navigate('EditPost', {
+                              tenu: item.name,
+                              urlu: item.avt,
+                              noidungu: item.noidung,
+                              timeu: item.thoigian,
+                              idPostu: item.id,
+                              userIDu: item.user,
+                              checkinu: item.checkin,
+                              imageu: item.image,
+                              ticku: item.tick,
+                              hoatdongu: item.hoatdong,
+                            })
+                          }>
+                          <Image
+                            style={{
+                              width: 20,
+                              height: 20,
+                              borderRadius: 2,
+                            }}
+                            source={require('../../image/edit-2.png')}
+                          />
+                        </TouchableOpacity>
+                        <TouchableOpacity
                           style={{
                             width: 20,
                             height: 20,
                             borderRadius: 10,
                           }}
-                          source={require('../../image/remove.png')}
-                        />
-                      </TouchableOpacity>
+                          onPress={() => openModal(item.id)}>
+                          <Image
+                            style={{
+                              width: 20,
+                              height: 20,
+                              borderRadius: 10,
+                            }}
+                            source={require('../../image/remove.png')}
+                          />
+                        </TouchableOpacity>
+                      </View>
                       <Image
                         style={{width: 40, height: 40, borderRadius: 20}}
                         source={{uri: avt}}

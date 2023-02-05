@@ -167,6 +167,7 @@ const Home = ({route, navigation}) => {
             const thoigian = childSnapshotq.child('thoigian').exportVal();
             const image = childSnapshotq.child('image').exportVal();
             const user = childSnapshotq.child('user').exportVal();
+            const hoatdong = childSnapshotq.child('hoatdong').exportVal();
 
             if (
               dataLike.includes('' + childSnapshotq.child('id').exportVal()) ==
@@ -184,6 +185,7 @@ const Home = ({route, navigation}) => {
                 tick: childSnapshotq.child('tick').exportVal(),
                 like: true,
                 solike: childSnapshotq.child('like').exportVal(),
+                hoatdong: hoatdong,
               });
             } else {
               datapost.push({
@@ -198,6 +200,7 @@ const Home = ({route, navigation}) => {
                 tick: childSnapshotq.child('tick').exportVal(),
                 like: false,
                 solike: childSnapshotq.child('like').exportVal(),
+                hoatdong: hoatdong,
               });
             }
           }
@@ -230,6 +233,7 @@ const Home = ({route, navigation}) => {
               tick: childSnapshotq.child('tick').exportVal(),
               like: true,
               solike: childSnapshotq.child('like').exportVal(),
+              hoatdong: hoatdong,
             });
           } else {
             datapost.push({
@@ -244,6 +248,7 @@ const Home = ({route, navigation}) => {
               tick: childSnapshotq.child('tick').exportVal(),
               like: false,
               solike: childSnapshotq.child('like').exportVal(),
+              hoatdong: hoatdong,
             });
           }
         }
@@ -399,6 +404,13 @@ const Home = ({route, navigation}) => {
       onRefresh();
     };
   };
+  const editPost = (id, idPost) => {
+    const referencerm = ref(db, 'post/' + id + '/' + idPost);
+    remove(referencerm).then = () => {
+      ToastAndroid.show('Đã cập nhật bài viết thành công', ToastAndroid.BOTTOM);
+      onRefresh();
+    };
+  };
   const renderItem = ({item, index}) => {
     return (
       <Pressable
@@ -420,25 +432,60 @@ const Home = ({route, navigation}) => {
         ]}>
         <View style={styles.info}>
           {item.user == user ? (
-            <TouchableOpacity
+            <View
               style={{
-                width: 20,
-                height: 20,
-                borderRadius: 10,
+                flexDirection: 'row',
                 position: 'absolute',
                 right: 13,
                 top: -3,
-              }}
-              onPress={() => deletePost(item.user, item.id)}>
-              <Image
+              }}>
+              <TouchableOpacity
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: 10,
+                  right: 3,
+                }}
+                onPress={() =>
+                  navigation.navigate('EditPost', {
+                    tenu: item.name,
+                    urlu: item.avt,
+                    noidungu: item.noidung,
+                    timeu: item.thoigian,
+                    idPostu: item.id,
+                    userIDu: item.user,
+                    checkinu: item.checkin,
+                    imageu: item.image,
+                    ticku: item.tick,
+                    hoatdongu: item.hoatdong,
+                  })
+                }>
+                <Image
+                  style={{
+                    width: 20,
+                    height: 20,
+                    borderRadius: 2,
+                  }}
+                  source={require('../src/image/edit-2.png')}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
                 style={{
                   width: 20,
                   height: 20,
                   borderRadius: 10,
                 }}
-                source={require('../src/image/remove.png')}
-              />
-            </TouchableOpacity>
+                onPress={() => deletePost(item.user, item.id)}>
+                <Image
+                  style={{
+                    width: 20,
+                    height: 20,
+                    borderRadius: 10,
+                  }}
+                  source={require('../src/image/remove.png')}
+                />
+              </TouchableOpacity>
+            </View>
           ) : (
             <></>
           )}

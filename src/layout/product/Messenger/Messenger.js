@@ -31,6 +31,8 @@ import {
   serverTimestamp,
   get,
 } from 'firebase/database';
+import {getStorage} from 'firebase/storage';
+import * as ImagePicker from 'expo-image-picker';
 import {initializeApp} from 'firebase/app';
 import {auth, firebaseConfig} from '../../../../config';
 const wait = timeout => {
@@ -50,7 +52,8 @@ function Messenger(props) {
   const [nameu, setnameu] = useState();
   const [avtu, setavtu] = useState();
   const [userId, setuserId] = useState();
-
+  const [uplink, setuplink] = useState();
+  const [image, setImage] = useState(null);
   const {navigate, goBack} = props.navigation;
 
   const [refreshing, setRefreshing] = React.useState(false);
@@ -66,6 +69,7 @@ function Messenger(props) {
   const [nameCr, setnameCr] = useState();
   const [avtCr, setavtCr] = useState();
   const idCurrent = auth.currentUser.uid;
+  const storage = getStorage(app);
   useEffect(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
@@ -137,6 +141,7 @@ function Messenger(props) {
         text: datasnapP.child('text').exportVal(),
         timestamp: datasnapP.child('timestamp').exportVal(),
         url: datasnapP.child('url').exportVal(),
+        image: datasnapP.child('image').exportVal(),
       });
     });
   });
@@ -155,6 +160,13 @@ function Messenger(props) {
           email: emailCR,
           nghenghiep: nghenghiepCR,
           trangthai: 'Chưa có tin nhắn nào được gửi',
+          image:
+            uplink != undefined
+              ? 'https://firebasestorage.googleapis.com/v0/b/duantotnghiepreact.appspot.com/o/images%2Falbum%2F' +
+                user +
+                '%2F' +
+                uplink
+              : '',
         });
         const reference3s = ref(db1, 'listChat/' + userId + '/' + idCurrent);
         set(reference3s, {
@@ -164,6 +176,13 @@ function Messenger(props) {
           email: email,
           nghenghiep: nghenghiep,
           trangthai: 'Chưa có tin nhắn nào được gửi',
+          image:
+            uplink != undefined
+              ? 'https://firebasestorage.googleapis.com/v0/b/duantotnghiepreact.appspot.com/o/images%2Falbum%2F' +
+                user +
+                '%2F' +
+                uplink
+              : '',
         });
       }
     });
@@ -188,6 +207,13 @@ function Messenger(props) {
       timestamp: serverTimestamp(),
       url: avt,
       isSender: true,
+      image:
+        uplink != undefined
+          ? 'https://firebasestorage.googleapis.com/v0/b/duantotnghiepreact.appspot.com/o/images%2Falbum%2F' +
+            user +
+            '%2F' +
+            uplink
+          : '',
     });
     const docRefd = ref(
       db1,
@@ -220,8 +246,49 @@ function Messenger(props) {
       sendMess(tokendv, namee + ' vừa gửi cho bạn 1 tin nhắn', typedText);
     });
     setTypedText('');
+    setuplink();
     // setRefreshing(true);
     // wait(1000).then(() => setRefreshing(false));
+  };
+  function makeid(length) {
+    var text = '';
+    var possible =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+
+    for (var i = 0; i < length; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+  }
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: false,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    if (!result.canceled) {
+      setImage(result.uri);
+      let idk = makeid(60);
+      uploadImageToBucket(result.uri, idk);
+      setuplink(idk + '.png?alt=media');
+      console.log(uplink + 'uplink');
+    }
+  };
+  const uploadImageToBucket = async (uri, imageName) => {
+    const res = await fetch(uri);
+    const blob = await res.blob();
+    const storageRef = ref(
+      storage,
+      'images/album/' + user + '/' + imageName + '.png',
+    );
+    setuplink(imageName + '.png?alt=media');
+    console.log(uplink + 'uplijyfyujnk');
+    uploadBytes(storageRef, blob).then(snapshot => {
+      console.log('Uploaded a blob or file!' + snapshot.metadata.name);
+      return snapshot.metadata.name;
+    });
   };
   return (
     <KeyboardAvoidingView style={{width: '100%', height: '100%'}}>
@@ -299,6 +366,17 @@ function Messenger(props) {
           value={typedText}
           placeholderTextColor={colors.placeholder}
         />
+        <TouchableOpacity onPress={pickImage}>
+          <Icon
+            style={{
+              padding: 10,
+              left: 95,
+            }}
+            name="file-image"
+            size={20}
+            color={colors.primary}
+          />
+        </TouchableOpacity>
         <TouchableOpacity onPress={sendMessT}>
           <Icon
             style={{
