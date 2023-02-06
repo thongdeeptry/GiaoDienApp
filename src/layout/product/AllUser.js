@@ -57,7 +57,10 @@ export const AllUser = ({route, navigation}) => {
         if (
           loc == 0 &&
           dataFriend.includes(childSnapshot.child('id').exportVal()) == true &&
-          childSnapshot.child('id').exportVal() != idCurrent
+          childSnapshot.child('id').exportVal() != idCurrent &&
+          childSnapshot.child('name').exportVal() != '' &&
+          childSnapshot.child('name').exportVal() != undefined &&
+          childSnapshot.child('name').exportVal() != null
         ) {
           if (
             childSnapshot.child('trangthai').exportVal() == 'Hoạt Động' ||
@@ -79,7 +82,10 @@ export const AllUser = ({route, navigation}) => {
           }
         } else if (
           loc == 1 &&
-          childSnapshot.child('id').exportVal() != idCurrent
+          childSnapshot.child('id').exportVal() != idCurrent &&
+          childSnapshot.child('name').exportVal() != '' &&
+          childSnapshot.child('name').exportVal() != undefined &&
+          childSnapshot.child('name').exportVal() != null
         ) {
           if (
             childSnapshot.child('trangthai').exportVal() == 'Hoạt Động' ||
@@ -102,8 +108,10 @@ export const AllUser = ({route, navigation}) => {
         }
       });
       setdataFriend(dataFl);
+      console.log(dataFl);
     });
   }, []);
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));

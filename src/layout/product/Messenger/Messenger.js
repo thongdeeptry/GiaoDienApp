@@ -23,7 +23,6 @@ import {v4 as uuid} from 'uuid';
 import 'react-native-get-random-values';
 import {
   getDatabase,
-  ref,
   onValue,
   set,
   push,
@@ -31,10 +30,10 @@ import {
   serverTimestamp,
   get,
 } from 'firebase/database';
-import {getStorage} from 'firebase/storage';
+import {getStorage, ref, uploadBytes, uploadString} from 'firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
 import {initializeApp} from 'firebase/app';
-import {auth, firebaseConfig} from '../../../../config';
+import {auth, firebaseConfig, firebaseDatabaseRef} from '../../../../config';
 const wait = timeout => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
@@ -73,7 +72,7 @@ function Messenger(props) {
   useEffect(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
-    const reference = ref(db1, 'users/' + user);
+    const reference = firebaseDatabaseRef(db1, 'users/' + user);
     onValue(reference, childSnapshot => {
       const namepr = childSnapshot.child('name').val();
       const avtpr = childSnapshot.child('avt').val();
@@ -89,7 +88,7 @@ function Messenger(props) {
       setnameu(name);
       setavtu(url);
       setuserId(userId);
-      const referencew = ref(db1, 'users/' + userId);
+      const referencew = firebaseDatabaseRef(db1, 'users/' + userId);
       onValue(referencew, childSnapshot => {
         const namepr = childSnapshot.child('name').val();
         const avtpr = childSnapshot.child('avt').val();
@@ -98,7 +97,10 @@ function Messenger(props) {
         setemailCR(childSnapshot.child('email').val());
         setnghenghiepCR(childSnapshot.child('nghenghiep').val());
       });
-      const reference3w = ref(db1, 'listChat/' + userId + '/' + user);
+      const reference3w = firebaseDatabaseRef(
+        db1,
+        'listChat/' + userId + '/' + user,
+      );
       update(reference3w, {
         trangthai: 'Đã xem',
       });
@@ -108,7 +110,7 @@ function Messenger(props) {
       setnameu(name);
       setavtu(url);
       setuserId(userId);
-      const referencew = ref(db1, 'users/' + userId);
+      const referencew = firebaseDatabaseRef(db1, 'users/' + userId);
       onValue(referencew, childSnapshot => {
         const namepr = childSnapshot.child('name').val();
         const avtpr = childSnapshot.child('avt').val();
@@ -117,7 +119,10 @@ function Messenger(props) {
         setemailCR(childSnapshot.child('email').val());
         setnghenghiepCR(childSnapshot.child('nghenghiep').val());
       });
-      const reference3w = ref(db1, 'listChat/' + userId + '/' + user);
+      const reference3w = firebaseDatabaseRef(
+        db1,
+        'listChat/' + userId + '/' + user,
+      );
       update(reference3w, {
         trangthai: 'Đã xem',
       });
@@ -126,7 +131,7 @@ function Messenger(props) {
   console.log(nameCr + 'pppp');
   const combinedId = user > userId ? user + userId : userId + user;
 
-  const unSub = ref(db1, 'chats/' + combinedId + '/messages');
+  const unSub = firebaseDatabaseRef(db1, 'chats/' + combinedId + '/messages');
   onValue(unSub, datasnap => {
     DataHis.splice(0, DataHis.length);
     DataHis = [];
@@ -150,7 +155,10 @@ function Messenger(props) {
       return;
     }
     let myFriendUserId = userId;
-    const reference3 = ref(db1, 'listChat/' + idCurrent + '/' + userId);
+    const reference3 = firebaseDatabaseRef(
+      db1,
+      'listChat/' + idCurrent + '/' + userId,
+    );
     onValue(reference3, childSnapshot => {
       if (!childSnapshot.exists()) {
         set(reference3, {
@@ -168,7 +176,10 @@ function Messenger(props) {
                 uplink
               : '',
         });
-        const reference3s = ref(db1, 'listChat/' + userId + '/' + idCurrent);
+        const reference3s = firebaseDatabaseRef(
+          db1,
+          'listChat/' + userId + '/' + idCurrent,
+        );
         set(reference3s, {
           id: idCurrent,
           name: namee,
@@ -188,15 +199,24 @@ function Messenger(props) {
     });
     Keyboard.dismiss();
     let key = new Date().getTime();
-    const reference3w = ref(db1, 'listChat/' + user + '/' + userId);
+    const reference3w = firebaseDatabaseRef(
+      db1,
+      'listChat/' + user + '/' + userId,
+    );
     update(reference3w, {
       trangthai: typedText,
     });
-    const reference3ws = ref(db1, 'listChat/' + userId + '/' + user);
+    const reference3ws = firebaseDatabaseRef(
+      db1,
+      'listChat/' + userId + '/' + user,
+    );
     update(reference3ws, {
       trangthai: typedText,
     });
-    const docRef = ref(db1, 'chats/' + combinedId + '/messages/' + key);
+    const docRef = firebaseDatabaseRef(
+      db1,
+      'chats/' + combinedId + '/messages/' + key,
+    );
     set(docRef, {
       id: key,
       showUrl: true,
@@ -215,32 +235,35 @@ function Messenger(props) {
             uplink
           : '',
     });
-    const docRefd = ref(
+    const docRefd = firebaseDatabaseRef(
       db1,
       'userChats/' + user + '/' + combinedId + '/lastMessage',
     );
     update(docRefd, {
       text: typedText,
     });
-    const docRefdds = ref(db1, 'userChats/' + user + '/' + combinedId);
+    const docRefdds = firebaseDatabaseRef(
+      db1,
+      'userChats/' + user + '/' + combinedId,
+    );
     update(docRefdds, {
       date: serverTimestamp(),
     });
-    const docRefdd = ref(
+    const docRefdd = firebaseDatabaseRef(
       db1,
       'userChats/' + myFriendUserId + '/' + combinedId + '/lastMessage',
     );
     update(docRefdd, {
       text: typedText,
     });
-    const docRefddss = ref(
+    const docRefddss = firebaseDatabaseRef(
       db1,
       'userChats/' + myFriendUserId + '/' + combinedId,
     );
     update(docRefddss, {
       date: serverTimestamp(),
     });
-    const referencecrd = ref(db1, 'users/' + userId);
+    const referencecrd = firebaseDatabaseRef(db1, 'users/' + userId);
     onValue(referencecrd, childSnapshot => {
       const tokendv = childSnapshot.child('token').val();
       sendMess(tokendv, namee + ' vừa gửi cho bạn 1 tin nhắn', typedText);
@@ -284,8 +307,9 @@ function Messenger(props) {
       'images/album/' + user + '/' + imageName + '.png',
     );
     setuplink(imageName + '.png?alt=media');
-    console.log(uplink + 'uplijyfyujnk');
+
     uploadBytes(storageRef, blob).then(snapshot => {
+      console.log(uplink + 'uplijyfyujnk');
       console.log('Uploaded a blob or file!' + snapshot.metadata.name);
       return snapshot.metadata.name;
     });

@@ -88,17 +88,25 @@ function MessengerItem(props) {
         {/* isSender = true */}
       </TouchableOpacity>
       {image != '' && image != null && image != undefined ? (
-        <Image
+        <View
           style={{
-            width: 40,
-            height: 40,
-            resizeMode: 'cover',
-            borderRadius: 20,
-            marginRight: 15,
-            marginTop: 10,
-          }}
-          source={{uri: image}}
-        />
+            height: 100,
+            width: '100%',
+            right: 0,
+            alignItems: 'flex-end',
+          }}>
+          <Image
+            style={{
+              width: 150,
+              height: 150,
+              resizeMode: 'cover',
+              borderRadius: 5,
+              right: 15,
+              marginTop: 10,
+            }}
+            source={{uri: image}}
+          />
+        </View>
       ) : (
         <></>
       )}
@@ -159,17 +167,25 @@ function MessengerItem(props) {
         )}
       </TouchableOpacity>
       {image != '' && image != null && image != undefined ? (
-        <Image
+        <View
           style={{
-            width: 40,
-            height: 40,
-            resizeMode: 'cover',
-            borderRadius: 20,
-            marginRight: 15,
-            marginTop: 10,
-          }}
-          source={{uri: image}}
-        />
+            height: 100,
+            width: '100%',
+            right: 0,
+            alignItems: 'flex-end',
+          }}>
+          <Image
+            style={{
+              width: 100,
+              height: 100,
+              resizeMode: 'cover',
+              borderRadius: 5,
+              right: 15,
+              marginTop: 10,
+            }}
+            source={{uri: image}}
+          />
+        </View>
       ) : (
         <></>
       )}
