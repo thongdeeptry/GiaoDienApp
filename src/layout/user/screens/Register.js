@@ -19,6 +19,7 @@ import {firebaseConfig} from '../../../../config';
 import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
+import axiosInstance from '../../../constants/axiosGmail';
 const RegisterSchema = Yup.object().shape({
   email: Yup.string().email('Email không đúng định dạng').required('nhap'),
   password: Yup.string().min(6).required('nhap'),
@@ -28,6 +29,7 @@ export const Register = props => {
   const {onLogin} = useContext(UserContext);
   const formikRef = useRef(null);
   const [email, setemail] = useState();
+  const [checkmail, setcheckmail] = useState(false);
   const [password, setpassword] = useState();
   const app = initializeApp(firebaseConfig);
   const [isCheckedStatus, setCheckedStatus] = useState(true);
@@ -35,27 +37,39 @@ export const Register = props => {
   }
   const auth = getAuth(app);
   const createUser = async (email, password) => {
-    if (isCheckedStatus == true) {
-      await createUserWithEmailAndPassword(auth, email, password)
-        .then(() => {
-          console.log('Tạo tài khoản thành công');
-          const user = getAuth().currentUser.uid;
-          console.log('UID - ' + user);
-          navigation.navigate('ProfileName', {
-            email,
-            user,
-            password,
+    let checkgmail = "";
+    await axiosInstance.get("api/check?gmail="+email).then((res) => {
+      checkgmail = res.status;
+    });
+    console.log(checkgmail);
+    if(checkgmail=='Alive'){
+      if (isCheckedStatus == true) {
+        await createUserWithEmailAndPassword(auth, email, password)
+          .then(() => {
+            console.log('Tạo tài khoản thành công');
+            const user = getAuth().currentUser.uid;
+            console.log('UID - ' + user);
+            navigation.navigate('ProfileName', {
+              email,
+              user,
+              password,
+            });
+          })
+          .catch(error => {
+            ToastAndroid.show(
+              'Email và mật khẩu không được để trống',
+              ToastAndroid.BOTTOM,
+            );
           });
-        })
-        .catch(error => {
-          ToastAndroid.show(
-            'Email và mật khẩu không được để trống',
-            ToastAndroid.BOTTOM,
-          );
-        });
-    } else {
+      } else {
+        ToastAndroid.show(
+          'Vui lòng xác nhận đồng ý điều khoản dịch vụ',
+          ToastAndroid.BOTTOM,
+        );
+      }
+    }else {
       ToastAndroid.show(
-        'Vui lòng xác nhận đồng ý điều khoản dịch vụ',
+        'Đây là email không hoạt động, Vui lòng nhập gmail đúng',
         ToastAndroid.BOTTOM,
       );
     }
