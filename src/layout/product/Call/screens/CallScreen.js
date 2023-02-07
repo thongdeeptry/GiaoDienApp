@@ -2,7 +2,7 @@
 
 import 'expo-dev-client';
 import React, {useState, useEffect} from 'react';
-import AgoraUIKit from 'agora-rn-uikit';
+import AgoraUIKit,{StreamFallbackOptions} from 'agora-rn-uikit';
 import {View} from 'react-native';
 import {ongetTokenAgora} from '../utilities/getTokenAgora.context';
 import {initializeApp} from 'firebase/app';
@@ -24,7 +24,9 @@ const CallVideo = ({route, navigation}) => {
   const [tokendvCr, settokendvCr] = useState();
   const [nameCr, setnameCr] = useState();
   const [avtCr, setavtCr] = useState();
+  
   useEffect(() => {
+    
     const referencecr = ref(db, 'users/' + userId);
     onValue(referencecr, childSnapshot => {
       const namepr = childSnapshot.child('name').val();
@@ -33,13 +35,18 @@ const CallVideo = ({route, navigation}) => {
       setnameCr(namepr);
       setavtCr(avtpr);
       settokendvCr(token);
+      const referencecrw = ref(db, 'users/' + auth.currentUser.uid);
+        onValue(referencecrw, childSnapshotw => {
+        const nameprw = childSnapshotw.child('name').val();
       async function fetchData() {
+        
         const res = await ongetTokenAgora(channel, role, 'uid', uid, expiry);
         setToken(res);
         console.log(uid);
-        sendMess(token, 'Bạn có cuộc gọi đến', namepr + ' đang gọi cho bạn');
+        sendMess(token, 'Bạn có cuộc gọi đến', nameprw + ' đang gọi cho bạn');
       }
       fetchData();
+    });
     });
   }, []);
   const props = {
@@ -48,6 +55,7 @@ const CallVideo = ({route, navigation}) => {
       channel: channel,
       uid: uid,
       token: token,
+      
     },
     rtcCallbacks: {
       EndCall: () => {
@@ -62,6 +70,7 @@ const CallVideo = ({route, navigation}) => {
       <AgoraUIKit
         connectionData={props.connectionData}
         rtcCallbacks={props.rtcCallbacks}
+        
       />
     </View>
   ) : null;

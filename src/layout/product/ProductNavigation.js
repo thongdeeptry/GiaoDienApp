@@ -21,7 +21,7 @@ import notifiCation from './notifiCation';
 import Home from '../../../components/Home';
 import {AllUser} from './AllUser';
 import Chinhsua from './Chinhsua';
-import {CaiDat} from './CaiDat';
+import {CaiDat} from './caidat';
 import Timkiem from './Timkiem';
 import Binhluan from './Binhluan';
 import Story from '../../layout/product/Story';
