@@ -455,7 +455,7 @@ const Home = ({route, navigation}) => {
                     idPostu: item.id,
                     userIDu: item.user,
                     checkinu: item.checkin,
-                    imageu: item.image,
+                    imageu: item.image!=""&&item.image!=undefined?item.image:"a",
                     ticku: item.tick,
                     hoatdongu: item.hoatdong,
                   })

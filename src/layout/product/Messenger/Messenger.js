@@ -394,7 +394,7 @@ function Messenger(props) {
           <Icon
             style={{
               padding: 10,
-              left: 95,
+              left: 75,
             }}
             name="file-image"
             size={20}

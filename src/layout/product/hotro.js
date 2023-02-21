@@ -50,7 +50,7 @@ const hotro = ({navigation, route}) => {
         if (isCheckedStatus == true) {
           const reference = ref(db, 'support/tickblue/' + id);
           set(reference, {
-            id: id,
+            id: user,
             link: 'http://localhost:3000/#/admin/profile/' + user,
             name: name,
             noidung: noidung,
@@ -64,7 +64,7 @@ const hotro = ({navigation, route}) => {
         } else {
           const reference = ref(db, 'support/khac/' + id);
           set(reference, {
-            id: id,
+            id: user,
             link: 'http://localhost:3000/#/admin/profile/' + user,
             name: name,
             noidung: noidung,

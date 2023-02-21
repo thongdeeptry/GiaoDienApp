@@ -37,7 +37,7 @@ export const AllSuport = ({route, navigation}) => {
   onValue(referencerrs, snapshot => {
     snapshot.forEach(childSnapshotq => {
       childSnapshotq.forEach(childSnapshotq1 => {
-        if (childSnapshotq1.child('thaotac').exportVal() == user) {
+        if (childSnapshotq1.child('id').exportVal() == user) {
           const id = childSnapshotq1.child('id').exportVal();
           const avt = childSnapshotq1.child('avt').exportVal();
           const name = childSnapshotq1.child('name').exportVal();
