@@ -91,7 +91,9 @@ export const Selectsex = ({route, navigation}) => {
   return (
     <View style={{width: '100%', height: '100%'}}>
       <View style={styles.MOBILE}>
-        <Text style={styles.MOBILEText}>Bỏ qua</Text>
+        <Text style={styles.MOBILEText} onPress={() => navigation.goBack()}>
+          Quay lại
+        </Text>
       </View>
       <View style={styles.themif}>
         <Text style={styles.themiftext}>Tôi là</Text>

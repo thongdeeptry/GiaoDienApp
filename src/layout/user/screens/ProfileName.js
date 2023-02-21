@@ -102,7 +102,7 @@ export const ProfileName = ({route, navigation}) => {
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: false,
       aspect: [4, 3],
       quality: 1,
@@ -159,7 +159,9 @@ export const ProfileName = ({route, navigation}) => {
   return (
     <View style={{width: '100%', height: '100%'}}>
       <View style={styles.MOBILE}>
-        <Text style={styles.MOBILEText}>Bỏ qua</Text>
+        <Text style={styles.MOBILEText} onPress={() => navigation.goBack()}>
+          Quay lại
+        </Text>
       </View>
       <View style={styles.themif}>
         <Text style={styles.themiftext}>Thêm Thông Tin</Text>
@@ -206,7 +208,6 @@ export const ProfileName = ({route, navigation}) => {
             <TextInput
               style={{fontSize: 20, width: '95%', height: '100%'}}
               placeholder="Họ"
-              multiline={true}
               maxLength={100}
               value={ho}
               onChangeText={setho}
@@ -218,7 +219,6 @@ export const ProfileName = ({route, navigation}) => {
             <TextInput
               style={{fontSize: 20, width: '95%', height: '100%'}}
               placeholder="Tên"
-              multiline={true}
               maxLength={100}
               value={ten}
               onChangeText={setten}

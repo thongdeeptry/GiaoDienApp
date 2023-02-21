@@ -24,7 +24,7 @@ import {
 } from '../../../../config';
 function MessengerItem(props) {
   const user = auth.currentUser.uid;
-  const {onPress} = props;
+  const {onPress, onAnh} = props;
   const {url, isSender, messenger, timestamp, showUrl, senderId, date, image} =
     props.item;
   return senderId != user ? (
@@ -67,7 +67,7 @@ function MessengerItem(props) {
           <View
             style={{
               flexDirection: 'column',
-              left:0
+              left: 0,
             }}>
             <Text
               style={{
@@ -77,7 +77,7 @@ function MessengerItem(props) {
                 paddingHorizontal: 7,
                 backgroundColor: colors.messengertin,
                 borderRadius: 10,
-                top:5
+                top: 5,
                 // borderTopLeftRadius: 10,
                 // borderTopRightRadius: 10,
               }}>
@@ -90,24 +90,25 @@ function MessengerItem(props) {
         {/* isSender = true */}
       </TouchableOpacity>
       {image != '' && image != null && image != undefined ? (
-        <View
+        <TouchableOpacity
           style={{
             height: 100,
             width: '100%',
-            alignItems: "flex-start",
-          }}>
+            alignItems: 'flex-start',
+          }}
+          onPress={onAnh}>
           <Image
             style={{
               width: 100,
               height: 100,
               resizeMode: 'cover',
               borderRadius: 5,
-              left:15,
+              left: 15,
               marginTop: 10,
             }}
             source={{uri: image}}
           />
-        </View>
+        </TouchableOpacity>
       ) : (
         <></>
       )}
@@ -168,13 +169,14 @@ function MessengerItem(props) {
         )}
       </TouchableOpacity>
       {image != '' && image != null && image != undefined ? (
-        <View
+        <TouchableOpacity
           style={{
             height: 100,
             width: '100%',
             right: 0,
             alignItems: 'flex-end',
-          }}>
+          }}
+          onPress={onAnh}>
           <Image
             style={{
               width: 100,
@@ -186,7 +188,7 @@ function MessengerItem(props) {
             }}
             source={{uri: image}}
           />
-        </View>
+        </TouchableOpacity>
       ) : (
         <></>
       )}

@@ -37,12 +37,13 @@ export const Register = props => {
   }
   const auth = getAuth(app);
   const createUser = async (email, password) => {
-    let checkgmail = "";
-    await axiosInstance.get("api/check?gmail="+email).then((res) => {
+    let checkgmail = '';
+    await axiosInstance.get('api/check?gmail=' + email).then(res => {
       checkgmail = res.status;
     });
     console.log(checkgmail);
-    if(checkgmail=='Alive'){
+    if (checkgmail != '') {
+      //Alive
       if (isCheckedStatus == true) {
         await createUserWithEmailAndPassword(auth, email, password)
           .then(() => {
@@ -67,7 +68,7 @@ export const Register = props => {
           ToastAndroid.BOTTOM,
         );
       }
-    }else {
+    } else {
       ToastAndroid.show(
         'Đây là email không hoạt động, Vui lòng nhập gmail đúng',
         ToastAndroid.BOTTOM,

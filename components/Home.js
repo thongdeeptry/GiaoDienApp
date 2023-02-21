@@ -118,10 +118,8 @@ const Home = ({route, navigation}) => {
           const thoigian = childSnapshotq.child('thoigian').exportVal();
           const image = childSnapshotq.child('image').exportVal();
           const user = childSnapshotq.child('user').exportVal();
-          console.log(
-            'ADU NHUC NACH : ' +
-              dataLike.includes('' + childSnapshotq.child('id').exportVal()),
-          );
+          const hoatdong = childSnapshotq.child('hoatdong').exportVal();
+
           if (
             dataLike.includes('' + childSnapshotq.child('id').exportVal()) ==
             true
@@ -138,6 +136,7 @@ const Home = ({route, navigation}) => {
               tick: childSnapshotq.child('tick').exportVal(),
               like: true,
               solike: childSnapshotq.child('like').exportVal(),
+              hoatdong: hoatdong,
             });
           } else {
             datapost.push({
@@ -152,6 +151,7 @@ const Home = ({route, navigation}) => {
               tick: childSnapshotq.child('tick').exportVal(),
               like: false,
               solike: childSnapshotq.child('like').exportVal(),
+              hoatdong: hoatdong,
             });
           }
         } else if (loc == 0) {
@@ -216,7 +216,7 @@ const Home = ({route, navigation}) => {
           const thoigian = childSnapshotq.child('thoigian').exportVal();
           const image = childSnapshotq.child('image').exportVal();
           const user = childSnapshotq.child('user').exportVal();
-
+          const hoatdong = childSnapshotq.child('hoatdong').exportVal();
           if (
             dataLike.includes('' + childSnapshotq.child('id').exportVal()) ==
             true
@@ -233,7 +233,7 @@ const Home = ({route, navigation}) => {
               tick: childSnapshotq.child('tick').exportVal(),
               like: true,
               solike: childSnapshotq.child('like').exportVal(),
-              hoatdong: hoatdong,
+              hoatdong: hoatdong + '',
             });
           } else {
             datapost.push({
@@ -248,7 +248,7 @@ const Home = ({route, navigation}) => {
               tick: childSnapshotq.child('tick').exportVal(),
               like: false,
               solike: childSnapshotq.child('like').exportVal(),
-              hoatdong: hoatdong,
+              hoatdong: hoatdong + '',
             });
           }
         }
@@ -455,9 +455,12 @@ const Home = ({route, navigation}) => {
                     idPostu: item.id,
                     userIDu: item.user,
                     checkinu: item.checkin,
-                    imageu: item.image!=""&&item.image!=undefined?item.image:"a",
+                    imageu:
+                      item.image != '' && item.image != undefined
+                        ? item.image
+                        : 'a',
                     ticku: item.tick,
-                    hoatdongu: item.hoatdong,
+                    hoatdongu: item.hoatdong + '',
                   })
                 }>
                 <Image
@@ -743,6 +746,7 @@ const Home = ({route, navigation}) => {
               style={styles.addContainer}
               showsHorizontalScrollIndicator={false}
               data={dataStory}
+              extraData={dataStory}
               renderItem={({item, index}) => (
                 <View>
                   <TouchableOpacity
@@ -825,6 +829,7 @@ const Home = ({route, navigation}) => {
               style={[{}, dataLive.length > 0 ? styles.addContainerlive : null]}
               showsHorizontalScrollIndicator={false}
               data={dataLive}
+              extraData={dataLive}
               renderItem={({item, index}) => (
                 <View>
                   <TouchableOpacity
@@ -863,8 +868,8 @@ const Home = ({route, navigation}) => {
             <FlatList
               data={datapost}
               renderItem={renderItem}
+              extraData={datapost}
               inverted
-              keyExtractor={item => Math.random()}
             />
           </View>
         </View>

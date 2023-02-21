@@ -328,7 +328,9 @@ export const Possions = ({route, navigation}) => {
         />
       </View>
       <View style={styles.Skiptext}>
-        <Text style={styles.textSkip}>Skip</Text>
+        <Text style={styles.MOBILEText} onPress={() => navigation.goBack()}>
+          Quay lại
+        </Text>
       </View>
       <View style={styles.sothichText}>
         <Text style={styles.Textsothich}>Sở thích của bạn</Text>

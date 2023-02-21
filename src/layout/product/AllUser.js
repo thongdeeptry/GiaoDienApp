@@ -64,10 +64,10 @@ export const AllUser = ({route, navigation}) => {
         ) {
           if (
             childSnapshot.child('trangthai').exportVal() == 'Hoạt Động' ||
-            childSnapshot.child('trangthai').exportVal() == 'Chưa Hoạt Động'&&
-            childSnapshot.child('name').exportVal() != '' &&
-            childSnapshot.child('name').exportVal() != undefined &&
-            childSnapshot.child('name').exportVal() != null
+            (childSnapshot.child('trangthai').exportVal() == 'Chưa Hoạt Động' &&
+              childSnapshot.child('name').exportVal() != '' &&
+              childSnapshot.child('name').exportVal() != undefined &&
+              childSnapshot.child('name').exportVal() != null)
           ) {
             const id = childSnapshot.child('id').exportVal();
             const name = childSnapshot.child('name').exportVal();
@@ -92,10 +92,10 @@ export const AllUser = ({route, navigation}) => {
         ) {
           if (
             childSnapshot.child('trangthai').exportVal() == 'Hoạt Động' ||
-            childSnapshot.child('trangthai').exportVal() == 'Chưa Hoạt Động'&&
-            childSnapshot.child('name').exportVal() != '' &&
-            childSnapshot.child('name').exportVal() != undefined &&
-            childSnapshot.child('name').exportVal() != null
+            (childSnapshot.child('trangthai').exportVal() == 'Chưa Hoạt Động' &&
+              childSnapshot.child('name').exportVal() != '' &&
+              childSnapshot.child('name').exportVal() != undefined &&
+              childSnapshot.child('name').exportVal() != null)
           ) {
             const id = childSnapshot.child('id').exportVal();
             const name = childSnapshot.child('name').exportVal();
