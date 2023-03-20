@@ -114,22 +114,21 @@ export const AllUser = ({route, navigation}) => {
         }
       });
       setdataFriend(dataFl);
-      console.log(dataFl);
     });
-  }, []);
+    const referencebanbe = ref(db, 'banbe/' + idCurrent);
+    onValue(referencebanbe, childSnapshot1 => {
+      childSnapshot1.forEach(snapshot1 => {
+        const id = snapshot1.child('user').val();
+        dataFriend.push(id);
+      });
+    });
+  }, [dataFrien2d, dataFriend]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
   }, []);
   const logOut = () => {};
-  const referencebanbe = ref(db, 'banbe/' + idCurrent);
-  onValue(referencebanbe, childSnapshot1 => {
-    childSnapshot1.forEach(snapshot1 => {
-      const id = snapshot1.child('user').val();
-      dataFriend.push(id);
-    });
-  });
 
   const date = new Date();
   let thang = date.getMonth() + 1;
