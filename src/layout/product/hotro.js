@@ -19,7 +19,7 @@ import {getAuth, updatePassword, onAuthStateChanged} from 'firebase/auth';
 import {getDatabase, ref, onValue, set, push, update} from 'firebase/database';
 import Checkbox from 'expo-checkbox';
 import {v4 as uuid} from 'uuid';
-const hotro = ({navigation, route}) => {
+const HoTro = ({navigation, route}) => {
   initializeApp(firebaseConfig);
   const user = getAuth().currentUser.uid;
   const db = getDatabase();
@@ -166,7 +166,7 @@ const hotro = ({navigation, route}) => {
   );
 };
 
-export default hotro;
+export default HoTro;
 
 const styles = StyleSheet.create({
   checkbox: {

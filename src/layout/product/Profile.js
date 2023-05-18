@@ -102,7 +102,41 @@ export const Profile = props => {
       setfl(childSnapshot.child('follow').exportVal());
       setisLoading(false);
     });
+    const reference1 = ref(db, 'users/' + user + '/sothich');
+    onValue(reference1, childSnapshot1 => {
+      childSnapshot1.forEach(snapshot1 => {
+        const key = snapshot1.val();
+        sothich2.push(key);
+      });
+    });
   }, []);
+  const referenceImage = ref(db, 'post/' + user);
+  onValue(referenceImage, snapshot => {
+    snapshot.forEach(ImageSnapshot => {
+      const id = ImageSnapshot.child('id').exportVal();
+      const image = ImageSnapshot.child('image').exportVal();
+
+      dataImage.push({
+        id: id,
+        image: image,
+      });
+    });
+  });
+  const referencebanbe = ref(db, 'banbe/' + user);
+  onValue(referencebanbe, childSnapshot1 => {
+    childSnapshot1.forEach(snapshot1 => {
+      const id = snapshot1.child('id').val();
+      const user = snapshot1.child('user').val();
+      const name = snapshot1.child('name').val();
+      const avt = snapshot1.child('avt').val();
+      dataFriend.push({
+        id: id,
+        user: user,
+        name: name,
+        avt: avt,
+      });
+    });
+  });
   const referencetuongtac = ref(db, 'tuongtac/' + user);
   onValue(referencetuongtac, childSnapshot1 => {
     childSnapshot1.forEach(snapshot1 => {
@@ -176,40 +210,7 @@ export const Profile = props => {
     ToastAndroid.show('Sao chép liên kết thành công', ToastAndroid.BOTTOM);
     closeModalmore();
   };
-  const reference1 = ref(db, 'users/' + user + '/sothich');
-  onValue(reference1, childSnapshot1 => {
-    childSnapshot1.forEach(snapshot1 => {
-      const key = snapshot1.val();
-      sothich2.push(key);
-    });
-  });
-  const referenceImage = ref(db, 'post/' + user);
-  onValue(referenceImage, snapshot => {
-    snapshot.forEach(ImageSnapshot => {
-      const id = ImageSnapshot.child('id').exportVal();
-      const image = ImageSnapshot.child('image').exportVal();
 
-      dataImage.push({
-        id: id,
-        image: image,
-      });
-    });
-  });
-  const referencebanbe = ref(db, 'banbe/' + user);
-  onValue(referencebanbe, childSnapshot1 => {
-    childSnapshot1.forEach(snapshot1 => {
-      const id = snapshot1.child('id').val();
-      const user = snapshot1.child('user').val();
-      const name = snapshot1.child('name').val();
-      const avt = snapshot1.child('avt').val();
-      dataFriend.push({
-        id: id,
-        user: user,
-        name: name,
-        avt: avt,
-      });
-    });
-  });
   const AddLike = (idP, li) => {
     let like;
     let solike;
@@ -455,7 +456,7 @@ export const Profile = props => {
                           borderWidth: 0.4,
                           top: 10,
                         }}
-                        onPress={() => navigation.navigate('hotro')}>
+                        onPress={() => navigation.navigate('HoTro')}>
                         <Text
                           style={{
                             color: 'black',
@@ -895,7 +896,10 @@ export const Profile = props => {
                               idPostu: item.id,
                               userIDu: item.user,
                               checkinu: item.checkin,
-                              imageu: item.image!=""&&item.image!=undefined?item.image:"a",
+                              imageu:
+                                item.image != '' && item.image != undefined
+                                  ? item.image
+                                  : 'a',
                               ticku: item.tick,
                               hoatdongu: item.hoatdong,
                             })

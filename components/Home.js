@@ -46,7 +46,7 @@ const Home = ({route, navigation}) => {
   const [id, setid] = useState();
   const [daco, setdaco] = useState();
   const [dacod, setdacod] = useState(false);
-  const [loc, setloc] = useState(2);
+  const [loc, setloc] = useState(1);
   const [rate, setrate] = useState('');
   const datapost = [];
   const dataStory = [];
@@ -799,7 +799,7 @@ const Home = ({route, navigation}) => {
               buttonTextStyle={{fontSize: 12, color: 'blue'}}
               rowTextStyle={{fontSize: 12}}
               rowStyle={{height: 40}}
-              defaultButtonText={'Lọc bài viết'}
+              defaultButtonText={'Bạn Bè'}
               onSelect={(selectedItem, index) => {
                 setloc(index);
                 console.log(selectedItem, loc);

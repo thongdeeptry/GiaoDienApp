@@ -122,7 +122,7 @@ export const AllUser = ({route, navigation}) => {
         dataFriend.push(id);
       });
     });
-  }, [dataFrien2d, dataFriend]);
+  }, []);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);

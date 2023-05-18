@@ -21,7 +21,7 @@ import notifiCation from './notifiCation';
 import Home from '../../../components/Home';
 import {AllUser} from './AllUser';
 import Chinhsua from './Chinhsua';
-import {CaiDat} from './caidat';
+import {CaiDat} from './CaiDat';
 import Timkiem from './Timkiem';
 import Binhluan from './Binhluan';
 import Story from '../../layout/product/Story';
@@ -36,7 +36,7 @@ import RoomCall from './Call/screens/RoomScreen';
 import JoinRoom from './Call/screens/JoinRoom';
 import {AllRoomCall} from './AllRoomCall';
 import {SayHello} from '../user/screens/SayHello';
-import hotro from './hotro';
+import HoTro from './HoTro';
 import BaoCao from './BaoCao';
 import {AllReport} from './AllReport';
 import {AllSuport} from './AllSuport';
@@ -77,7 +77,7 @@ function HomeStack() {
       <Stack.Screen name="JoinRoom" component={JoinRoom} />
       <Stack.Screen name="AllRoomCall" component={AllRoomCall} />
       <Stack.Screen name="SayHello" component={SayHello} />
-      <Stack.Screen name="hotro" component={hotro} />
+      <Stack.Screen name="HoTro" component={HoTro} />
       <Stack.Screen name="BaoCao" component={BaoCao} />
       <Stack.Screen name="AllReport" component={AllReport} />
       <Stack.Screen name="AllSuport" component={AllSuport} />
@@ -117,7 +117,7 @@ function ProfileStack() {
       <Stack.Screen name="JoinRoom" component={JoinRoom} />
       <Stack.Screen name="AllRoomCall" component={AllRoomCall} />
       <Stack.Screen name="SayHello" component={SayHello} />
-      <Stack.Screen name="hotro" component={hotro} />
+      <Stack.Screen name="HoTro" component={HoTro} />
       <Stack.Screen name="BaoCao" component={BaoCao} />
       <Stack.Screen name="AllReport" component={AllReport} />
       <Stack.Screen name="AllSuport" component={AllSuport} />
@@ -159,7 +159,7 @@ function AllUserStack() {
       <Stack.Screen name="JoinRoom" component={JoinRoom} />
       <Stack.Screen name="AllRoomCall" component={AllRoomCall} />
       <Stack.Screen name="SayHello" component={SayHello} />
-      <Stack.Screen name="hotro" component={hotro} />
+      <Stack.Screen name="HoTro" component={HoTro} />
       <Stack.Screen name="BaoCao" component={BaoCao} />
       <Stack.Screen name="AllReport" component={AllReport} />
       <Stack.Screen name="AllSuport" component={AllSuport} />
@@ -201,7 +201,7 @@ function ChatStack() {
       <Stack.Screen name="JoinRoom" component={JoinRoom} />
       <Stack.Screen name="AllRoomCall" component={AllRoomCall} />
       <Stack.Screen name="SayHello" component={SayHello} />
-      <Stack.Screen name="hotro" component={hotro} />
+      <Stack.Screen name="HoTro" component={HoTro} />
       <Stack.Screen name="BaoCao" component={BaoCao} />
       <Stack.Screen name="AllReport" component={AllReport} />
       <Stack.Screen name="AllSuport" component={AllSuport} />
@@ -243,7 +243,7 @@ function NotiStack() {
       <Stack.Screen name="JoinRoom" component={JoinRoom} />
       <Stack.Screen name="AllRoomCall" component={AllRoomCall} />
       <Stack.Screen name="SayHello" component={SayHello} />
-      <Stack.Screen name="hotro" component={hotro} />
+      <Stack.Screen name="HoTro" component={HoTro} />
       <Stack.Screen name="BaoCao" component={BaoCao} />
       <Stack.Screen name="AllReport" component={AllReport} />
       <Stack.Screen name="AllSuport" component={AllSuport} />
