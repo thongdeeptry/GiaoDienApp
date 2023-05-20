@@ -23,6 +23,7 @@ export const Possions = ({route, navigation}) => {
   const {password} = route.params;
   const {tuoi} = route.params;
   const {location} = route.params;
+  console.log(location);
   const data = [];
   const [Datan, setDatan] = useState([]);
   const [number, setnumber] = useState(false);
@@ -54,134 +55,100 @@ export const Possions = ({route, navigation}) => {
   const [soThich11, setsoThich11] = useState('');
   const [soThich12, setsoThich12] = useState('');
   const [soThich13, setsoThich13] = useState('');
-  let soThichAll = [];
+  const soThichAll = [];
 
-  const app = initializeApp(firebaseConfig);
-
-  if (!app.length) {
-  }
+  initializeApp(firebaseConfig);
   useEffect(() => {
     if (number == true) {
       console.log('vo');
       setsoThich('Chụp hình');
+      soThichAll.push({soThich: 'Chụp hình'});
     } else {
       console.log('vo1');
       setsoThich('');
     }
     if (number1 == true) {
       setsoThich1('Mua sắm');
+      soThichAll.push({soThich1: 'Mua sắm'});
     } else {
       setsoThich1('');
     }
     if (number2 == true) {
       setsoThich2('Hát hò');
+      soThichAll.push({soThich2: 'Hát hò'});
     } else {
       setsoThich2('');
     }
     if (number3 == true) {
       setsoThich3('Tập yoga');
+      soThichAll.push({soThich3: 'Tập yoga'});
     } else {
       setsoThich3('');
     }
     if (number4 == true) {
       setsoThich4('Nấu ăn');
+      soThichAll.push({soThich4: 'Nấu ăn'});
     } else {
       setsoThich4('');
     }
     if (number5 == true) {
       setsoThich5('Quần vợt');
+      soThichAll.push({soThich5: 'Quần vợt'});
     } else {
       setsoThich5('');
     }
     if (number6 == true) {
       setsoThich6('Chạy bộ');
+      soThichAll.push({soThich6: 'Chạy bộ'});
     } else {
       setsoThich6('');
     }
     if (number7 == true) {
       setsoThich7('Bơi lội');
+      soThichAll.push({soThich7: 'Bơi lội'});
     } else {
       setsoThich7('');
     }
     if (number8 == true) {
       setsoThich8('Vẽ tranh');
+      soThichAll.push({soThich8: 'Vẽ tranh'});
     } else {
       setsoThich8('');
     }
     if (number9 == true) {
       setsoThich9('Leo núi');
+      soThichAll.push({soThich9: 'Leo núi'});
     } else {
       setsoThich9('');
     }
     if (number10 == true) {
       setsoThich10('Nhảy dù');
+      soThichAll.push({soThich10: 'Nhảy dù'});
     } else {
       setsoThich10('');
     }
     if (number11 == true) {
       setsoThich11('Nghe nhạc');
+      soThichAll.push({soThich11: 'Nghe nhạc'});
     } else {
       setsoThich11('');
     }
     if (number12 == true) {
       setsoThich12('Uống nước');
+      soThichAll.push({soThich12: 'Uống nước'});
     } else {
       setsoThich12('');
     }
     if (number13 == true) {
       setsoThich13('Chơi game');
+      soThichAll.push({soThich13: 'Chơi game'});
     } else {
       setsoThich13('');
     }
-  }, [
-    number,
-    number1,
-    number2,
-    number3,
-    number4,
-    number5,
-    number6,
-    number7,
-    number8,
-    number9,
-    number10,
-    number11,
-    number12,
-    number13,
-  ]);
+  }, [soThichAll]);
+
   const AddData = () => {
-    soThichAll.push(
-      soThich,
-      soThich1,
-      soThich2,
-      soThich3,
-      soThich4,
-      soThich5,
-      soThich6,
-      soThich7,
-      soThich8,
-      soThich9,
-      soThich10,
-      soThich11,
-      soThich12,
-      soThich13,
-    );
-    console.log(
-      soThich,
-      soThich1,
-      soThich2,
-      soThich3,
-      soThich4,
-      soThich5,
-      soThich6,
-      soThich7,
-      soThich8,
-      soThich9,
-      soThich10,
-      soThich11,
-      soThich12,
-      soThich13,
-    );
+    console.log(soThichAll.length);
 
     if (soThichAll.length < 2) {
       ToastAndroid.show(
@@ -327,11 +294,7 @@ export const Possions = ({route, navigation}) => {
           source={require('../../../image/lui.png')}
         />
       </View>
-      <View style={styles.Skiptext}>
-        <Text style={styles.MOBILEText} onPress={() => navigation.goBack()}>
-          Quay lại
-        </Text>
-      </View>
+      <View style={styles.Skiptext}></View>
       <View style={styles.sothichText}>
         <Text style={styles.Textsothich}>Sở thích của bạn</Text>
         <Text style={{width: '100%', textAlign: 'left', left: 40}}>
@@ -1045,7 +1008,7 @@ export const Possions = ({route, navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={styles.lui}>
-        <TouchableOpacity onPress={() => navigation.navigate('Possions')}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
             style={{position: 'relative', right: 5}}
             source={require('../../../image/lui.png')}
@@ -1063,8 +1026,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 52,
     height: 52,
-    left: 45,
-    top: 20,
+    left: 35,
+    top: 30,
   },
   mailnut: {
     position: 'absolute',

@@ -24,6 +24,7 @@ export const ProfileName = ({route, navigation}) => {
   const {email} = route.params;
   const {password} = route.params;
   const {sdt} = route.params;
+  console.log(user);
   const [selectedDate, setSelectedDate] = useState();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [image, setImage] = useState();
@@ -31,7 +32,7 @@ export const ProfileName = ({route, navigation}) => {
   const [ho, setho] = useState('');
   const [ngaysinh, setngaysinh] = useState('');
   const [upload, setupload] = useState('');
-  const [location, setlocation] = useState();
+  const [location, setlocation] = useState('');
   const [city, setcity] = useState();
   const app = initializeApp(firebaseConfig);
   const storage = getStorage(app);
@@ -52,12 +53,12 @@ export const ProfileName = ({route, navigation}) => {
     diachi.find(p => {
       country = p.country;
       city = p.subregion + ',' + p.region;
-      setlocation(city);
+      setlocation(city + '');
     });
   };
   getLocation();
   useEffect(() => {
-    if (upload != '') {
+    if (upload != '' || upload != undefined) {
       const avt = upload;
       const name = ho + ' ' + ten;
       console.log('name + ' + name);
@@ -97,8 +98,8 @@ export const ProfileName = ({route, navigation}) => {
         }
       }
     }
-    return () => {};
-  }, [upload]);
+  }, [upload, image]);
+  console.log(location + 'dia chi');
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -141,20 +142,33 @@ export const ProfileName = ({route, navigation}) => {
   }
 
   const uploadImageToBucket = async (uri, imageName) => {
-    const res = await fetch(uri);
-    const blob = await res.blob();
-    const storageRef = ref(storage, 'images/' + imageName + '.png');
-    setupload(
-      'https://firebasestorage.googleapis.com/v0/b/duantotnghiepreact.appspot.com/o/images%2F' +
-        imageName +
-        '.png?alt=media',
-    );
+    console.log('íugh8i' + ho + ten + selectedDate + image);
+    if (
+      ho !== '' ||
+      ten !== '' ||
+      selectedDate !== undefined ||
+      image !== undefined
+    ) {
+      const res = await fetch(uri);
+      const blob = await res.blob();
+      const storageRef = ref(storage, 'images/' + imageName + '.png');
+      setupload(
+        'https://firebasestorage.googleapis.com/v0/b/duantotnghiepreact.appspot.com/o/images%2F' +
+          imageName +
+          '.png?alt=media',
+      );
 
-    console.log('Link Anh: ' + upload);
+      console.log('Link Anh: ' + upload);
 
-    return uploadBytes(storageRef, blob).then(snapshot => {
-      console.log('Uploaded a blob or file!');
-    });
+      return uploadBytes(storageRef, blob).then(snapshot => {
+        console.log('Uploaded a blob or file!');
+      });
+    } else {
+      ToastAndroid.show(
+        'Bạn phải nhập đầy đủ thông tin để tiếp tục',
+        ToastAndroid.CENTER,
+      );
+    }
   };
   return (
     <View style={{width: '100%', height: '100%'}}>

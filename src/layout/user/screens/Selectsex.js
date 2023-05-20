@@ -27,6 +27,7 @@ export const Selectsex = ({route, navigation}) => {
   const {tuoi} = route.params;
   const {user} = route.params;
   const {location} = route.params;
+  console.log(location);
   const [selectedDate, setSelectedDate] = useState();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [image, setImage] = useState(null);
@@ -90,11 +91,7 @@ export const Selectsex = ({route, navigation}) => {
   };
   return (
     <View style={{width: '100%', height: '100%'}}>
-      <View style={styles.MOBILE}>
-        <Text style={styles.MOBILEText} onPress={() => navigation.goBack()}>
-          Quay lại
-        </Text>
-      </View>
+      <View style={styles.MOBILE}></View>
       <View style={styles.themif}>
         <Text style={styles.themiftext}>Tôi là</Text>
       </View>
@@ -259,7 +256,7 @@ export const Selectsex = ({route, navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={styles.lui}>
-        <TouchableOpacity onPress={() => navigation.navigate('Possions')}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
             style={{position: 'relative', paddingRight: 10, right: 10}}
             source={require('../../../image/lui.png')}

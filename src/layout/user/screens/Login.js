@@ -79,49 +79,64 @@ export const Login = props => {
         update(referencerrs, {
           password: formikRef.current?.values?.password,
         });
-        if (isCheckedStatus == true) {
-          await AsyncStorage.setItem('email', formikRef.current?.values?.email);
-          await AsyncStorage.setItem(
-            'password',
-            formikRef.current?.values?.password,
+
+        try {
+          const reference = ref(db, 'users/' + user);
+          onValue(reference, async childSnapshot => {
+            const trangthai = childSnapshot.child('trangthai').val();
+            const ten = childSnapshot.child('name').val();
+            const ngaysinh = childSnapshot.child('ngaysinh').val();
+            const nghenghiep = childSnapshot.child('nghenghiep').val();
+            const diachi = childSnapshot.child('diachi').val();
+            const tuoi = childSnapshot.child('tuoi').val();
+            console.log(ten + 'lll');
+            if (trangthai == 'Khóa') {
+              navigation.navigate('VoHieuHoa');
+            } else if (
+              ten == null ||
+              ngaysinh == null ||
+              nghenghiep == null ||
+              diachi == null ||
+              tuoi == null
+            ) {
+              ToastAndroid.show(
+                'Tài khoản này chưa có đầy đủ thông tin, vui lòng đăng ký lại.',
+                ToastAndroid.BOTTOM,
+              );
+              navigation.navigate('ProfileName', {
+                email: formikRef.current?.values?.email,
+                user: user,
+                password: formikRef.current?.values?.password,
+              });
+            } else {
+              onLogin();
+              if (isCheckedStatus == true) {
+                await AsyncStorage.setItem(
+                  'email',
+                  formikRef.current?.values?.email,
+                );
+                await AsyncStorage.setItem(
+                  'password',
+                  formikRef.current?.values?.password,
+                );
+              } else {
+                await AsyncStorage.setItem('email', '');
+                await AsyncStorage.setItem('password', '');
+                await AsyncStorage.setItem('tokenLogin', '');
+              }
+            }
+          });
+        } catch (error) {
+          ToastAndroid.show(
+            'Tài khoản này chưa có đầy đủ thông tin, vui lòng đăng ký lại.',
+            ToastAndroid.BOTTOM,
           );
-          getAuth()
-            .currentUser.getIdToken(true)
-            .then(async kkk => {
-              // await AsyncStorage.setItem('tokenLogin', kkk);
-              await AsyncStorage.setItem('tokenLogin', '');
-            });
-        } else {
-          await AsyncStorage.setItem('email', '');
-          await AsyncStorage.setItem('password', '');
-          await AsyncStorage.setItem('tokenLogin', '');
+          navigation.navigate('ProfileName', {
+            email: formikRef.current?.values?.email,
+            user: user,
+            password: formikRef.current?.values?.password,
+          });
         }
-        const reference = ref(db, 'users/' + user);
-        onValue(reference, childSnapshot => {
-          const trangthai = childSnapshot.child('trangthai').val();
-          const ten = childSnapshot.child('name').val();
-          const ngaysinh = childSnapshot.child('ngaysinh').val();
-          const nghenghiep = childSnapshot.child('nghenghiep').val();
-          const diachi = childSnapshot.child('diachi').val();
-          const tuoi = childSnapshot.child('tuoi').val();
-          console.log(ten);
-          if (trangthai == 'Khóa') {
-            navigation.navigate('VoHieuHoa');
-          } else if (
-            ten == '' ||
-            ngaysinh == '' ||
-            nghenghiep == '' ||
-            diachi == '' ||
-            tuoi == ''
-          ) {
-            ToastAndroid.show(
-              'Tài khoản này chưa có đầy đủ thông tin, vui lòng đăng ký lại.',
-              ToastAndroid.BOTTOM,
-            );
-          } else {
-            onLogin();
-          }
-        });
       })
       .catch(error => {
         ToastAndroid.show(

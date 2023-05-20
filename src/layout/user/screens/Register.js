@@ -37,43 +37,43 @@ export const Register = props => {
   }
   const auth = getAuth(app);
   const createUser = async (email, password) => {
-    let checkgmail = '';
-    await axiosInstance.get('api/check?gmail=' + email).then(res => {
-      checkgmail = res.status;
-    });
-    console.log(checkgmail);
-    if (checkgmail != '') {
-      //Alive
-      if (isCheckedStatus == true) {
-        await createUserWithEmailAndPassword(auth, email, password)
-          .then(() => {
-            console.log('Tạo tài khoản thành công');
-            const user = getAuth().currentUser.uid;
-            console.log('UID - ' + user);
-            navigation.navigate('ProfileName', {
-              email,
-              user,
-              password,
-            });
-          })
-          .catch(error => {
-            ToastAndroid.show(
-              'Email và mật khẩu không được để trống',
-              ToastAndroid.BOTTOM,
-            );
+    // let checkgmail = '';
+    // await axiosInstance.get('api/check?gmail=' + email).then(res => {
+    //   checkgmail = res.status;
+    // });
+    // console.log(checkgmail);
+    // if (checkgmail != '') {
+    //Alive
+    if (isCheckedStatus == true) {
+      await createUserWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          console.log('Tạo tài khoản thành công');
+          const user = getAuth().currentUser.uid;
+          console.log('UID - ' + user);
+          navigation.navigate('ProfileName', {
+            email,
+            user,
+            password,
           });
-      } else {
-        ToastAndroid.show(
-          'Vui lòng xác nhận đồng ý điều khoản dịch vụ',
-          ToastAndroid.BOTTOM,
-        );
-      }
+        })
+        .catch(error => {
+          ToastAndroid.show(
+            'Email và mật khẩu không được để trống',
+            ToastAndroid.BOTTOM,
+          );
+        });
     } else {
       ToastAndroid.show(
-        'Đây là email không hoạt động, Vui lòng nhập gmail đúng',
+        'Vui lòng xác nhận đồng ý điều khoản dịch vụ',
         ToastAndroid.BOTTOM,
       );
     }
+    // } else {
+    //   ToastAndroid.show(
+    //     'Đây là email không hoạt động, Vui lòng nhập gmail đúng',
+    //     ToastAndroid.BOTTOM,
+    //   );
+    // }
   };
 
   return (
