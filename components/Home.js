@@ -70,18 +70,17 @@ const Home = ({route, navigation}) => {
       setavt(avtpr);
     });
 
-    const getTokenDv = async () => {
-      const token = await AsyncStorage.getItem('token');
-      console.log('Token Dv : ' + token);
-      const referencerrs = ref(db, 'users/' + user);
-      update(referencerrs, {
-        token: token,
-        trangthai: 'Hoạt Động',
-      });
-    };
     getTokenDv();
   }, []);
-
+  const getTokenDv = async () => {
+    const token = await AsyncStorage.getItem('token');
+    console.log('Token Dv : ' + token);
+    const referencerrs = ref(db, 'users/' + user);
+    update(referencerrs, {
+      token: token,
+      trangthai: 'Hoạt Động',
+    });
+  };
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
@@ -657,6 +656,7 @@ const Home = ({route, navigation}) => {
               color: '#E94057',
               fontWeight: '600',
               letterSpacing: 1.2,
+              top: 5,
             }}>
             GenzLove
           </Text>
@@ -680,7 +680,7 @@ const Home = ({route, navigation}) => {
         style={{
           marginBottom: 52,
           borderTopColor: '#ABABAB',
-          borderTopWidth: 0.3,
+          borderTopWidth: 0.5,
         }}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

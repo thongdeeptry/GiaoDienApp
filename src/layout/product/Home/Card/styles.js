@@ -1,52 +1,51 @@
-import { StyleSheet } from "react-native";
-import { CARD } from "../utils/constants";
+import {StyleSheet} from 'react-native';
+import {CARD} from '../utils/constants';
 
 export const styles = StyleSheet.create({
   container: {
-    position: "absolute",
-    height: "78%",
-    bottom: 95,
+    height: '70%',
+    bottom: 70,
+    position: 'absolute',
   },
   image: {
     width: CARD.WIDTH,
-
-    height: "100%",
+    height: '100%',
     borderRadius: CARD.BORDER_RADIUS,
   },
   gradient: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
     height: 160,
     borderRadius: CARD.BORDER_RADIUS,
+    opacity: 0.8,
   },
   name: {
-    position: "absolute",
-    bottom: 80,
-    left: 22,
-    fontSize: 25,
-    fontWeight: "bold",
-    color: "#fff",
+    bottom: 111,
+    left: 20,
+    fontSize: 30,
+    fontWeight: '600',
+    color: '#fff',
   },
   diachi: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 50,
-    left: 22,
+    left: 20,
     fontSize: 20,
-    fontWeight: "bold",
-    color: "#fff",
+    fontWeight: '400',
+    color: '#fff',
   },
   choiceContainer: {
-    position: "absolute",
+    position: 'absolute',
     top: 100,
   },
   likeContainer: {
     left: 45,
-    transform: [{ rotate: "-30deg" }],
+    transform: [{rotate: '-30deg'}],
   },
   nopeContainer: {
     right: 45,
-    transform: [{ rotate: "30deg" }],
+    transform: [{rotate: '30deg'}],
   },
 });

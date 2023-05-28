@@ -109,8 +109,8 @@ export const Login = props => {
                 password: formikRef.current?.values?.password,
               });
             } else {
-              onLogin();
-              if (isCheckedStatus == true) {
+              if (isCheckedStatus === true) {
+                console.log('hh' + formikRef.current?.values?.email);
                 await AsyncStorage.setItem(
                   'email',
                   formikRef.current?.values?.email,
@@ -124,6 +124,7 @@ export const Login = props => {
                 await AsyncStorage.setItem('password', '');
                 await AsyncStorage.setItem('tokenLogin', '');
               }
+              onLogin();
             }
           });
         } catch (error) {

@@ -72,6 +72,8 @@ export const ProfileFriend = ({route, navigation}) => {
     wait(1000).then(() => setRefreshing(false));
   }, []);
   useEffect(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
     const reference1d1 = ref(db, 'favourite/' + id + '/' + idCurrent);
     onValue(reference1d1, snapshot1 => {
       if (snapshot1.exists()) {
@@ -80,7 +82,6 @@ export const ProfileFriend = ({route, navigation}) => {
         setdaco(false);
       }
     });
-    console.log(daco);
     setisLoading(true);
     const reference = ref(db, 'users/' + user);
     onValue(reference, childSnapshot => {
@@ -113,7 +114,7 @@ export const ProfileFriend = ({route, navigation}) => {
       setavtCr(avtpr);
       settickfr(childSnapshot.child('tick').val());
     });
-  });
+  }, []);
   const referencetuongtac = ref(db, 'tuongtac/' + idCurrent);
   onValue(referencetuongtac, childSnapshot1 => {
     childSnapshot1.forEach(snapshot1 => {

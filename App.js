@@ -50,6 +50,7 @@ export default function App() {
       messaging()
         .getToken()
         .then(async token => {
+          console.log(token);
           await AsyncStorage.setItem('token', token);
         });
     } else {

@@ -7,7 +7,7 @@ import {
   TextInput,
 } from 'react-native';
 import React from 'react';
-
+import {LinearGradient} from 'expo-linear-gradient';
 export default Story = ({route, navigation}) => {
   const {id} = route.params;
   const {image} = route.params;
@@ -19,7 +19,11 @@ export default Story = ({route, navigation}) => {
       <Image
         style={styles.hinh}
         source={{uri: image}}
-        resizeMode="contain"></Image>
+        resizeMode="cover"></Image>
+      <LinearGradient
+        colors={['transparent', 'rgba(139, 139, 139, 1)']}
+        style={styles.gradient}
+      />
       <View style={styles.con}>
         <View style={styles.ten}>
           <TouchableOpacity
@@ -41,30 +45,49 @@ export default Story = ({route, navigation}) => {
             </TouchableOpacity>
           </View>
         </View>
+      </View>
 
-        <View style={styles.tongts}>
-          <Text style={styles.texttamsu}>{noidung}</Text>
-        </View>
+      <View style={styles.tongts}>
+        <Text style={styles.texttamsu}>{noidung}</Text>
+        <LinearGradient
+          colors={['transparent', 'rgba(239, 239, 239, 1)']}
+          style={styles.gradient1}
+        />
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  gradient: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    height: 70,
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
+    opacity: 0.4,
+  },
+  gradient1: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    height: 70,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    opacity: 0.6,
+  },
   tongts: {
     position: 'absolute',
     width: '100%',
-    height: '100%',
-    top: '85%',
+    top: '90%',
     alignItems: 'center',
   },
   texttamsu: {
     textAlign: 'center',
     width: '100%',
     height: 100,
-    left: 20,
     fontSize: 18,
-
     color: 'white',
   },
   stickerr: {
@@ -154,9 +177,8 @@ const styles = StyleSheet.create({
   },
   con: {
     position: 'absolute',
-    width: '85%',
-    height: '85%',
-    left: 10,
+    width: '80%',
+    marginHorizontal: 20,
   },
   hinh: {
     width: '100%',

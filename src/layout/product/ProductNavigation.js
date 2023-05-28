@@ -50,6 +50,8 @@ import XacThuc from '../user/screens/XacThuc';
 import ChangePasss from '../user/screens/ChangePass';
 import {Friend} from './Friend';
 import {EditPost} from './EditPost';
+import Main from './Home/Main/index';
+import MapViewU from './MapView';
 function HomeStack() {
   return (
     <Stack.Navigator
@@ -86,6 +88,8 @@ function HomeStack() {
       <Stack.Screen name="XacThuc" component={XacThuc} />
       <Stack.Screen name="ChangePasss" component={ChangePasss} />
       <Stack.Screen name="Friend" component={Friend} />
+      <Stack.Screen name="Main" component={Main} />
+      <Stack.Screen name="MapView" component={MapViewU} />
     </Stack.Navigator>
   );
 }
@@ -127,6 +131,8 @@ function ProfileStack() {
       <Stack.Screen name="ChangePasss" component={ChangePasss} />
       <Stack.Screen name="Friend" component={Friend} />
       <Stack.Screen name="EditPost" component={EditPost} />
+      <Stack.Screen name="Main" component={Main} />
+      <Stack.Screen name="MapView" component={MapViewU} />
     </Stack.Navigator>
   );
 }
@@ -134,6 +140,7 @@ function AllUserStack() {
   return (
     <Stack.Navigator
       screenOptions={{tabBarShowLabel: false, headerShown: false}}>
+      <Stack.Screen name="Main" component={Main} />
       <Stack.Screen name="AllUser" component={AllUser} />
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Home" component={Home} />
@@ -169,6 +176,7 @@ function AllUserStack() {
       <Stack.Screen name="ChangePasss" component={ChangePasss} />
       <Stack.Screen name="Friend" component={Friend} />
       <Stack.Screen name="EditPost" component={EditPost} />
+      <Stack.Screen name="MapView" component={MapViewU} />
     </Stack.Navigator>
   );
 }
@@ -211,6 +219,8 @@ function ChatStack() {
       <Stack.Screen name="ChangePasss" component={ChangePasss} />
       <Stack.Screen name="Friend" component={Friend} />
       <Stack.Screen name="EditPost" component={EditPost} />
+      <Stack.Screen name="Main" component={Main} />
+      <Stack.Screen name="MapView" component={MapViewU} />
     </Stack.Navigator>
   );
 }
@@ -253,6 +263,8 @@ function NotiStack() {
       <Stack.Screen name="ChangePasss" component={ChangePasss} />
       <Stack.Screen name="Friend" component={Friend} />
       <Stack.Screen name="EditPost" component={EditPost} />
+      <Stack.Screen name="Main" component={Main} />
+      <Stack.Screen name="MapView" component={MapViewU} />
     </Stack.Navigator>
   );
 }
@@ -298,8 +310,9 @@ export default ProductNavigation = props => {
             backgroundColor: '#FFFFFF',
             height: 50,
             alignItems: 'center',
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
+            elevation: 10,
           },
           tabBarIcon: ({focused}) => {
             if (route.name == 'Home') {
@@ -351,7 +364,7 @@ export default ProductNavigation = props => {
                 />
               );
             }
-            if (route.name == 'AllUser') {
+            if (route.name == 'Main') {
               return (
                 <Image
                   style={{
@@ -368,7 +381,7 @@ export default ProductNavigation = props => {
           tabBarShowLabel: false,
         })}>
         <Tab.Screen name="Home" component={HomeStack} />
-        <Tab.Screen name="AllUser" component={AllUserStack} />
+        <Tab.Screen name="Main" component={Main} />
         <Tab.Screen name="Chat" component={ChatStack} />
         <Tab.Screen name="notifiCation" component={NotiStack} />
         <Tab.Screen name="Profile" component={ProfileStack} />

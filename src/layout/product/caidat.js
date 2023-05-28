@@ -211,6 +211,21 @@ export const CaiDat = ({route, navigation}) => {
             </TouchableOpacity>
           </View>
         </View>
+        <View style={{top: 240}}>
+          <View style={styles.khung}>
+            <TouchableOpacity onPress={() => navigation.navigate('MapView')}>
+              <Text style={styles.chu}>Chọn địa chỉ</Text>
+              <Image
+                style={styles.edit1}
+                source={require('../../image/document.png')}
+              />
+              <Image
+                style={styles.tiep}
+                source={require('../../image/next.png')}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
     </View>
   );

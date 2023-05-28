@@ -102,14 +102,16 @@ export const Profile = props => {
       setfl(childSnapshot.child('follow').exportVal());
       setisLoading(false);
     });
-    const reference1 = ref(db, 'users/' + user + '/sothich');
-    onValue(reference1, childSnapshot1 => {
-      childSnapshot1.forEach(snapshot1 => {
-        const key = snapshot1.val();
-        sothich2.push(key);
-      });
-    });
+    console.log(user + 'user');
   }, []);
+  const reference1 = ref(db, 'users/' + user + '/sothich');
+  onValue(reference1, childSnapshot1 => {
+    childSnapshot1.forEach(snapshot1 => {
+      const key = snapshot1.val();
+      console.log(key);
+      sothich2.push(key);
+    });
+  });
   const referenceImage = ref(db, 'post/' + user);
   onValue(referenceImage, snapshot => {
     snapshot.forEach(ImageSnapshot => {

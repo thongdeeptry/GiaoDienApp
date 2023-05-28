@@ -3,7 +3,7 @@ import React, {useCallback} from 'react';
 import {Animated, Image, Text, View, Pressable} from 'react-native';
 import Choice from '../Choice';
 import {ACTION_OFFSET} from '../utils/constants';
-
+import {LinearGradient} from 'expo-linear-gradient';
 import {styles} from './styles';
 
 export default function Card({
@@ -16,6 +16,9 @@ export default function Card({
   isFirst,
   swipe,
   tiltSign,
+  sex,
+  km,
+  nghenghiep,
   ...rest
 }) {
   const rotate = Animated.multiply(swipe.x, tiltSign).interpolate({
@@ -66,24 +69,57 @@ export default function Card({
     <Animated.View
       style={[styles.container, isFirst && animatedCardStyle]}
       {...rest}>
-      <Image source={{uri: source}} style={styles.image} />
-      {/* <LinearGradient
-        colors={["transparent", "rgba(0,0,0,1)"]}
-        style={styles.gradient}
-      /> */}
-      <View style={{flexDirection: 'row'}}>
-        <Text style={styles.name}>{name}</Text>
-        {tick == 'true' ? (
-          <Image
-            style={{width: 25, height: 25, bottom: 5, left: 5}}
-            source={require('../../../../image/verify.png')}
-          />
-        ) : (
-          <></>
-        )}
-        <Text style={styles.name}>, {tuoi}</Text>
+      <Image
+        source={{
+          uri:
+            source === null
+              ? sex === 'Nam'
+                ? 'https://i.ibb.co/XFz2BR8/avtnbam.png'
+                : 'https://i.ibb.co/CPVcDj9/avtnu.jpg'
+              : source,
+        }}
+        style={styles.image}
+      />
+      <View
+        style={{
+          position: 'absolute',
+          top: 20,
+          right: 20,
+          backgroundColor: 'white',
+          paddingHorizontal: 15,
+          paddingVertical: 7,
+          borderRadius: 20,
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
+        <Image
+          source={require('../../../../image/vitri.png')}
+          style={{width: 15, height: 15}}
+        />
+        <Text style={{color: '#E94057', fontWeight: '600', fontSize: 16}}>
+          {km}km
+        </Text>
       </View>
-      <Text style={styles.diachi}>{diachi}</Text>
+      <LinearGradient
+        colors={['transparent', 'rgba(255, 112, 141, 0.8)']}
+        style={styles.gradient}
+      />
+      <View style={{flexDirection: 'row'}}>
+        <Text style={[styles.name, {maxWidth: 250, height: 30}]}>{name}</Text>
+
+        <Text style={styles.name}>
+          {tick == 'true' ? (
+            <Image
+              style={{width: 25, height: 25}}
+              source={require('../../../../image/verify.png')}
+            />
+          ) : (
+            <></>
+          )}
+          , {tuoi}
+        </Text>
+      </View>
+      <Text style={styles.diachi}>{nghenghiep}</Text>
 
       {isFirst && renderChoice()}
     </Animated.View>

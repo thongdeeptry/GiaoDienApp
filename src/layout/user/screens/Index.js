@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -42,6 +42,7 @@ export const Index = props => {
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getDatabase();
+  const [page, setPage] = useState(0);
   const Click = async () => {
     const token = await AsyncStorage.getItem('tokenLogin');
     console.log('token:' + token);
@@ -64,6 +65,7 @@ export const Index = props => {
     } else {
       const email = await AsyncStorage.getItem('email');
       const password = await AsyncStorage.getItem('password');
+      console.log(password + 'Đăng nhập thành công' + email);
       if (email != '' && password != '' && email != null && password != null) {
         await signInWithEmailAndPassword(auth, email, password).then(
           async () => {
@@ -73,7 +75,7 @@ export const Index = props => {
             const reference = ref(db, 'users/' + user);
             onValue(reference, childSnapshot => {
               const trangthai = childSnapshot.child('trangthai').val();
-              if (trangthai == 'Khóa') {
+              if (trangthai === 'Khóa') {
                 navigation.navigate('VoHieuHoa');
               } else {
                 onLogin();

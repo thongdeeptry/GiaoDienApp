@@ -10,7 +10,12 @@
       "versionCode": 26,
       "googleServicesFile": "./google-services.json",
       "package": "com.thanhthong0312.GiaoDienApp",
-      "softwareKeyboardLayoutMode": "pan"
+      "softwareKeyboardLayoutMode": "pan",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBj7PD2ANUkOaFs3IjEUvN2qXM8KGUcr3Q"
+        }
+      }
     },
     "ios": {
       "bundleIdentifier": "org.name.GiaoDienApp"
