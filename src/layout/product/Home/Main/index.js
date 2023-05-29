@@ -25,6 +25,11 @@ import {
   update,
   remove,
 } from 'firebase/database';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Swiper from 'react-native-deck-swiper';
+import PhotoCards from '../../data/PhotoCards';
+import CardT from '../../components/Card';
+import OverlayLabel from '../../data/OverlayLable';
 export default function Main({route, navigation}) {
   initializeApp(firebaseConfig);
   let noidung1 = '';

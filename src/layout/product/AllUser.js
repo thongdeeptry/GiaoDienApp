@@ -269,10 +269,10 @@ export const AllUser = ({route, navigation}) => {
               source={require('../../assets/search.png')}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
+          <TouchableOpacity onPress={() => navigation.navigate('CaiDat')}>
             <Image
               style={{width: 35, height: 35}}
-              source={require('../../image/chat.png')}
+              source={require('../../image/setting.png')}
             />
           </TouchableOpacity>
         </View>

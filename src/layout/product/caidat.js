@@ -226,6 +226,21 @@ export const CaiDat = ({route, navigation}) => {
             </TouchableOpacity>
           </View>
         </View>
+        <View style={{top: 300}}>
+          <View style={styles.khung}>
+            <TouchableOpacity onPress={() => navigation.navigate('Discover')}>
+              <Text style={styles.chu}>Discover</Text>
+              <Image
+                style={styles.edit1}
+                source={require('../../image/document.png')}
+              />
+              <Image
+                style={styles.tiep}
+                source={require('../../image/next.png')}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
     </View>
   );

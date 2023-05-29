@@ -52,6 +52,7 @@ import {Friend} from './Friend';
 import {EditPost} from './EditPost';
 import Main from './Home/Main/index';
 import MapViewU from './MapView';
+import Discover from './Discover';
 function HomeStack() {
   return (
     <Stack.Navigator
@@ -90,6 +91,7 @@ function HomeStack() {
       <Stack.Screen name="Friend" component={Friend} />
       <Stack.Screen name="Main" component={Main} />
       <Stack.Screen name="MapView" component={MapViewU} />
+      <Stack.Screen name="Discover" component={Discover} />
     </Stack.Navigator>
   );
 }
@@ -133,6 +135,7 @@ function ProfileStack() {
       <Stack.Screen name="EditPost" component={EditPost} />
       <Stack.Screen name="Main" component={Main} />
       <Stack.Screen name="MapView" component={MapViewU} />
+      <Stack.Screen name="Discover" component={Discover} />
     </Stack.Navigator>
   );
 }
@@ -177,6 +180,7 @@ function AllUserStack() {
       <Stack.Screen name="Friend" component={Friend} />
       <Stack.Screen name="EditPost" component={EditPost} />
       <Stack.Screen name="MapView" component={MapViewU} />
+      <Stack.Screen name="Discover" component={Discover} />
     </Stack.Navigator>
   );
 }
@@ -221,6 +225,7 @@ function ChatStack() {
       <Stack.Screen name="EditPost" component={EditPost} />
       <Stack.Screen name="Main" component={Main} />
       <Stack.Screen name="MapView" component={MapViewU} />
+      <Stack.Screen name="Discover" component={Discover} />
     </Stack.Navigator>
   );
 }
@@ -265,6 +270,7 @@ function NotiStack() {
       <Stack.Screen name="EditPost" component={EditPost} />
       <Stack.Screen name="Main" component={Main} />
       <Stack.Screen name="MapView" component={MapViewU} />
+      <Stack.Screen name="Discover" component={Discover} />
     </Stack.Navigator>
   );
 }
