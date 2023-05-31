@@ -3,8 +3,8 @@ import {CARD} from '../utils/constants';
 
 export const styles = StyleSheet.create({
   container: {
-    height: '70%',
-    bottom: 70,
+    height: '73%',
+    top: 60,
     position: 'absolute',
   },
   image: {
@@ -17,9 +17,27 @@ export const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 160,
+    height: 150,
     borderRadius: CARD.BORDER_RADIUS,
     opacity: 0.8,
+  },
+  button: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    bottom: -123,
+    position: 'absolute',
+    common: {
+      width: 70,
+      height: 70,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 100,
+    },
+  },
+  overlayWrapper: {
+    height: '100%',
   },
   name: {
     bottom: 111,

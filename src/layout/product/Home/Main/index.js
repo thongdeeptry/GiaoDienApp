@@ -165,12 +165,11 @@ export default function Main({route, navigation}) {
           ) => {
             const isFirst = index === 0;
             const km = getDistanceFromLatLonInKm(lat1, long1, lat, long);
-
             const dragHandlers = isFirst ? panResponder.panHandlers : {};
             return source !== null && id !== user ? (
               <Pressable
                 onPress={() => navigation.navigate('ProfileFriend', {id})}
-                style={{width: '90%', height: '100%', position: 'absolute'}}>
+                style={{width: '100%', height: '100%', position: 'absolute'}}>
                 <View
                   style={{
                     paddingHorizontal: 0,
@@ -347,6 +346,7 @@ export default function Main({route, navigation}) {
                   sex={sex}
                   km={km}
                   nghenghiep={nghenghiep}
+                  pets={pets}
                   {...dragHandlers}></Card>
               </Pressable>
             ) : (
